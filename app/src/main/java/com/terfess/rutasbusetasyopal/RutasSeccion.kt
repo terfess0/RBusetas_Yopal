@@ -47,13 +47,13 @@ class RutasSeccion : AppCompatActivity() {
 
             R.id.buscar -> {
                 if (filtro.visibility == View.GONE) {
+                    filtro.setText("")
                     filtro.visibility = View.VISIBLE //mostrar el campo del filtro
                     filtro.requestFocus()// Establece el foco en el EditText de filtro
                     tecladoV.showSoftInput(
                         filtro,
                         InputMethodManager.SHOW_IMPLICIT
                     )//para controlar el teclado virtual
-                    //item.setIcon(R.drawable.cerrar) //cambia el icono del "buscar" por una X
                     //detectar lo que se va escribiendo en el filtro
                     filtro.addTextChangedListener { claveFilter ->
                         filtrando = true
@@ -109,6 +109,5 @@ class RutasSeccion : AppCompatActivity() {
             dialog.dismiss()
         }
         builder.create().show()
-        //onBackPressedDispatcher.onBackPressed()
     }
 }
