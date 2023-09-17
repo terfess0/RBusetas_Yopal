@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.terfess.rutasbusetasyopal.databinding.ActivityMainBinding
@@ -15,8 +16,7 @@ import com.terfess.rutasbusetasyopal.databinding.ActivityMainBinding
 class RutasSeccion : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var filtrando = false
-    val adapter = RutasAdapter(ListaRutas.busetaRuta.toList())
-
+    private val adapter = RutasAdapter(ListaRutas.busetaRuta.toList())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -39,7 +39,7 @@ class RutasSeccion : AppCompatActivity() {
     //controlar las opciones del menu en ActionBar
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val tecladoV = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        var filtro = binding.filtro
+        val filtro = binding.filtro
         when (item.itemId) {
             R.id.informacion -> {
                 Toast.makeText(this, "Falta Codificar", Toast.LENGTH_SHORT).show()
@@ -53,7 +53,7 @@ class RutasSeccion : AppCompatActivity() {
                         filtro,
                         InputMethodManager.SHOW_IMPLICIT
                     )//para controlar el teclado virtual
-                    item.setIcon(R.drawable.cerrar) //cambia el icono del "buscar" por una X
+                    //item.setIcon(R.drawable.cerrar) //cambia el icono del "buscar" por una X
                     //detectar lo que se va escribiendo en el filtro
                     filtro.addTextChangedListener { claveFilter ->
                         filtrando = true
@@ -91,13 +91,24 @@ class RutasSeccion : AppCompatActivity() {
         return true
     }
 
-    override fun onBackPressed() = if (filtrando) {
+    override fun onBackPressed() = if (filtrando || binding.filtro.requestFocus()) {
+        val tecladoV = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        tecladoV.hideSoftInputFromWindow(binding.root.windowToken,0)
         adapter.updateLista(ListaRutas.busetaRuta)
         binding.cajaInfo.requestFocus()
         binding.filtro.setText("")
         binding.filtro.visibility = View.GONE
         binding.noResultados.visibility = View.GONE
     } else {
-        super.onBackPressed()
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage("¿Seguro que quieres salir?")
+        builder.setPositiveButton("Sí") { _, _ ->
+            finish()
+        }
+        builder.setNegativeButton("No") { dialog, _ ->
+            dialog.dismiss()
+        }
+        builder.create().show()
+        //onBackPressedDispatcher.onBackPressed()
     }
 }

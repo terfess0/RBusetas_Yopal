@@ -18,9 +18,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.Granularity
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.Priority
 import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -40,7 +42,8 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var gmap: GoogleMap
     private lateinit var db: DatabaseReference
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    var id_ruta: Int = 0
+    private var idruta: Int = 0
+
     companion object {
         const val codigoLocalizacion = 0
     }
@@ -59,14 +62,17 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
         //seleccion ruta
         val recibirTent = intent.extras
         if (recibirTent != null) {
-            id_ruta = recibirTent.getInt("selector")
+            idruta = recibirTent.getInt("selector")
         }
         //ubicacion del gps
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         //colores informativos
         val infoSalida = "<font color='${getColor(R.color.recorridoIda)}' >Azul</font>"
         val infoLlegada = "<font color='${getColor(R.color.recorridoVuelta)}' >Rojo</font>"
-        binding.infoColor.setText(Html.fromHtml(" Ruta Salida: $infoSalida <br> Ruta Llegada: $infoLlegada <br> Parqueadero:", Html.FROM_HTML_MODE_LEGACY))
+        binding.infoColor.text = Html.fromHtml(
+            " Ruta Salida: $infoSalida <br> Ruta Llegada: $infoLlegada <br> Parqueadero:",
+            Html.FROM_HTML_MODE_LEGACY
+        )
 
     }
 
@@ -80,22 +86,117 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
             activarLocalizacion()
             irPosGps()
         }
-        supportActionBar?.title = "Mapa con la Ruta $id_ruta"
+        supportActionBar?.title = "Mapa con la Ruta $idruta"
+    }
+
+    private fun selector() {
+        val buildRuta = RutaBasic(this, this.gmap)
+        when (idruta) {
+            2 -> {
+                buildRuta.crearRuta(
+                    "features/0/rutas/$idruta/salida",
+                    "features/0/rutas/$idruta/llegada", idruta
+                )
+            }
+
+            3 -> {
+                buildRuta.crearRuta(
+                    "features/0/rutas/$idruta/salida",
+                    "features/0/rutas/$idruta/llegada", idruta
+                )
+            }
+
+            4 -> {
+                buildRuta.crearRuta(
+                    "features/0/rutas/$idruta/salida",
+                    "features/0/rutas/$idruta/llegada", idruta
+                )
+            }
+
+            5 -> {
+                buildRuta.crearRuta(
+                    "features/0/rutas/$idruta/salida",
+                    "features/0/rutas/$idruta/llegada", idruta
+                )
+            }
+
+            6 -> {
+                buildRuta.crearRuta(
+                    "features/0/rutas/$idruta/salida",
+                    "features/0/rutas/$idruta/llegada", idruta
+                )
+            }
+
+            7 -> {
+                buildRuta.crearRuta(
+                    "features/0/rutas/$idruta/salida",
+                    "features/0/rutas/$idruta/llegada", idruta
+                )
+            }
+
+            8 -> {
+                buildRuta.crearRuta(
+                    "features/0/rutas/$idruta/salida",
+                    "features/0/rutas/$idruta/llegada", idruta
+                )
+            }
+
+            9 -> {
+                buildRuta.crearRuta(
+                    "features/0/rutas/$idruta/salida",
+                    "features/0/rutas/$idruta/llegada", idruta
+                )
+            }
+
+            10 -> {
+                buildRuta.crearRuta(
+                    "features/0/rutas/$idruta/salida",
+                    "features/0/rutas/$idruta/llegada", idruta
+                )
+            }
+
+            11 -> {
+                buildRuta.crearRuta(
+                    "features/0/rutas/$idruta/salida",
+                    "features/0/rutas/$idruta/llegada", idruta
+                )
+            }
+
+            12 -> {
+                buildRuta.crearRuta(
+                    "features/0/rutas/$idruta/salida",
+                    "features/0/rutas/$idruta/llegada", idruta
+                )
+            }
+
+            13 -> {
+                buildRuta.crearRuta(
+                    "features/0/rutas/$idruta/salida",
+                    "features/0/rutas/$idruta/llegada", idruta
+                )
+            }
+        }
     }
 
     private fun activarGps() {
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        if (!permisoUbiCondecido()){
-            Toast.makeText(this, "Permiso de ubicación no permitido--Activalo en ajustes.",Toast.LENGTH_LONG).show()
+        if (!permisoUbiCondecido()) {
+            Toast.makeText(
+                this,
+                "Permiso de ubicación no permitido--Activalo en ajustes.",
+                Toast.LENGTH_LONG
+            ).show()
         }
         if (!::gmap.isInitialized) return
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             //pedir activar gps estilo de google
-            val locationRequest = LocationRequest.create()
-                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
-            val builder = LocationSettingsRequest.Builder()
-                .addLocationRequest(locationRequest)
+            val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY,5).apply {
+                setMinUpdateDistanceMeters(10f)
+                setGranularity(Granularity.GRANULARITY_PERMISSION_LEVEL)
+                setWaitForAccurateLocation(true)
+            }.build()
             val client: SettingsClient = LocationServices.getSettingsClient(this)
+            val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
             val task = client.checkLocationSettings(builder.build())
             task.addOnFailureListener(this, OnFailureListener { e ->
                 if (e is ResolvableApiException) {
@@ -103,7 +204,10 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
                         e.startResolutionForResult(this, 1)
                     } catch (sendEx: IntentSender.SendIntentException) {
                         // Error al intentar abrir la configuración de ubicación
-                        Log.e("GPS", "Error al intentar abrir la configuración de ubicación: ${sendEx.message}")
+                        Log.e(
+                            "GPS",
+                            "Error al intentar abrir la configuración de ubicación: ${sendEx.message}"
+                        )
                     }
                 }
             })
@@ -117,96 +221,6 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
             .build()
         gmap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosicion))
     }
-
-    private fun selector() {
-        val buildRuta = RutaBasic(this, this.gmap)
-        when (id_ruta) {
-            2 -> {
-                buildRuta.crearRuta(
-                    "features/0/rutas/$id_ruta/salida",
-                    "features/0/rutas/$id_ruta/llegada",id_ruta
-                )
-            }
-
-            3 -> {
-                buildRuta.crearRuta(
-                    "features/0/rutas/$id_ruta/salida",
-                    "features/0/rutas/$id_ruta/llegada",id_ruta
-                )
-            }
-
-            4 -> {
-                buildRuta.crearRuta(
-                    "features/0/rutas/$id_ruta/salida",
-                    "features/0/rutas/$id_ruta/llegada",id_ruta
-                )
-            }
-
-            5 -> {
-                buildRuta.crearRuta(
-                    "features/0/rutas/$id_ruta/salida",
-                    "features/0/rutas/$id_ruta/llegada",id_ruta
-                )
-            }
-
-            6 -> {
-                buildRuta.crearRuta(
-                    "features/0/rutas/$id_ruta/salida",
-                    "features/0/rutas/$id_ruta/llegada",id_ruta
-                )
-            }
-
-            7 -> {
-                buildRuta.crearRuta(
-                    "features/0/rutas/$id_ruta/salida",
-                    "features/0/rutas/$id_ruta/llegada",id_ruta
-                )
-            }
-
-            8 -> {
-                buildRuta.crearRuta(
-                    "features/0/rutas/$id_ruta/salida",
-                    "features/0/rutas/$id_ruta/llegada",id_ruta
-                )
-            }
-
-            9 -> {
-                buildRuta.crearRuta(
-                    "features/0/rutas/$id_ruta/salida",
-                    "features/0/rutas/$id_ruta/llegada",id_ruta
-                )
-            }
-
-            10 -> {
-                buildRuta.crearRuta(
-                    "features/0/rutas/$id_ruta/salida",
-                    "features/0/rutas/$id_ruta/llegada",id_ruta
-                )
-            }
-
-            11 -> {
-                buildRuta.crearRuta(
-                    "features/0/rutas/$id_ruta/salida",
-                    "features/0/rutas/$id_ruta/llegada",id_ruta
-                )
-            }
-
-            12 -> {
-                buildRuta.crearRuta(
-                    "features/0/rutas/$id_ruta/salida",
-                    "features/0/rutas/$id_ruta/llegada",id_ruta
-                )
-            }
-
-            13 -> {
-                buildRuta.crearRuta(
-                    "features/0/rutas/$id_ruta/salida",
-                    "features/0/rutas/$id_ruta/llegada",id_ruta
-                )
-            }
-        }
-    }
-
     private fun irPosGps() {
         //este if verifica que no tiene permiso ni de FINE ni de COURSE LoCATION
         if (ActivityCompat.checkSelfPermission(
@@ -223,8 +237,7 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
             )
         }
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-            // Verifica si la ubicación es nula
-
+            // Verifica si la ubicación no es nula
             if (location != null) {
                 val latLng = LatLng(location.latitude, location.longitude)
                 gmap.animateCamera(CameraUpdateFactory.newLatLngZoom((latLng), 15.5f), 3000, null)
@@ -243,7 +256,7 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
     private fun activarLocalizacion() {
         val permission = Manifest.permission.ACCESS_FINE_LOCATION
         ActivityCompat.requestPermissions(this, arrayOf(permission), codigoLocalizacion)
-        }
+    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -258,6 +271,7 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
             } else {
                 gmap.isMyLocationEnabled = false
             }
+
             else -> {}
         }
     }
@@ -268,7 +282,11 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
         if (!::gmap.isInitialized) return
         if (!permisoUbiCondecido()) {
             gmap.isMyLocationEnabled = false
-            Toast.makeText(this, "Permiso de localización no concedido. Puedes cambiarlo en ajustes.", Toast.LENGTH_LONG)
+            Toast.makeText(
+                this,
+                "Permiso de localización no concedido. Puedes cambiarlo en ajustes.",
+                Toast.LENGTH_LONG
+            )
                 .show()
         }
     }
@@ -281,8 +299,8 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
 
     //controlar opcion close de manu Action bar
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId){
-            R.id.Cerrar ->{
+        when (item.itemId) {
+            R.id.Cerrar -> {
                 val intent = Intent(this, RutasSeccion::class.java)
                 startActivity(intent)
             }

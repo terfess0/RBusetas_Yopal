@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.CustomCap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
@@ -15,12 +14,12 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class RutaBasic(private val mapa:Context, val Gmap: GoogleMap) {
+class RutaBasic(private val mapa:Context, val gmap: GoogleMap) {
     var polylineOptions = PolylineOptions()
     lateinit var puntos: MutableList<LatLng>
-    val databaseRef = FirebaseDatabase.getInstance()
+    private val databaseRef = FirebaseDatabase.getInstance()
 
-    fun crearRuta(path1parte:String, path2parte:String, id_ruta:Int) {
+    fun crearRuta(path1parte:String, path2parte:String, idruta:Int) {
         //RUTA - PRIMERA PARTE
         databaseRef.getReference(path1parte).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -41,7 +40,7 @@ class RutaBasic(private val mapa:Context, val Gmap: GoogleMap) {
                     ubicacion = LatLng(latValue, lngValue)
                     puntos.add(ubicacion)
                 }
-                val polyline1 = Gmap.addPolyline(polylineOptions)
+                val polyline1 = gmap.addPolyline(polylineOptions)
                 polyline1.points = puntos
                 polyline1.startCap = RoundCap()
                 polyline1.endCap = RoundCap()
@@ -70,15 +69,15 @@ class RutaBasic(private val mapa:Context, val Gmap: GoogleMap) {
                     val ubicacion2 = LatLng(latValue, lngValue)
                     puntos.add(ubicacion2)
                 }
-                val polyline2 = Gmap.addPolyline(polylineOptions)
+                val polyline2 = gmap.addPolyline(polylineOptions)
                 polyline2.points = puntos
                 polyline2.startCap = RoundCap()
                 polyline2.endCap = RoundCap()
                 val medio = (puntos.size -1)
                 val markerOptions = MarkerOptions().position(puntos[medio])
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.parqueadero_icon))
-                    .title("Parqueadero Ruta $id_ruta")
-                Gmap.addMarker(markerOptions)
+                    .title("Parqueadero Ruta $idruta")
+                gmap.addMarker(markerOptions)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
