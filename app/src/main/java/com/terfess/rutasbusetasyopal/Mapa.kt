@@ -2,7 +2,6 @@ package com.terfess.rutasbusetasyopal
 
 import android.Manifest
 import android.content.Context
-import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Location
@@ -10,8 +9,6 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -291,20 +288,4 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    //inflar menu ActionBar Mapa
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_mapa, menu)
-        return true
-    }
-
-    //controlar opcion close de manu Action bar
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.Cerrar -> {
-                val intent = Intent(this, RutasSeccion::class.java)
-                startActivity(intent)
-            }
-        }
-        return true
-    }
 }
