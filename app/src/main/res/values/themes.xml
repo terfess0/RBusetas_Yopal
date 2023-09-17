@@ -1,0 +1,11 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.RutasBusetasYopal" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="elevation">1dp</item>
+        <item name="menu">@menu/menu_rutas</item>
+        <!--<item name="android:background">@color/ActionBarSeccion</item>-->
+    </style>
+    <style name="Theme.mapa" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:elevation">-0.1dp</item>
+        <!--<item name="android:background">@color/ActionBarMapa</item>-->
+    </style>
+</resources>

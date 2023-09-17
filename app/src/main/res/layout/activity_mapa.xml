@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:name="com.google.android.gms.maps.SupportMapFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/map"
+    >
+    <ImageButton
+        android:id="@+id/irgps"
+        android:elevation="3dp"
+        android:theme="@style/Theme.mapa"
+        android:background="@drawable/back_boton_gps"
+        app:srcCompat="@drawable/boton_gps"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="480dp"
+        android:layout_marginEnd="20dp"
+        android:layout_gravity="right"
+        android:contentDescription="TODO"
+         />
+    <TextView
+        android:id="@+id/infoColor"
+        android:backgroundTint="#00FFFFFF"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_height="60dp"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        />
+
+    <ImageView
+        android:id="@+id/parqueadero"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="51dp"
+        android:backgroundTint="#00FFFFFF"
+        android:layout_marginLeft="90dp"
+        app:srcCompat="@drawable/parqueadero_icon" />
+</fragment>
+

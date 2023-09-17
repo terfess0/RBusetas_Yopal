@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/informacion"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/informacion"
+        android:title="Información">
+    </item>
+    <item
+        android:id="@+id/buscar"
+        android:title="Ayuda"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/buscar">
+    </item>
+    <item
+        android:id="@+id/comentarios"
+        android:title="Barrios"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/acercade"
+        android:title="Acerca de"
+        app:showAsAction="never">
+    </item>
+</menu>
