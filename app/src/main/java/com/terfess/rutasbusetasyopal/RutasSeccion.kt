@@ -75,6 +75,7 @@ class RutasSeccion : AppCompatActivity() {
                 } else {
                     filtro.visibility = View.GONE
                     item.setIcon(R.drawable.buscar)
+                    filtrando = false
                     adapter.updateLista(ListaRutas.busetaRuta)
                     tecladoV.hideSoftInputFromWindow(binding.root.windowToken, 0) //ocultar teclado virtual en esa ventana
                 }
@@ -91,23 +92,28 @@ class RutasSeccion : AppCompatActivity() {
         return true
     }
 
-    override fun onBackPressed() = if (filtrando || binding.filtro.requestFocus()) {
-        val tecladoV = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        tecladoV.hideSoftInputFromWindow(binding.root.windowToken,0)
-        adapter.updateLista(ListaRutas.busetaRuta)
-        binding.cajaInfo.requestFocus()
-        binding.filtro.setText("")
-        binding.filtro.visibility = View.GONE
-        binding.noResultados.visibility = View.GONE
-    } else {
-        val builder = AlertDialog.Builder(this)
-        builder.setMessage("¿Seguro que quieres salir?")
-        builder.setPositiveButton("Sí") { _, _ ->
-            finish()
+    override fun onBackPressed() {
+        if (filtrando || binding.filtro.requestFocus()) {
+            val tecladoV = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            tecladoV.hideSoftInputFromWindow(binding.root.windowToken,0)
+            adapter.updateLista(ListaRutas.busetaRuta)
+            binding.cajaInfo.requestFocus()
+            binding.filtro.setText("")
+            binding.filtro.visibility = View.GONE
+            binding.noResultados.visibility = View.GONE
+            binding.cajaInfo.requestFocus()
+            filtrando = false
+        } else{
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("¿Seguro que quieres salir?")
+            builder.setPositiveButton("Sí") { _, _ ->
+                finish()
+            }
+            builder.setNegativeButton("No") { _, _ ->
+
+            }
+            val dialog = builder.create()
+            dialog.show()
         }
-        builder.setNegativeButton("No") { dialog, _ ->
-            dialog.dismiss()
-        }
-        builder.create().show()
     }
 }
