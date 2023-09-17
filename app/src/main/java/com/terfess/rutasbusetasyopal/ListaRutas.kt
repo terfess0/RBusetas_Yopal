@@ -5,6 +5,11 @@ class ListaRutas {
     companion object {
         val busetaRuta = listOf(
             DatosRuta(
+                1,
+                "Sin sitios--",
+                "2,000"
+            ),
+            DatosRuta(
                 2,
                 "-La Bendicion, Estadio, Sena, Sisben, Contraloria, Horo, Estancia, Resurgimiento, Herradura, Bomberos, San Marcos, La Bendición.",
                 "2,000"
