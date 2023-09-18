@@ -89,6 +89,12 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
     private fun selector() {
         val buildRuta = RutaBasic(this, this.gmap)
         when (idruta) {
+            1 -> {
+                buildRuta.crearRuta(
+                    "features/0/rutas/$idruta/salida",
+                    "features/0/rutas/$idruta/llegada", idruta
+                )
+            }
             2 -> {
                 buildRuta.crearRuta(
                     "features/0/rutas/$idruta/salida",
