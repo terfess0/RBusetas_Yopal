@@ -50,7 +50,7 @@ class RutaBasic(private val mapa:Context, val gmap: GoogleMap) {
                 // Manejar errores si los hay
                 Toast.makeText(
                     mapa,
-                    "Algo salio mal en la creacion de la ruta-1.",
+                    "Algo salio mal en la creacion de salida ruta $idruta.",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -84,7 +84,7 @@ class RutaBasic(private val mapa:Context, val gmap: GoogleMap) {
                 // Manejar errores si los hay
                 Toast.makeText(
                     mapa,
-                    "Algo salio mal en la creacion de la ruta-2.",
+                    "Algo salio mal en la creacion de la llegada ruta $idruta.",
                     Toast.LENGTH_LONG
                 ).show()
             }
