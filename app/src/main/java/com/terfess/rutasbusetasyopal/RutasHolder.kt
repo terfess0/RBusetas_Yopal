@@ -17,7 +17,7 @@ class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
 
     @SuppressLint("SetTextI18n")
     fun mostrar(dato: DatosRuta) {
-        val color = "#00AC19"
+        val color = "#DC7633"
         val texto = "<font color='$color' >Lugares Relevantes:</font> ${dato.sitios}"
         binding.numRuta.text = "RUTA #"+dato.numRuta
         binding.sitios.text = Html.fromHtml(texto,FROM_HTML_MODE_LEGACY)

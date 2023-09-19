@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="10dp"
-    android:layout_marginTop="10dp"
+    android:layout_marginBottom="25dp"
     android:layout_marginRight="10dp"
     android:minHeight="90dp">
 
@@ -54,7 +54,7 @@
         android:gravity="center"
         android:text="TextView"
         android:textAlignment="center"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -87,7 +87,7 @@
         android:layout_width="262dp"
         android:layout_height="wrap_content"
         android:background="#00FFFFFF"
-        android:fontFamily="monospace"
+        android:fontFamily="@font/adamina"
         android:text="TextView"
         android:textColor="#000000"
         android:textSize="17sp"
