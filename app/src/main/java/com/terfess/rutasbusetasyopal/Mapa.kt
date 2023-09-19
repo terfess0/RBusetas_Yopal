@@ -88,13 +88,7 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
 
     private fun selector() {
         val buildRuta = RutaBasic(this, this.gmap)
-        when (idruta) {
-            1 -> {
-                buildRuta.crearRuta(
-                    "features/0/rutas/$idruta/salida",
-                    "features/0/rutas/$idruta/llegada", idruta
-                )
-            }
+        when (idruta) {//IMPORTANTE PARA CONSTRUIR CADA RUTA
             2 -> {
                 buildRuta.crearRuta(
                     "features/0/rutas/$idruta/salida",
@@ -103,20 +97,6 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
             }
 
             3 -> {
-                buildRuta.crearRuta(
-                    "features/0/rutas/$idruta/salida",
-                    "features/0/rutas/$idruta/llegada", idruta
-                )
-            }
-
-            4 -> {
-                buildRuta.crearRuta(
-                    "features/0/rutas/$idruta/salida",
-                    "features/0/rutas/$idruta/llegada", idruta
-                )
-            }
-
-            5 -> {
                 buildRuta.crearRuta(
                     "features/0/rutas/$idruta/salida",
                     "features/0/rutas/$idruta/llegada", idruta
@@ -159,13 +139,6 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
             }
 
             11 -> {
-                buildRuta.crearRuta(
-                    "features/0/rutas/$idruta/salida",
-                    "features/0/rutas/$idruta/llegada", idruta
-                )
-            }
-
-            12 -> {
                 buildRuta.crearRuta(
                     "features/0/rutas/$idruta/salida",
                     "features/0/rutas/$idruta/llegada", idruta

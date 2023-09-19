@@ -5,11 +5,6 @@ class ListaRutas {
     companion object {
         val busetaRuta = listOf(
             DatosRuta(
-                1,
-                "Sin sitios--",
-                "2,000"
-            ),
-            DatosRuta(
                 2,
                 "-La Bendicion, Estadio, Sena, Sisben, Contraloria, Horo, Estancia, Resurgimiento, Herradura, Bomberos, San Marcos, La Bendición.",
                 "2,000"
@@ -17,12 +12,6 @@ class ListaRutas {
             DatosRuta(
                 3,
                 "Llano lindo, Weatherford, Plaza de Mercado, Bomberos, Alkosto, Clinica Casanare, La Carpa, San Jorge, Llano Lindo.",
-                "2,000"
-            ),
-            DatosRuta(4, "Sin sitios---", "2,000"),
-            DatosRuta(
-                5,
-                "Llano Lindo, San Jorge, Veterinaria Vet Center, La Campiña, Casa de la Cultura, Triada, Alcaldia, La Herradura, Estancia, Alcaldia, La Carpa, Megacolegio, Llano Lindo.",
                 "2,000"
             ),
             DatosRuta(
@@ -47,7 +36,6 @@ class ListaRutas {
             ),
             DatosRuta(10, "Sin sitios---", "2,000"),
             DatosRuta(11, "Sin sitios---", "2,000"),
-            DatosRuta(12, "Sin sitios---", "2,000"),
             DatosRuta(13, "Sin sitios---", "2,000"),
         )
     }
