@@ -6,12 +6,59 @@ class ListaRutas {
         val busetaRuta = listOf(
             DatosRuta(
                 2,
+                "La Bendicion, Horo, Estancia, Bomberos",
+                "2,000"
+            ),
+            DatosRuta(
+                3,
+                "Llano lindo, Alkosto, Clinica Casanare, Llano Lindo",
+                "2,000"
+            ),
+            DatosRuta(
+                6,
+                "Estadio Atalayas, La Herradura, LACOR IPS SAS,La Herradura",
+                "2,000"
+            ),
+            DatosRuta(
+                7,
+                "Villa David, Olimpica, Gobernación,IE Carlos Lleras",
+                "2,000"
+            ),
+            DatosRuta(
+                8,
+                "Villa Lucia, ESE Juan Luis Londoño, Alkosto, Horo",
+                "2,000"
+            ),
+            DatosRuta(
+                9,
+                "El Silencio, Hospital Central, CC Unicentro, Técnico Ambiental",
+                "2,000"
+            ),
+            DatosRuta(10, "Sin sitios---", "2,000"),
+            DatosRuta(11, "Sin sitios---", "2,000"),
+            DatosRuta(13, "Sin sitios---", "2,000"),
+        )
+
+        val busetaSitios = listOf(
+            DatosRuta(
+                1,
+                "Sin sitios--",
+                "2,000"
+            ),
+            DatosRuta(
+                2,
                 "-La Bendicion, Estadio, Sena, Sisben, Contraloria, Horo, Estancia, Resurgimiento, Herradura, Bomberos, San Marcos, La Bendición.",
                 "2,000"
             ),
             DatosRuta(
                 3,
                 "Llano lindo, Weatherford, Plaza de Mercado, Bomberos, Alkosto, Clinica Casanare, La Carpa, San Jorge, Llano Lindo.",
+                "2,000"
+            ),
+            DatosRuta(4, "Sin sitios---", "2,000"),
+            DatosRuta(
+                5,
+                "Llano Lindo, San Jorge, Veterinaria Vet Center, La Campiña, Casa de la Cultura, Triada, Alcaldia, La Herradura, Estancia, Alcaldia, La Carpa, Megacolegio, Llano Lindo.",
                 "2,000"
             ),
             DatosRuta(
@@ -36,6 +83,7 @@ class ListaRutas {
             ),
             DatosRuta(10, "Sin sitios---", "2,000"),
             DatosRuta(11, "Sin sitios---", "2,000"),
+            DatosRuta(12, "Sin sitios---", "2,000"),
             DatosRuta(13, "Sin sitios---", "2,000"),
         )
     }
