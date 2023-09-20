@@ -59,7 +59,7 @@ class RutasSeccion : AppCompatActivity() {
                         filtrando = true
                         val textFiltro = claveFilter?.toString() ?: "es nulo"
                         if (textFiltro.isEmpty()) {
-                            adapter.updateLista(ListaRutas.busetaSitios)
+                            adapter.updateLista(ListaRutas.busetaSitios, "#CC2EFA")
                         } else {
                             val rutasFiltradas =
                                 ListaRutas.busetaSitios.filter { busqueda ->
@@ -69,16 +69,15 @@ class RutasSeccion : AppCompatActivity() {
                             } else {
                                 binding.noResultados.visibility = View.GONE
                             }
-                            adapter.updateLista(rutasFiltradas)
+                            adapter.updateLista(rutasFiltradas, "#CC2EFA")
                         }
                     }
                 } else {
                     filtro.visibility = View.GONE
-                    item.setIcon(R.drawable.buscar)
                     filtrando = false
-                    adapter.updateLista(ListaRutas.busetaSitios)
                     tecladoV.hideSoftInputFromWindow(binding.root.windowToken, 0) //ocultar teclado virtual en esa ventana
-                }
+                    adapter.updateLista(ListaRutas.busetaRuta, "#DC7633")
+                    }
             }
 
             R.id.comentarios -> {
@@ -96,13 +95,13 @@ class RutasSeccion : AppCompatActivity() {
         if (filtrando || binding.filtro.requestFocus()) {
             val tecladoV = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             tecladoV.hideSoftInputFromWindow(binding.root.windowToken,0)
-            adapter.updateLista(ListaRutas.busetaRuta)
             binding.cajaInfo.requestFocus()
             binding.filtro.setText("")
             binding.filtro.visibility = View.GONE
             binding.noResultados.visibility = View.GONE
             binding.cajaInfo.requestFocus()
             filtrando = false
+            adapter.updateLista(ListaRutas.busetaRuta, "#DC7633")
         } else{
             val builder = AlertDialog.Builder(this)
             builder.setMessage("¿Seguro que quieres salir?")
