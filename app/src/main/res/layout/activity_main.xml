@@ -7,6 +7,32 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:backgroundTint="#00929711">
+    <EditText
+        android:id="@+id/filtro"
+        android:elevation="3dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/bord_filtro"
+        android:ems="10"
+        android:inputType="text"
+        android:maxLines="1"
+        android:imeOptions="actionDone"
+        android:hint="Busca Sitios"
+        android:visibility="gone" />
+    <TextView
+        android:id="@+id/noResultados"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:textColor="#9A0000"
+        android:textStyle="bold"
+        android:text="Sin Resultados"
+        android:gravity="center"
+        android:visibility="gone"
+        android:minHeight="90dp"
+        />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cabezera"
@@ -34,32 +60,7 @@
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <EditText
-        android:id="@+id/filtro"
-        android:elevation="3dp"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/bord_filtro"
-        android:ems="10"
-        android:inputType="text"
-        android:maxLines="1"
-        android:imeOptions="actionDone"
-        android:hint="Busca Sitios"
-        android:visibility="gone" />
-    <TextView
-        android:id="@+id/noResultados"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:textColor="#9A0000"
-        android:textStyle="bold"
-        android:text="Sin Resultados"
-        android:gravity="center"
-        android:visibility="gone"
-        android:minHeight="90dp"
-        />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:paddingTop="10dp"
