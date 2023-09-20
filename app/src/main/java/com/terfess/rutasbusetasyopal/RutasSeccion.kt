@@ -12,6 +12,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.terfess.rutasbusetasyopal.databinding.ActivityMainBinding
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class RutasSeccion : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -28,6 +31,14 @@ class RutasSeccion : AppCompatActivity() {
         cajaInfo.adapter = adapter
 
         supportActionBar?.title = "Rutas"
+
+        //mostrar saludo buenos dias
+        val saludo: String = when (getHora()) {
+            in 0..11 -> "Buenos días"
+            in 12..17 -> "Buenas tardes"
+            else -> "Buenas noches"
+        }
+        binding.saludo.text = saludo
     }
 
     //menu en el ActionBar
@@ -114,5 +125,11 @@ class RutasSeccion : AppCompatActivity() {
             val dialog = builder.create()
             dialog.show()
         }
+    }
+
+    private fun getHora(): Int {
+        val calendar = Calendar.getInstance()
+        val horaActual = calendar.get(Calendar.HOUR_OF_DAY)
+        return horaActual
     }
 }
