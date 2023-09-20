@@ -59,10 +59,10 @@ class RutasSeccion : AppCompatActivity() {
                         filtrando = true
                         val textFiltro = claveFilter?.toString() ?: "es nulo"
                         if (textFiltro.isEmpty()) {
-                            adapter.updateLista(ListaRutas.busetaRuta)
+                            adapter.updateLista(ListaRutas.busetaSitios)
                         } else {
                             val rutasFiltradas =
-                                ListaRutas.busetaRuta.filter { busqueda ->
+                                ListaRutas.busetaSitios.filter { busqueda ->
                                     busqueda.sitios.lowercase().contains(textFiltro.lowercase()) || busqueda.numRuta.toString().contains(textFiltro) }
                             if (rutasFiltradas.isEmpty()) {
                                 binding.noResultados.visibility = View.VISIBLE
@@ -76,7 +76,7 @@ class RutasSeccion : AppCompatActivity() {
                     filtro.visibility = View.GONE
                     item.setIcon(R.drawable.buscar)
                     filtrando = false
-                    adapter.updateLista(ListaRutas.busetaRuta)
+                    adapter.updateLista(ListaRutas.busetaSitios)
                     tecladoV.hideSoftInputFromWindow(binding.root.windowToken, 0) //ocultar teclado virtual en esa ventana
                 }
             }

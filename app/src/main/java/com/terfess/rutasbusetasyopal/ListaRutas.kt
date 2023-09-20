@@ -3,6 +3,7 @@ package com.terfess.rutasbusetasyopal
 
 class ListaRutas {
     companion object {
+        //esta lista es simplificada para mostrar en recycler view
         val busetaRuta = listOf(
             DatosRuta(
                 2,
@@ -39,6 +40,7 @@ class ListaRutas {
             DatosRuta(13, "Sin sitios---", "2,000"),
         )
 
+        //esta ruta es completa para buscar sitios y demas, especialmente al momento de filtrar/buscar
         val busetaSitios = listOf(
             DatosRuta(
                 1,
