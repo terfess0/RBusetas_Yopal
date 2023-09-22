@@ -6,6 +6,8 @@ import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
@@ -75,14 +77,15 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap) {
         gmap = map
         //map.mapType = GoogleMap.MAP_TYPE_HYBRID
+        comprobarConexion(this)
         irYopal()
-        selector()
-        gmap.uiSettings.isMyLocationButtonEnabled = false
+        selector()  //seleccionar que ruta cargar
+        gmap.uiSettings.isMyLocationButtonEnabled = false //desactivar el boton default de gps
         binding.irgps.setOnClickListener {
             activarLocalizacion()
             irPosGps()
         }
-        supportActionBar?.title = "Mapa con la Ruta $idruta"
+        supportActionBar?.title = "Mapa con la Ruta $idruta"  //titulo actionbar
     }
 
     private fun selector() {
@@ -230,7 +233,6 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
                 val latLng = LatLng(location.latitude, location.longitude)
                 gmap.animateCamera(CameraUpdateFactory.newLatLngZoom((latLng), 15.5f), 3000, null)
                 binding.irgps.setImageResource(R.drawable.gps_find)
-                Toast.makeText(this, "Mostrando Ubicación..", Toast.LENGTH_SHORT).show()
             } else {
                 irPosGps()
             }
@@ -280,6 +282,22 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
             )
                 .show()
         }
+    }
+
+    private fun comprobarConexion(context: Context): Boolean {
+        var result: Boolean
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager //transformar el valor resultante en un connectibitymanager mediante as
+        val networkCapabilities = connectivityManager.activeNetwork ?: return false
+        val actNw =
+            connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+        result = when {
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+            else -> false
+        }
+        return result
     }
 
 }

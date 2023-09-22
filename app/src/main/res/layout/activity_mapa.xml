@@ -15,7 +15,7 @@
         android:layout_width="52dp"
         android:layout_height="52dp"
         android:layout_marginTop="500dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="30dp"
         android:layout_gravity="right"
         android:contentDescription="TODO"
          />
@@ -23,7 +23,7 @@
         android:id="@+id/infoColor"
         android:backgroundTint="#00FFFFFF"
         android:layout_width="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="45dp"
         android:layout_height="60dp"
         android:textSize="14sp"
         android:textStyle="bold"
@@ -35,7 +35,7 @@
         android:id="@+id/parqueadero"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_marginTop="51dp"
+        android:layout_marginTop="80dp"
         android:backgroundTint="#00FFFFFF"
         android:layout_marginLeft="90dp"
         app:srcCompat="@drawable/parqueadero_icon" />
