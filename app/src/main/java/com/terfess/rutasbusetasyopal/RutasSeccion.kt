@@ -12,9 +12,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.terfess.rutasbusetasyopal.databinding.ActivityMainBinding
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Locale
 
 class RutasSeccion : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -134,7 +132,6 @@ class RutasSeccion : AppCompatActivity() {
 
     private fun getHora(): Int {
         val calendar = Calendar.getInstance()
-        val horaActual = calendar.get(Calendar.HOUR_OF_DAY)
-        return horaActual
+        return calendar.get(Calendar.HOUR_OF_DAY)
     }
 }

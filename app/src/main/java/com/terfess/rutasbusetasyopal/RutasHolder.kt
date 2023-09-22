@@ -4,7 +4,6 @@ package com.terfess.rutasbusetasyopal
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.text.Html
 import android.text.Html.FROM_HTML_MODE_LEGACY
 import android.view.View
@@ -19,8 +18,8 @@ class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
     @SuppressLint("SetTextI18n")
     fun mostrar(dato: DatosRuta, color: String) {
         val texto = "<font color='$color'><b>Lugares Relevantes:</b></font> <br> ${dato.sitios}"
-        binding.numRuta.text = "RUTA #"+dato.numRuta
-        binding.sitios.text = Html.fromHtml(texto,FROM_HTML_MODE_LEGACY)
+        binding.numRuta.text = "RUTA #" + dato.numRuta
+        binding.sitios.text = Html.fromHtml(texto, FROM_HTML_MODE_LEGACY)
         binding.precio.text = "PRECIO:" + dato.precio
 
 

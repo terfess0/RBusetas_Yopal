@@ -1,8 +1,13 @@
 <resources>
-    <style name="Theme.general" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.general" parent="Theme.AppCompat.Light">
         <item name="elevation">1dp</item>
         <item name="colorPrimary">#ffffff</item>
         <item name="menu">@menu/menu_rutas</item>
-        <item name="android:textColorPrimary">#000000</item>
+
+        <item name="android:titleTextColor">@style/MyActionBarText</item>
+    </style>
+
+    <style name="MyActionBarText">
+        <item name="android:color">#7C0C0C</item>
     </style>
 </resources>

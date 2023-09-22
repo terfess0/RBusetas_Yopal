@@ -173,11 +173,12 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
         if (!::gmap.isInitialized) return
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             //pedir activar gps estilo de google
-            val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY,5).apply {
-                setMinUpdateDistanceMeters(10f)
-                setGranularity(Granularity.GRANULARITY_FINE)
-                setWaitForAccurateLocation(true)
-            }.build()
+            val locationRequest =
+                LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5).apply {
+                    setMinUpdateDistanceMeters(10f)
+                    setGranularity(Granularity.GRANULARITY_FINE)
+                    setWaitForAccurateLocation(true)
+                }.build()
             val client: SettingsClient = LocationServices.getSettingsClient(this)
             val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
             val task = client.checkLocationSettings(builder.build())
@@ -207,6 +208,7 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
             .build()
         gmap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosicion))
     }
+
     private fun irPosGps() {
         //este if verifica que no tiene permiso ni de FINE ni de COURSE LoCATION
         if (ActivityCompat.checkSelfPermission(
@@ -229,7 +231,7 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
                 gmap.animateCamera(CameraUpdateFactory.newLatLngZoom((latLng), 15.5f), 3000, null)
                 binding.irgps.setImageResource(R.drawable.gps_find)
                 Toast.makeText(this, "Mostrando Ubicación..", Toast.LENGTH_SHORT).show()
-            }else{
+            } else {
                 irPosGps()
             }
         }
@@ -260,6 +262,7 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
             } else {
                 gmap.isMyLocationEnabled = false
             }
+
             else -> {}
         }
     }
