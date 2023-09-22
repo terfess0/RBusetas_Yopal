@@ -20,7 +20,6 @@ class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
         val texto = "<font color='$color'><b>Lugares Relevantes:</b></font> <br> ${dato.sitios}"
         binding.numRuta.text = "RUTA #" + dato.numRuta
         binding.sitios.text = Html.fromHtml(texto, FROM_HTML_MODE_LEGACY)
-        binding.precio.text = "PRECIO:" + dato.precio
 
 
         binding.contenedor.setOnClickListener {
