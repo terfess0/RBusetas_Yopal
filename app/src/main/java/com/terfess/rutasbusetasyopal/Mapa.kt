@@ -228,6 +228,8 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
                 gmap.animateCamera(CameraUpdateFactory.newLatLngZoom((latLng), 15.5f), 3000, null)
                 binding.irgps.setImageResource(R.drawable.gps_find)
                 Toast.makeText(this, "Mostrando Ubicación..", Toast.LENGTH_SHORT).show()
+            }else{
+                irPosGps()
             }
         }
     }
