@@ -1,6 +1,7 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <style name="Theme.RutasBusetasYopal" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="elevation">1dp</item>
+        <item name="colorPrimary">#ffffff</item>
         <item name="menu">@menu/menu_rutas</item>
         <!--<item name="android:background">@color/ActionBarSeccion</item>-->
     </style>
