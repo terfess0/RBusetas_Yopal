@@ -1,12 +1,8 @@
 <resources>
-    <style name="Theme.RutasBusetasYopal" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.general" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="elevation">1dp</item>
         <item name="colorPrimary">#ffffff</item>
         <item name="menu">@menu/menu_rutas</item>
-        <!--<item name="android:background">@color/ActionBarSeccion</item>-->
-    </style>
-    <style name="Theme.mapa" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="android:elevation">-0.1dp</item>
-        <!--<item name="android:background">@color/ActionBarMapa</item>-->
+        <item name="android:textColorPrimary">#000000</item>
     </style>
 </resources>
