@@ -70,7 +70,6 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
             " Ruta Salida: $infoSalida <br> Ruta Llegada: $infoLlegada <br> Parqueadero:",
             Html.FROM_HTML_MODE_LEGACY
         )
-
     }
 
     override fun onMapReady(map: GoogleMap) {
@@ -89,6 +88,13 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
     private fun selector() {
         val buildRuta = RutaBasic(this, this.gmap)
         when (idruta) {//IMPORTANTE PARA CONSTRUIR CADA RUTA
+            1 -> {
+                buildRuta.crearRuta(
+                    "features/0/rutas/$idruta/salida",
+                    "features/0/rutas/$idruta/llegada", idruta
+                )
+            }
+
             2 -> {
                 buildRuta.crearRuta(
                     "features/0/rutas/$idruta/salida",
@@ -151,6 +157,7 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
                     "features/0/rutas/$idruta/llegada", idruta
                 )
             }
+
         }
     }
 
@@ -168,7 +175,7 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
             //pedir activar gps estilo de google
             val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY,5).apply {
                 setMinUpdateDistanceMeters(10f)
-                setGranularity(Granularity.GRANULARITY_PERMISSION_LEVEL)
+                setGranularity(Granularity.GRANULARITY_FINE)
                 setWaitForAccurateLocation(true)
             }.build()
             val client: SettingsClient = LocationServices.getSettingsClient(this)
@@ -178,6 +185,8 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
                 if (e is ResolvableApiException) {
                     try {
                         e.startResolutionForResult(this, 1)
+                        binding.irgps.setImageResource(R.drawable.gps)
+                        irPosGps()
                     } catch (sendEx: IntentSender.SendIntentException) {
                         // Error al intentar abrir la configuración de ubicación
                         Log.e(
@@ -217,12 +226,13 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
             if (location != null) {
                 val latLng = LatLng(location.latitude, location.longitude)
                 gmap.animateCamera(CameraUpdateFactory.newLatLngZoom((latLng), 15.5f), 3000, null)
+                binding.irgps.setImageResource(R.drawable.gps_find)
                 Toast.makeText(this, "Mostrando Ubicación..", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    //veridicar si tiene permiso de ubicacion
+    //verificar si tiene permiso de ubicacion
     private fun permisoUbiCondecido() =
         ContextCompat.checkSelfPermission(
             this,
@@ -247,7 +257,6 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
             } else {
                 gmap.isMyLocationEnabled = false
             }
-
             else -> {}
         }
     }
