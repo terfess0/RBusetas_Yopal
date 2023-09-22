@@ -31,6 +31,7 @@ class RutasSeccion : AppCompatActivity() {
         cajaInfo.adapter = adapter
 
         supportActionBar?.title = "Rutas"
+        supportActionBar?.themedContext
 
         //mostrar saludo buenos dias
         val saludo: String = when (getHora()) {
@@ -66,12 +67,13 @@ class RutasSeccion : AppCompatActivity() {
                         filtro,
                         InputMethodManager.SHOW_IMPLICIT
                     )//para controlar el teclado virtual
+                    adapter.updateLista(ListaRutas.busetaSitios, "#8487db")
                     //detectar lo que se va escribiendo en el filtro
                     filtro.addTextChangedListener { claveFilter ->
                         filtrando = true
                         val textFiltro = claveFilter?.toString() ?: "es nulo"
                         if (textFiltro.isEmpty()) {
-                            adapter.updateLista(ListaRutas.busetaSitios, "#CC2EFA")
+                            adapter.updateLista(ListaRutas.busetaSitios, "#8487db")
                         } else {
                             val rutasFiltradas =
                                 ListaRutas.busetaSitios.filter { busqueda ->
@@ -81,14 +83,14 @@ class RutasSeccion : AppCompatActivity() {
                             } else {
                                 binding.noResultados.visibility = View.GONE
                             }
-                            adapter.updateLista(rutasFiltradas, "#CC2EFA")
+                            adapter.updateLista(rutasFiltradas, "#8487db")
                         }
                     }
                 } else {
                     filtro.visibility = View.GONE
                     filtrando = false
                     tecladoV.hideSoftInputFromWindow(binding.root.windowToken, 0) //ocultar teclado virtual en esa ventana
-                    adapter.updateLista(ListaRutas.busetaRuta, "#DC7633")
+                    adapter.updateLista(ListaRutas.busetaRuta, "000000")
                     binding.cabezera.visibility = View.VISIBLE
                     }
             }
@@ -115,7 +117,7 @@ class RutasSeccion : AppCompatActivity() {
             binding.cabezera.visibility = View.VISIBLE
             binding.cajaInfo.requestFocus()
             filtrando = false
-            adapter.updateLista(ListaRutas.busetaRuta, "#DC7633")
+            adapter.updateLista(ListaRutas.busetaRuta, "#000000")
         } else{
             val builder = AlertDialog.Builder(this)
             builder.setMessage("¿Seguro que quieres salir?")
