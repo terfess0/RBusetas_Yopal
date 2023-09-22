@@ -6,18 +6,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:backgroundTint="#00929711">
+    android:backgroundTint="#ffffff">
+
     <EditText
         android:id="@+id/filtro"
-        android:elevation="3dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_margin="10dp"
         android:background="@drawable/bord_filtro"
+        android:backgroundTint="#E8E0E0"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:gravity="center_vertical"
+        android:elevation="3dp"
         android:ems="10"
+        android:hint="Busca sitios o rutas"
+        android:imeOptions="actionDone"
         android:inputType="text"
         android:maxLines="1"
-        android:imeOptions="actionDone"
-        android:hint="Busca Sitios"
         android:visibility="gone" />
     <TextView
         android:id="@+id/noResultados"
@@ -38,13 +44,15 @@
         android:id="@+id/cabezera"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:background="#ffffff"
+        android:layout_margin="10dp"
+        android:background="@drawable/bord_suave"
         android:backgroundTint="#2196F3">
 
         <TextView
             android:id="@+id/saludo"
             android:layout_width="198dp"
             android:layout_height="74dp"
+            android:fontFamily="@font/roboto"
             android:gravity="center"
             android:text="Buenos dias"
             android:textAllCaps="false"
@@ -52,16 +60,47 @@
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.868"
+            app:layout_constraintHorizontal_bias="0.963"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.235"
-            />
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="56dp"
+            android:layout_height="26dp"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:text="Precio: "
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.046"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.877" />
+
+        <TextView
+            android:id="@+id/precio"
+            android:layout_width="56dp"
+            android:layout_height="26dp"
+            android:background="@drawable/bord_suave"
+            android:backgroundTint="#FFFFFF"
+            android:fontFamily="@font/roboto"
+            android:gravity="center"
+            android:text="2,000"
+            android:textColor="#4A4343"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/textView"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.87" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:paddingTop="10dp"
         android:id="@+id/cajaInfo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        />
 </LinearLayout>

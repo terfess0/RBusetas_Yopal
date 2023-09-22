@@ -88,7 +88,7 @@ class RutasSeccion : AppCompatActivity() {
                     filtro.visibility = View.GONE
                     filtrando = false
                     tecladoV.hideSoftInputFromWindow(binding.root.windowToken, 0) //ocultar teclado virtual en esa ventana
-                    adapter.updateLista(ListaRutas.busetaRuta, "000000")
+                    adapter.updateLista(ListaRutas.busetaRuta, "333333")
                     binding.cabezera.visibility = View.VISIBLE
                     }
             }
@@ -115,7 +115,7 @@ class RutasSeccion : AppCompatActivity() {
             binding.cabezera.visibility = View.VISIBLE
             binding.cajaInfo.requestFocus()
             filtrando = false
-            adapter.updateLista(ListaRutas.busetaRuta, "#000000")
+            adapter.updateLista(ListaRutas.busetaRuta, "#333333")
         } else{
             val builder = AlertDialog.Builder(this)
             builder.setMessage("¿Seguro que quieres salir?")

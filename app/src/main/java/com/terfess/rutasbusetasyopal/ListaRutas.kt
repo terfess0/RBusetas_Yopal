@@ -15,7 +15,7 @@ class ListaRutas {
             ),
             DatosRuta(
                 6,
-                "Estadio Atalayas, La Herradura, LACOR IPS SAS,La Herradura",
+                "Estadio Atalayas, La Herradura, LACOR IPS SAS, La Herradura",
             ),
             DatosRuta(
                 7,
