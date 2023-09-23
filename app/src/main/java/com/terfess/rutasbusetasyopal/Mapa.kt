@@ -7,10 +7,12 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.net.ConnectivityManager
+import android.net.Network
 import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -42,6 +44,7 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var db: DatabaseReference
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var idruta: Int = 0
+    var networkCallback = object : ConnectivityManager.NetworkCallback(){}
 
     companion object {
         const val codigoLocalizacion = 0
@@ -51,20 +54,25 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         binding = ActivityMapaBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         //database realtime
         db =
             FirebaseDatabase.getInstance("https://rutasbusetas-default-rtdb.firebaseio.com/").reference
         FirebaseApp.initializeApp(this)
+
         //mapa
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
         //seleccion ruta
         val recibirTent = intent.extras
         if (recibirTent != null) {
             idruta = recibirTent.getInt("selector")
         }
+
         //ubicacion del gps
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
         //colores informativos
         val infoSalida = "<font color='${getColor(R.color.recorridoIda)}' >Azul</font>"
         val infoLlegada = "<font color='${getColor(R.color.recorridoVuelta)}' >Rojo</font>"
@@ -72,6 +80,34 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
             " Ruta Salida: $infoSalida <br> Ruta Llegada: $infoLlegada <br> Parqueadero:",
             Html.FROM_HTML_MODE_LEGACY
         )
+
+        //estado de conexion
+        comprobarConexion(this)
+
+        // Registrar un NetworkCallback para recibir actualizaciones de conectividad
+        val connectivityManager =
+            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        networkCallback = object : ConnectivityManager.NetworkCallback() {
+            override fun onAvailable(network: Network) {
+                super.onAvailable(network)
+                //hay conexion a Internet
+                runOnUiThread {
+                    binding.failConection.visibility = View.GONE
+                }
+            }
+
+            override fun onLost(network: Network) {
+                super.onLost(network)
+                runOnUiThread {
+                    binding.failConection.visibility = View.VISIBLE
+                    binding.failConection.text = Html.fromHtml(
+                        "<font color='${getColor(R.color.anuncio)}'>¡En este momento no tienes conexión a Internet es posible que no veas las rutas!</font>",
+                        Html.FROM_HTML_MODE_LEGACY
+                    )
+                }
+            }
+        }
+        connectivityManager.registerDefaultNetworkCallback(networkCallback)
     }
 
     override fun onMapReady(map: GoogleMap) {
@@ -285,19 +321,29 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun comprobarConexion(context: Context): Boolean {
-        var result: Boolean
+        var returne:Boolean
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager //transformar el valor resultante en un connectibitymanager mediante as
         val networkCapabilities = connectivityManager.activeNetwork ?: return false
         val actNw =
             connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
-        result = when {
+        returne = when {
             actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
             actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
             actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
             else -> false
         }
-        return result
+        return returne
     }
 
+    fun rutasDone(valor:Int): Int {
+        val num = 0
+        return num + valor
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        connectivityManager.unregisterNetworkCallback(networkCallback)
+    }
 }

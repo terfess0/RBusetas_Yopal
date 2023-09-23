@@ -18,8 +18,10 @@ class RutaBasic(private val mapa: Context, val gmap: GoogleMap) {
     var polylineOptions = PolylineOptions()
     lateinit var puntos: MutableList<LatLng>
     private val databaseRef = FirebaseDatabase.getInstance()
+    val enviarSignal= Mapa()
 
     fun crearRuta(path1parte: String, path2parte: String, idruta: Int) {
+        enviarSignal.rutasDone(0)
         //RUTA - PRIMERA PARTE
         databaseRef.getReference(path1parte).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -83,6 +85,7 @@ class RutaBasic(private val mapa: Context, val gmap: GoogleMap) {
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.parqueadero_icon))
                     .title("Parqueadero Ruta $idruta")
                 gmap.addMarker(markerOptions)
+                enviarSignal.rutasDone(1)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
