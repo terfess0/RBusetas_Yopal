@@ -18,11 +18,12 @@ class RutaBasic(private val mapa: Context, val gmap: GoogleMap) {
     var polylineOptions = PolylineOptions()
     lateinit var puntos: MutableList<LatLng>
     private val databaseRef = FirebaseDatabase.getInstance()
-    val enviarSignal= Mapa()
-
+    object CreatRuta{
+        var rutasCreadas = false
+    }
     fun crearRuta(path1parte: String, path2parte: String, idruta: Int) {
-        enviarSignal.rutasDone(0)
         //RUTA - PRIMERA PARTE
+        CreatRuta.rutasCreadas = false
         databaseRef.getReference(path1parte).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 puntos = mutableListOf()
@@ -39,6 +40,9 @@ class RutaBasic(private val mapa: Context, val gmap: GoogleMap) {
                     //en caso de nulos por lat lng
                     val latValue = lat ?: 0.0
                     val lngValue = lng ?: 0.0
+                    if (lat != 0.0){
+                        CreatRuta.rutasCreadas = true
+                    }
                     ubicacion = LatLng(latValue, lngValue)
                     puntos.add(ubicacion)
                 }
@@ -73,6 +77,9 @@ class RutaBasic(private val mapa: Context, val gmap: GoogleMap) {
                     //en caso de nulos por lat lng
                     val latValue = lat ?: 0.0
                     val lngValue = lng ?: 0.0
+                    if (lat != 0.0){
+                        CreatRuta.rutasCreadas = true
+                    }
                     val ubicacion2 = LatLng(latValue, lngValue)
                     puntos.add(ubicacion2)
                 }
@@ -85,7 +92,6 @@ class RutaBasic(private val mapa: Context, val gmap: GoogleMap) {
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.parqueadero_icon))
                     .title("Parqueadero Ruta $idruta")
                 gmap.addMarker(markerOptions)
-                enviarSignal.rutasDone(1)
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -96,6 +102,7 @@ class RutaBasic(private val mapa: Context, val gmap: GoogleMap) {
                     Toast.LENGTH_LONG
                 ).show()
             }
+
         })
     }
 }

@@ -10,6 +10,8 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Html
 import android.util.Log
 import android.view.View
@@ -44,10 +46,13 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var db: DatabaseReference
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var idruta: Int = 0
-    var networkCallback = object : ConnectivityManager.NetworkCallback(){}
+    private var networkCallback = ConnectivityManager.NetworkCallback()
+    private val tiempos = Handler(Looper.getMainLooper())
 
-    companion object {
+
+    companion object { //accesibles desde cualquier lugar de este archivo/clase
         const val codigoLocalizacion = 0
+        var getRutasCreadas:Boolean = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -80,9 +85,10 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
             " Ruta Salida: $infoSalida <br> Ruta Llegada: $infoLlegada <br> Parqueadero:",
             Html.FROM_HTML_MODE_LEGACY
         )
-
         //estado de conexion
-        comprobarConexion(this)
+        if (!comprobarConexion(this)){
+            msjNoConection()
+        }
 
         // Registrar un NetworkCallback para recibir actualizaciones de conectividad
         val connectivityManager =
@@ -90,7 +96,6 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
         networkCallback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
                 super.onAvailable(network)
-                //hay conexion a Internet
                 runOnUiThread {
                     binding.failConection.visibility = View.GONE
                 }
@@ -98,20 +103,16 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
 
             override fun onLost(network: Network) {
                 super.onLost(network)
-                runOnUiThread {
-                    binding.failConection.visibility = View.VISIBLE
-                    binding.failConection.text = Html.fromHtml(
-                        "<font color='${getColor(R.color.anuncio)}'>¡En este momento no tienes conexión a Internet es posible que no veas las rutas!</font>",
-                        Html.FROM_HTML_MODE_LEGACY
-                    )
-                }
+                msjNoConection()
             }
+
         }
         connectivityManager.registerDefaultNetworkCallback(networkCallback)
     }
 
     override fun onMapReady(map: GoogleMap) {
         gmap = map
+        //getRutasCreadas = RutaBasic.ruta //usar el gmap para mandarlo a RutaBasic
         //map.mapType = GoogleMap.MAP_TYPE_HYBRID
         comprobarConexion(this)
         irYopal()
@@ -196,7 +197,6 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
                     "features/0/rutas/$idruta/llegada", idruta
                 )
             }
-
         }
     }
 
@@ -321,12 +321,12 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun comprobarConexion(context: Context): Boolean {
-        var returne:Boolean
+        val returne: Boolean
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager //transformar el valor resultante en un connectibitymanager mediante as
-        val networkCapabilities = connectivityManager.activeNetwork ?: return false
+        val networkCapabilities = connectivityManager.activeNetwork ?: return false //devuelve identificador de red
         val actNw =
-            connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false
+            connectivityManager.getNetworkCapabilities(networkCapabilities) ?: return false //obtiene propiedades de la red apartir del identificardor de networkcapabilities
         returne = when {
             actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
             actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
@@ -335,15 +335,33 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
         }
         return returne
     }
+    fun msjNoConection(){
+        runOnUiThread {
+            binding.failConection.visibility = View.VISIBLE
+            binding.failConection.text = Html.fromHtml(
+                "<font color='${getColor(R.color.anuncioGrave)}'>¡En este momento no tienes conexión a Internet es posible que no veas las rutas!</font>",
+                Html.FROM_HTML_MODE_LEGACY
+            )
+            tiempos.postDelayed({ // terminar o ejecutar tareas despues de cierto tiempo
+                getRutasCreadas =  RutaBasic.CreatRuta.rutasCreadas
+                if (getRutasCreadas){
+                    binding.failConection.visibility = View.GONE
 
-    fun rutasDone(valor:Int): Int {
-        val num = 0
-        return num + valor
+                }else if (!getRutasCreadas){
+                    binding.failConection.visibility = View.VISIBLE
+                    binding.failConection.text = Html.fromHtml(
+                        "<font color='${getColor(R.color.anuncioLeve)}'>¡Por favor conectate a Internet para ver las rutas y cargar el mapa!</font>",
+                        Html.FROM_HTML_MODE_LEGACY
+                    )
+                }
+            }, 10000) // 10 segundos
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         connectivityManager.unregisterNetworkCallback(networkCallback)
     }
 }
