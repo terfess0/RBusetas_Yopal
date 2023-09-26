@@ -2,6 +2,8 @@ package com.terfess.rutasbusetasyopal
 
 import android.Manifest
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.location.Location
@@ -12,10 +14,12 @@ import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.text.Html
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -210,34 +214,40 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
             ).show()
         }
         if (!::gmap.isInitialized) return
-        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            //pedir activar gps estilo de google
-            val locationRequest =
-                LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5).apply {
-                    setMinUpdateDistanceMeters(10f)
-                    setGranularity(Granularity.GRANULARITY_FINE)
-                    setWaitForAccurateLocation(true)
-                }.build()
-            val client: SettingsClient = LocationServices.getSettingsClient(this)
-            val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
-            val task = client.checkLocationSettings(builder.build())
-            task.addOnFailureListener(this, OnFailureListener { e ->
-                if (e is ResolvableApiException) {
-                    try {
-                        e.startResolutionForResult(this, 1)
-                        binding.irgps.setImageResource(R.drawable.gps)
-                        irPosGps()
-                    } catch (sendEx: IntentSender.SendIntentException) {
-                        // Error al intentar abrir la configuración de ubicación
-                        Log.e(
-                            "GPS",
-                            "Error al intentar abrir la configuración de ubicación: ${sendEx.message}"
-                        )
-                    }
-                }
-            })
+        if (!comprobarConexion(this)){
+            activarGpsTelefono()
             irPosGps()
+        }else{
+            if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                //pedir activar gps estilo de google
+                val locationRequest =
+                    LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5).apply {
+                        setMinUpdateDistanceMeters(10f)
+                        setGranularity(Granularity.GRANULARITY_FINE)
+                        setWaitForAccurateLocation(true)
+                    }.build()
+                val client: SettingsClient = LocationServices.getSettingsClient(this)
+                val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+                val task = client.checkLocationSettings(builder.build())
+                task.addOnFailureListener(this, OnFailureListener { e ->
+                    if (e is ResolvableApiException) {
+                        try {
+                            e.startResolutionForResult(this, 1)
+                            binding.irgps.setImageResource(R.drawable.gps)
+                            irPosGps()
+                        } catch (sendEx: IntentSender.SendIntentException) {
+                            // Error al intentar abrir la configuración de ubicación
+                            Log.e(
+                                "GPS",
+                                "Error al intentar abrir la configuración de ubicación: ${sendEx.message}"
+                            )
+                        }
+                    }
+                })
+                irPosGps()
+            }
         }
+
     }
 
     private fun irYopal() {
@@ -355,6 +365,25 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
                     )
                 }
             }, 10000) // 10 segundos
+        }
+    }
+
+    private fun activarGpsTelefono(){
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            val alertDialog: AlertDialog.Builder = AlertDialog.Builder(this)
+            alertDialog.setTitle("Activar GPS sin conexión")
+            alertDialog.setMessage("El dispositivo no tiene conexión a internet, ¿Desea activar el gps del dispositivo que funciona sin internet?")
+            alertDialog.setPositiveButton("Si", DialogInterface.OnClickListener { _, _ ->
+                binding.irgps.setImageResource(R.drawable.gps)
+                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                startActivity(intent)
+            })
+            alertDialog.setNegativeButton("No", DialogInterface.OnClickListener { dialog, _ ->
+                dialog.cancel()
+            })
+            alertDialog.show()
+            irPosGps()
         }
     }
 
