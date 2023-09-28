@@ -51,10 +51,6 @@ class RutasSeccion : AppCompatActivity() {
         val tecladoV = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         val filtro = binding.filtro
         when (item.itemId) {
-            R.id.informacion -> {
-                Toast.makeText(this, "Falta Codificar", Toast.LENGTH_SHORT).show()
-            }
-
             R.id.buscar -> {
                 if (filtro.visibility == View.GONE) {
                     binding.cabezera.visibility = View.GONE
@@ -65,13 +61,13 @@ class RutasSeccion : AppCompatActivity() {
                         filtro,
                         InputMethodManager.SHOW_IMPLICIT
                     )//para controlar el teclado virtual
-                    adapter.updateLista(ListaRutas.busetaSitios, "#8487db")
+                    adapter.updateLista(ListaRutas.busetaSitios, "#2196F3")
                     //detectar lo que se va escribiendo en el filtro
                     filtro.addTextChangedListener { claveFilter ->
                         filtrando = true
                         val textFiltro = claveFilter?.toString() ?: "es nulo"
                         if (textFiltro.isEmpty()) {
-                            adapter.updateLista(ListaRutas.busetaSitios, "#8487db")
+                            adapter.updateLista(ListaRutas.busetaSitios, "#2196F3")
                         } else {
                             val rutasFiltradas =
                                 ListaRutas.busetaSitios.filter { busqueda ->
@@ -81,7 +77,7 @@ class RutasSeccion : AppCompatActivity() {
                             } else {
                                 binding.noResultados.visibility = View.GONE
                             }
-                            adapter.updateLista(rutasFiltradas, "#8487db")
+                            adapter.updateLista(rutasFiltradas, "#2196F3")
                         }
                     }
                 } else {
@@ -91,10 +87,6 @@ class RutasSeccion : AppCompatActivity() {
                     adapter.updateLista(ListaRutas.busetaRuta, "333333")
                     binding.cabezera.visibility = View.VISIBLE
                     }
-            }
-
-            R.id.comentarios -> {
-                Toast.makeText(this, "Falta Codificar", Toast.LENGTH_SHORT).show()
             }
 
             R.id.acercade -> {

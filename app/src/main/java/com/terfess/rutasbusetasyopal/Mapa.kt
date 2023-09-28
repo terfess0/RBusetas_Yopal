@@ -279,7 +279,7 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
                 val latLng = LatLng(location.latitude, location.longitude)
                 gmap.animateCamera(CameraUpdateFactory.newLatLngZoom((latLng), 15.5f), 3000, null)
                 binding.irgps.setImageResource(R.drawable.gps_find)
-            } else {
+            } else{
                 irPosGps()
             }
         }
