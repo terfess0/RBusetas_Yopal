@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 class RutasAdapter(private var listado: List<DatosRuta>) : RecyclerView.Adapter<RutasHolder>() {
-    var color: String = "#333333"
+    var color: String = "#524e4e"
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RutasHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return RutasHolder(layoutInflater.inflate(R.layout.activity_seccion, parent, false))

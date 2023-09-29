@@ -15,11 +15,17 @@ class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
     private val caja = vista.context as Activity
 
 
-    @SuppressLint("SetTextI18n")
     fun mostrar(dato: DatosRuta, color: String) {
-        val texto = "<font color='$color'><b>Lugares Relevantes:</b></font> <br> ${dato.sitios}"
+        val sitios = "<font color='$color'><b>Lugares Relevantes:</b></font> <br> ${dato.sitios}"
+        val horLunVie = "<font color='$color'><b>Lunes a Viernes:</b></font> <br> ${dato.horLunVie}<br>${dato.frecLunVie}"
+        val horSab = "<font color='$color'><b>Sabados:</b></font> <br> ${dato.horSab}<br>${dato.frecSab}"
+        val horDom = "<font color='$color'><b>Domingos y Festivos:</b></font> <br> ${dato.horDomFest}<br>${dato.frecDomFest}"
+
         binding.numRuta.text = "RUTA #" + dato.numRuta
-        binding.sitios.text = Html.fromHtml(texto, FROM_HTML_MODE_LEGACY)
+        binding.sitios.text = Html.fromHtml(sitios, FROM_HTML_MODE_LEGACY)
+        binding.horarioLV.text = Html.fromHtml(horLunVie, FROM_HTML_MODE_LEGACY)
+        binding.horarioS.text = Html.fromHtml(horSab, FROM_HTML_MODE_LEGACY)
+        binding.horarioDF.text = Html.fromHtml(horDom, FROM_HTML_MODE_LEGACY)
 
 
         binding.contenedor.setOnClickListener {

@@ -1,85 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/contenedor"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     android:layout_marginBottom="10dp"
-    android:background="@drawable/bordes_contenedores"
-    android:minHeight="90dp">
+    android:background="@drawable/bordes_contenedores">
 
-    <TextView
-        android:id="@+id/horarios"
-        android:layout_width="107dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:background="#00FFFFFF"
-        android:fontFamily="More Fonts..."
-        android:text="Horarios:"
-        android:textAlignment="viewStart"
-        android:textColor="#333333"
-        android:textSize="13sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.357" />
 
     <TextView
         android:id="@+id/numRuta"
-        android:layout_width="88dp"
-        android:layout_height="25dp"
-        android:layout_marginLeft="0.9dp"
+        android:layout_width="56dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="0.9dp"
         android:fontFamily="More Fonts..."
         android:gravity="center"
         android:text="TextView"
-        android:textAlignment="center"
         android:textColor="#333333"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/frecuencia"
-        android:layout_width="108dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:background="#00FFFFFF"
-        android:fontFamily="More Fonts..."
-        android:text="Frecuencia:"
-        android:textAlignment="viewStart"
-        android:textColor="#333333"
-        android:textSize="13sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.754" />
+        app:layout_constraintVertical_bias="0.47" />
 
     <TextView
         android:id="@+id/sitios"
-        android:layout_width="262dp"
+        android:layout_width="268dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:background="#00FFFFFF"
         android:fontFamily="More Fonts..."
         android:text="TextView"
         android:textColor="#333333"
-        android:textSize="17sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/horarios"
+        app:layout_constraintHorizontal_bias="0.076"
+        app:layout_constraintStart_toEndOf="@+id/numRuta"
+        app:layout_constraintTop_toBottomOf="@+id/horarioS"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/horarioDF"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:fontFamily="More Fonts..."
+        android:textColor="#333333"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/sitios"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/horarioS" />
+
+    <TextView
+        android:id="@+id/horarioLV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:fontFamily="More Fonts..."
+        android:textColor="#333333"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/sitios"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/numRuta"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.428" />
+
+    <TextView
+        android:id="@+id/horarioS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:fontFamily="More Fonts..."
+        android:textColor="#333333"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/horarioLV"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
