@@ -28,7 +28,7 @@ class RutasSeccion : AppCompatActivity() {
         cajaInfo.layoutManager = LinearLayoutManager(this)
         cajaInfo.adapter = adapter
 
-        supportActionBar?.title = "Rutas"
+        //supportActionBar?.title = "Rutas"
         supportActionBar?.themedContext
 
         //mostrar saludo buenos dias

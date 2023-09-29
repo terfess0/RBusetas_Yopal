@@ -1,13 +1,9 @@
 <resources>
-    <style name="Theme.general" parent="Theme.AppCompat.Light">
+    <style name="Theme.general" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="elevation">1dp</item>
-        <item name="colorPrimary">#ffffff</item>
+        <item name="colorPrimary">#FFFFFF</item>
         <item name="menu">@menu/menu_rutas</item>
-
-        <item name="android:titleTextColor">@style/MyActionBarText</item>
+        <item name="titleTextColor">#CE131F87</item>
     </style>
 
-    <style name="MyActionBarText">
-        <item name="android:color">#7C0C0C</item>
-    </style>
 </resources>

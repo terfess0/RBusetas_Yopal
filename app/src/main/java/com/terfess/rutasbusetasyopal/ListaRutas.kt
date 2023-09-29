@@ -99,10 +99,10 @@ class ListaRutas {
 
         //esta ruta es para buscar sitios especialmente al momento de filtrar/buscar
         val busetaSitios = listOf(
-            DatosRuta(
+            /*DatosRuta(
                 1,
                 "Sin sitios--","---","---","---","---","---","---",
-            ),
+            ),*/
             DatosRuta(
                 2,
                 "-La Bendición, Estadio, Sena, Sisben, Contraloria, Horo, Estancia, Resurgimiento, Herradura, Bomberos, San Marcos, La Bendición.","Cada 8 minutos",
@@ -122,11 +122,11 @@ class ListaRutas {
                 "5:00 am - 5:00 pm",
                 "5:00 am - 5:00 pm"
             ),
-            DatosRuta(4, "Sin sitios---","---","---","---","---","---","---"),
+            /*DatosRuta(4, "Sin sitios---","---","---","---","---","---","---"),
             DatosRuta(
                 5,
                 "Llano Lindo, San Jorge, Veterinaria Vet Center, La Campiña, Casa de la Cultura, Triada, Alcaldia, La Herradura, Estancia, Alcaldia, La Carpa, Megacolegio, Llano Lindo.","---","---","---","---","---","---"
-            ),
+            ),*/
             DatosRuta(
                 6,
                 "Estadio Atalayas, Super Mio, Super Metro, La Herradura, LACOR IPS SAS, Centro Social, Gobernación, Parque Estancia, La Herradura, Kairos Gym, Barrio Cataluña.",
@@ -184,7 +184,7 @@ class ListaRutas {
                 "5:30 am - 5:30 pm",
                 "5:30 am - 5:30 pm",
                 "SIN SERVICIO"),
-            DatosRuta(12, "Sin sitios---","---","---","---","---","---","---"),
+            /*DatosRuta(12, "Sin sitios---","---","---","---","---","---","---"),*/
             DatosRuta(13, "Sin sitios---",
                 "Cada 8 minutos",
                 "Cada 8 minutos",
