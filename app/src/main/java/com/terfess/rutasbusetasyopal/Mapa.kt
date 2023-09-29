@@ -1,8 +1,8 @@
 package com.terfess.rutasbusetasyopal
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
@@ -37,7 +37,6 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.tasks.OnFailureListener
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -117,7 +116,9 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(map: GoogleMap) {
         gmap = map
         //getRutasCreadas = RutaBasic.ruta //usar el gmap para mandarlo a RutaBasic
-        //map.mapType = GoogleMap.MAP_TYPE_HYBRID
+        map.mapType = GoogleMap.MAP_TYPE_NORMAL //tratar de cargar un mapa simple evitar renderizados congelantes
+        gmap.isBuildingsEnabled = false //para dar mejor rendimiento desactivar edificaciones
+        gmap.isTrafficEnabled = false //para dar mejor rendimiento desactivar trafico
         comprobarConexion(this)
         irYopal()
         selector()  //seleccionar que ruta cargar
@@ -132,13 +133,6 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
     private fun selector() {
         val buildRuta = RutaBasic(this, this.gmap)
         when (idruta) {//IMPORTANTE PARA CONSTRUIR CADA RUTA
-            1 -> {
-                buildRuta.crearRuta(
-                    "features/0/rutas/$idruta/salida",
-                    "features/0/rutas/$idruta/llegada", idruta
-                )
-            }
-
             2 -> {
                 buildRuta.crearRuta(
                     "features/0/rutas/$idruta/salida",
@@ -229,7 +223,7 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
                 val client: SettingsClient = LocationServices.getSettingsClient(this)
                 val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
                 val task = client.checkLocationSettings(builder.build())
-                task.addOnFailureListener(this, OnFailureListener { e ->
+                task.addOnFailureListener(this) { e ->
                     if (e is ResolvableApiException) {
                         try {
                             e.startResolutionForResult(this, 1)
@@ -243,7 +237,7 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
                             )
                         }
                     }
-                })
+                }
                 irPosGps()
             }
         }
@@ -297,6 +291,7 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
         ActivityCompat.requestPermissions(this, arrayOf(permission), codigoLocalizacion)
     }
 
+    @SuppressLint("MissingPermission")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -316,6 +311,7 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
     }
 
     //retorno usuario desde el background
+    @SuppressLint("MissingPermission")
     override fun onResumeFragments() {
         super.onResumeFragments()
         if (!::gmap.isInitialized) return
@@ -345,7 +341,7 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
         }
         return returne
     }
-    fun msjNoConection(){
+    private fun msjNoConection(){
         runOnUiThread {
             binding.failConection.visibility = View.VISIBLE
             binding.failConection.text = Html.fromHtml(
@@ -357,14 +353,14 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
                 if (getRutasCreadas){
                     binding.failConection.visibility = View.GONE
 
-                }else if (!getRutasCreadas){
+                }else{
                     binding.failConection.visibility = View.VISIBLE
                     binding.failConection.text = Html.fromHtml(
                         "<font color='${getColor(R.color.anuncioLeve)}'>¡Por favor conectate a Internet para ver las rutas y cargar el mapa!</font>",
                         Html.FROM_HTML_MODE_LEGACY
                     )
                 }
-            }, 10000) // 10 segundos
+            }, 7000) // 10 segundos
         }
     }
 
@@ -374,14 +370,14 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
             val alertDialog: AlertDialog.Builder = AlertDialog.Builder(this)
             alertDialog.setTitle("Activar GPS sin conexión")
             alertDialog.setMessage("El dispositivo no tiene conexión a internet, ¿Desea activar el gps del dispositivo que funciona sin internet?")
-            alertDialog.setPositiveButton("Si", DialogInterface.OnClickListener { _, _ ->
+            alertDialog.setPositiveButton("Si") { _, _ ->
                 binding.irgps.setImageResource(R.drawable.gps)
                 val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                 startActivity(intent)
-            })
-            alertDialog.setNegativeButton("No", DialogInterface.OnClickListener { dialog, _ ->
+            }
+            alertDialog.setNegativeButton("No") { dialog, _ ->
                 dialog.cancel()
-            })
+            }
             alertDialog.show()
             irPosGps()
         }

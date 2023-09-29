@@ -1,5 +1,6 @@
 package com.terfess.rutasbusetasyopal
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,7 @@ class RutasAdapter(private var listado: List<DatosRuta>) : RecyclerView.Adapter<
     }
 
     //funcion para filtro de Recycler view
+    @SuppressLint("NotifyDataSetChanged")
     fun updateLista(listado: List<DatosRuta>, coloriltrando: String) {
         this.listado = listado
         this.color = coloriltrando

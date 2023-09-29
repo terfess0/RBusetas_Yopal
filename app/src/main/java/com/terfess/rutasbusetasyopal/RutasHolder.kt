@@ -1,7 +1,6 @@
 package com.terfess.rutasbusetasyopal
 
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.text.Html
@@ -16,12 +15,13 @@ class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
 
 
     fun mostrar(dato: DatosRuta, color: String) {
+        val ruta = "Ruta "+dato.numRuta
         val sitios = "<font color='$color' style='text-align:center'><b>Lugares Relevantes</b></font> <br> ${dato.sitios}"
         val horLunVie = "<font color='$color'><b>Lunes a Viernes</b></font> <br> ${dato.horLunVie}<br>${dato.frecLunVie}"
         val horSab = "<font color='$color'><b>Sabados</b></font> <br> ${dato.horSab}<br>${dato.frecSab}"
         val horDom = "<font color='$color'><b>Domingos y Festivos</b></font> <br> ${dato.horDomFest}<br>${dato.frecDomFest}"
 
-        binding.numRuta.text = "RUTA #" + dato.numRuta
+        binding.numRuta.text = ruta
         binding.sitios.text = Html.fromHtml(sitios, FROM_HTML_MODE_LEGACY)
         binding.horarioLV.text = Html.fromHtml(horLunVie, FROM_HTML_MODE_LEGACY)
         binding.horarioS.text = Html.fromHtml(horSab, FROM_HTML_MODE_LEGACY)
