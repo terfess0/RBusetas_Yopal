@@ -32,7 +32,8 @@
         android:id="@+id/sitios"
         android:layout_width="268dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="10dp"
         android:background="#00FFFFFF"
         android:fontFamily="More Fonts..."
         android:text="TextView"
@@ -40,7 +41,7 @@
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.076"
+        app:layout_constraintHorizontal_bias="0.015"
         app:layout_constraintStart_toEndOf="@+id/numRuta"
         app:layout_constraintTop_toBottomOf="@+id/horarioS"
         app:layout_constraintVertical_bias="1.0" />
@@ -52,11 +53,13 @@
         android:layout_margin="4dp"
         android:fontFamily="More Fonts..."
         android:textColor="#333333"
-        android:textSize="10sp"
-        app:layout_constraintBottom_toTopOf="@+id/sitios"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/horarioS" />
+        app:layout_constraintStart_toEndOf="@+id/horarioS"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.126" />
 
     <TextView
         android:id="@+id/horarioLV"
@@ -65,13 +68,13 @@
         android:layout_margin="4dp"
         android:fontFamily="More Fonts..."
         android:textColor="#333333"
-        android:textSize="10sp"
-        app:layout_constraintBottom_toTopOf="@+id/sitios"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.015"
         app:layout_constraintStart_toEndOf="@+id/numRuta"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.428" />
+        app:layout_constraintVertical_bias="0.126" />
 
     <TextView
         android:id="@+id/horarioS"
@@ -80,10 +83,12 @@
         android:layout_margin="4dp"
         android:fontFamily="More Fonts..."
         android:textColor="#333333"
-        android:textSize="10sp"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/horarioLV"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.126" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

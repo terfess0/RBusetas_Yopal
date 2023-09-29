@@ -16,10 +16,10 @@ class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
 
 
     fun mostrar(dato: DatosRuta, color: String) {
-        val sitios = "<font color='$color'><b>Lugares Relevantes:</b></font> <br> ${dato.sitios}"
-        val horLunVie = "<font color='$color'><b>Lunes a Viernes:</b></font> <br> ${dato.horLunVie}<br>${dato.frecLunVie}"
-        val horSab = "<font color='$color'><b>Sabados:</b></font> <br> ${dato.horSab}<br>${dato.frecSab}"
-        val horDom = "<font color='$color'><b>Domingos y Festivos:</b></font> <br> ${dato.horDomFest}<br>${dato.frecDomFest}"
+        val sitios = "<font color='$color' style='text-align:center'><b>Lugares Relevantes</b></font> <br> ${dato.sitios}"
+        val horLunVie = "<font color='$color'><b>Lunes a Viernes</b></font> <br> ${dato.horLunVie}<br>${dato.frecLunVie}"
+        val horSab = "<font color='$color'><b>Sabados</b></font> <br> ${dato.horSab}<br>${dato.frecSab}"
+        val horDom = "<font color='$color'><b>Domingos y Festivos</b></font> <br> ${dato.horDomFest}<br>${dato.frecDomFest}"
 
         binding.numRuta.text = "RUTA #" + dato.numRuta
         binding.sitios.text = Html.fromHtml(sitios, FROM_HTML_MODE_LEGACY)
