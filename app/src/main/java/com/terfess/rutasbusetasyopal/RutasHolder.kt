@@ -15,7 +15,7 @@ class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
 
 
     fun mostrar(dato: DatosRuta, color: String) {
-        val ruta = "Ruta "+dato.numRuta
+        val ruta = "Ruta\n"+dato.numRuta
         val sitios = "<font color='$color' style='text-align:center'><b>Lugares Relevantes</b></font> <br> ${dato.sitios}"
         val horLunVie = "<font color='$color'><b>Lunes a Viernes</b></font> <br> ${dato.horLunVie}<br>${dato.frecLunVie}"
         val horSab = "<font color='$color'><b>Sabados</b></font> <br> ${dato.horSab}<br>${dato.frecSab}"

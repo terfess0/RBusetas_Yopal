@@ -1,8 +1,10 @@
 package com.terfess.rutasbusetasyopal
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -11,18 +13,28 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.FirebaseApp
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.terfess.rutasbusetasyopal.databinding.ActivityMainBinding
 import java.util.Calendar
 
 class RutasSeccion : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var filtrando = false
+    private lateinit var db: DatabaseReference
+    private var precio:String = "$2,000"
     private val adapter = RutasAdapter(ListaRutas.busetaRuta.toList())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        //firebase
+        db = FirebaseDatabase.getInstance("https://rutasbusetas-default-rtdb.firebaseio.com/").reference
+        FirebaseApp.initializeApp(this)
         val cajaInfo = binding.cajaInfo
 
         cajaInfo.layoutManager = LinearLayoutManager(this)
@@ -37,7 +49,21 @@ class RutasSeccion : AppCompatActivity() {
             in 12..17 -> "Buenas tardes"
             else -> "Buenas noches"
         }
+        //cabezera
         binding.saludo.text = saludo
+        //cabezera -- precio
+        FirebaseDatabase.getInstance().getReference("/features/0/precio").addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                binding.precio.text = snapshot.value.toString()
+                Log.d(TAG, "precio es: $precio")
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                binding.precio.text = precio
+                Log.w(TAG, "fallido leer precio.", error.toException())
+            }
+        })
+
     }
 
     //menu en el ActionBar
@@ -126,4 +152,5 @@ class RutasSeccion : AppCompatActivity() {
         val calendar = Calendar.getInstance()
         return calendar.get(Calendar.HOUR_OF_DAY)
     }
+
 }

@@ -37,16 +37,12 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.firebase.FirebaseApp
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.terfess.rutasbusetasyopal.databinding.ActivityMapaBinding
 
 
 class Mapa : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityMapaBinding
     private lateinit var gmap: GoogleMap
-    private lateinit var db: DatabaseReference
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var idruta: Int = 0
     private var networkCallback = ConnectivityManager.NetworkCallback()
@@ -62,11 +58,6 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         binding = ActivityMapaBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        //database realtime
-        db =
-            FirebaseDatabase.getInstance("https://rutasbusetas-default-rtdb.firebaseio.com/").reference
-        FirebaseApp.initializeApp(this)
 
         //mapa
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment

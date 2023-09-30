@@ -82,13 +82,12 @@
 
         <TextView
             android:id="@+id/precio"
-            android:layout_width="56dp"
+            android:layout_width="wrap_content"
             android:layout_height="26dp"
             android:background="@drawable/bord_suave"
             android:backgroundTint="#FFFFFF"
             android:fontFamily="@font/roboto"
             android:gravity="center"
-            android:text="2,000"
             android:textColor="#4A4343"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
