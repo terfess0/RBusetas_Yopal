@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.JointType
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
@@ -50,6 +51,7 @@ class RutaBasic(private val mapa: Context, val gmap: GoogleMap) {
                 polyline1.points = puntos
                 polyline1.startCap = RoundCap()
                 polyline1.endCap = RoundCap()
+                polyline1.jointType = JointType.ROUND
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -66,7 +68,7 @@ class RutaBasic(private val mapa: Context, val gmap: GoogleMap) {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 puntos = mutableListOf()
                 for (childSnapshot in dataSnapshot.children) {
-                    polylineOptions.width(14f).color(
+                    polylineOptions.width(9f).color(
                         ContextCompat.getColor(
                             mapa,
                             R.color.recorridoVuelta
@@ -87,11 +89,12 @@ class RutaBasic(private val mapa: Context, val gmap: GoogleMap) {
                 polyline2.points = puntos
                 polyline2.startCap = RoundCap()
                 polyline2.endCap = RoundCap()
+                polyline2.jointType = JointType.ROUND
                 val medio = (puntos.size - 1)
                 val markerOptions = MarkerOptions().position(puntos[medio])
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.parqueadero_icon))
                     .title("Parqueadero Ruta $idruta")
-                gmap.addMarker(markerOptions)
+                gmap.addMarker(markerOptions)//se usa marcador para colocarle titulo al icono
             }
 
             override fun onCancelled(databaseError: DatabaseError) {

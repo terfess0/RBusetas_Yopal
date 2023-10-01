@@ -110,6 +110,8 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
         map.mapType = GoogleMap.MAP_TYPE_NORMAL //tratar de cargar un mapa simple evitar renderizados congelantes
         gmap.isBuildingsEnabled = false //para dar mejor rendimiento desactivar edificaciones
         gmap.isTrafficEnabled = false //para dar mejor rendimiento desactivar trafico
+        gmap.isIndoorEnabled = false //desactivar vista de planos de algunas edificacoiones--rendimiento
+        gmap.uiSettings.isIndoorLevelPickerEnabled = false //desactivar selector de piso o nivel -- rendimiento
         comprobarConexion(this)
         irYopal()
         selector()  //seleccionar que ruta cargar
