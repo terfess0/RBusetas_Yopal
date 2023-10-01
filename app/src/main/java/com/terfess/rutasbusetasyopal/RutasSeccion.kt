@@ -51,18 +51,20 @@ class RutasSeccion : AppCompatActivity() {
         }
         //cabezera
         binding.saludo.text = saludo
+        binding.precio.text = precio
         //cabezera -- precio
         FirebaseDatabase.getInstance().getReference("/features/0/precio").addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                binding.precio.text = snapshot.value.toString()
+                precio = snapshot.value.toString()
+                binding.precio.text = precio
                 Log.d(TAG, "precio es: $precio")
             }
 
             override fun onCancelled(error: DatabaseError) {
-                binding.precio.text = precio
                 Log.w(TAG, "fallido leer precio.", error.toException())
             }
         })
+
 
     }
 
