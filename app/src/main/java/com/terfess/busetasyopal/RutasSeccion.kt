@@ -1,4 +1,4 @@
-package com.terfess.rutasbusetasyopal
+package com.terfess.busetasyopal
 
 import android.content.ContentValues.TAG
 import android.content.Context
@@ -19,21 +19,22 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.terfess.rutasbusetasyopal.databinding.ActivityMainBinding
+import com.terfess.busetasyopal.databinding.ActivityMainBinding
 import java.util.Calendar
 
 class RutasSeccion : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var filtrando = false
     private lateinit var db: DatabaseReference
-    private var precio:String = "$2,000"
+    private var precio: String = "$2,000"
     private val adapter = RutasAdapter(ListaRutas.busetaRuta.toList())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         //firebase
-        db = FirebaseDatabase.getInstance("https://rutasbusetas-default-rtdb.firebaseio.com/").reference
+        db =
+            FirebaseDatabase.getInstance("https://rutasbusetas-default-rtdb.firebaseio.com/").reference
         FirebaseApp.initializeApp(this)
         val cajaInfo = binding.cajaInfo
 
@@ -53,17 +54,18 @@ class RutasSeccion : AppCompatActivity() {
         binding.saludo.text = saludo
         binding.precio.text = precio
         //cabezera -- precio
-        FirebaseDatabase.getInstance().getReference("/features/0/precio").addValueEventListener(object: ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                precio = snapshot.value.toString()
-                binding.precio.text = precio
-                Log.d(TAG, "precio es: $precio")
-            }
+        FirebaseDatabase.getInstance().getReference("/features/0/precio")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    precio = snapshot.value.toString()
+                    binding.precio.text = precio
+                    Log.d(TAG, "precio es: $precio")
+                }
 
-            override fun onCancelled(error: DatabaseError) {
-                Log.w(TAG, "fallido leer precio.", error.toException())
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                    Log.w(TAG, "fallido leer precio.", error.toException())
+                }
+            })
 
 
     }
@@ -99,7 +101,10 @@ class RutasSeccion : AppCompatActivity() {
                         } else {
                             val rutasFiltradas =
                                 ListaRutas.busetaSitios.filter { busqueda ->
-                                    busqueda.sitios.lowercase().contains(textFiltro.lowercase()) || busqueda.numRuta.toString().contains(textFiltro) }
+                                    busqueda.sitios.lowercase()
+                                        .contains(textFiltro.lowercase()) || busqueda.numRuta.toString()
+                                        .contains(textFiltro)
+                                }
                             if (rutasFiltradas.isEmpty()) {
                                 binding.noResultados.visibility = View.VISIBLE
                             } else {
@@ -111,10 +116,13 @@ class RutasSeccion : AppCompatActivity() {
                 } else {
                     filtro.visibility = View.GONE
                     filtrando = false
-                    tecladoV.hideSoftInputFromWindow(binding.root.windowToken, 0) //ocultar teclado virtual en esa ventana
+                    tecladoV.hideSoftInputFromWindow(
+                        binding.root.windowToken,
+                        0
+                    ) //ocultar teclado virtual en esa ventana
                     adapter.updateLista(ListaRutas.busetaRuta, "333333")
                     binding.cabezera.visibility = View.VISIBLE
-                    }
+                }
             }
 
             R.id.acercade -> {
@@ -127,7 +135,7 @@ class RutasSeccion : AppCompatActivity() {
     override fun onBackPressed() {
         if (filtrando || binding.filtro.requestFocus()) {
             val tecladoV = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            tecladoV.hideSoftInputFromWindow(binding.root.windowToken,0)
+            tecladoV.hideSoftInputFromWindow(binding.root.windowToken, 0)
             binding.cajaInfo.requestFocus()
             binding.filtro.setText("")
             binding.filtro.visibility = View.GONE
@@ -136,12 +144,12 @@ class RutasSeccion : AppCompatActivity() {
             binding.cajaInfo.requestFocus()
             filtrando = false
             adapter.updateLista(ListaRutas.busetaRuta, "#333333")
-        } else{
+        } else {
             val builder = AlertDialog.Builder(this)
             builder.setMessage("¿Seguro que quieres salir?")
-            builder.setPositiveButton("Sí") { _, _ ->
-                finish()
-            }
+                .setPositiveButton("Sí") { _, _ ->
+                    finish()
+                }
             builder.setNegativeButton("No") { _, _ ->
 
             }

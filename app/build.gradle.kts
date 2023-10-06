@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.terfess.rutasbusetasyopal"
+    namespace = "com.terfess.busetasyopal"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.terfess.rutasbusetasyopal"
+        applicationId = "com.terfess.busetasyopal"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

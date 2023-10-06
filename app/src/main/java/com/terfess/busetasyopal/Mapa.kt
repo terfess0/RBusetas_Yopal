@@ -1,4 +1,4 @@
-package com.terfess.rutasbusetasyopal
+package com.terfess.busetasyopal
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -37,7 +37,8 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.terfess.rutasbusetasyopal.databinding.ActivityMapaBinding
+import com.terfess.busetasyopal.R
+import com.terfess.busetasyopal.databinding.ActivityMapaBinding
 
 
 class Mapa : AppCompatActivity(), OnMapReadyCallback {
@@ -342,7 +343,7 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
                 Html.FROM_HTML_MODE_LEGACY
             )
             tiempos.postDelayed({ // terminar o ejecutar tareas despues de cierto tiempo
-                getRutasCreadas =  RutaBasic.CreatRuta.rutasCreadas
+                getRutasCreadas = RutaBasic.CreatRuta.rutasCreadas
                 if (getRutasCreadas){
                     binding.failConection.visibility = View.GONE
 

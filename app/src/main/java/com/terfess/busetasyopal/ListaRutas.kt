@@ -1,4 +1,4 @@
-package com.terfess.rutasbusetasyopal
+package com.terfess.busetasyopal
 
 
 class ListaRutas {

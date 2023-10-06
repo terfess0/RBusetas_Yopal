@@ -7,4 +7,6 @@
     <color name="recorridoVuelta">#C70039 </color>
     <color name="anuncioGrave">#B80000</color>
     <color name="anuncioLeve">#A58101</color>
+    <color name="positivo">#149F05</color>
+    <color name="negativo">#A30517</color>
 </resources>

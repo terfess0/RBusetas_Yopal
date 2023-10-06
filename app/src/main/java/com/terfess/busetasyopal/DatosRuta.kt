@@ -1,4 +1,4 @@
-package com.terfess.rutasbusetasyopal
+package com.terfess.busetasyopal
 
 data class DatosRuta(
     val numRuta: Int,

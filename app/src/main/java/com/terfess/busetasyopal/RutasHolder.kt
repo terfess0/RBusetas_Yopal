@@ -1,4 +1,4 @@
-package com.terfess.rutasbusetasyopal
+package com.terfess.busetasyopal
 
 
 import android.app.Activity
@@ -7,7 +7,10 @@ import android.text.Html
 import android.text.Html.FROM_HTML_MODE_LEGACY
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.terfess.rutasbusetasyopal.databinding.ActivitySeccionBinding
+import com.terfess.busetasyopal.databinding.ActivitySeccionBinding
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
     private val binding = ActivitySeccionBinding.bind(vista)
@@ -15,6 +18,7 @@ class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
 
 
     fun mostrar(dato: DatosRuta, color: String) {
+
         val ruta = "Ruta\n"+dato.numRuta
         val sitios = "<font color='$color' style='text-align:center'><b>Lugares Relevantes</b></font> <br> ${dato.sitios}"
         val horLunVie = "<font color='$color'><b>Lunes a Viernes</b></font> <br> ${dato.horLunVie}<br>${dato.frecLunVie}"
