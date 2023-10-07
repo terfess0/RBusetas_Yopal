@@ -61,8 +61,8 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
         setContentView(binding.root)
 
         //mapa
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
+        val fragmentoMapa = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        fragmentoMapa.getMapAsync(this)
 
         //seleccion ruta
         val recibirTent = intent.extras
