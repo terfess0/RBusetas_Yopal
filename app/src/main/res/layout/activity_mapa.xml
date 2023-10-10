@@ -1,56 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:map="http://schemas.android.com/tools"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/map" >
-    <ImageButton
-        android:id="@+id/irgps"
-        android:elevation="3dp"
-        android:theme="@style/Theme.general"
-        android:background="@drawable/bord_boton_gps"
-        app:srcCompat="@drawable/gps_off"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="500dp"
-        android:layout_marginEnd="30dp"
-        android:layout_gravity="right"
-        android:contentDescription="TODO"
-         />
-    <TextView
-        android:id="@+id/infoColor"
-        android:backgroundTint="#00FFFFFF"
-        android:layout_width="wrap_content"
-        android:layout_marginTop="45dp"
-        android:layout_height="60dp"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        />
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/parqueadero"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="80dp"
-        android:backgroundTint="#00FFFFFF"
-        android:layout_marginLeft="90dp"
-        app:srcCompat="@drawable/parqueadero_icon" />
+    <!--<fragment
+        android:id="@+id/autocomplete"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:inputType="textCapSentences"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        /> DESACTIVADO POR SER DE LA API PLACES, HAY QUE ACTIVAR FACTURACION EN CLOUD -->
 
-    <TextView
-        android:id="@+id/failConection"
-        android:backgroundTint="#00FFFFFF"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:gravity="center"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="550dp"
-        />
-</fragment>
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
+        <ImageButton
+            android:id="@+id/irgps"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="500dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/bord_boton_gps"
+            android:contentDescription="TODO"
+            android:elevation="3dp"
+            android:theme="@style/Theme.general"
+            app:srcCompat="@drawable/gps_off" />
+
+        <TextView
+            android:id="@+id/infoColor"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="45dp"
+            android:layout_marginRight="5dp"
+            android:backgroundTint="#00FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/parqueadero"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="90dp"
+            android:layout_marginTop="80dp"
+            android:backgroundTint="#00FFFFFF"
+            app:srcCompat="@drawable/parqueadero_icon" />
+
+        <TextView
+            android:id="@+id/failConection"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="550dp"
+            android:layout_marginRight="5dp"
+            android:backgroundTint="#00FFFFFF"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </fragment>
+</androidx.constraintlayout.widget.ConstraintLayout>

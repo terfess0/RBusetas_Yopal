@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Rutas Busetas Yopal"
+rootProject.name = "Busetas Yopal"
 include(":app")
  

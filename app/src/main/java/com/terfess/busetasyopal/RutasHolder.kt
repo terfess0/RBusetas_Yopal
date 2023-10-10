@@ -8,9 +8,6 @@ import android.text.Html.FROM_HTML_MODE_LEGACY
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.terfess.busetasyopal.databinding.ActivitySeccionBinding
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
     private val binding = ActivitySeccionBinding.bind(vista)

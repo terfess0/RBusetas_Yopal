@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.terfess.busetasyopal.R
 
 class RutasAdapter(private var listado: List<DatosRuta>) : RecyclerView.Adapter<RutasHolder>() {
     var color: String = "#524e4e"
