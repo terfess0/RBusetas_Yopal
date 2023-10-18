@@ -42,20 +42,22 @@
         <TextView
             android:id="@+id/infoColor"
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:layout_marginTop="45dp"
+            android:layout_marginTop="5dp"
             android:layout_marginRight="5dp"
-            android:backgroundTint="#00FFFFFF"
-            android:textSize="14sp"
+            android:padding="4dp"
+            android:backgroundTint="@color/fondoLeyenda"
+            android:background="@drawable/borde_leyenda"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/parqueadero"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginLeft="90dp"
-            android:layout_marginTop="80dp"
+            android:layout_marginLeft="102dp"
+            android:layout_marginTop="48dp"
             android:backgroundTint="#00FFFFFF"
             app:srcCompat="@drawable/parqueadero_icon" />
 
