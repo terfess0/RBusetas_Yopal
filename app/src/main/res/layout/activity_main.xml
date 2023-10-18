@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fondox"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -45,12 +46,15 @@
         android:layout_height="150dp"
         android:layout_margin="10dp"
         android:background="@drawable/bord_suave"
-        android:backgroundTint="#2196F3">
+        android:backgroundTint="#2196F3"
+        app:layout_constraintBottom_toBottomOf="@+id/saludo"
+        app:layout_constraintTop_toBottomOf="@+id/saludo">
 
         <TextView
             android:id="@+id/saludo"
-            android:layout_width="198dp"
+            android:layout_width="0dp"
             android:layout_height="74dp"
+            android:layout_marginEnd="8dp"
             android:fontFamily="@font/roboto"
             android:gravity="center"
             android:text="Buenos dias"
@@ -60,6 +64,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.963"
+            app:layout_constraintStart_toEndOf="@+id/horario"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
@@ -67,7 +72,8 @@
         <TextView
             android:id="@+id/textView"
             android:layout_width="56dp"
-            android:layout_height="26dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="15dp"
             android:fontFamily="@font/roboto"
             android:gravity="center"
             android:text="Precio: "
@@ -76,7 +82,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.046"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/horario"
             app:layout_constraintVertical_bias="0.877" />
 
         <TextView
@@ -94,6 +100,21 @@
             app:layout_constraintStart_toEndOf="@+id/textView"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.87" />
+
+        <Button
+            android:id="@+id/horario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="29dp"
+            android:layout_marginEnd="82dp"
+            android:layout_marginBottom="32dp"
+            android:text="Button"
+            app:layout_constraintBottom_toTopOf="@+id/textView"
+            app:layout_constraintEnd_toStartOf="@+id/saludo"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView

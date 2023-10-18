@@ -67,7 +67,9 @@ class RutasSeccion : AppCompatActivity() {
                 }
             })
 
-
+        binding.horario.setOnClickListener {
+            rangoHorario()
+        }
     }
 
     //menu en el ActionBar
@@ -162,5 +164,22 @@ class RutasSeccion : AppCompatActivity() {
         val calendar = Calendar.getInstance()
         return calendar.get(Calendar.HOUR_OF_DAY)
     }
+    private fun rangoHorario(){
+        val Horario = RangoHorarios()
+        val horaInicio = "06:00"
+        val horaFinal = "18:00"
+        val resultado = Horario.BusetaEnServicio(horaInicio, horaFinal)
 
+        when (resultado){
+            0 -> {
+                binding.saludo.text = "No esta en rango"
+            }
+            1 -> {
+                binding.saludo.text = "Esta en rango"
+            }
+            2 -> {
+                binding.saludo.text = "Horario nulo Error"
+            }
+        }
+    }
 }

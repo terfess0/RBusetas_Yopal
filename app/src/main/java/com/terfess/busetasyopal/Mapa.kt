@@ -157,7 +157,7 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
             irPosGps()
         }
 
-        supportActionBar?.title = "Mapa con la Ruta $idruta"  //titulo actionbar
+        supportActionBar?.title = "Mapa con Recorrido de Ruta $idruta"  //titulo actionbar
     }
 
     private fun selector() {
