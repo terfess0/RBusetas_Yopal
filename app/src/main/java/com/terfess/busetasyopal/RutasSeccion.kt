@@ -164,6 +164,7 @@ class RutasSeccion : AppCompatActivity() {
         val calendar = Calendar.getInstance()
         return calendar.get(Calendar.HOUR_OF_DAY)
     }
+
     private fun rangoHorario(){
         val Horario = RangoHorarios()
         val horaInicio = "06:00"
