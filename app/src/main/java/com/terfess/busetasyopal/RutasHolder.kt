@@ -12,7 +12,9 @@ import com.terfess.busetasyopal.databinding.ActivitySeccionBinding
 class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
     private val binding = ActivitySeccionBinding.bind(vista)
     private val caja = vista.context as Activity
-    private var rutaEnServicio = "#b300ff"
+    private var rutaEnServicioLV = "#000000"
+    private var rutaEnServicioSab = "#000000"
+    private var rutaEnServicioDom = "#000000"
 
     fun mostrar(dato: DatosRuta, color: String) {
 
@@ -21,22 +23,44 @@ class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
 
         val datos2 :DatoHorario = ListaHorarios.busetaHorario[dato.numRuta]
         val claseRango = RangoHorarios()
-        val horaInicio = datos2.horaInicioLunesViernes
-        val horaFinal = datos2.horaFinalLunesViernes
-        val resultado = claseRango.BusetaEnServicio(horaInicio, horaFinal)
+        val horaInicioLV = datos2.horaInicioLunesViernes
+        val horaFinalLV = datos2.horaFinalLunesViernes
+        val horaInicioSab = datos2.horaInicioSab
+        val horaFinalSab = datos2.horaFinalSab
+        val horaInicioDom = datos2.horaInicioDom
+        val horaFinalDom = datos2.horaFinalDom
+        val resultado1 = claseRango.BusetaEnServicio(horaInicioLV, horaFinalLV)
+        val resultado2 = claseRango.BusetaEnServicio(horaInicioSab, horaFinalSab)
+        val resultado3 = claseRango.BusetaEnServicio(horaInicioDom, horaFinalDom)
 
-        when (resultado){
+        when (resultado1){
             0 -> {
-                this.rutaEnServicio = "#000000" //negro
+                this.rutaEnServicioLV = "#8a0322" //rojo oscuro
             }
             1 -> {
-                this.rutaEnServicio = "#006b15" //verde oscuro
+                this.rutaEnServicioLV = "#006b15" //verde oscuro
+            }
+        }
+        when (resultado2){
+            0 -> {
+                this.rutaEnServicioSab = "#8a0322" //rojo oscuro
+            }
+            1 -> {
+                this.rutaEnServicioSab = "#006b15" //verde oscuro
+            }
+        }
+        when (resultado3){
+            0 -> {
+                this.rutaEnServicioDom = "#8a0322" //rojo oscuro
+            }
+            1 -> {
+                this.rutaEnServicioDom = "#006b15" //verde oscuro
             }
         }
 
-        val horLunVie = "<font color='$color'><b>Lunes a Viernes</b></font> <br> <font color='$rutaEnServicio'>${dato.horLunVie}<br>${dato.frecLunVie}</font>"
-        val horSab = "<font color='$color'><b>Sabados</b></font> <br> ${dato.horSab}<br>${dato.frecSab}"
-        val horDom = "<font color='$color'><b>Domingos y Festivos</b></font> <br> ${dato.horDomFest}<br>${dato.frecDomFest}"
+        val horLunVie = "<font color='$color'><b>Lunes a Viernes</b></font> <br> <font color='$rutaEnServicioLV'>${dato.horLunVie}<br>${dato.frecLunVie}</font>"
+        val horSab = "<font color='$color'><b>Sabados</b></font> <br> <font color='$rutaEnServicioSab'>${dato.horSab}<br>${dato.frecSab}</font>"
+        val horDom = "<font color='$color'><b>Domingos y Festivos</b></font> <br> <font color='$rutaEnServicioDom'>${dato.horDomFest}<br>${dato.frecDomFest}</font>"
 
         binding.numRuta.text = ruta
         binding.sitios.text = Html.fromHtml(sitios, FROM_HTML_MODE_LEGACY)
