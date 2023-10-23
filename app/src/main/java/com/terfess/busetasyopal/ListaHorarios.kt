@@ -5,6 +5,24 @@ class ListaHorarios {
     companion object {
         val busetaHorario = listOf(
             DatoHorario(
+                0,
+                "0",
+                "0",
+                "0",
+                "0",
+                "0",
+                "0"
+            ),
+            DatoHorario(
+                1,
+                "0",
+                "0",
+                "0",
+                "0",
+                "0",
+                "0"
+            ),
+            DatoHorario(
                 2,
                 "04:52",
                 "18:30",
@@ -21,6 +39,24 @@ class ListaHorarios {
                 "17:00",
                 "05:00",
                 "17:00"
+            ),
+            DatoHorario(
+                4,
+                "0",
+                "0",
+                "0",
+                "0",
+                "0",
+                "0"
+            ),
+            DatoHorario(
+                5,
+                "0",
+                "0",
+                "0",
+                "0",
+                "0",
+                "0"
             ),
             DatoHorario(
                 6,
@@ -75,6 +111,15 @@ class ListaHorarios {
                 "17:30",
                 "00:00",
                 "00:00"
+            ),
+            DatoHorario(
+                12,
+                "0",
+                "0",
+                "0",
+                "0",
+                "0",
+                "0"
             ),
             DatoHorario(
                 13,
