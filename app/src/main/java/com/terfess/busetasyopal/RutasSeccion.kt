@@ -66,10 +66,6 @@ class RutasSeccion : AppCompatActivity() {
                     Log.w(TAG, "fallido leer precio.", error.toException())
                 }
             })
-
-        binding.horario.setOnClickListener {
-            rangoHorario()
-        }
     }
 
     //menu en el ActionBar
@@ -152,9 +148,7 @@ class RutasSeccion : AppCompatActivity() {
                 .setPositiveButton("Sí") { _, _ ->
                     finish()
                 }
-            builder.setNegativeButton("No") { _, _ ->
-
-            }
+            builder.setNegativeButton("No") { _, _ -> }
             val dialog = builder.create()
             dialog.show()
         }
@@ -165,22 +159,4 @@ class RutasSeccion : AppCompatActivity() {
         return calendar.get(Calendar.HOUR_OF_DAY)
     }
 
-    private fun rangoHorario(){
-        val Horario = RangoHorarios()
-        val horaInicio = "06:00"
-        val horaFinal = "18:00"
-        val resultado = Horario.BusetaEnServicio(horaInicio, horaFinal)
-
-        when (resultado){
-            0 -> {
-                binding.saludo.text = "No esta en rango"
-            }
-            1 -> {
-                binding.saludo.text = "Esta en rango"
-            }
-            2 -> {
-                binding.saludo.text = "Horario nulo Error"
-            }
-        }
-    }
 }

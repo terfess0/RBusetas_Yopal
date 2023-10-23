@@ -12,13 +12,29 @@ import com.terfess.busetasyopal.databinding.ActivitySeccionBinding
 class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
     private val binding = ActivitySeccionBinding.bind(vista)
     private val caja = vista.context as Activity
-
+    private var rutaEnServicio = "#b300ff"
 
     fun mostrar(dato: DatosRuta, color: String) {
 
         val ruta = "Ruta\n"+dato.numRuta
         val sitios = "<font color='$color' style='text-align:center'><b>Lugares Relevantes</b></font> <br> ${dato.sitios}"
-        val horLunVie = "<font color='$color'><b>Lunes a Viernes</b></font> <br> ${dato.horLunVie}<br>${dato.frecLunVie}"
+
+        val datos2 :DatoHorario = ListaHorarios.busetaHorario[dato.numRuta]
+        val claseRango = RangoHorarios()
+        val horaInicio = datos2.horaInicioLunesViernes
+        val horaFinal = datos2.horaFinalLunesViernes
+        val resultado = claseRango.BusetaEnServicio(horaInicio, horaFinal)
+
+        when (resultado){
+            0 -> {
+                this.rutaEnServicio = "#000000" //negro
+            }
+            1 -> {
+                this.rutaEnServicio = "#006b15" //verde oscuro
+            }
+        }
+
+        val horLunVie = "<font color='$color'><b>Lunes a Viernes</b></font> <br> <font color='$rutaEnServicio'>${dato.horLunVie}<br>${dato.frecLunVie}</font>"
         val horSab = "<font color='$color'><b>Sabados</b></font> <br> ${dato.horSab}<br>${dato.frecSab}"
         val horDom = "<font color='$color'><b>Domingos y Festivos</b></font> <br> ${dato.horDomFest}<br>${dato.frecDomFest}"
 
