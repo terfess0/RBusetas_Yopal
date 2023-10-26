@@ -64,7 +64,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.963"
-            app:layout_constraintStart_toEndOf="@+id/horario"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
@@ -82,24 +81,24 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.046"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/horario"
             app:layout_constraintVertical_bias="0.877" />
 
         <TextView
             android:id="@+id/precio"
             android:layout_width="wrap_content"
-            android:layout_height="26dp"
+            android:layout_height="25dp"
             android:background="@drawable/bord_suave"
             android:backgroundTint="#FFFFFF"
             android:fontFamily="@font/roboto"
             android:gravity="center"
+            android:minWidth="50dp"
             android:textColor="#4A4343"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/textView"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.87" />
+            app:layout_constraintVertical_bias="0.88" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

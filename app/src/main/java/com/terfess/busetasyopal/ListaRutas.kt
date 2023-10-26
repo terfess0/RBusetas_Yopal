@@ -78,8 +78,8 @@ class ListaRutas {
             DatosRuta(
                 11,
                 "El Silencio, Hospital Central, CC Unicentro, Técnico Ambiental",
-                "Cada 12 - 20 minutos",
-                "Cada 12 - 20 minutos",
+                "12 - 20 minutos",
+                "12 - 20 minutos",
                 "SIN SERVICIO",
                 "5:30 am - 5:30 pm",
                 "5:30 am - 5:30 pm",

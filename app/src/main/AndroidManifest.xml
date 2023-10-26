@@ -20,11 +20,14 @@
         <activity
             android:name="com.terfess.busetasyopal.Mapa"
             android:exported="false"
-            android:theme="@style/Theme.general"/>
+            android:theme="@style/Theme.general"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name="com.terfess.busetasyopal.RutasSeccion"
             android:exported="true"
-            android:theme="@style/Theme.general">
+            android:theme="@style/Theme.general"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

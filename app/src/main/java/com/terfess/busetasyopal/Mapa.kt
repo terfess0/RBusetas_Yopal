@@ -69,7 +69,7 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
         val fragmentoMapa = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         fragmentoMapa.getMapAsync(this)
 
-        /*//lugares/places api   //HAY QUE PAGAR EN CLOUD POR ESO SE DESACTIVARAPLACES
+        /*//lugares/places api   //HAY QUE PAGAR EN CLOUD POR ESO SE DESACTIVARA PLACES
         if (!Places.isInitialized()) {
             Places.initialize(applicationContext, getString(R.string.key_mapa))
 

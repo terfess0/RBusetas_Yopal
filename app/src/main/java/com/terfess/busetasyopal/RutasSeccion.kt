@@ -26,7 +26,7 @@ class RutasSeccion : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var filtrando = false
     private lateinit var db: DatabaseReference
-    private var precio: String = "$2,000"
+    private var precio: String = " $2,000"
     private val adapter = RutasAdapter(ListaRutas.busetaRuta.toList())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,11 +59,10 @@ class RutasSeccion : AppCompatActivity() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     precio = snapshot.value.toString()
                     binding.precio.text = precio
-                    Log.d(TAG, "precio es: $precio")
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Log.w(TAG, "fallido leer precio.", error.toException())
+                    Toast.makeText(binding.root.context, "El precio no se pudo recibir desde internet",Toast.LENGTH_SHORT).show()
                 }
             })
     }
