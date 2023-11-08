@@ -2,7 +2,6 @@ package com.terfess.busetasyopal
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
@@ -25,7 +24,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Granularity
 import com.google.android.gms.location.LocationRequest
@@ -39,20 +37,19 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.terfess.busetasyopal.databinding.ActivityMapaBinding
 
 
 class Mapa : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityMapaBinding
     private lateinit var gmap: GoogleMap
+    private var contexto = this
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var idruta: Int = 0
     private var networkCallback = ConnectivityManager.NetworkCallback()
     private val tiempos = Handler(Looper.getMainLooper())
+
+
 
 
     companion object { //accesibles desde cualquier lugar de este archivo/clase
@@ -133,6 +130,17 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
         gmap = map
         //getRutasCreadas = RutaBasic.ruta //usar el gmap para mandarlo a RutaBasic
 
+        //agregar json para quitar marcadores naturales de google map
+        /*val resourceId = R.string.style_json
+        val jsonString = getString(resourceId)
+        val mapStyleJson = JSONObject(jsonString)
+        gmap.setMapStyle(MapStyleOptions(mapStyleJson.toString()))*/
+
+        //establecer nivel de zoom maximo
+        //impedir renderizado de cuadros casas
+        val maxZoomLevel = 16.9 // nivel de zoom deseado
+        gmap.setMaxZoomPreference(maxZoomLevel.toFloat())
+
         //rendimiento
         map.mapType =
             GoogleMap.MAP_TYPE_NORMAL //tratar de cargar un mapa simple evitar renderizados congelantes
@@ -161,8 +169,18 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun selector() {
-        val buildRuta = RutaBasic(this, this.gmap)
+        val buildRuta = RutaBasic(contexto, gmap)
         when (idruta) {//IMPORTANTE PARA CONSTRUIR CADA RUTA
+            1 -> {
+                //dibujar todas las rutas
+                for (i in 1 until ListaRutas.busetaRuta.size){
+                    buildRuta.crearRuta(
+                        "features/0/rutas/$i/salida",
+                        "features/0/rutas/$i/llegada", idruta
+                    )
+                }
+            }
+
             2 -> {
                 buildRuta.crearRuta(
                     "features/0/rutas/$idruta/salida",
@@ -301,8 +319,9 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
             // Verifica si la ubicación no es nula
             if (location != null) {
                 val latLng = LatLng(location.latitude, location.longitude)
-                gmap.animateCamera(CameraUpdateFactory.newLatLngZoom((latLng), 15.5f), 3000, null)
+                gmap.animateCamera(CameraUpdateFactory.newLatLngZoom((latLng), 16.5f), 3000, null)
                 binding.irgps.setImageResource(R.drawable.gps_find)
+                RutaBasic(contexto, gmap).rutaMasCerca(latLng)
             } else {
                 irPosGps()
             }

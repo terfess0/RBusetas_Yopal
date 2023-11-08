@@ -1,5 +1,31 @@
 <resources>
     <string name="app_name">Busetas Yopal</string>
     <string name="textview">TextView</string>
+    <string name="style_json">
+    {
+  "styles": [
+    {
+      "featureType": "poi.business",
+      "elementType": "all",
+      "stylers": [
+        {
+          "visibility": "off"
+        }
+      ]
+    },
+    {
+      "featureType": "transit",
+      "elementType": "labels.icon",
+      "stylers": [
+        {
+          "visibility": "off"
+        }
+      ]
+    }
+  ]
+}
 
+  </string>
 </resources>
+
+

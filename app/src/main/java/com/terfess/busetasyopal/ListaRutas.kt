@@ -6,6 +6,16 @@ class ListaRutas {
         //esta lista es simplificada para mostrar en recycler view
         val busetaRuta = listOf(
             DatosRuta(
+                1,
+                "-----",
+                "-----",
+                "-----",
+                "-----",
+                "-----",
+                "-----",
+                "-----"
+            ),
+            DatosRuta(
                 2,
                 "La Bendición, Horo, Estancia, Bomberos",
                 "Cada 8 minutos",

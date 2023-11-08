@@ -25,7 +25,7 @@ class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
         val ruta = "Ruta\n" + dato.numRuta
         val sitios =
             "<font color='$colorDia' style='text-align:center'><b>Lugares Relevantes</b></font> <br> ${dato.sitios}"
-        val datos2: DatoHorario = ListaHorarios.busetaHorario[dato.numRuta]
+        val datos2: DatoHorario = ListaHorarios.busetaHorario[dato.numRuta - 1] // se resta 1 para ir acorde a las posiciones del arreglo busetaHorario
         val claseRango = RangoHorarios()
         val horaInicioLV = datos2.horaInicioLunesViernes
         val horaFinalLV = datos2.horaFinalLunesViernes
