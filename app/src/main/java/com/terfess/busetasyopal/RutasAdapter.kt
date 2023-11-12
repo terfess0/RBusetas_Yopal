@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class RutasAdapter(private var listado: List<DatosRuta>) : RecyclerView.Adapter<RutasHolder>() {
+class RutasAdapter(private var listado: List<DatosPrimariosRuta>) : RecyclerView.Adapter<RutasHolder>() {
     var color: String = "#524e4e"
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RutasHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -23,7 +23,7 @@ class RutasAdapter(private var listado: List<DatosRuta>) : RecyclerView.Adapter<
 
     //funcion para filtro de Recycler view
     @SuppressLint("NotifyDataSetChanged")
-    fun updateLista(listado: List<DatosRuta>, coloriltrando: String) {
+    fun updateLista(listado: List<DatosPrimariosRuta>, coloriltrando: String) {
         this.listado = listado
         this.color = coloriltrando
         notifyDataSetChanged()

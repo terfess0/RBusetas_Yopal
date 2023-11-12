@@ -17,7 +17,7 @@ class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
     private var rutaEnServicioDom = "#000000" //negro
     private var rutaEnDia = "#221785"
 
-    fun mostrar(dato: DatosRuta, colorDia: String) {
+    fun mostrar(dato: DatosPrimariosRuta, colorDia: String) {
         var colorLunVier = "#524e4e"
         var colorSab = "#524e4e"
         var colorDom = "#524e4e"
@@ -107,6 +107,7 @@ class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
         binding.horarioS.text = Html.fromHtml(horSab, FROM_HTML_MODE_LEGACY)
         binding.horarioDF.text = Html.fromHtml(horDom, FROM_HTML_MODE_LEGACY)
 
+        //el usuario selecciona una de las rutas
         binding.contenedor.setOnClickListener {
             val selector = dato.numRuta
             val intent = Intent(binding.contenedor.context, Mapa::class.java)

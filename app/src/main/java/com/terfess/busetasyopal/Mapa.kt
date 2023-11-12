@@ -35,8 +35,12 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.terfess.busetasyopal.databinding.ActivityMapaBinding
 
 
@@ -50,11 +54,8 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
     private val tiempos = Handler(Looper.getMainLooper())
 
 
-
-
-    companion object { //accesibles desde cualquier lugar de este archivo/clase
+    companion object { //accesibles desde cualquier lugar de este archivo/clase y proyectos
         const val codigoLocalizacion = 0
-        var getRutasCreadas: Boolean = false
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,18 +117,12 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
                     binding.failConection.visibility = View.GONE
                 }
             }
-
-            override fun onLost(network: Network) {
-                super.onLost(network)
-                msjNoConection()
-            }
-
         }
         connectivityManager.registerDefaultNetworkCallback(networkCallback)
     }
 
-    override fun onMapReady(map: GoogleMap) {
-        gmap = map
+    override fun onMapReady(mapa: GoogleMap) {
+        gmap = mapa
         //getRutasCreadas = RutaBasic.ruta //usar el gmap para mandarlo a RutaBasic
 
         //agregar json para quitar marcadores naturales de google map
@@ -142,7 +137,7 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
         gmap.setMaxZoomPreference(maxZoomLevel.toFloat())
 
         //rendimiento
-        map.mapType =
+        mapa.mapType =
             GoogleMap.MAP_TYPE_NORMAL //tratar de cargar un mapa simple evitar renderizados congelantes
         gmap.isBuildingsEnabled = false //para dar mejor rendimiento desactivar edificaciones
         gmap.isTrafficEnabled = false //para dar mejor rendimiento desactivar trafico
@@ -171,14 +166,9 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
     private fun selector() {
         val buildRuta = RutaBasic(contexto, gmap)
         when (idruta) {//IMPORTANTE PARA CONSTRUIR CADA RUTA
-            1 -> {
-                //dibujar todas las rutas
-                for (i in 1 until ListaRutas.busetaRuta.size){
-                    buildRuta.crearRuta(
-                        "features/0/rutas/$i/salida",
-                        "features/0/rutas/$i/llegada", idruta
-                    )
-                }
+            0 -> {
+                activarLocalizacion()
+                irPosGps()
             }
 
             2 -> {
@@ -322,6 +312,16 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
                 gmap.animateCamera(CameraUpdateFactory.newLatLngZoom((latLng), 16.5f), 3000, null)
                 binding.irgps.setImageResource(R.drawable.gps_find)
                 RutaBasic(contexto, gmap).rutaMasCerca(latLng)
+
+                //marcador en ubi de respaldo
+                val accuracyRadius = 10.0  // Cambia esto con la precisión real
+                val userCircle = gmap.addCircle(
+                    CircleOptions()
+                        .center(latLng)
+                        .radius(accuracyRadius)
+                        .strokeWidth(1f)  // Sin borde
+                        .fillColor(0x5500ff66)
+                )
             } else {
                 irPosGps()
             }
@@ -401,8 +401,7 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
                 Html.FROM_HTML_MODE_LEGACY
             )
             tiempos.postDelayed({ // terminar o ejecutar tareas despues de cierto tiempo
-                getRutasCreadas = RutaBasic.CreatRuta.rutasCreadas
-                if (getRutasCreadas) {
+                if (RutaBasic.CreatRuta.rutasCreadas) {
                     binding.failConection.visibility = View.GONE
 
                 } else {
@@ -434,7 +433,6 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
             irPosGps()
         }
     }
-
 
     override fun onDestroy() {
         super.onDestroy()

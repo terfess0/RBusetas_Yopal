@@ -1,9 +1,8 @@
 package com.terfess.busetasyopal
 
-import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -19,18 +18,18 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.terfess.busetasyopal.databinding.ActivityMainBinding
+import com.terfess.busetasyopal.databinding.PantPrincipalBinding
 import java.util.Calendar
 
 class RutasSeccion : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: PantPrincipalBinding
     private var filtrando = false
     private lateinit var db: DatabaseReference
     private var precio: String = " $2,000"
     private val adapter = RutasAdapter(ListaRutas.busetaRuta.toList())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = PantPrincipalBinding.inflate(layoutInflater)
         setContentView(binding.root)
         //firebase
         db =
@@ -65,6 +64,14 @@ class RutasSeccion : AppCompatActivity() {
                     Toast.makeText(binding.root.context, "El precio no se pudo recibir desde internet",Toast.LENGTH_SHORT).show()
                 }
             })
+
+        //el usuario selecciona el boton "calcular ruta"
+        binding.calcRuta.setOnClickListener {
+            val iniciador = 0
+            val intent = Intent(this, Mapa::class.java)
+            intent.putExtra("selector", iniciador)
+            startActivity(intent)
+        }
     }
 
     //menu en el ActionBar
@@ -113,6 +120,7 @@ class RutasSeccion : AppCompatActivity() {
                 } else {
                     filtro.visibility = View.GONE
                     filtrando = false
+                    binding.noResultados.visibility = View.GONE
                     tecladoV.hideSoftInputFromWindow(
                         binding.root.windowToken,
                         0

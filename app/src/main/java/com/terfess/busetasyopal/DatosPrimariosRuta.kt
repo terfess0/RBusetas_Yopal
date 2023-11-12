@@ -1,6 +1,6 @@
 package com.terfess.busetasyopal
 
-data class DatosRuta(
+data class DatosPrimariosRuta(
     val numRuta: Int,
     val sitios: String,
     val frecLunVie: String,

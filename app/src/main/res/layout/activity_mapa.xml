@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -30,7 +31,7 @@
             android:id="@+id/irgps"
             android:layout_width="52dp"
             android:layout_height="52dp"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:layout_marginTop="500dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/bord_boton_gps"
@@ -46,9 +47,9 @@
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
             android:layout_marginRight="5dp"
-            android:padding="4dp"
-            android:backgroundTint="@color/fondoLeyenda"
             android:background="@drawable/borde_leyenda"
+            android:backgroundTint="@color/fondoLeyenda"
+            android:padding="4dp"
             android:textSize="16sp"
             android:textStyle="bold" />
 
@@ -56,7 +57,7 @@
             android:id="@+id/parqueadero"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginLeft="102dp"
+            android:layout_marginLeft="110dp"
             android:layout_marginTop="48dp"
             android:backgroundTint="#00FFFFFF"
             app:srcCompat="@drawable/parqueadero_icon" />
@@ -73,4 +74,5 @@
             android:textSize="14sp"
             android:textStyle="bold" />
     </fragment>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
