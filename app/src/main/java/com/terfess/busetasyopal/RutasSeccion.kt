@@ -64,14 +64,6 @@ class RutasSeccion : AppCompatActivity() {
                     Toast.makeText(binding.root.context, "El precio no se pudo recibir desde internet",Toast.LENGTH_SHORT).show()
                 }
             })
-
-        //el usuario selecciona el boton "calcular ruta"
-        binding.calcRuta.setOnClickListener {
-            val iniciador = 0
-            val intent = Intent(this, Mapa::class.java)
-            intent.putExtra("selector", iniciador)
-            startActivity(intent)
-        }
     }
 
     //menu en el ActionBar
