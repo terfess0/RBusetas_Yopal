@@ -15,6 +15,13 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import android.location.Location
+import androidx.appcompat.app.AlertDialog
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.Dash
+import com.google.android.gms.maps.model.Dot
+import com.google.android.gms.maps.model.Gap
+import com.google.android.gms.maps.model.PatternItem
 import com.google.android.gms.maps.model.Polyline
 import com.terfess.busetasyopal.RutaBasic.CreatRuta.puntosLlegada
 import com.terfess.busetasyopal.RutaBasic.CreatRuta.puntosSalida
@@ -125,7 +132,11 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
     }
 
     fun rutaMasCerca(ubicacionUsuario: LatLng, ubicacionDestino: LatLng) {
+
         if (polylineOptions.isVisible && puntosLlegada.isNotEmpty()) {
+            val puntos = puntosSalida + puntosLlegada
+            val puntosTotales = mutableListOf<LatLng>()
+            puntosTotales.addAll(puntos)
             masCortaInicio[0] =
                 -1 // Inicializa el índice de la estación más cercana en -1 (indicando que aún no se ha encontrado ninguna)
             masCortaInicio[1] = Int.MAX_VALUE // Inicializa la distancia con un valor alto
@@ -142,29 +153,126 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
             val ubiEstacion1 = Location("punto1-2")
             val ubiEstacion2 = Location("punto2-2")
 
-            //comparar distancias entre ubiInicial y ubiEstacion salida
-            compararDistancias(puntosSalida, ubiInicial, ubiEstacion1, true)
-
-            //comparar distancias entre ubiInicial y ubiEstacion llegada
-            val ptCercaLlegada = compararDistancias(puntosLlegada, ubiInicial, ubiEstacion2, true)
-
-            //colocar marcador en la ubi de la estacion mas cercana
-            agregarMarcador(ptCercaLlegada, R.drawable.estacion_cercana, "Punto más Cercano")
+            //val sentido = crearAlerta("¿En que sentido te desplazaras?", "Subida", "Bajada")
 
             val ubicDestino = Location("Unicentro")
             ubicDestino.longitude = ubicacionDestino.longitude
             ubicDestino.latitude = ubicacionDestino.latitude
-            compararDistancias(puntosSalida, ubicDestino, ubiEstacion1, false)
-            val puntoCercaDestino = compararDistancias(puntosLlegada, ubicDestino, ubiEstacion2, false)
-            agregarMarcador(puntoCercaDestino, R.drawable.estacion_cercana, "Punto más Cercano Prueba")
-            println(puntoCercaDestino)
+
+            compararDistancias(puntosTotales, ubiInicial, ubiEstacion1, true)
+            compararDistancias(puntosTotales, ubicDestino, ubiEstacion2, false)
+
+            //colocar marcador en la ubi de la estacion mas cercana
+            agregarMarcador(puntosTotales[masCortaInicio[0]], R.drawable.estacion_cercana, "Punto más Cercano")
+            agregarMarcador(puntosTotales[masCortaDestino[0]], R.drawable.estacion_cercana, "Punto más Cercano Prueba")
+            agregarMarcador(ubicacionDestino, R.drawable.star_marker, "Punto Destino")
             //Toast con la distancia mas cercana en metros
-            crearToast("La mejor distancia es ${masCortaInicio[1]}m de estación ${masCortaInicio[0]}")
-            crearToast("La mejor distancia es ${masCortaDestino[1]}m de estación ${masCortaDestino[0]}")
+            //crearToast("La mejor distancia es ${masCortaInicio[1]}m de estación ${masCortaInicio[0]}")
+            //crearToast("La mejor distancia es ${masCortaDestino[1]}m de estación ${masCortaDestino[0]}")
+            val puntoCorte1 = masCortaInicio[0]
+            val puntoCorte2 = masCortaDestino[0]
+
+            val cameraPosicion = CameraPosition.Builder()
+                .target(LatLng(5.330211486448319, -72.39310208990806))
+                .zoom(13.5f)
+                .build()
+            gmap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosicion))
+
+            val polylineOptionsC = PolylineOptions()
+            polylineOptionsC.points.clear()
+            polylineOptionsC.width(6f).color(
+                ContextCompat.getColor(
+                    mapa,
+                    R.color.RutaCalculada
+                )
+            )
+            val pattern = listOf(
+                Dash(20f), // Punto sólido
+                Gap(5f) // Espacio de 10 unidades
+            )
+            polylineOptionsC.pattern(pattern)
+
+
+            if (puntoCorte1 > puntoCorte2) {
+                val parte1 = puntosTotales.subList(0, puntoCorte2+1)
+                val parte2 = puntosTotales.subList(puntoCorte1, puntosTotales.size)
+                val puntis = parte2 + parte1 // se agrega al reves para evitar uniones
+                polylineOptionsC.addAll(puntis)
+                val c = gmap.addPolyline(polylineOptionsC)
+                c.jointType = JointType.ROUND
+                c.endCap = RoundCap()
+                c.startCap = RoundCap()
+
+                println("Este es el ultimo: ${puntosTotales[0]}")
+                println("Este es el ultimo: ${puntosTotales[puntosTotales.size -1]}")
+                println("Este es primero: ${puntosTotales[puntoCorte2+1]}")
+                println("Este es primero2: ${puntosTotales[puntoCorte1+1]}")
+            } else {
+                val parte1 = puntosTotales.subList(0, puntoCorte1+1)
+                val parte2 = puntosTotales.subList(puntoCorte2, puntosTotales.size)
+                polylineOptionsC.addAll(parte2 + parte1) // se agrega al reves para evitar uniones
+                val d = gmap.addPolyline(polylineOptionsC)
+                d.jointType = JointType.ROUND
+                d.endCap = RoundCap()
+                d.startCap = RoundCap()
+            }
+
         } else {
             crearToast("Datos de recorridos no han sido recibidos")
         }
 
+    }
+
+
+
+    private fun compararDistancias(
+        puntos: List<LatLng>,
+        ubiInicio: Location,
+        ubiDestino: Location,
+        esInicio:Boolean
+    ): LatLng {
+        //devuelve el punto mas cercano entre una ubicacion y una lista de ubicaciones
+        var puntoMasCerca = LatLng(0.0, 0.0)
+        var distancia: Int
+        for (f in 0 until puntos.size) {
+            val estacion = puntos[f]
+            ubiDestino.latitude = estacion.latitude
+            ubiDestino.longitude = estacion.longitude
+
+            distancia = (ubiInicio.distanceTo(ubiDestino)).toInt() //aqui se saca la distancia en metros
+
+            //hay array para inicio y uno para destino, por eso la comprobacion
+            if (esInicio){
+                if (distancia < masCortaInicio[1]) {
+                    masCortaInicio[0] = f
+                    masCortaInicio[1] = distancia
+                }
+            }
+            if (!esInicio){
+                if (distancia < masCortaDestino[1]) {
+                    masCortaDestino[0] = f
+                    masCortaDestino[1] = distancia
+                }
+            }
+            puntoMasCerca = LatLng(estacion.latitude, estacion.longitude)
+            println("La coordenada: $puntoMasCerca")
+        }
+        return puntoMasCerca
+    }
+
+    private fun crearAlerta(mensaje: String, op1:String, op2:String): Boolean {
+        val builder = AlertDialog.Builder(this.mapa)
+        var respuesta = false
+        builder.setMessage(mensaje)
+            .setPositiveButton(op1) { _, _ ->
+                respuesta = true
+            }
+        builder.setNegativeButton(op2) { _, _ ->
+            respuesta = true
+        }
+        val dialog = builder.create()
+        dialog.show()
+        return respuesta
     }
 
     private fun limpiarPolylines() {
@@ -186,39 +294,5 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
             mensaje,
             Toast.LENGTH_LONG
         ).show()
-    }
-
-    private fun compararDistancias(
-        puntos: MutableList<LatLng>,
-        ubiInicio: Location,
-        ubiDestino: Location,
-        esInicio:Boolean
-    ): LatLng {
-        //devuelve el punto mas cercano entre una ubicacion y una lista de ubicaciones
-        var puntoMasCerca = LatLng(0.0, 0.0)
-        var distancia: Int
-        for (f in 0 until puntos.size) {
-            val estacion = puntos[f]
-            ubiDestino.latitude = estacion.latitude
-            ubiDestino.longitude = estacion.longitude
-
-            distancia = (ubiInicio.distanceTo(ubiDestino)).toInt() //aqui se saca la distancia en metros
-
-            //hay array para inicio y uno para destino, por eso la comprobacion
-            if (esInicio){
-                if (distancia < masCortaInicio[1]) {
-                    puntoMasCerca = LatLng(estacion.latitude, estacion.longitude)
-                    masCortaInicio[0] = f
-                    masCortaInicio[1] = distancia
-                }
-            }else{
-                if (distancia < masCortaDestino[1]) {
-                    puntoMasCerca = LatLng(estacion.latitude, estacion.longitude)
-                    masCortaDestino[0] = f
-                    masCortaDestino[1] = distancia
-                }
-            }
-        }
-        return puntoMasCerca
     }
 }

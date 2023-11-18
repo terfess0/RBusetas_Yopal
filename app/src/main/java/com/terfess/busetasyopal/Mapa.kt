@@ -119,6 +119,12 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
             }
         }
         connectivityManager.registerDefaultNetworkCallback(networkCallback)
+
+        //Cuando se calcule la ruta
+        if (idruta == 0){
+            binding.infoColor.visibility = View.GONE
+            binding.parqueadero.visibility = View.GONE
+        }
     }
 
     override fun onMapReady(mapa: GoogleMap) {
@@ -284,8 +290,8 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
 
     private fun irYopal() {
         val cameraPosicion = CameraPosition.Builder()
-            .target(LatLng(5.330142833118871, -72.40302835546387))
-            .zoom(14.5f)
+            .target(LatLng(5.329894555473376, -72.40242298156761))
+            .zoom(14f)
             .build()
         gmap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosicion))
     }
@@ -314,7 +320,7 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
                 RutaBasic(contexto, gmap).rutaMasCerca(latLng)
 
                 //marcador en ubi de respaldo
-                val accuracyRadius = 10.0  // Cambia esto con la precisión real
+                val accuracyRadius = 15.0  // Cambia esto con la precisión real
                 val userCircle = gmap.addCircle(
                     CircleOptions()
                         .center(latLng)
