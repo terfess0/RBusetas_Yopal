@@ -7,10 +7,11 @@ import android.text.Html
 import android.text.Html.FROM_HTML_MODE_LEGACY
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.terfess.busetasyopal.databinding.ActivitySeccionBinding
+import com.terfess.busetasyopal.databinding.FormatoRecyclerBinding
+import com.terfess.busetasyopal.databinding.PantPrincipalBinding
 
 class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
-    private val binding = ActivitySeccionBinding.bind(vista)
+    private val binding = FormatoRecyclerBinding.bind(vista)
     private val caja = vista.context as Activity
     private var rutaEnServicioLV = "#000000" //negro
     private var rutaEnServicioSab = "#000000" //negro

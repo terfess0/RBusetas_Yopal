@@ -9,7 +9,7 @@ class RutasAdapter(private var listado: List<DatosPrimariosRuta>) : RecyclerView
     var color: String = "#524e4e"
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RutasHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return RutasHolder(layoutInflater.inflate(R.layout.activity_seccion, parent, false))
+        return RutasHolder(layoutInflater.inflate(R.layout.formato_recycler, parent, false))
     }
 
     override fun getItemCount(): Int {
