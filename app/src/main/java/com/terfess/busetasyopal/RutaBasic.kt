@@ -17,28 +17,46 @@ import com.google.firebase.database.ValueEventListener
 import android.location.Location
 import androidx.appcompat.app.AlertDialog
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.Dash
-import com.google.android.gms.maps.model.Dot
-import com.google.android.gms.maps.model.Gap
-import com.google.android.gms.maps.model.PatternItem
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.Polyline
+import com.terfess.busetasyopal.RutaBasic.CreatRuta.estamarcado1
+import com.terfess.busetasyopal.RutaBasic.CreatRuta.estamarcado2
+import com.terfess.busetasyopal.RutaBasic.CreatRuta.marcador1
+import com.terfess.busetasyopal.RutaBasic.CreatRuta.marcador2
+import com.terfess.busetasyopal.RutaBasic.CreatRuta.masCortaInicio
+import com.terfess.busetasyopal.RutaBasic.CreatRuta.polyCalculada
+import com.terfess.busetasyopal.RutaBasic.CreatRuta.polyLlegada
+import com.terfess.busetasyopal.RutaBasic.CreatRuta.polySalida
+import com.terfess.busetasyopal.RutaBasic.CreatRuta.puntosCalculada
 import com.terfess.busetasyopal.RutaBasic.CreatRuta.puntosLlegada
 import com.terfess.busetasyopal.RutaBasic.CreatRuta.puntosSalida
+
 
 class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
     var polylineOptions = PolylineOptions()
     private val databaseRef = FirebaseDatabase.getInstance()
-    private lateinit var polySalida: Polyline
-    private lateinit var polyLlegada: Polyline
-    private val masCortaInicio = IntArray(2) //array de datos: distancia y numero de estacion mas cercana
     private val masCortaDestino = IntArray(2) //distancia y numero de estacion mas cercana destino
+
 
     //objeto con variables global
     object CreatRuta {
         var rutasCreadas = false
+
+        //array de datos: distancia y numero de estacion mas cercana
+        val masCortaInicio = IntArray(2)
         var puntosSalida = mutableListOf<LatLng>()
         var puntosLlegada = mutableListOf<LatLng>()
+        var puntosCalculada = mutableListOf<LatLng>()
+        lateinit var polySalida: Polyline
+        lateinit var polyLlegada: Polyline
+        lateinit var polyCalculada: Polyline
+
+        //declarar los marcadores posibles para poder trabajarlos mejor
+        var marcador1: Marker? = null
+        var marcador2: Marker? = null
+        var estamarcado1 : Boolean? = null
+        var estamarcado2 : Boolean? = null
     }
 
     fun crearRuta(path1parte: String, path2parte: String, idruta: Int) {
@@ -115,11 +133,11 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
                     polyLlegada.jointType = JointType.ROUND
                     val medio = (puntosLlegada.size - 1)
                     //agregar marcador en parqueadero
-                    agregarMarcador(
-                        puntosLlegada[medio],
-                        R.drawable.parqueadero_icon,
-                        "Parqueadero Ruta $idruta"
-                    )
+                    val opcionesMarcador = MarkerOptions()
+                        .position(puntosLlegada[medio])
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_parqueadero))
+                        .title("Parqueadero Ruta $idruta")
+                    gmap.addMarker(opcionesMarcador)
                 }
             }
 
@@ -131,18 +149,25 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
         })
     }
 
-    fun rutaMasCerca(ubicacionUsuario: LatLng, ubicacionDestino: LatLng) {
+    fun rutaMasCerca(ubicacionUsuario: LatLng, sentido: String) {
 
         if (polylineOptions.isVisible && puntosLlegada.isNotEmpty()) {
-            val puntos = puntosSalida + puntosLlegada
-            val puntosTotales = mutableListOf<LatLng>()
-            puntosTotales.addAll(puntos)
-            masCortaInicio[0] =
-                -1 // Inicializa el índice de la estación más cercana en -1 (indicando que aún no se ha encontrado ninguna)
-            masCortaInicio[1] = Int.MAX_VALUE // Inicializa la distancia con un valor alto
-            masCortaDestino[0] =
-                -1 // Inicializa el índice de la estación más cercana en -1 (indicando que aún no se ha encontrado ninguna)
-            masCortaDestino[1] = Int.MAX_VALUE // Inicializa la distancia con un valor alto
+
+            masCortaInicio[0] = -1 // inicializa el índice de la estación más cercana en -1
+            masCortaInicio[1] = Int.MAX_VALUE // inicializa la distancia con un valor alto
+
+            if (puntosCalculada.size > 5) {
+                //remover la polylin que ya haya sido creada antes (calculada)
+                polyCalculada.remove()
+                puntosCalculada.clear()
+            }
+
+            //salvar los puntos de las rutas para no perderlos cuando
+            //se borren las rutas para ser reempazadas por la calculada
+            val puntos1 = mutableListOf<LatLng>()
+            puntos1.addAll(puntosSalida)
+            val puntos2 = mutableListOf<LatLng>()
+            puntos2.addAll(puntosLlegada)
 
             //preparar ubicacion inicial para comparar distancia
             val ubiInicial = Location("Ubicacion Inicial")
@@ -151,49 +176,103 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
 
             //preparar ubicacion de estaciones cercanas para comparar distancia
             val ubiEstacion1 = Location("punto1-2")
-            val ubiEstacion2 = Location("punto2-2")
 
-            //val sentido = crearAlerta("¿En que sentido te desplazaras?", "Subida", "Bajada")
+            //compara las distancias entre el usuario y cada estacion
+            if (sentido == "salida") {
+                compararDistancias(puntos1, ubiInicial, ubiEstacion1, true)
 
-            val ubicDestino = Location("Unicentro")
-            ubicDestino.longitude = ubicacionDestino.longitude
-            ubicDestino.latitude = ubicacionDestino.latitude
+                //se elimina el marcador del otro sentido si lo hay
+                estamarcado2 = if (estamarcado2 == true) {
+                    marcador2?.remove()
+                    false
+                }else{
+                    false
+                }
+            } else if (sentido == "llegada") {
+                compararDistancias(puntos2, ubiInicial, ubiEstacion1, true)
 
-            compararDistancias(puntosTotales, ubiInicial, ubiEstacion1, true)
-            compararDistancias(puntosTotales, ubicDestino, ubiEstacion2, false)
-
-            //colocar marcador en la ubi de la estacion mas cercana
-            agregarMarcador(puntosTotales[masCortaInicio[0]], R.drawable.estacion_cercana, "Punto más Cercano")
-            agregarMarcador(puntosTotales[masCortaDestino[0]], R.drawable.estacion_cercana, "Punto más Cercano Prueba")
-            agregarMarcador(ubicacionDestino, R.drawable.star_marker, "Punto Destino")
-            //Toast con la distancia mas cercana en metros
-            //crearToast("La mejor distancia es ${masCortaInicio[1]}m de estación ${masCortaInicio[0]}")
-            //crearToast("La mejor distancia es ${masCortaDestino[1]}m de estación ${masCortaDestino[0]}")
-            val puntoCorte1 = masCortaInicio[0]
-            val puntoCorte2 = masCortaDestino[0]
-
-            val cameraPosicion = CameraPosition.Builder()
-                .target(LatLng(5.330211486448319, -72.39310208990806))
-                .zoom(13.5f)
-                .build()
-            gmap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosicion))
+                //se elimina el marcador del otro sentido si lo hay
+                estamarcado1 = if (estamarcado1 == true) {
+                    marcador1?.remove()
+                    false
+                }else{
+                    false
+                }
+            }
+            //-------------------------------------------------------------
+            //se hace el nuevo trazo
+            val estacionCerca = masCortaInicio[0]
+            //val metros = masCortaInicio[1]
 
             val polylineOptionsC = PolylineOptions()
             polylineOptionsC.points.clear()
-            polylineOptionsC.width(6f).color(
+            polylineOptionsC.width(7f).color(
                 ContextCompat.getColor(
                     mapa,
-                    R.color.RutaCalculada
+                    colorRandom()
                 )
             )
-            val pattern = listOf(
-                Dash(20f), // Punto sólido
-                Gap(5f) // Espacio de 10 unidades
-            )
-            polylineOptionsC.pattern(pattern)
+            val recorte: MutableList<LatLng>
 
+            if (sentido == "salida") {
 
-            if (puntoCorte1 > puntoCorte2) {
+                //se coloca un marcador en la estacion cercana
+                marcador1 = agregarMarcador(
+                    puntos1[masCortaInicio[0]],
+                    "Punto más Cercano"
+                )
+                estamarcado1 = true
+                //mueve la camara al marcador de estacion cercana
+                gmap.animateCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        puntos1[masCortaInicio[0]],
+                        15.8f
+                    ), 3000, null
+                )
+
+                //se calcula y traza una nueva polylinea
+                val totalPuntos = puntos1 + puntos2
+                recorte = totalPuntos.subList(estacionCerca, totalPuntos.size).toMutableList()
+                puntosCalculada.addAll(recorte)
+                polySalida.remove()
+                polyLlegada.remove()
+                polyCalculada = gmap.addPolyline(polylineOptionsC)
+                polyCalculada.points = puntosCalculada
+                polyCalculada.jointType = JointType.ROUND
+                polyCalculada.endCap = RoundCap()
+                polyCalculada.startCap = RoundCap()
+
+            } else {
+
+                //se coloca un marcador en la estacion cercana
+                marcador2 = agregarMarcador(
+                    puntos2[masCortaInicio[0]],
+                    "Punto más Cercano"
+                )
+                estamarcado2 = true
+
+                //mueve la camara al marcador de estacion cercana
+                gmap.animateCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        puntos2[masCortaInicio[0]],
+                        15.8f
+                    ), 3000, null
+                )
+
+                //se calcula y traza una nueva polylinea
+                val totalPuntos = puntos2 + puntos1
+                recorte = totalPuntos.subList(estacionCerca, totalPuntos.size).toMutableList()
+                puntosCalculada.addAll(recorte)
+                polySalida.remove()
+                polyLlegada.remove()
+                polyCalculada = gmap.addPolyline(polylineOptionsC)
+                polyCalculada.points = puntosCalculada
+                polyCalculada.jointType = JointType.ROUND
+                polyCalculada.endCap = RoundCap()
+                polyCalculada.startCap = RoundCap()
+            }
+
+            /*if (puntoCorte1 > puntoCorte2) {
                 val parte1 = puntosTotales.subList(0, puntoCorte2+1)
                 val parte2 = puntosTotales.subList(puntoCorte1, puntosTotales.size)
                 val puntis = parte2 + parte1 // se agrega al reves para evitar uniones
@@ -203,10 +282,6 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
                 c.endCap = RoundCap()
                 c.startCap = RoundCap()
 
-                println("Este es el ultimo: ${puntosTotales[0]}")
-                println("Este es el ultimo: ${puntosTotales[puntosTotales.size -1]}")
-                println("Este es primero: ${puntosTotales[puntoCorte2+1]}")
-                println("Este es primero2: ${puntosTotales[puntoCorte1+1]}")
             } else {
                 val parte1 = puntosTotales.subList(0, puntoCorte1+1)
                 val parte2 = puntosTotales.subList(puntoCorte2, puntosTotales.size)
@@ -215,8 +290,7 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
                 d.jointType = JointType.ROUND
                 d.endCap = RoundCap()
                 d.startCap = RoundCap()
-            }
-
+            }*/
         } else {
             crearToast("Datos de recorridos no han sido recibidos")
         }
@@ -224,43 +298,42 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
     }
 
 
-
     private fun compararDistancias(
         puntos: List<LatLng>,
         ubiInicio: Location,
         ubiDestino: Location,
-        esInicio:Boolean
+        esInicio: Boolean
     ): LatLng {
         //devuelve el punto mas cercano entre una ubicacion y una lista de ubicaciones
         var puntoMasCerca = LatLng(0.0, 0.0)
         var distancia: Int
-        for (f in 0 until puntos.size) {
+        for (f in puntos.indices) {
             val estacion = puntos[f]
             ubiDestino.latitude = estacion.latitude
             ubiDestino.longitude = estacion.longitude
 
-            distancia = (ubiInicio.distanceTo(ubiDestino)).toInt() //aqui se saca la distancia en metros
+            distancia =
+                (ubiInicio.distanceTo(ubiDestino)).toInt() //aqui se saca la distancia en metros
 
             //hay array para inicio y uno para destino, por eso la comprobacion
-            if (esInicio){
+            if (esInicio) {
                 if (distancia < masCortaInicio[1]) {
                     masCortaInicio[0] = f
                     masCortaInicio[1] = distancia
                 }
             }
-            if (!esInicio){
+            if (!esInicio) {
                 if (distancia < masCortaDestino[1]) {
                     masCortaDestino[0] = f
                     masCortaDestino[1] = distancia
                 }
             }
             puntoMasCerca = LatLng(estacion.latitude, estacion.longitude)
-            println("La coordenada: $puntoMasCerca")
         }
         return puntoMasCerca
     }
 
-    private fun crearAlerta(mensaje: String, op1:String, op2:String): Boolean {
+    private fun crearAlerta(mensaje: String, op1: String, op2: String): Boolean {
         val builder = AlertDialog.Builder(this.mapa)
         var respuesta = false
         builder.setMessage(mensaje)
@@ -281,11 +354,11 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
         polylineOptions.points.clear()
     }
 
-    fun agregarMarcador(punto: LatLng, idIcono: Int, titulo: String) {
-        val markerOptions = MarkerOptions().position(punto)
-            .icon(BitmapDescriptorFactory.fromResource(idIcono))
+    fun agregarMarcador(punto: LatLng, titulo: String): Marker? {
+        val opcionesMarcador = MarkerOptions()
+            .position(punto)
             .title(titulo)
-        gmap.addMarker(markerOptions)//se usa title marcador para colocarle titulo al icono
+        return gmap.addMarker(opcionesMarcador)
     }
 
     fun crearToast(mensaje: String) {
@@ -294,5 +367,16 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
             mensaje,
             Toast.LENGTH_LONG
         ).show()
+    }
+
+    private fun colorRandom(): Int {
+        val numero = (0..2).random()
+        var color = 0
+        when (numero) {
+            0 -> color = R.color.rojo
+            1 -> color = R.color.verde
+            2 -> color = R.color.azul
+        }
+        return color
     }
 }

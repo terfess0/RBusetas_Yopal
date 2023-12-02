@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--<fragment
+        android:id="@+id/autocomplete"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:inputType="textCapSentences"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        /> DESACTIVADO POR SER DE LA API PLACES, HAY QUE ACTIVAR FACTURACION EN CLOUD -->
+
+    <!--ImageView
+        android:id="@+id/parqueadero"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:backgroundTint="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/map"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.324"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.087"
+        app:srcCompat="@drawable/parqueadero_icon" /-->
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/irgps"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_gravity="end"
+        android:background="@drawable/bord_boton_gps"
+        android:elevation="3dp"
+        android:theme="@style/Theme.general"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.885"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintVertical_bias="0.265"
+        app:srcCompat="@drawable/ic_gps_off" />
+
+    <ImageButton
+        android:id="@+id/ajustes"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_gravity="end"
+        android:background="@drawable/bord_boton_gps"
+        android:elevation="3dp"
+        android:theme="@style/Theme.general"
+        app:layout_constraintBottom_toTopOf="@+id/irgps"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.885"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintVertical_bias="0.3"
+        app:srcCompat="@drawable/ic_condiguracion" />
+
+    <TextView
+        android:id="@+id/infoColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/borde_leyenda"
+        android:backgroundTint="@color/fondoLeyenda"
+        android:padding="4dp"
+        android:text="leyenda"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.046"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/indicaciones"
+        app:layout_constraintVertical_bias="0.031" />
+
+    <TextView
+        android:id="@+id/failConection"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:backgroundTint="#00FFFFFF"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/map"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintVertical_bias="0.947" />
+
+    <Button
+        android:id="@+id/sentidoSubida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto"
+        android:padding="5dp"
+        android:background="@drawable/bord_suave"
+        android:backgroundTint="#3C5187"
+        android:text="Ver en sentido Subida"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="@+id/map"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.062"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintVertical_bias="0.605"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/sentidoLlegada"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto"
+        android:padding="5dp"
+        android:background="@drawable/bord_suave"
+        android:backgroundTint="#3C5187"
+        android:text="Ver en sentido Llegada"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:textColor="#ffffff"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/map"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.064"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sentidoSubida"
+        app:layout_constraintVertical_bias="0.0"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/verDistancia"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto"
+        android:padding="5dp"
+        android:background="@drawable/bord_suave"
+        android:backgroundTint="#3C5187"
+        android:text="Ver Distancia a recorrido ruta"
+        android:textAllCaps="false"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/map"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.923"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintVertical_bias="0.76"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/indicaciones"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#DAFFFFFF"
+        android:backgroundTint="#3C5187"
+        android:padding="3dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textColor="#FAFBFF"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="@+id/map"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.047"
+        android:visibility="gone"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="366dp" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/configuraciones"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="50dp"
+        android:background="@drawable/bord_suave"
+        android:backgroundTint="#ffffff"
+        android:elevation="500dp"
+        app:cardCornerRadius="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.26999998"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="30dp"
+                android:gravity="start"
+                android:text="Cambiar la condiguración inicial del mapa"
+                android:textSize="16sp" />
+
+            <Spinner
+                android:id="@+id/opciones_tipo_mapa"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                android:entries="@array/opciones_array" />
+
+            <CheckBox
+                android:id="@+id/opcion_trafico"
+                android:layout_width="match_parent"
+                android:checked="false"
+                android:layout_height="match_parent"
+                android:text="Ver Trafico" />
+
+            <Button
+                android:id="@+id/guardar_ajustes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="20dp"
+                android:textColor="#ffffff"
+                android:background="@drawable/bord_suave"
+                android:backgroundTint="#3C5187"
+                android:text="Aceptar" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

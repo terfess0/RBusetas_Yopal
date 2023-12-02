@@ -18,6 +18,7 @@ import android.provider.Settings
 import android.text.Html
 import android.util.Log
 import android.view.View
+import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -26,6 +27,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Granularity
+import com.google.android.gms.location.LocationListener
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
@@ -35,32 +37,33 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.Circle
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
-import com.terfess.busetasyopal.databinding.ActivityMapaBinding
+import com.terfess.busetasyopal.databinding.PantMapaBinding
 
 
-class Mapa : AppCompatActivity(), OnMapReadyCallback {
-    private lateinit var binding: ActivityMapaBinding
+class Mapa : AppCompatActivity(), LocationListener,
+    ActivityCompat.OnRequestPermissionsResultCallback, OnMapReadyCallback {
+    private lateinit var binding: PantMapaBinding
     private lateinit var gmap: GoogleMap
     private var contexto = this
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var idruta: Int = 0
     private var networkCallback = ConnectivityManager.NetworkCallback()
     private val tiempos = Handler(Looper.getMainLooper())
+    private var puntoProvisionalGps : Circle? = null
 
 
     companion object { //accesibles desde cualquier lugar de este archivo/clase y proyectos
         const val codigoLocalizacion = 0
+        var ubiUser = LatLng(0.0, 0.0)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMapaBinding.inflate(layoutInflater)
+        binding = PantMapaBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         //mapa
@@ -99,7 +102,7 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
         val infoSalida = "<font color='${getColor(R.color.recorridoIda)}' >Azul</font>"
         val infoLlegada = "<font color='${getColor(R.color.recorridoVuelta)}' >Rojo</font>"
         binding.infoColor.text = Html.fromHtml(
-            " Ruta Salida: $infoSalida <br> Ruta Llegada: $infoLlegada <br> Parqueadero:",
+            " Ruta Salida: $infoSalida <br> Ruta Llegada: $infoLlegada",
             Html.FROM_HTML_MODE_LEGACY
         )
         //estado de conexion
@@ -121,21 +124,17 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
         connectivityManager.registerDefaultNetworkCallback(networkCallback)
 
         //Cuando se calcule la ruta
-        if (idruta == 0){
+        if (idruta == 0) {
             binding.infoColor.visibility = View.GONE
-            binding.parqueadero.visibility = View.GONE
+            //binding.parqueadero.visibility = View.GONE
         }
     }
 
     override fun onMapReady(mapa: GoogleMap) {
         gmap = mapa
+
         //getRutasCreadas = RutaBasic.ruta //usar el gmap para mandarlo a RutaBasic
 
-        //agregar json para quitar marcadores naturales de google map
-        /*val resourceId = R.string.style_json
-        val jsonString = getString(resourceId)
-        val mapStyleJson = JSONObject(jsonString)
-        gmap.setMapStyle(MapStyleOptions(mapStyleJson.toString()))*/
 
         //establecer nivel de zoom maximo
         //impedir renderizado de cuadros casas
@@ -167,6 +166,76 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
         }
 
         supportActionBar?.title = "Mapa con Recorrido de Ruta $idruta"  //titulo actionbar
+
+        //botones verdistancia y calcular punto cercano
+        binding.verDistancia.setOnClickListener {
+            binding.verDistancia.visibility = View.GONE
+            binding.sentidoSubida.visibility = View.VISIBLE
+            binding.sentidoLlegada.visibility = View.VISIBLE
+            RutaBasic.CreatRuta.estamarcado1 = false
+            RutaBasic.CreatRuta.estamarcado2 = false
+        }
+        binding.sentidoSubida.setOnClickListener {
+            if (RutaBasic.CreatRuta.estamarcado1 == false) {
+                calcularDistancia("salida")
+                mostrarIndicaciones()
+            }
+        }
+        binding.sentidoLlegada.setOnClickListener {
+            if (RutaBasic.CreatRuta.estamarcado2 == false) {
+                calcularDistancia("llegada")
+                mostrarIndicaciones()
+            }
+        }
+
+        //botones cambiar ajustes del mapa -----------------------------------------------
+        binding.ajustes.setOnClickListener {
+            if (binding.configuraciones.visibility != View.VISIBLE){
+                binding.configuraciones.visibility = View.VISIBLE
+                binding.ajustes.visibility = View.GONE
+            }
+        }
+        binding.opcionesTipoMapa.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                when (parent?.getItemAtPosition(position).toString()){
+                    "Mapa Normal" -> {
+                        gmap.mapType = GoogleMap.MAP_TYPE_NORMAL
+                    }
+                    "Mapa Hybrido" -> {
+                        gmap.mapType = GoogleMap.MAP_TYPE_HYBRID
+                    }
+                    "Mapa Satelital" -> {
+                        gmap.mapType = GoogleMap.MAP_TYPE_SATELLITE
+                    }
+                    "Mapa Relieve" -> {
+                        gmap.mapType = GoogleMap.MAP_TYPE_TERRAIN
+                    }
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                gmap.mapType = GoogleMap.MAP_TYPE_NORMAL
+            }
+
+        }
+        binding.opcionTrafico.setOnCheckedChangeListener { _, isChecked ->
+            // Acciones a realizar cuando el estado del CheckBox cambia
+            if (isChecked) {
+                gmap.isTrafficEnabled = true
+            }else{
+                gmap.isTrafficEnabled = false
+            }
+        }
+        binding.guardarAjustes.setOnClickListener {
+            binding.configuraciones.visibility = View.GONE
+            binding.ajustes.visibility = View.VISIBLE
+        }
+
     }
 
     private fun selector() {
@@ -271,7 +340,7 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
                     if (e is ResolvableApiException) {
                         try {
                             e.startResolutionForResult(this, 1)
-                            binding.irgps.setImageResource(R.drawable.gps)
+                            binding.irgps.setImageResource(R.drawable.ic_progress_gps)
                             irPosGps()
                         } catch (sendEx: IntentSender.SendIntentException) {
                             // Error al intentar abrir la configuración de ubicación
@@ -315,24 +384,31 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
             // Verifica si la ubicación no es nula
             if (location != null) {
                 val latLng = LatLng(location.latitude, location.longitude)
+                binding.irgps.setImageResource(R.drawable.ic_gps_find)
                 gmap.animateCamera(CameraUpdateFactory.newLatLngZoom((latLng), 16.5f), 3000, null)
-                binding.irgps.setImageResource(R.drawable.gps_find)
-                RutaBasic(contexto, gmap).rutaMasCerca(latLng)
-
+                ubiUser = latLng
+                if (binding.sentidoSubida.visibility != View.VISIBLE) {
+                    binding.verDistancia.visibility = View.VISIBLE
+                }
                 //marcador en ubi de respaldo
-                val accuracyRadius = 15.0  // Cambia esto con la precisión real
-                val userCircle = gmap.addCircle(
-                    CircleOptions()
-                        .center(latLng)
-                        .radius(accuracyRadius)
-                        .strokeWidth(1f)  // Sin borde
-                        .fillColor(0x5500ff66)
-                )
+                val accuracyRadius = 14.0  // Cambia esto con la precisión real
+                val opcionesCirculo = CircleOptions()
+                    .center(latLng)
+                    .radius(accuracyRadius)
+                    .strokeWidth(1f)
+                    .fillColor(0x55ff00ff)
+                puntoProvisionalGps = if (puntoProvisionalGps == null){
+                    gmap.addCircle(opcionesCirculo)
+                }else{
+                    puntoProvisionalGps?.remove()
+                    gmap.addCircle(opcionesCirculo)
+                }
             } else {
                 irPosGps()
             }
         }
     }
+
 
     //verificar si tiene permiso de ubicacion
     private fun permisoUbiCondecido() =
@@ -428,7 +504,7 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
             alertDialog.setTitle("Activar GPS sin conexión")
             alertDialog.setMessage("El dispositivo no tiene conexión a internet, ¿Desea activar el gps del dispositivo que funciona sin internet?")
             alertDialog.setPositiveButton("Si") { _, _ ->
-                binding.irgps.setImageResource(R.drawable.gps)
+                binding.irgps.setImageResource(R.drawable.ic_progress_gps)
                 val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                 startActivity(intent)
             }
@@ -440,10 +516,35 @@ class Mapa : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
+    private fun calcularDistancia(sentido: String) {
+        val defecto = LatLng(0.0, 0.0)
+        if (ubiUser != defecto) {
+            RutaBasic(contexto, this.gmap).rutaMasCerca(ubiUser, sentido)
+        } else {
+            activarLocalizacion()
+            irPosGps()
+        }
+
+    }
+
+    private fun mostrarIndicaciones() {
+        val metros = RutaBasic.CreatRuta.masCortaInicio[1]
+        val punto = RutaBasic.CreatRuta.masCortaInicio[0]
+        binding.indicaciones.visibility = View.VISIBLE
+        binding.indicaciones.text = "Camina $metros m hasta el punto $punto marcado con el icono."
+
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         val connectivityManager =
             getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         connectivityManager.unregisterNetworkCallback(networkCallback)
+    }
+
+    override fun onLocationChanged(p0: Location) {
+        val ubiGps = LatLng(p0.latitude, p0.longitude)
+        gmap.animateCamera(CameraUpdateFactory.newLatLngZoom(ubiGps, 20f), 3000, null)
+        irPosGps()
     }
 }

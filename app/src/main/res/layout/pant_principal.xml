@@ -45,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_margin="10dp"
-        android:background="@drawable/bord_suave"
+        android:background="@drawable/bord_cabecera"
         android:backgroundTint="#2196F3"
         app:layout_constraintBottom_toBottomOf="@+id/saludo"
         app:layout_constraintTop_toBottomOf="@+id/saludo">
