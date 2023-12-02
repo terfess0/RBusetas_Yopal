@@ -7,5 +7,8 @@
     <color name="fondoLeyenda">#ABFFFFFF</color>
     <color name="RutaEnServicio">#D54CEA09</color>
     <color name="RutaFueraServicio">#2C2E2B</color>
-    <color name="RutaCalculada">#00FFC4</color>
+    <color name="RutaCalculada">#903E92</color>
+    <color name="rojo">#A60000</color>
+    <color name="azul">#012B75</color>
+    <color name="verde">#0E7E0B</color>
 </resources>

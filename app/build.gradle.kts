@@ -50,7 +50,8 @@ dependencies {
     implementation("com.google.maps.android:android-maps-utils:2.3.0")//maps
     implementation("com.google.android.gms:play-services-maps:18.1.0")//maps
     implementation("com.google.maps.android:maps-utils-ktx:3.4.0") //maps
-    implementation("com.google.android.gms:play-services-location:21.0.1") //maps
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation("androidx.cardview:cardview:1.0.0") //maps
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -62,9 +63,7 @@ dependencies {
     implementation("com.google.firebase:firebase-database-ktx")
 
     //api google places
-    implementation("com.google.android.libraries.places:places:3.2.0")
-
-
+    implementation("com.google.android.libraries.places:places:3.3.0")
 
 }
 
