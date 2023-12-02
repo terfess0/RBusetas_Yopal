@@ -1,105 +1,96 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:foreground="?android:attr/selectableItemBackground"
     android:id="@+id/contenedor"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
+    android:layout_marginStart="10dp"
     android:layout_marginTop="10dp"
-    android:layout_marginRight="10dp"
-    android:background="@drawable/bordes_contenedores"
-    android:minHeight="120dp">
+    android:layout_marginEnd="10dp"
+    android:background="@drawable/bordes_contenedores">
 
     <TextView
         android:id="@+id/numRuta"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_margin="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:fontFamily="More Fonts..."
         android:gravity="center"
-        android:minWidth="20dp"
         android:text="TextView"
         android:textColor="#333333"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.476" />
+        app:layout_constraintEnd_toStartOf="@+id/sitios"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"/>
 
     <TextView
         android:id="@+id/sitios"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:background="#00FFFFFF"
         android:fontFamily="More Fonts..."
         android:text="@string/textview"
         android:textColor="#333333"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/numRuta"
-        app:layout_constraintTop_toBottomOf="@+id/contenedorHor" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2" />
 
     <LinearLayout
         android:id="@+id/contenedorHor"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/numRuta"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.032">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guideline2">
 
         <TextView
             android:id="@+id/horarioLV"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
+            android:layout_weight="1"
             android:fontFamily="More Fonts..."
             android:gravity="center"
             android:textColor="#333333"
-            android:textSize="11sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/numRuta"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.25" />
+            android:textSize="11sp" />
 
         <TextView
             android:id="@+id/horarioS"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
+            android:layout_weight="1"
             android:fontFamily="More Fonts..."
             android:gravity="center"
             android:textColor="#333333"
-            android:textSize="11sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/horarioLV"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.238" />
+            android:textSize="11sp" />
 
         <TextView
             android:id="@+id/horarioDF"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
+            android:layout_weight="1"
             android:fontFamily="More Fonts..."
             android:gravity="center"
             android:textColor="#333333"
-            android:textSize="11sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.772"
-            app:layout_constraintStart_toEndOf="@+id/horarioS"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.216" />
+            android:textSize="11sp" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.Guideline
@@ -107,6 +98,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="38dp" />
+        app:layout_constraintGuide_percent="0.5645161"
+        app:layout_constraintTop_toBottomOf="@+id/sitios" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
