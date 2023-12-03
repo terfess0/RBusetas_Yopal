@@ -1,4 +1,6 @@
-package com.terfess.busetasyopal
+package com.terfess.busetasyopal.listas_datos
+
+import com.terfess.busetasyopal.modelos_dato.DatoHorario
 
 
 class ListaHorarios {

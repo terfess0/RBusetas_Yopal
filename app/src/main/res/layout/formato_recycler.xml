@@ -1,6 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:foreground="?android:attr/selectableItemBackground"
     android:id="@+id/contenedor"
     android:layout_width="match_parent"
@@ -19,7 +21,6 @@
         android:layout_marginEnd="8dp"
         android:fontFamily="More Fonts..."
         android:gravity="center"
-        android:text="TextView"
         android:textColor="#333333"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -48,7 +49,7 @@
 
     <LinearLayout
         android:id="@+id/contenedorHor"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
@@ -98,7 +99,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5645161"
-        app:layout_constraintTop_toBottomOf="@+id/sitios" />
+        app:layout_constraintGuide_percent="0.5645161" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

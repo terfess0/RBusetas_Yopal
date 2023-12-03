@@ -1,4 +1,4 @@
-package com.terfess.busetasyopal
+package com.terfess.busetasyopal.actividades
 
 import android.content.Context
 import android.content.Intent
@@ -18,8 +18,10 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.terfess.busetasyopal.R
+import com.terfess.busetasyopal.RutasAdapter
 import com.terfess.busetasyopal.databinding.PantPrincipalBinding
-import com.terfess.rutasbusetas.ListaRutas
+import com.terfess.busetasyopal.listas_datos.ListaRutas
 import java.util.Calendar
 
 class RutasSeccion : AppCompatActivity() {
@@ -27,6 +29,7 @@ class RutasSeccion : AppCompatActivity() {
     private var filtrando = false
     private lateinit var db: DatabaseReference
     private var precio: String = " $2,000"
+    private var mensaje_controlado: String? = null
     private val adapter = RutasAdapter(ListaRutas.busetaRuta.toList())
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +62,27 @@ class RutasSeccion : AppCompatActivity() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     precio = snapshot.value.toString()
                     binding.precio.text = precio
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(binding.root.context, "El precio no se pudo recibir desde internet",Toast.LENGTH_SHORT).show()
+                }
+            })
+
+        //mensaje controlado en vivo base datos
+        if (mensaje_controlado == null){
+            binding.mensajeControlado.visibility = View.GONE
+        }
+        FirebaseDatabase.getInstance().getReference("/features/0/mensaje")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val mensaje = snapshot.value.toString()
+                    if (mensaje != "null"){
+                        binding.mensajeControlado.visibility = View.VISIBLE
+                        binding.mensajeControlado.text = mensaje
+                    }else{
+                        binding.mensajeControlado.visibility = View.GONE
+                    }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -124,7 +148,8 @@ class RutasSeccion : AppCompatActivity() {
             }
 
             R.id.acercade -> {
-                Toast.makeText(this, "Falta Codificar", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, AcercaDe::class.java)
+                startActivity(intent)
             }
         }
         return true

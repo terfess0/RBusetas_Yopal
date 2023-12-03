@@ -1,8 +1,8 @@
-package com.terfess.busetasyopal
+package com.terfess.busetasyopal.modelos_dato
 
 import com.google.android.gms.maps.model.LatLng
 
 data class DatosSegundariosRuta(
-    val TotalPuntos:List<LatLng>,
+    val totalPuntos:List<LatLng>,
     val idTrazo:Int
 )

@@ -6,9 +6,14 @@ import android.content.Intent
 import android.text.Html
 import android.text.Html.FROM_HTML_MODE_LEGACY
 import android.view.View
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.terfess.busetasyopal.actividades.Mapa
+import com.terfess.busetasyopal.clases_utiles.RangoHorarios
 import com.terfess.busetasyopal.databinding.FormatoRecyclerBinding
-import com.terfess.busetasyopal.databinding.PantPrincipalBinding
+import com.terfess.busetasyopal.listas_datos.ListaHorarios
+import com.terfess.busetasyopal.modelos_dato.DatoHorario
+import com.terfess.busetasyopal.modelos_dato.DatosPrimariosRuta
 
 class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
     private val binding = FormatoRecyclerBinding.bind(vista)
@@ -101,6 +106,16 @@ class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
             "<font color='$colorSab'><b>Sabados</b></font> <br> <font color='$rutaEnServicioSab'>${dato.horSab}<br>${dato.frecSab}</font>"
         val horDom =
             "<font color='$colorDom'><b>Domingos y Festivos</b></font> <br> <font color='$rutaEnServicioDom'>${dato.horDomFest}<br>${dato.frecDomFest}</font>"
+
+        if (colorDia == "#2196F3"){
+            binding.contenedorHor.visibility = View.GONE
+            binding.guideline2.setGuidelinePercent(1.0f)//se establece porcentage de 100% para que se adapte bien al contenido
+
+        }else{
+            binding.contenedorHor.visibility = View.VISIBLE
+            binding.guideline2.setGuidelinePercent(0.56f)//se establece porcentage por defecto 56% para que siga adaptandose
+
+        }
 
         binding.numRuta.text = ruta
         binding.sitios.text = Html.fromHtml(sitios, FROM_HTML_MODE_LEGACY)

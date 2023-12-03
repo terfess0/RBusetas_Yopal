@@ -1,4 +1,4 @@
-package com.terfess.busetasyopal
+package com.terfess.busetasyopal.modelos_dato
 
 data class DatoHorario (
     val numRuta:Int,

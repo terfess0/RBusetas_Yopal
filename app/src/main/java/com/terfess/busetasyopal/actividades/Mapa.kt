@@ -1,4 +1,4 @@
-package com.terfess.busetasyopal
+package com.terfess.busetasyopal.actividades
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -41,6 +41,8 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.Circle
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
+import com.terfess.busetasyopal.R
+import com.terfess.busetasyopal.clases_utiles.RutaBasic
 import com.terfess.busetasyopal.databinding.PantMapaBinding
 
 
@@ -531,7 +533,7 @@ class Mapa : AppCompatActivity(), LocationListener,
         val metros = RutaBasic.CreatRuta.masCortaInicio[1]
         val punto = RutaBasic.CreatRuta.masCortaInicio[0]
         binding.indicaciones.visibility = View.VISIBLE
-        binding.indicaciones.text = "Camina $metros m hasta el punto $punto marcado con el icono."
+        "Camina $metros m hasta el punto $punto marcado con el icono.".also { binding.indicaciones.text = it }
 
     }
 

@@ -1,6 +1,6 @@
-package com.terfess.rutasbusetas
+package com.terfess.busetasyopal.listas_datos
 
-import com.terfess.busetasyopal.DatosPrimariosRuta
+import com.terfess.busetasyopal.modelos_dato.DatosPrimariosRuta
 
 
 class ListaRutas {

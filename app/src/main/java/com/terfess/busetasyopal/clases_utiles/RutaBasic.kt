@@ -1,4 +1,4 @@
-package com.terfess.busetasyopal
+package com.terfess.busetasyopal.clases_utiles
 
 import android.content.Context
 import android.widget.Toast
@@ -15,22 +15,21 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import android.location.Location
-import androidx.appcompat.app.AlertDialog
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.Polyline
-import com.terfess.busetasyopal.RutaBasic.CreatRuta.estamarcado1
-import com.terfess.busetasyopal.RutaBasic.CreatRuta.estamarcado2
-import com.terfess.busetasyopal.RutaBasic.CreatRuta.marcador1
-import com.terfess.busetasyopal.RutaBasic.CreatRuta.marcador2
-import com.terfess.busetasyopal.RutaBasic.CreatRuta.masCortaInicio
-import com.terfess.busetasyopal.RutaBasic.CreatRuta.polyCalculada
-import com.terfess.busetasyopal.RutaBasic.CreatRuta.polyLlegada
-import com.terfess.busetasyopal.RutaBasic.CreatRuta.polySalida
-import com.terfess.busetasyopal.RutaBasic.CreatRuta.puntosCalculada
-import com.terfess.busetasyopal.RutaBasic.CreatRuta.puntosLlegada
-import com.terfess.busetasyopal.RutaBasic.CreatRuta.puntosSalida
+import com.terfess.busetasyopal.R
+import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.estamarcado1
+import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.estamarcado2
+import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.marcador1
+import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.marcador2
+import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.masCortaInicio
+import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.polyCalculada
+import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.polyLlegada
+import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.polySalida
+import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.puntosCalculada
+import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.puntosLlegada
+import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.puntosSalida
 
 
 class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
@@ -55,8 +54,8 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
         //declarar los marcadores posibles para poder trabajarlos mejor
         var marcador1: Marker? = null
         var marcador2: Marker? = null
-        var estamarcado1 : Boolean? = null
-        var estamarcado2 : Boolean? = null
+        var estamarcado1: Boolean? = null
+        var estamarcado2: Boolean? = null
     }
 
     fun crearRuta(path1parte: String, path2parte: String, idruta: Int) {
@@ -185,7 +184,7 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
                 estamarcado2 = if (estamarcado2 == true) {
                     marcador2?.remove()
                     false
-                }else{
+                } else {
                     false
                 }
             } else if (sentido == "llegada") {
@@ -195,7 +194,7 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
                 estamarcado1 = if (estamarcado1 == true) {
                     marcador1?.remove()
                     false
-                }else{
+                } else {
                     false
                 }
             }
@@ -218,8 +217,7 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
 
                 //se coloca un marcador en la estacion cercana
                 marcador1 = agregarMarcador(
-                    puntos1[masCortaInicio[0]],
-                    "Punto más Cercano"
+                    puntos1[masCortaInicio[0]]
                 )
                 estamarcado1 = true
                 //mueve la camara al marcador de estacion cercana
@@ -246,8 +244,7 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
 
                 //se coloca un marcador en la estacion cercana
                 marcador2 = agregarMarcador(
-                    puntos2[masCortaInicio[0]],
-                    "Punto más Cercano"
+                    puntos2[masCortaInicio[0]]
                 )
                 estamarcado2 = true
 
@@ -333,7 +330,7 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
         return puntoMasCerca
     }
 
-    private fun crearAlerta(mensaje: String, op1: String, op2: String): Boolean {
+    /*private fun crearAlerta(mensaje: String, op1: String, op2: String): Boolean {
         val builder = AlertDialog.Builder(this.mapa)
         var respuesta = false
         builder.setMessage(mensaje)
@@ -346,7 +343,7 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
         val dialog = builder.create()
         dialog.show()
         return respuesta
-    }
+    }*/
 
     private fun limpiarPolylines() {
         puntosSalida.clear()
@@ -354,10 +351,10 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
         polylineOptions.points.clear()
     }
 
-    fun agregarMarcador(punto: LatLng, titulo: String): Marker? {
+    private fun agregarMarcador(punto: LatLng): Marker? {
         val opcionesMarcador = MarkerOptions()
             .position(punto)
-            .title(titulo)
+            .title("Punto mas cercano")
         return gmap.addMarker(opcionesMarcador)
     }
 
