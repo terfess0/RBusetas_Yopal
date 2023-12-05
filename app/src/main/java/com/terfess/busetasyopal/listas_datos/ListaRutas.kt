@@ -13,9 +13,9 @@ class ListaRutas {
                 "Cada 8 minutos",
                 "Cada 8 minutos",
                 "Cada 10 minutos",
-                "4:44 am - 8:00 pm",
-                "4:55 am - 7:30 pm",
-                "4:55 am - 7:00 pm"
+                "4:52 am - 6:30 pm",
+                "4:52 am - 6:20 pm",
+                "5:20 am - 6:00 pm"
             ),
             DatosPrimariosRuta(
                 3,
@@ -23,9 +23,9 @@ class ListaRutas {
                 "Cada 8 minutos",
                 "Cada 8 minutos",
                 "Cada 10 minutos",
-                "5:08 am - 7:00 pm",
-                "5:30 am - 7:00 pm",
-                "6:00 am - 7:00 pm"
+                "5:15 am - 6:00 pm",
+                "5:00 am - 5:00 pm",
+                "5:00 am - 5:00 pm"
             ),
             DatosPrimariosRuta(
                 6,
@@ -33,9 +33,9 @@ class ListaRutas {
                 "Cada 8 minutos",
                 "Cada 10 minutos",
                 "Cada 12 minutos",
-                "5:26 am - 7:00 pm",
-                "5:40 am - 7:00 pm",
-                "6:00 am - 7:00 pm"
+                "5:30 am - 5:30 pm",
+                "5:30 am - 1:00 pm",
+                "SIN SERVICIO"
 
             ),
             DatosPrimariosRuta(
@@ -44,9 +44,9 @@ class ListaRutas {
                 "Cada 8 minutos",
                 "Cada 8 minutos",
                 "Cada 12 minutos",
-                "7:20 am - 7:00 pm",
-                "5:40 am - 7:00 pm",
-                "6:00 am - 7:00 pm"
+                "5:25 am - 6:00 pm",
+                "6:00 am - 6:00 pm",
+                "6:00 am - 4:00 pm"
             ),
             DatosPrimariosRuta(
                 8,
@@ -54,9 +54,9 @@ class ListaRutas {
                 "Cada 8 minutos",
                 "Cada 10 minutos",
                 "Cada 12 minutos",
-                "5:15 am – 7:00 pm",
-                "5:40 am – 7:00 pm",
-                "6:00 am – 7:00 pm"
+                "5:20 am – 6:00 pm",
+                "5:30 am – 6:00 pm",
+                "6:00 am – 12:00 pm"
             ),
             DatosPrimariosRuta(
                 9,
@@ -64,9 +64,9 @@ class ListaRutas {
                 "Cada 7 minutos",
                 "Cada 8 minutos",
                 "Cada 10 minutos",
-                "5:15 am - 7:00 pm",
-                "5:40 am - 7:00 pm",
-                "6:00 am - 7:00 pm"
+                "5:10 am - 6:30 pm",
+                "5:10 am - 5:30 pm",
+                "6:00 am - 5:00 pm"
             ),
             DatosPrimariosRuta(
                 10,
@@ -74,9 +74,9 @@ class ListaRutas {
                 "Cada 8 minutos",
                 "Cada 10 minutos",
                 "Cada 12 minutos",
-                "5:20 am - 7:00 pm",
-                "5:40 am - 7:00 pm",
-                "6:00 am - 7:00 pm"
+                "5:20 am - 5:00 pm",
+                "6:00 am - 12:00 pm",
+                "SIN SERVICIO"
             ),
             DatosPrimariosRuta(
                 11,
@@ -84,9 +84,9 @@ class ListaRutas {
                 "Cada 8 minutos",
                 "Cada 10 minutos",
                 "Cada 12 minutos",
-                "5:30 am - 7:00 pm",
-                "5:40 am - 7:00 pm",
-                "6:00 am - 7:00 pm"
+                "5:30 am - 5:30 pm",
+                "5:30 am - 5:30 pm",
+                "SIN SERVICIO"
             ),
             DatosPrimariosRuta(
                 13,
@@ -94,9 +94,9 @@ class ListaRutas {
                 "Cada 8 minutos",
                 "Cada 8 minutos",
                 "Cada 10 minutos",
-                "4:40 am - 8:00 pm",
-                "4:50 am - 7:30 pm",
-                "4:50 am - 7:00 pm"
+                "4:58 am - 6:10 pm",
+                "5:30 am - 6:00 pm",
+                "5:30 am -6:00 pm"
             ),
         )
 
@@ -113,9 +113,9 @@ class ListaRutas {
                 "Cada 8 minutos",
                 "Cada 8 minutos",
                 "Cada 10 minutos",
-                "4:44 am - 8:00 pm",
-                "4:55 am - 7:30 pm",
-                "4:55 am - 7:00 pm"
+                "4:52 am - 6:30 pm",
+                "4:52 am - 6:20 pm",
+                "5:20 am - 6:00 pm"
             ),
             DatosPrimariosRuta(
                 3,
@@ -124,9 +124,9 @@ class ListaRutas {
                 "Cada 8 minutos",
                 "Cada 8 minutos",
                 "Cada 10 minutos",
-                "5:08 am - 7:00 pm",
-                "5:30 am - 7:00 pm",
-                "6:00 am - 7:00 pm"
+                "5:15 am - 6:00 pm",
+                "5:00 am - 5:00 pm",
+                "5:00 am - 5:00 pm"
             ),
             /*DatosPrimariosRuta(4, "Sin sitios---","---","---","---","---","---","---"),
             DatosPrimariosRuta(
@@ -139,9 +139,9 @@ class ListaRutas {
                 "Cada 8 minutos",
                 "Cada 10 minutos",
                 "Cada 12 minutos",
-                "5:26 am - 7:00 pm",
-                "5:40 am - 7:00 pm",
-                "6:00 am - 7:00 pm"
+                "5:30 am - 5:30 pm",
+                "5:30 am - 1:00 pm",
+                "SIN SERVICIO"
 
             ),
             DatosPrimariosRuta(
@@ -150,9 +150,9 @@ class ListaRutas {
                 "Cada 8 minutos",
                 "Cada 8 minutos",
                 "Cada 12 minutos",
-                "7:20 am - 7:00 pm",
-                "5:40 am - 7:00 pm",
-                "6:00 am - 7:00 pm"
+                "5:25 am - 6:00 pm",
+                "6:00 am - 6:00 pm",
+                "6:00 am - 4:00 pm"
 
             ),
             DatosPrimariosRuta(
@@ -161,9 +161,9 @@ class ListaRutas {
                 "Cada 8 minutos",
                 "Cada 10 minutos",
                 "Cada 12 minutos",
-                "5:15 am – 7:00 pm",
-                "5:40 am – 7:00 pm",
-                "6:00 am – 7:00 pm"
+                "5:20 am – 6:00 pm",
+                "5:30 am – 6:00 pm",
+                "6:00 am – 12:00 pm"
             ),
             DatosPrimariosRuta(
                 9,
@@ -171,9 +171,9 @@ class ListaRutas {
                 "Cada 7 minutos",
                 "Cada 8 minutos",
                 "Cada 10 minutos",
-                "5:15 am - 7:00 pm",
-                "5:40 am - 7:00 pm",
-                "6:00 am - 7:00 pm"
+                "5:10 am - 6:30 pm",
+                "5:10 am - 5:30 pm",
+                "6:00 am - 5:00 pm"
             ),
             DatosPrimariosRuta(
                 10,
@@ -181,9 +181,9 @@ class ListaRutas {
                 "Cada 8 minutos",
                 "Cada 10 minutos",
                 "Cada 12 minutos",
-                "5:20 am - 7:00 pm",
-                "5:40 am - 7:00 pm",
-                "6:00 am - 7:00 pm"
+                "5:20 am - 5:00 pm",
+                "6:00 am - 12:00 pm",
+                "SIN SERVICIO"
             ),
             DatosPrimariosRuta(
                 11,
@@ -191,9 +191,9 @@ class ListaRutas {
                 "Cada 8 minutos",
                 "Cada 10 minutos",
                 "Cada 12 minutos",
-                "5:30 am - 7:00 pm",
-                "5:40 am - 7:00 pm",
-                "6:00 am - 7:00 pm"
+                "5:30 am - 5:30 pm",
+                "5:30 am - 5:30 pm",
+                "SIN SERVICIO"
             ),
             /*DatosPrimariosRuta(12, "Sin sitios---","---","---","---","---","---","---"),*/
             DatosPrimariosRuta(
@@ -201,9 +201,9 @@ class ListaRutas {
                 "Cada 8 minutos",
                 "Cada 8 minutos",
                 "Cada 10 minutos",
-                "4:40 am - 8:00 pm",
-                "4:50 am - 7:30 pm",
-                "4:50 am - 7:00 pm"
+                "4:58 am - 6:10 pm",
+                "5:30 am - 6:00 pm",
+                "5:30 am -6:00 pm"
             ),
         )
     }
