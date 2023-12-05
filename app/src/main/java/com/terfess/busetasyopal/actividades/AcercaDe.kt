@@ -5,13 +5,23 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
+import com.google.android.gms.maps.model.LatLng
+import com.terfess.busetasyopal.DatosDeFirebase
 import com.terfess.busetasyopal.R
+import com.terfess.busetasyopal.allDatosRutas
 import java.net.URLEncoder
 
 class AcercaDe : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.acerca_de)
+
+        DatosDeFirebase().descargarInformacion(object : allDatosRutas {
+            override fun todosDatosRecibidos(listaCoorPrimParte: MutableList<List<LatLng>>) {
+                println("TERMINADO")
+            }
+
+        })
 
         val whatsappConeccion = findViewById<ImageButton>(R.id.contc_wts)
         val mailConection = findViewById<ImageButton>(R.id.contc_mail)
