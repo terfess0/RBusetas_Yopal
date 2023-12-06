@@ -6,9 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
 import com.google.android.gms.maps.model.LatLng
-import com.terfess.busetasyopal.DatosDeFirebase
+import com.terfess.busetasyopal.clases_utiles.DatosDeFirebase
 import com.terfess.busetasyopal.R
-import com.terfess.busetasyopal.allDatosRutas
+import com.terfess.busetasyopal.clases_utiles.allDatosRutas
 import java.net.URLEncoder
 
 class AcercaDe : AppCompatActivity() {

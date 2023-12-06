@@ -1,4 +1,4 @@
-package com.terfess.busetasyopal
+package com.terfess.busetasyopal.clases_utiles
 
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.DataSnapshot
