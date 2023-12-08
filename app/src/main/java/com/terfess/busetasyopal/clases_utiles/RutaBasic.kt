@@ -217,14 +217,15 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
 
                 //se coloca un marcador en la estacion cercana
                 marcador1 = agregarMarcador(
-                    puntos1[masCortaInicio[0]]
+                    puntos1[masCortaInicio[0]],
+                    R.drawable.ic_estacion
                 )
                 estamarcado1 = true
                 //mueve la camara al marcador de estacion cercana
                 gmap.animateCamera(
                     CameraUpdateFactory.newLatLngZoom(
                         puntos1[masCortaInicio[0]],
-                        15.8f
+                        17f
                     ), 3000, null
                 )
 
@@ -244,7 +245,8 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
 
                 //se coloca un marcador en la estacion cercana
                 marcador2 = agregarMarcador(
-                    puntos2[masCortaInicio[0]]
+                    puntos2[masCortaInicio[0]],
+                    R.drawable.ic_estacion
                 )
                 estamarcado2 = true
 
@@ -252,7 +254,7 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
                 gmap.animateCamera(
                     CameraUpdateFactory.newLatLngZoom(
                         puntos2[masCortaInicio[0]],
-                        15.8f
+                        17f
                     ), 3000, null
                 )
 
@@ -351,9 +353,9 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
         polylineOptions.points.clear()
     }
 
-    private fun agregarMarcador(punto: LatLng): Marker? {
+    private fun agregarMarcador(punto: LatLng, icono:Int): Marker? {
         val opcionesMarcador = MarkerOptions()
-            .position(punto)
+            .position(punto).icon(BitmapDescriptorFactory.fromResource(icono))
             .title("Punto mas cercano")
         return gmap.addMarker(opcionesMarcador)
     }

@@ -6,10 +6,10 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-interface DatosDeFirebaseCallback {
+interface DatosDeFirebaseCallback { //callback para detectar que los datos de una ruta han sido recibidos
     fun onDatosRecibidos(listaCoorPrimParte: MutableList<LatLng>, listaCoorSegParte: MutableList<LatLng>)
 }
-interface allDatosRutas{
+interface allDatosRutas{ //callback para detectar que los datos de todas las rutas han sido recibidos
     fun todosDatosRecibidos(listaCoorPrimParte: MutableList<List<LatLng>>)
 }
 
