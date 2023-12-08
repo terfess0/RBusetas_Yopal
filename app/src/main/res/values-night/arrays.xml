@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="opciones_array" />
+
+    <array name="opciones_array">
+        <item>Mapa Normal</item>
+        <item>Mapa Hybrido</item>
+        <item>Mapa Satelital</item>
+        <item>Mapa Relieve</item>
+    </array>
+
 </resources>

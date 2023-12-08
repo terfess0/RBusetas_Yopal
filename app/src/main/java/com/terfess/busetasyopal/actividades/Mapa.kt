@@ -195,6 +195,7 @@ class Mapa : AppCompatActivity(), LocationListener,
             if (binding.configuraciones.visibility != View.VISIBLE){
                 binding.configuraciones.visibility = View.VISIBLE
                 binding.ajustes.visibility = View.GONE
+                binding.irgps.visibility = View.GONE
             }
         }
         binding.opcionesTipoMapa.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
@@ -236,6 +237,7 @@ class Mapa : AppCompatActivity(), LocationListener,
         binding.guardarAjustes.setOnClickListener {
             binding.configuraciones.visibility = View.GONE
             binding.ajustes.visibility = View.VISIBLE
+            binding.irgps.visibility = View.VISIBLE
         }
 
     }

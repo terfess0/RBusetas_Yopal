@@ -210,7 +210,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.26999998"
-        android:visibility="gone">
+        android:visibility="gone" >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -231,7 +231,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="10dp"
-                android:entries="@array/opciones_array" />
+                android:entries="@array/opciones_array"
+                android:spinnerMode="dropdown" />
 
             <CheckBox
                 android:id="@+id/opcion_trafico"
