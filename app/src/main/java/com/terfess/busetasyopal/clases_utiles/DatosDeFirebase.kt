@@ -1,23 +1,29 @@
 package com.terfess.busetasyopal.clases_utiles
 
+import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.terfess.busetasyopal.modelos_dato.EstructuraDatosBaseDatos
 
 interface DatosDeFirebaseCallback { //callback para detectar que los datos de una ruta han sido recibidos
-    fun onDatosRecibidos(listaCoorPrimParte: MutableList<LatLng>, listaCoorSegParte: MutableList<LatLng>)
+    fun onDatosRecibidos(
+        listaCoorPrimParte: MutableList<LatLng>,
+        listaCoorSegParte: MutableList<LatLng>
+    )
 }
-interface allDatosRutas{ //callback para detectar que los datos de todas las rutas han sido recibidos
-    fun todosDatosRecibidos(listaCoorPrimParte: MutableList<List<LatLng>>)
+
+interface allDatosRutas { //callback para detectar que los datos de todas las rutas han sido recibidos
+    fun todosDatosRecibidos(listaCompleta: MutableList<EstructuraDatosBaseDatos>)
 }
 
 class DatosDeFirebase {
 
     private var baseDatosFirebaseDatabase = FirebaseDatabase.getInstance()
 
-    fun recibirCoorPrimeraParte(idruta: Int, callback: DatosDeFirebaseCallback) {
+    fun recibirCoordenadasRuta(idruta: Int, callback: DatosDeFirebaseCallback) {
         val listaCoorPrimParte = mutableListOf<LatLng>()
 
         baseDatosFirebaseDatabase.getReference("features/0/rutas/$idruta/salida")
@@ -34,7 +40,10 @@ class DatosDeFirebase {
                         listaCoorPrimParte.add(ubicacion)
                     }
                     // Llamamos al método callback cuando los datos están listos
-                    callback.onDatosRecibidos(listaCoorPrimParte, mutableListOf())//se reemplaza el faltante con lista vacia
+                    callback.onDatosRecibidos(
+                        listaCoorPrimParte,
+                        mutableListOf()
+                    )//se reemplaza el faltante con lista vacia
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
@@ -70,19 +79,34 @@ class DatosDeFirebase {
     }
 
 
-    fun descargarInformacion(callback: allDatosRutas, index: Int = 0, listaCompleta: MutableList<List<LatLng>> = mutableListOf()) {
+    fun descargarInformacion(
+        callback: allDatosRutas,
+        listaCompleta: MutableList<EstructuraDatosBaseDatos> = mutableListOf()
+    ) {
         val idRuta = intArrayOf(2, 3, 6, 7, 8, 9, 10, 11, 13)
-        if (index < idRuta.size) {
-            recibirCoorPrimeraParte(idRuta[index], object : DatosDeFirebaseCallback {
-                override fun onDatosRecibidos(listaCoorPrimParte: MutableList<LatLng>, listaCoorSegParte: MutableList<LatLng>) {
-                    val listaUnida = listaCoorPrimParte + listaCoorSegParte
-                    println("Datos recibidos para ruta ${idRuta[index]}")
-                    listaCompleta.add(listaUnida)
-                    descargarInformacion(callback, index + 1, listaCompleta)
+
+        for (index in idRuta.indices) {
+            recibirCoordenadasRuta(idRuta[index], object : DatosDeFirebaseCallback {
+                override fun onDatosRecibidos(
+                    listaCoorPrimParte: MutableList<LatLng>,
+                    listaCoorSegParte: MutableList<LatLng>
+                ) {
+                    listaCompleta.add(
+                        EstructuraDatosBaseDatos(
+                            idRuta[index],
+                            listaCoorPrimParte,
+                            listaCoorSegParte
+                        )
+                    )
+
+                    if (index == idRuta.lastIndex) {
+                        // Se ejecuta cuando se han procesado todas las rutas
+                        Log.i("Informe", "Se recibió toda la información")
+                        callback.todosDatosRecibidos(listaCompleta)
+                    }
                 }
             })
-        } else {
-            callback.todosDatosRecibidos(listaCompleta)
         }
     }
+
 }

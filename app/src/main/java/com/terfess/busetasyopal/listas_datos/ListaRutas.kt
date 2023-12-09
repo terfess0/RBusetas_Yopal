@@ -32,7 +32,7 @@ class ListaRutas {
                 "Barrio Sueño Real, Estadio Atalayas, Calle 40, LACOR IPS SAS, La Herradura, Centro, Bomberos, Super Mio, Barrio Sueño Real",
                 "Cada 8 minutos",
                 "Cada 10 minutos",
-                "Cada 12 minutos",
+                "SIN SERVICIO",
                 "5:30 am - 5:30 pm",
                 "5:30 am - 1:00 pm",
                 "SIN SERVICIO"
@@ -73,7 +73,7 @@ class ListaRutas {
                 "Villa David, Aeropuerto Alcaravan, La Herradura, Centro, Unicentro, Sena, Unitropico, Las Americas",
                 "Cada 8 minutos",
                 "Cada 10 minutos",
-                "Cada 12 minutos",
+                "SIN SERVICIO",
                 "5:20 am - 5:00 pm",
                 "6:00 am - 12:00 pm",
                 "SIN SERVICIO"
@@ -83,7 +83,7 @@ class ListaRutas {
                 "Villa David, Terminal, Olimpica, Clinica Casanare, Horo, Centro, Las Americas",
                 "Cada 8 minutos",
                 "Cada 10 minutos",
-                "Cada 12 minutos",
+                "SIN SERVICIO",
                 "5:30 am - 5:30 pm",
                 "5:30 am - 5:30 pm",
                 "SIN SERVICIO"

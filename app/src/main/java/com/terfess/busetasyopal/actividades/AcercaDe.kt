@@ -4,11 +4,17 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageButton
-import com.google.android.gms.maps.model.LatLng
+import androidx.lifecycle.lifecycleScope
 import com.terfess.busetasyopal.clases_utiles.DatosDeFirebase
 import com.terfess.busetasyopal.R
+import com.terfess.busetasyopal.clases_utiles.DatosASqliteLocal
 import com.terfess.busetasyopal.clases_utiles.allDatosRutas
+import com.terfess.busetasyopal.modelos_dato.EstructuraDatosBaseDatos
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.net.URLEncoder
 
 class AcercaDe : AppCompatActivity() {
@@ -16,23 +22,16 @@ class AcercaDe : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.acerca_de)
 
-        DatosDeFirebase().descargarInformacion(object : allDatosRutas {
-            override fun todosDatosRecibidos(listaCoorPrimParte: MutableList<List<LatLng>>) {
-                println("TERMINADO")
-            }
-
-        })
-
         val whatsappConeccion = findViewById<ImageButton>(R.id.contc_wts)
         val mailConection = findViewById<ImageButton>(R.id.contc_mail)
 
-        whatsappConeccion.setOnClickListener {
+        whatsappConeccion.setOnClickListener{
             enviarMensajeWhatsApp(
                 "+573225857486",
                 "Buenos dias, quiero hacer una felicitación/peticion/queja."
             )
         }
-        mailConection.setOnClickListener {
+        mailConection.setOnClickListener{
             abrirAppCorreo("terdevfess@gmail.com")
         }
     }

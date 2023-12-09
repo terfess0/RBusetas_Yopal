@@ -3,6 +3,7 @@ package com.terfess.busetasyopal.actividades
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -20,8 +21,12 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.RutasAdapter
+import com.terfess.busetasyopal.clases_utiles.DatosASqliteLocal
+import com.terfess.busetasyopal.clases_utiles.DatosDeFirebase
+import com.terfess.busetasyopal.clases_utiles.allDatosRutas
 import com.terfess.busetasyopal.databinding.PantPrincipalBinding
 import com.terfess.busetasyopal.listas_datos.ListaRutas
+import com.terfess.busetasyopal.modelos_dato.EstructuraDatosBaseDatos
 import java.util.Calendar
 
 class RutasSeccion : AppCompatActivity() {
@@ -43,6 +48,41 @@ class RutasSeccion : AppCompatActivity() {
 
         cajaInfo.layoutManager = LinearLayoutManager(this)
         cajaInfo.adapter = adapter
+
+
+
+        //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>
+        //DESCARGAR LOS DATOS DE COORDENADAS DE CADA RUTA DESDE FIREBASE Y GUARDARLOS EN SQLITE LOCAL
+        var versionLocal = 0
+        //buscar el numero de version actual (local)
+        val dbHelper = DatosASqliteLocal(this)
+        val cursor = dbHelper.readableDatabase.rawQuery("SELECT * FROM version", null)
+        if (cursor.moveToFirst()){
+            versionLocal = cursor.getInt(0) //indices de columnas inician en 0
+        }else{
+            versionLocal = 0
+        }
+
+        FirebaseDatabase.getInstance().getReference("/features/0/version")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val versionNube = snapshot.value.toString().toInt()
+                    if (versionLocal != versionNube){
+                        dbHelper.insertarVersionDatos(versionNube)
+                        descargarDatos()
+                        Toast.makeText(this@RutasSeccion, "Descargando informacion", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(binding.root.context, "La version no se pudo recibir desde internet",Toast.LENGTH_SHORT).show()
+                }
+            })
+
+
+        //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
 
         //supportActionBar?.title = "Rutas"
         supportActionBar?.themedContext
@@ -154,6 +194,25 @@ class RutasSeccion : AppCompatActivity() {
         }
         return true
     }
+    private fun getHora(): Int {
+        val calendar = Calendar.getInstance()
+        return calendar.get(Calendar.HOUR_OF_DAY)
+    }
+
+    private fun descargarDatos(){
+        val datosDeFirebase = DatosDeFirebase()
+        val dbHelper = DatosASqliteLocal(this)
+        datosDeFirebase.descargarInformacion(object : allDatosRutas {
+            override fun todosDatosRecibidos(listaCompleta: MutableList<EstructuraDatosBaseDatos>) {
+                for (i in listaCompleta) {
+                    dbHelper.insertarRuta(i.idRuta)
+                    dbHelper.insertarCoordSalida(i.idRuta, i.listPrimeraParte)
+                    dbHelper.insertarCoordLlegada(i.idRuta, i.listSegundaParte)
+                }
+                Toast.makeText(this@RutasSeccion, "Se descargo toda la información correctamente", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
 
     override fun onBackPressed() {
         if (filtrando || binding.filtro.requestFocus()) {
@@ -179,9 +238,6 @@ class RutasSeccion : AppCompatActivity() {
         }
     }
 
-    private fun getHora(): Int {
-        val calendar = Calendar.getInstance()
-        return calendar.get(Calendar.HOUR_OF_DAY)
-    }
+
 
 }
