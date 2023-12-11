@@ -70,7 +70,7 @@ class RutaBasic(private val mapa: Context, private val gmap: GoogleMap) {
         val listaPrimeraParte = dbAuxiliar.obtenerCoordenadas(idruta, "coordenadas1")
         puntosSalida = listaPrimeraParte.subList(
             0,
-            listaPrimeraParte.size / 2
+            listaPrimeraParte.size
         ).toMutableList() //tomutablelist para compatilidad
         if (idruta != 1) {
             polySalida = gmap.addPolyline(polylineOptions) //crear polyline salida
@@ -92,7 +92,7 @@ class RutaBasic(private val mapa: Context, private val gmap: GoogleMap) {
 
 
         val listaSegundaParte = dbAuxiliar.obtenerCoordenadas(idruta, "coordenadas2")
-        puntosLlegada = listaSegundaParte.subList(0, listaSegundaParte.size/2).toMutableList() //compatibilidad
+        puntosLlegada = listaSegundaParte.subList(0, listaSegundaParte.size).toMutableList() //compatibilidad
         if (idruta != 1) {
             polyLlegada = gmap.addPolyline(polylineOptions) //crear polyline salida
             polyLlegada.points = puntosLlegada//darle las coordenadas que componen la polyline
