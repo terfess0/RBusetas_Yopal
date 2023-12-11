@@ -244,15 +244,12 @@ class RutasSeccion : AppCompatActivity() {
     }
     fun reiniciarApp(context: Context) {
         val intent = Intent(context, RutasSeccion::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
         context.startActivity(intent)
         // Finalizar la actividad actual si es necesario
         if (context is Activity) {
             context.finish()
         }
     }
-
-
-
 
 }

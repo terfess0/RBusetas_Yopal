@@ -8,7 +8,6 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.terfess.busetasyopal.modelos_dato.EstructuraDatosBaseDatos
 
-
 interface DatosDeFirebaseCallback { //callback para detectar que los datos de una ruta han sido recibidos
     fun onDatosRecibidos(
         listaCoorPrimParte: MutableList<LatLng>,
@@ -86,30 +85,30 @@ class DatosDeFirebase {
     ) {
         val idRuta = intArrayOf(2, 3, 6, 7, 8, 9, 10, 11, 13)
 
-        for (i in 0 until idRuta.size) {
-            recibirCoordenadasRuta(idRuta[i], object : DatosDeFirebaseCallback {
+        for (rutaId in idRuta) {
+            recibirCoordenadasRuta(rutaId, object : DatosDeFirebaseCallback {
                 override fun onDatosRecibidos(
                     listaCoorPrimParte: MutableList<LatLng>,
                     listaCoorSegParte: MutableList<LatLng>
                 ) {
                     listaCompleta.add(
                         EstructuraDatosBaseDatos(
-                            idRuta[i],
+                            rutaId,
                             listaCoorPrimParte,
                             listaCoorSegParte
                         )
                     )
-                    println("id ruta ==== ${idRuta[i]}, y $i")
+                    println("id ruta ==== $rutaId")
 
-                    if (idRuta[i] == idRuta[idRuta.size-1]) {
+                    if (listaCompleta.size == idRuta.size) {
                         // Se ejecuta cuando se han procesado todas las rutas
                         Log.i("Informe", "Se recibió toda la información")
                         callback.todosDatosRecibidos(listaCompleta)
-
                     }
                 }
             })
         }
     }
+
 
 }
