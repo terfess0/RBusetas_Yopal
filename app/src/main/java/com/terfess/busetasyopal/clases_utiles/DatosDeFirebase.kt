@@ -85,7 +85,8 @@ class DatosDeFirebase {
     ) {
         val idRuta = intArrayOf(2, 3, 6, 7, 8, 9, 10, 11, 13)
 
-        for (rutaId in idRuta) {
+        for (i in 0.. idRuta.size-1) {
+            var rutaId = idRuta[i]
             recibirCoordenadasRuta(rutaId, object : DatosDeFirebaseCallback {
                 override fun onDatosRecibidos(
                     listaCoorPrimParte: MutableList<LatLng>,
@@ -99,7 +100,7 @@ class DatosDeFirebase {
                         )
                     )
 
-                    if (listaCompleta.size == idRuta.size) {
+                    if (rutaId == idRuta[idRuta.size-1]) {
                         // Se ejecuta cuando se han procesado todas las rutas
                         Log.i("Informe", "Se recibió toda la información")
                         callback.todosDatosRecibidos(listaCompleta)

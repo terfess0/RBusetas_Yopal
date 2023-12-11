@@ -79,7 +79,7 @@ class RutasSeccion : AppCompatActivity() {
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-                        Toast.makeText(binding.root.context, "La version no se pudo recibir desde internet",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@RutasSeccion, "La version no se pudo recibir desde internet",Toast.LENGTH_SHORT).show()
                     }
                 })
         }
