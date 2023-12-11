@@ -10,10 +10,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.gms.maps.model.RoundCap
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import android.location.Location
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.Marker
@@ -32,10 +28,9 @@ import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.puntosLlegada
 import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.puntosSalida
 
 
-class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
-    var polylineOptions = PolylineOptions()
-    var dbAuxiliar = DatosASqliteLocal(mapa)
-    private val databaseRef = FirebaseDatabase.getInstance()
+class RutaBasic(private val mapa: Context, private val gmap: GoogleMap) {
+    private var polylineOptions = PolylineOptions()
+    private var dbAuxiliar = DatosASqliteLocal(mapa)
     private val masCortaDestino = IntArray(2) //distancia y numero de estacion mas cercana destino
 
 
@@ -62,13 +57,16 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
     fun crearRuta(idruta: Int) {
         limpiarPolylines()
         //limpiar cache o polylines hechas anteriormente cuando no se este buscando entre todas las rutas
+
+        //RUTA - PRIMERA PARTE-----------------------------------------------------------------------
+
         polylineOptions.width(9f).color(
             ContextCompat.getColor(
                 mapa,
                 R.color.recorridoIda
             )
         ) //ancho de la linea y color
-        //RUTA - PRIMERA PARTE
+
         val listaPrimeraParte = dbAuxiliar.obtenerCoordenadas(idruta, "coordenadas1")
         crearToast("La cantidad de puntos Salida: ${listaPrimeraParte.size}")
         if (idruta != 1) {
@@ -80,15 +78,18 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
             polySalida.jointType = JointType.ROUND
         }
 
+
+        //RUTA - SEGUNDA PARTE-------------------------------------------------------------------------------
+
         polylineOptions.width(9f).color(
             ContextCompat.getColor(
                 mapa,
                 R.color.recorridoVuelta
             )
         ) //ancho de la linea y color
-        //RUTA - SEGUNDA PARTE
+
+
         val listaSegundaParte = dbAuxiliar.obtenerCoordenadas(idruta, "coordenadas2")
-        crearToast("La cantidad de puntos Llegada: ${listaSegundaParte.size}")
         if (idruta != 1) {
             polyLlegada = gmap.addPolyline(polylineOptions) //crear polyline salida
             polyLlegada.points =
@@ -312,7 +313,7 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
         return gmap.addMarker(opcionesMarcador)
     }
 
-    fun crearToast(mensaje: String) {
+    private fun crearToast(mensaje: String) {
         Toast.makeText(
             mapa,
             mensaje,
