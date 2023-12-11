@@ -138,5 +138,12 @@ class DatosASqliteLocal(context: Context) : SQLiteOpenHelper(context, "Datos_App
         return coordenadas
     }
 
+    fun eliminarTodasLasRutas() {
+        val db = writableDatabase
+        db.execSQL("DELETE FROM ruta;")
+        db.execSQL("DELETE FROM coordenadas1;")
+        db.execSQL("DELETE FROM coordenadas2;")
+
+    }
 
 }

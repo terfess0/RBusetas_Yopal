@@ -98,7 +98,6 @@ class DatosDeFirebase {
                             listaCoorSegParte
                         )
                     )
-                    println("id ruta ==== $rutaId")
 
                     if (listaCompleta.size == idRuta.size) {
                         // Se ejecuta cuando se han procesado todas las rutas

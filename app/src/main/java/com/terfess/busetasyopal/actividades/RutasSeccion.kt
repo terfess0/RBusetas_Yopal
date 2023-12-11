@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -56,15 +55,16 @@ class RutasSeccion : AppCompatActivity() {
 
         //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>
         //DESCARGAR LOS DATOS DE COORDENADAS DE CADA RUTA DESDE FIREBASE Y GUARDARLOS EN SQLITE LOCAL
-        var versionLocal = 0
+        val versionLocal: Int
         //buscar el numero de version actual (local)
         val dbHelper = DatosASqliteLocal(this)
         val cursor = dbHelper.readableDatabase.rawQuery("SELECT * FROM version", null)
-        if (cursor.moveToFirst()){
-            versionLocal = cursor.getInt(0) //indices de columnas inician en 0
+        versionLocal = if (cursor.moveToFirst()){
+            cursor.getInt(0) //indices de columnas inician en 0
         }else{
-            versionLocal = 0
+            0
         }
+        cursor.close()
 
         CoroutineScope(Dispatchers.IO).launch {
             FirebaseDatabase.getInstance().getReference("/features/0/version")
@@ -208,13 +208,15 @@ class RutasSeccion : AppCompatActivity() {
         val dbHelper = DatosASqliteLocal(this)
         DatosDeFirebase().descargarInformacion(object : allDatosRutas {
             override fun todosDatosRecibidos(listaCompleta: MutableList<EstructuraDatosBaseDatos>) {
+                dbHelper.eliminarTodasLasRutas()
                 for (i in listaCompleta) {
                     dbHelper.insertarRuta(i.idRuta)
                     dbHelper.insertarCoordSalida(i.idRuta, i.listPrimeraParte)
                     dbHelper.insertarCoordLlegada(i.idRuta, i.listSegundaParte)
                 }
                 Toast.makeText(this@RutasSeccion, "Se descargo toda la información correctamente", Toast.LENGTH_SHORT).show()
-                reiniciarApp(this@RutasSeccion)
+                reiniciarApp(this@RutasSeccion, RutasSeccion::class.java)
+
             }
         })
     }
@@ -242,14 +244,25 @@ class RutasSeccion : AppCompatActivity() {
             dialog.show()
         }
     }
-    fun reiniciarApp(context: Context) {
-        val intent = Intent(context, RutasSeccion::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
-        context.startActivity(intent)
+    fun reiniciarApp(context: Context, claseObjetivo: Class<*>) {
+        val intent = Intent(context, claseObjetivo)
+
+        if (context.javaClass == claseObjetivo) {
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+            context.startActivity(intent)
+        } else {
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            context.startActivity(intent)
+        }
+
         // Finalizar la actividad actual si es necesario
         if (context is Activity) {
             context.finish()
         }
     }
+
+
+
+
 
 }
