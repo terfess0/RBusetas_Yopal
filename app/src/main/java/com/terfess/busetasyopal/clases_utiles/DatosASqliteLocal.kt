@@ -90,6 +90,7 @@ class DatosASqliteLocal(context: Context) : SQLiteOpenHelper(context, "Datos_App
 
     fun insertarVersionDatos(numVersion: Int) {
         val db = writableDatabase
+        db.delete("version", null, null)
         val values = ContentValues()
         values.put("numVersion", numVersion)
 

@@ -27,6 +27,9 @@ import com.terfess.busetasyopal.clases_utiles.allDatosRutas
 import com.terfess.busetasyopal.databinding.PantPrincipalBinding
 import com.terfess.busetasyopal.listas_datos.ListaRutas
 import com.terfess.busetasyopal.modelos_dato.EstructuraDatosBaseDatos
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
 class RutasSeccion : AppCompatActivity() {
@@ -62,21 +65,23 @@ class RutasSeccion : AppCompatActivity() {
             versionLocal = 0
         }
 
-        FirebaseDatabase.getInstance().getReference("/features/0/version")
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val versionNube = snapshot.value.toString().toInt()
-                    if (versionLocal != versionNube){
-                        dbHelper.insertarVersionDatos(versionNube)
-                        descargarDatos()
-                        Toast.makeText(this@RutasSeccion, "Descargando informacion", Toast.LENGTH_SHORT).show()
+        CoroutineScope(Dispatchers.IO).launch {
+            FirebaseDatabase.getInstance().getReference("/features/0/version")
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val versionNube = snapshot.value.toString().toInt()
+                        if (versionLocal != versionNube){
+                            dbHelper.insertarVersionDatos(versionNube)
+                            descargarDatos()
+                            Toast.makeText(this@RutasSeccion, "Descargando informacion", Toast.LENGTH_SHORT).show()
+                        }
                     }
-                }
 
-                override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(binding.root.context, "La version no se pudo recibir desde internet",Toast.LENGTH_SHORT).show()
-                }
-            })
+                    override fun onCancelled(error: DatabaseError) {
+                        Toast.makeText(binding.root.context, "La version no se pudo recibir desde internet",Toast.LENGTH_SHORT).show()
+                    }
+                })
+        }
 
 
         //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -199,9 +204,8 @@ class RutasSeccion : AppCompatActivity() {
     }
 
     private fun descargarDatos(){
-        val datosDeFirebase = DatosDeFirebase()
         val dbHelper = DatosASqliteLocal(this)
-        datosDeFirebase.descargarInformacion(object : allDatosRutas {
+        DatosDeFirebase().descargarInformacion(object : allDatosRutas {
             override fun todosDatosRecibidos(listaCompleta: MutableList<EstructuraDatosBaseDatos>) {
                 for (i in listaCompleta) {
                     dbHelper.insertarRuta(i.idRuta)

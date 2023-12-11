@@ -65,6 +65,10 @@ dependencies {
     //api google places
     implementation("com.google.android.libraries.places:places:3.3.0")
 
+    //coroutinas
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
+
+
 }
 
 

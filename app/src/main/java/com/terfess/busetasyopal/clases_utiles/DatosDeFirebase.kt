@@ -85,21 +85,21 @@ class DatosDeFirebase {
     ) {
         val idRuta = intArrayOf(2, 3, 6, 7, 8, 9, 10, 11, 13)
 
-        for (index in idRuta.indices) {
-            recibirCoordenadasRuta(idRuta[index], object : DatosDeFirebaseCallback {
+        for (rutaId in idRuta) {
+            recibirCoordenadasRuta(rutaId, object : DatosDeFirebaseCallback {
                 override fun onDatosRecibidos(
                     listaCoorPrimParte: MutableList<LatLng>,
                     listaCoorSegParte: MutableList<LatLng>
                 ) {
                     listaCompleta.add(
                         EstructuraDatosBaseDatos(
-                            idRuta[index],
+                            rutaId,
                             listaCoorPrimParte,
                             listaCoorSegParte
                         )
                     )
 
-                    if (index == idRuta.lastIndex) {
+                    if (listaCompleta.size == idRuta.size) {
                         // Se ejecuta cuando se han procesado todas las rutas
                         Log.i("Informe", "Se recibió toda la información")
                         callback.todosDatosRecibidos(listaCompleta)
@@ -108,5 +108,6 @@ class DatosDeFirebase {
             })
         }
     }
+
 
 }

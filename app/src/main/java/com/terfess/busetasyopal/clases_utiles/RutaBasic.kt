@@ -68,11 +68,13 @@ class RutaBasic(private val mapa: Context, private val gmap: GoogleMap) {
         ) //ancho de la linea y color
 
         val listaPrimeraParte = dbAuxiliar.obtenerCoordenadas(idruta, "coordenadas1")
-        crearToast("La cantidad de puntos Salida: ${listaPrimeraParte.size}")
+        puntosSalida = listaPrimeraParte.subList(
+            0,
+            listaPrimeraParte.size / 2
+        ).toMutableList() //tomutablelist para compatilidad
         if (idruta != 1) {
             polySalida = gmap.addPolyline(polylineOptions) //crear polyline salida
-            polySalida.points =
-                listaPrimeraParte.subList(0, listaPrimeraParte.size/2) //darle las coordenadas que componen la polyline
+            polySalida.points = puntosSalida //darle las coordenadas que componen la polyline
             polySalida.startCap = RoundCap() //redondear extremo inicial polyline
             polySalida.endCap = RoundCap() //redondear extremo final polyline
             polySalida.jointType = JointType.ROUND
@@ -90,14 +92,17 @@ class RutaBasic(private val mapa: Context, private val gmap: GoogleMap) {
 
 
         val listaSegundaParte = dbAuxiliar.obtenerCoordenadas(idruta, "coordenadas2")
+        puntosLlegada = listaSegundaParte.subList(0, listaSegundaParte.size/2).toMutableList() //compatibilidad
         if (idruta != 1) {
             polyLlegada = gmap.addPolyline(polylineOptions) //crear polyline salida
-            polyLlegada.points =
-                listaSegundaParte.subList(0, listaSegundaParte.size/2)//darle las coordenadas que componen la polyline
+            polyLlegada.points = puntosLlegada//darle las coordenadas que componen la polyline
             polyLlegada.startCap = RoundCap() //redondear extremo inicial polyline
             polyLlegada.endCap = RoundCap() //redondear extremo final polyline
             polyLlegada.jointType = JointType.ROUND
-            agregarMarcador(listaSegundaParte[listaSegundaParte.size-1], R.drawable.ic_parqueadero)
+            agregarMarcador(
+                listaSegundaParte[listaSegundaParte.size - 1],
+                R.drawable.ic_parqueadero
+            )
         }
     }
 
