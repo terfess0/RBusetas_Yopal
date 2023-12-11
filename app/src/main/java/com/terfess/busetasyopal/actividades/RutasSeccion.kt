@@ -50,7 +50,6 @@ class RutasSeccion : AppCompatActivity() {
         cajaInfo.adapter = adapter
 
 
-
         //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>
         //DESCARGAR LOS DATOS DE COORDENADAS DE CADA RUTA DESDE FIREBASE Y GUARDARLOS EN SQLITE LOCAL
         var versionLocal = 0

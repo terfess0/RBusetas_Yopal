@@ -97,5 +97,45 @@ class DatosASqliteLocal(context: Context) : SQLiteOpenHelper(context, "Datos_App
         db.insertWithOnConflict("version", null, values, SQLiteDatabase.CONFLICT_REPLACE)
     }
 
+    fun obtenerCoordenadas(idRuta: Int, tabla:String): List<LatLng> {
+        val coordenadas = mutableListOf<LatLng>()
+        val db = readableDatabase
+
+        // Realizar la consulta SQL
+        val query = "SELECT latitud, longitud FROM $tabla WHERE id_ruta=$idRuta"
+        val cursor = db.rawQuery(query, null)
+
+        // Procesar el resultado de la consulta
+        // Mover el cursor al inicio
+        cursor.moveToFirst()
+
+        // Procesar el resultado de la consulta
+        while (!cursor.isAfterLast) {
+            val latitudIndex = cursor.getColumnIndex("latitud")
+            val longitudIndex = cursor.getColumnIndex("longitud")
+
+            if (latitudIndex >= 0 && longitudIndex >= 0) { //controlar -1 (columna no encontrada)
+                val latitud = cursor.getDouble(latitudIndex)
+                val longitud = cursor.getDouble(longitudIndex)
+                val coordenada = LatLng(latitud, longitud)
+                println("Esta es la coord: $coordenada")
+                coordenadas.add(coordenada)
+            } else {
+                // Manejar el caso donde no se encuentran las columnas
+                println("No se encontraron las columnas 'latitud' o 'longitud'")
+            }
+
+            // Mover al siguiente
+            cursor.moveToNext()
+        }
+
+
+        // Cerrar el cursor y la base de datos
+        cursor.close()
+        db.close()
+
+        return coordenadas
+    }
+
 
 }
