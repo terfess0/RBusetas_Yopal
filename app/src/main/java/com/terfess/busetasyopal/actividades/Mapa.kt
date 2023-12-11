@@ -244,7 +244,14 @@ class Mapa : AppCompatActivity(), LocationListener,
 
     private fun selector() {
         val buildRuta = RutaBasic(contexto, gmap)
-        when (idruta) {//IMPORTANTE PARA CONSTRUIR CADA RUTA
+        when (idruta) {
+            0 -> {
+                activarLocalizacion()
+                irPosGps()
+            }
+            in listOf(2, 3, 6, 7, 8, 9, 10, 11, 13) -> buildRuta.crearRuta(idruta)
+        }
+        /*when (idruta) {//IMPORTANTE PARA CONSTRUIR CADA RUTA
             0 -> {
                 activarLocalizacion()
                 irPosGps()
@@ -252,67 +259,58 @@ class Mapa : AppCompatActivity(), LocationListener,
 
             2 -> {
                 buildRuta.crearRuta(
-                    "features/0/rutas/$idruta/salida",
-                    "features/0/rutas/$idruta/llegada", idruta
+                    idruta
                 )
             }
 
             3 -> {
                 buildRuta.crearRuta(
-                    "features/0/rutas/$idruta/salida",
-                    "features/0/rutas/$idruta/llegada", idruta
+                    idruta
                 )
             }
 
             6 -> {
                 buildRuta.crearRuta(
-                    "features/0/rutas/$idruta/salida",
-                    "features/0/rutas/$idruta/llegada", idruta
+                    idruta
                 )
             }
 
             7 -> {
                 buildRuta.crearRuta(
-                    "features/0/rutas/$idruta/salida",
-                    "features/0/rutas/$idruta/llegada", idruta
+                    idruta
                 )
             }
 
             8 -> {
                 buildRuta.crearRuta(
-                    "features/0/rutas/$idruta/salida",
-                    "features/0/rutas/$idruta/llegada", idruta
+                    idruta
                 )
             }
 
             9 -> {
                 buildRuta.crearRuta(
-                    "features/0/rutas/$idruta/salida",
-                    "features/0/rutas/$idruta/llegada", idruta
+                    idruta
                 )
             }
 
             10 -> {
                 buildRuta.crearRuta(
-                    "features/0/rutas/$idruta/salida",
-                    "features/0/rutas/$idruta/llegada", idruta
+                    idruta
                 )
             }
 
             11 -> {
                 buildRuta.crearRuta(
-                    "features/0/rutas/$idruta/salida",
-                    "features/0/rutas/$idruta/llegada", idruta
+                    idruta
                 )
             }
 
             13 -> {
                 buildRuta.crearRuta(
-                    "features/0/rutas/$idruta/salida",
-                    "features/0/rutas/$idruta/llegada", idruta
+                    idruta
                 )
             }
-        }
+        }*/
     }
 
     private fun activarGps() {

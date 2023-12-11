@@ -34,6 +34,7 @@ import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.puntosSalida
 
 class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
     var polylineOptions = PolylineOptions()
+    var dbAuxiliar = DatosASqliteLocal(mapa)
     private val databaseRef = FirebaseDatabase.getInstance()
     private val masCortaDestino = IntArray(2) //distancia y numero de estacion mas cercana destino
 
@@ -58,94 +59,45 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
         var estamarcado2: Boolean? = null
     }
 
-    fun crearRuta(path1parte: String, path2parte: String, idruta: Int) {
+    fun crearRuta(idruta: Int) {
         limpiarPolylines()
         //limpiar cache o polylines hechas anteriormente cuando no se este buscando entre todas las rutas
-
+        polylineOptions.width(9f).color(
+            ContextCompat.getColor(
+                mapa,
+                R.color.recorridoIda
+            )
+        ) //ancho de la linea y color
         //RUTA - PRIMERA PARTE
-        databaseRef.getReference(path1parte).addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                var ubicacion: LatLng
-                for (childSnapshot in dataSnapshot.children) {
-                    if (idruta != 1) {
-                        polylineOptions.width(12f).color(
-                            ContextCompat.getColor(
-                                mapa,
-                                R.color.recorridoIda
-                            )
-                        ) //ancho de la linea y color
-                    }
-                    val lat = childSnapshot.child("1").getValue(Double::class.java)
-                    val lng = childSnapshot.child("0").getValue(Double::class.java)
-                    //en caso de nulos por lat lng
-                    val latValue = lat ?: 0.0
-                    val lngValue = lng ?: 0.0
-                    if (lat != 0.0) {
-                        CreatRuta.rutasCreadas = true
-                    }
-                    ubicacion = LatLng(latValue, lngValue)
-                    puntosSalida.add(ubicacion)
-                }
-                if (idruta != 1) {
-                    polySalida = gmap.addPolyline(polylineOptions) //crear polyline salida
-                    polySalida.points =
-                        puntosSalida //darle las coordenadas que componen la polyline
-                    polySalida.startCap = RoundCap() //redondear extremo inicial polyline
-                    polySalida.endCap = RoundCap() //redondear extremo final polyline
-                    polySalida.jointType = JointType.ROUND
-                }
-            }
+        val listaPrimeraParte = dbAuxiliar.obtenerCoordenadas(idruta, "coordenadas1")
+        crearToast("La cantidad de puntos Salida: ${listaPrimeraParte.size}")
+        if (idruta != 1) {
+            polySalida = gmap.addPolyline(polylineOptions) //crear polyline salida
+            polySalida.points =
+                listaPrimeraParte.subList(0, listaPrimeraParte.size/2) //darle las coordenadas que componen la polyline
+            polySalida.startCap = RoundCap() //redondear extremo inicial polyline
+            polySalida.endCap = RoundCap() //redondear extremo final polyline
+            polySalida.jointType = JointType.ROUND
+        }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Manejar errores si los hay
-                crearToast("Algo salio mal en la creacion de la llegada ruta $idruta.")
-            }
-        })
+        polylineOptions.width(9f).color(
+            ContextCompat.getColor(
+                mapa,
+                R.color.recorridoVuelta
+            )
+        ) //ancho de la linea y color
         //RUTA - SEGUNDA PARTE
-        databaseRef.getReference(path2parte).addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                for (childSnapshot in dataSnapshot.children) {
-                    if (idruta != 1) {
-                        polylineOptions.width(9f).color(
-                            ContextCompat.getColor(
-                                mapa,
-                                R.color.recorridoVuelta
-                            )
-                        ) //ancho de la linea y color
-                    }
-                    val lat = childSnapshot.child("1").getValue(Double::class.java)
-                    val lng = childSnapshot.child("0").getValue(Double::class.java)
-                    //en caso de nulos por lat lng
-                    val latValue = lat ?: 0.0
-                    val lngValue = lng ?: 0.0
-                    if (lat != 0.0) {
-                        CreatRuta.rutasCreadas = true
-                    }
-                    val ubicacion2 = LatLng(latValue, lngValue)
-                    puntosLlegada.add(ubicacion2)
-                }
-                if (idruta != 1) {
-                    polyLlegada = gmap.addPolyline(polylineOptions) //crear polyline
-                    polyLlegada.points = puntosLlegada //dar los puntos de la polyline
-                    polyLlegada.startCap = RoundCap() //redondear extremo inicial polyline
-                    polyLlegada.endCap = RoundCap() //redondear extremo final polyline
-                    polyLlegada.jointType = JointType.ROUND
-                    val medio = (puntosLlegada.size - 1)
-                    //agregar marcador en parqueadero
-                    val opcionesMarcador = MarkerOptions()
-                        .position(puntosLlegada[medio])
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_parqueadero))
-                        .title("Parqueadero Ruta $idruta")
-                    gmap.addMarker(opcionesMarcador)
-                }
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Manejar errores si los hay
-                crearToast("Algo salio mal en la creacion de la llegada ruta $idruta.")
-            }
-
-        })
+        val listaSegundaParte = dbAuxiliar.obtenerCoordenadas(idruta, "coordenadas2")
+        crearToast("La cantidad de puntos Llegada: ${listaSegundaParte.size}")
+        if (idruta != 1) {
+            polyLlegada = gmap.addPolyline(polylineOptions) //crear polyline salida
+            polyLlegada.points =
+                listaSegundaParte.subList(0, listaSegundaParte.size/2)//darle las coordenadas que componen la polyline
+            polyLlegada.startCap = RoundCap() //redondear extremo inicial polyline
+            polyLlegada.endCap = RoundCap() //redondear extremo final polyline
+            polyLlegada.jointType = JointType.ROUND
+            agregarMarcador(listaSegundaParte[listaSegundaParte.size-1], R.drawable.ic_parqueadero)
+        }
     }
 
     fun rutaMasCerca(ubicacionUsuario: LatLng, sentido: String) {
@@ -353,7 +305,7 @@ class RutaBasic(val mapa: Context, val gmap: GoogleMap) {
         polylineOptions.points.clear()
     }
 
-    private fun agregarMarcador(punto: LatLng, icono:Int): Marker? {
+    private fun agregarMarcador(punto: LatLng, icono: Int): Marker? {
         val opcionesMarcador = MarkerOptions()
             .position(punto).icon(BitmapDescriptorFactory.fromResource(icono))
             .title("Punto mas cercano")
