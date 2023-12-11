@@ -100,7 +100,7 @@ class RutaBasic(private val mapa: Context, private val gmap: GoogleMap) {
             polyLlegada.endCap = RoundCap() //redondear extremo final polyline
             polyLlegada.jointType = JointType.ROUND
             agregarMarcador(
-                listaSegundaParte[listaSegundaParte.size - 1],
+                listaSegundaParte[listaSegundaParte.size-1],
                 R.drawable.ic_parqueadero
             )
         }

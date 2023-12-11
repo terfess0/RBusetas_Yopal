@@ -1,5 +1,6 @@
 package com.terfess.busetasyopal.actividades
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -213,6 +214,7 @@ class RutasSeccion : AppCompatActivity() {
                     dbHelper.insertarCoordLlegada(i.idRuta, i.listSegundaParte)
                 }
                 Toast.makeText(this@RutasSeccion, "Se descargo toda la información correctamente", Toast.LENGTH_SHORT).show()
+                reiniciarApp(this@RutasSeccion)
             }
         })
     }
@@ -240,6 +242,16 @@ class RutasSeccion : AppCompatActivity() {
             dialog.show()
         }
     }
+    fun reiniciarApp(context: Context) {
+        val intent = Intent(context, RutasSeccion::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        context.startActivity(intent)
+        // Finalizar la actividad actual si es necesario
+        if (context is Activity) {
+            context.finish()
+        }
+    }
+
 
 
 
