@@ -255,7 +255,7 @@ class RutaBasic(private val mapa: Context, private val gmap: GoogleMap) {
     }
 
 
-    private fun compararDistancias(
+    fun compararDistancias(
         puntos: List<LatLng>,
         ubiInicio: Location,
         ubiDestino: Location,

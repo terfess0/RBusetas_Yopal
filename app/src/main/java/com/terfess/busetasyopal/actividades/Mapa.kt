@@ -174,8 +174,8 @@ class Mapa : AppCompatActivity(), LocationListener,
             binding.verDistancia.visibility = View.GONE
             binding.sentidoSubida.visibility = View.VISIBLE
             binding.sentidoLlegada.visibility = View.VISIBLE
-            RutaBasic.CreatRuta.estamarcado1 = false
-            RutaBasic.CreatRuta.estamarcado2 = false
+            RutaBasic.CreatRuta.estamarcado1 = false //evitar dobles marcadores de estacion
+            RutaBasic.CreatRuta.estamarcado2 = false //evitar dobles marcadores de estacion
         }
         binding.sentidoSubida.setOnClickListener {
             if (RutaBasic.CreatRuta.estamarcado1 == false) {
