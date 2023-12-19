@@ -43,6 +43,7 @@ import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.terfess.busetasyopal.R
+import com.terfess.busetasyopal.clases_utiles.PlanearRutaDestino
 import com.terfess.busetasyopal.clases_utiles.RutaBasic
 import com.terfess.busetasyopal.databinding.PantMapaBinding
 
@@ -248,6 +249,7 @@ class Mapa : AppCompatActivity(), LocationListener,
             0 -> {
                 activarLocalizacion()
                 irPosGps()
+                PlanearRutaDestino(this, gmap).rutaToDestino(ubiUser, LatLng(5.346112670444686, -72.40294171780654))
             }
             in listOf(2, 3, 6, 7, 8, 9, 10, 11, 13) -> buildRuta.crearRuta(idruta)
         }
