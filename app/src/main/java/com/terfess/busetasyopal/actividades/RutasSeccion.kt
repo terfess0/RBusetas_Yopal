@@ -68,29 +68,31 @@ class RutasSeccion : AppCompatActivity() {
         cursor.close()
 
         //obtener la version externa y comparar
-        FirebaseDatabase.getInstance().getReference("/features/0/version")
-            .addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val versionNube = snapshot.value.toString().toInt()
-                    if (versionLocal != versionNube) {
-                        dbHelper.insertarVersionDatos(versionNube) //establecer la version externa como la nueva version local
-                        descargarDatos() //descargar los datos
+        CoroutineScope(Dispatchers.IO).launch {
+            FirebaseDatabase.getInstance().getReference("/features/0/version")
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val versionNube = snapshot.value.toString().toInt()
+                        if (versionLocal != versionNube) {
+                            dbHelper.insertarVersionDatos(versionNube)
+                            descargarDatos()
+                            Toast.makeText(
+                                this@RutasSeccion,
+                                "Descargando informacion",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
                         Toast.makeText(
-                            this@RutasSeccion,
-                            "Descargando informacion",
+                            binding.root.context,
+                            "La version no se pudo recibir desde internet",
                             Toast.LENGTH_SHORT
                         ).show()
                     }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(
-                        this@RutasSeccion,
-                        "La version no se pudo recibir desde internet",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
+                })
+        }
 
 
         //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
