@@ -41,6 +41,7 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.Circle
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.clases_utiles.RutaBasic
 import com.terfess.busetasyopal.databinding.PantMapaBinding
@@ -135,11 +136,7 @@ class Mapa : AppCompatActivity(), LocationListener,
     override fun onMapReady(mapa: GoogleMap) {
         gmap = mapa
 
-        //getRutasCreadas = RutaBasic.ruta //usar el gmap para mandarlo a RutaBasic
-
-
-        //establecer nivel de zoom maximo
-        //impedir renderizado de cuadros casas
+        //establecer nivel de zoom maximo impedir renderizado de cuadros casas
         val maxZoomLevel = 16.9 // nivel de zoom deseado
         gmap.setMaxZoomPreference(maxZoomLevel.toFloat())
 
@@ -153,9 +150,12 @@ class Mapa : AppCompatActivity(), LocationListener,
         gmap.uiSettings.isIndoorLevelPickerEnabled =
             false //desactivar selector de piso o nivel -- rendimiento
 
-        comprobarConexion(this)
+        comprobarConexion(this) //ver si tiene conexion a internet
 
-        irYopal()
+        irYopal() //colocar la camara en la ciudad de yopal
+
+        // Restringe el área visible del mapa a los límites definidos
+        gmap.setLatLngBoundsForCameraTarget(LatLngBounds(LatLng(5.292248400990788, -72.43544492556084), LatLng(5.378095763286635, -72.35831275488704)))
 
         selector()  //seleccionar que ruta cargar
 
