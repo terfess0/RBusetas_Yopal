@@ -251,66 +251,6 @@ class Mapa : AppCompatActivity(), LocationListener,
             }
             in listOf(2, 3, 6, 7, 8, 9, 10, 11, 13) -> buildRuta.crearRuta(idruta)
         }
-        /*when (idruta) {//IMPORTANTE PARA CONSTRUIR CADA RUTA
-            0 -> {
-                activarLocalizacion()
-                irPosGps()
-            }
-
-            2 -> {
-                buildRuta.crearRuta(
-                    idruta
-                )
-            }
-
-            3 -> {
-                buildRuta.crearRuta(
-                    idruta
-                )
-            }
-
-            6 -> {
-                buildRuta.crearRuta(
-                    idruta
-                )
-            }
-
-            7 -> {
-                buildRuta.crearRuta(
-                    idruta
-                )
-            }
-
-            8 -> {
-                buildRuta.crearRuta(
-                    idruta
-                )
-            }
-
-            9 -> {
-                buildRuta.crearRuta(
-                    idruta
-                )
-            }
-
-            10 -> {
-                buildRuta.crearRuta(
-                    idruta
-                )
-            }
-
-            11 -> {
-                buildRuta.crearRuta(
-                    idruta
-                )
-            }
-
-            13 -> {
-                buildRuta.crearRuta(
-                    idruta
-                )
-            }
-        }*/
     }
 
     private fun activarGps() {
@@ -353,6 +293,9 @@ class Mapa : AppCompatActivity(), LocationListener,
                         }
                     }
                 }
+                irPosGps()
+            }else{ //si ya esta activado el gps entonces ir a la posicion
+                binding.irgps.setImageResource(R.drawable.ic_progress_gps)
                 irPosGps()
             }
         }

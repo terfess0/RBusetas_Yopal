@@ -58,35 +58,42 @@ class RutasSeccion : AppCompatActivity() {
         val versionLocal: Int
         //buscar el numero de version actual (local)
         val dbHelper = DatosASqliteLocal(this)
+        //obtener la version local
         val cursor = dbHelper.readableDatabase.rawQuery("SELECT * FROM version", null)
-        versionLocal = if (cursor.moveToFirst()){
+        versionLocal = if (cursor.moveToFirst()) {
             cursor.getInt(0) //indices de columnas inician en 0
-        }else{
+        } else {
             0
         }
         cursor.close()
 
-        CoroutineScope(Dispatchers.IO).launch {
-            FirebaseDatabase.getInstance().getReference("/features/0/version")
-                .addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        val versionNube = snapshot.value.toString().toInt()
-                        if (versionLocal != versionNube){
-                            dbHelper.insertarVersionDatos(versionNube)
-                            descargarDatos()
-                            Toast.makeText(this@RutasSeccion, "Descargando informacion", Toast.LENGTH_SHORT).show()
-                        }
+        //obtener la version externa y comparar
+        FirebaseDatabase.getInstance().getReference("/features/0/version")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val versionNube = snapshot.value.toString().toInt()
+                    if (versionLocal != versionNube) {
+                        dbHelper.insertarVersionDatos(versionNube) //establecer la version externa como la nueva version local
+                        descargarDatos() //descargar los datos
+                        Toast.makeText(
+                            this@RutasSeccion,
+                            "Descargando informacion",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
+                }
 
-                    override fun onCancelled(error: DatabaseError) {
-                        Toast.makeText(this@RutasSeccion, "La version no se pudo recibir desde internet",Toast.LENGTH_SHORT).show()
-                    }
-                })
-        }
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(
+                        this@RutasSeccion,
+                        "La version no se pudo recibir desde internet",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
 
 
         //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
 
 
         //supportActionBar?.title = "Rutas"
@@ -110,28 +117,36 @@ class RutasSeccion : AppCompatActivity() {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(binding.root.context, "El precio no se pudo recibir desde internet",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        binding.root.context,
+                        "El precio no se pudo recibir desde internet",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             })
 
         //mensaje controlado en vivo base datos
-        if (mensaje_controlado == null){
+        if (mensaje_controlado == null) {
             binding.mensajeControlado.visibility = View.GONE
         }
         FirebaseDatabase.getInstance().getReference("/features/0/mensaje")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val mensaje = snapshot.value.toString()
-                    if (mensaje != "null"){
+                    if (mensaje != "null") {
                         binding.mensajeControlado.visibility = View.VISIBLE
                         binding.mensajeControlado.text = mensaje
-                    }else{
+                    } else {
                         binding.mensajeControlado.visibility = View.GONE
                     }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(binding.root.context, "El precio no se pudo recibir desde internet",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        binding.root.context,
+                        "El precio no se pudo recibir desde internet",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             })
     }
@@ -199,12 +214,13 @@ class RutasSeccion : AppCompatActivity() {
         }
         return true
     }
+
     private fun getHora(): Int {
         val calendar = Calendar.getInstance()
         return calendar.get(Calendar.HOUR_OF_DAY)
     }
 
-    private fun descargarDatos(){
+    private fun descargarDatos() {
         val dbHelper = DatosASqliteLocal(this)
         DatosDeFirebase().descargarInformacion(object : allDatosRutas {
             override fun todosDatosRecibidos(listaCompleta: MutableList<EstructuraDatosBaseDatos>) {
@@ -214,7 +230,11 @@ class RutasSeccion : AppCompatActivity() {
                     dbHelper.insertarCoordSalida(i.idRuta, i.listPrimeraParte)
                     dbHelper.insertarCoordLlegada(i.idRuta, i.listSegundaParte)
                 }
-                Toast.makeText(this@RutasSeccion, "Se descargo toda la información correctamente", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@RutasSeccion,
+                    "Se descargo toda la información correctamente",
+                    Toast.LENGTH_SHORT
+                ).show()
                 reiniciarApp(this@RutasSeccion, RutasSeccion::class.java)
 
             }
@@ -244,6 +264,7 @@ class RutasSeccion : AppCompatActivity() {
             dialog.show()
         }
     }
+
     fun reiniciarApp(context: Context, claseObjetivo: Class<*>) {
         val intent = Intent(context, claseObjetivo)
 
@@ -260,9 +281,6 @@ class RutasSeccion : AppCompatActivity() {
             context.finish()
         }
     }
-
-
-
 
 
 }
