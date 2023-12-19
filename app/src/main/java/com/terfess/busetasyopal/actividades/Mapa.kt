@@ -424,7 +424,7 @@ class Mapa : AppCompatActivity(), LocationListener,
         runOnUiThread {
             binding.failConection.visibility = View.VISIBLE
             binding.failConection.text = Html.fromHtml(
-                "<font color='${getColor(R.color.anuncioGrave)}'>¡En este momento no tienes conexión a Internet es posible que no veas las rutas!</font>",
+                "<font color='${getColor(R.color.anuncioGrave)}'>¡En este momento no tienes conexión a Internet, es posible que el mapa no se cargue correctamente!</font>",
                 Html.FROM_HTML_MODE_LEGACY
             )
             tiempos.postDelayed({ // terminar o ejecutar tareas despues de cierto tiempo
@@ -434,7 +434,7 @@ class Mapa : AppCompatActivity(), LocationListener,
                 } else {
                     binding.failConection.visibility = View.VISIBLE
                     binding.failConection.text = Html.fromHtml(
-                        "<font color='${getColor(R.color.anuncioLeve)}'>¡Por favor conectate a Internet para ver las rutas y cargar el mapa!</font>",
+                        "<font color='${getColor(R.color.anuncioLeve)}'>Sin conexión a Internet</font>",
                         Html.FROM_HTML_MODE_LEGACY
                     )
                 }
