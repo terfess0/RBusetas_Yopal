@@ -151,6 +151,13 @@ class RutasSeccion : AppCompatActivity() {
                     ).show()
                 }
             })
+
+        //el usuario elige calcular la ruta al destino
+        binding.calcularRuta.setOnClickListener {
+            val intent = Intent(this, Mapa::class.java)
+            intent.putExtra("selector", 0)
+            startActivity(intent)
+        }
     }
 
     //menu en el ActionBar
