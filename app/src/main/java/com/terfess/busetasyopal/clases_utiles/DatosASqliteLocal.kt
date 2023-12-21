@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.google.android.gms.maps.model.LatLng
+import com.terfess.busetasyopal.listas_datos.DatoCalcularRuta
 
 class DatosASqliteLocal(context: Context) : SQLiteOpenHelper(context, "Datos_App", null, 1) {
     override fun onCreate(db: SQLiteDatabase?) {
@@ -119,23 +120,59 @@ class DatosASqliteLocal(context: Context) : SQLiteOpenHelper(context, "Datos_App
                 val latitud = cursor.getDouble(latitudIndex)
                 val longitud = cursor.getDouble(longitudIndex)
                 val coordenada = LatLng(latitud, longitud)
-                println("Esta es la coord: $coordenada")
                 coordenadas.add(coordenada)
             } else {
                 // Manejar el caso donde no se encuentran las columnas
                 println("No se encontraron las columnas 'latitud' o 'longitud'")
             }
-
             // Mover al siguiente
             cursor.moveToNext()
         }
-
 
         // Cerrar el cursor y la base de datos
         cursor.close()
         db.close()
 
         return coordenadas
+    }
+
+    fun obtenerCoordenadasCalcularRuta(idRuta: Int, tabla:String): List<DatoCalcularRuta> {
+        val coordenadas = mutableListOf<LatLng>()
+
+        val db = readableDatabase
+
+        // Realizar la consulta SQL
+        val query = "SELECT latitud, longitud FROM $tabla WHERE id_ruta=$idRuta"
+        val cursor = db.rawQuery(query, null)
+
+        // Procesar el resultado de la consulta
+        // Mover el cursor al inicio
+        cursor.moveToFirst()
+
+        // Procesar el resultado de la consulta
+        while (!cursor.isAfterLast) {
+            val latitudIndex = cursor.getColumnIndex("latitud")
+            val longitudIndex = cursor.getColumnIndex("longitud")
+
+            if (latitudIndex >= 0 && longitudIndex >= 0) { //controlar -1 (columna no encontrada)
+                val latitud = cursor.getDouble(latitudIndex)
+                val longitud = cursor.getDouble(longitudIndex)
+                val coordenada = LatLng(latitud, longitud)
+                coordenadas.add(coordenada)
+            } else {
+                // Manejar el caso donde no se encuentran las columnas
+                println("No se encontraron las columnas 'latitud' o 'longitud'")
+            }
+            // Mover al siguiente
+            cursor.moveToNext()
+        }
+
+        // Cerrar el cursor y la base de datos
+        cursor.close()
+        db.close()
+        val datoRuta = mutableListOf<DatoCalcularRuta>()
+        datoRuta.add(DatoCalcularRuta(coordenadas.toList(), idRuta))
+        return datoRuta
     }
 
     fun eliminarTodasLasRutas() {
