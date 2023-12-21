@@ -37,11 +37,14 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.Circle
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.clases_utiles.PlanearRutaDestino
 import com.terfess.busetasyopal.clases_utiles.RutaBasic
@@ -58,6 +61,7 @@ class Mapa : AppCompatActivity(), LocationListener,
     private var networkCallback = ConnectivityManager.NetworkCallback()
     private val tiempos = Handler(Looper.getMainLooper())
     private var puntoProvisionalGps : Circle? = null
+    private lateinit var marcador: Marker
 
 
     companion object { //accesibles desde cualquier lugar de este archivo/clase y proyectos
@@ -150,6 +154,17 @@ class Mapa : AppCompatActivity(), LocationListener,
             false //desactivar vista de planos de algunas edificacoiones--rendimiento
         gmap.uiSettings.isIndoorLevelPickerEnabled =
             false //desactivar selector de piso o nivel -- rendimiento
+
+        // MARCADOR CENTRAL PARA ELEGIR POSICION DESTINO
+        if (idruta == 0){
+            val centerMarker = MarkerOptions()
+            centerMarker.position(LatLng(5.329894555473376, -72.40242298156761))
+            marcador = gmap.addMarker(centerMarker)!!
+            gmap.setOnCameraMoveListener {
+                marcador.position = gmap.cameraPosition.target
+            }
+        }
+
 
         comprobarConexion(this) //ver si tiene conexion a internet
 
@@ -249,7 +264,6 @@ class Mapa : AppCompatActivity(), LocationListener,
             0 -> {
                 activarLocalizacion()
                 irPosGps()
-                PlanearRutaDestino(this, gmap).rutaToDestino(ubiUser, LatLng(5.346112670444686, -72.40294171780654))
             }
             in listOf(2, 3, 6, 7, 8, 9, 10, 11, 13) -> buildRuta.crearRuta(idruta)
         }
