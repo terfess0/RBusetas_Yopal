@@ -27,8 +27,8 @@ class AcercaDe : AppCompatActivity() {
 
         whatsappConeccion.setOnClickListener{
             enviarMensajeWhatsApp(
-                "+573225857486",
-                "Buenos dias, quiero hacer una felicitación/peticion/queja."
+                "+573219822620",
+                "Buenas, quiero hacer una felicitación/peticion/queja."
             )
         }
         mailConection.setOnClickListener{
