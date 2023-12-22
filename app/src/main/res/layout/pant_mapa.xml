@@ -44,8 +44,9 @@
 
     <ImageButton
         android:id="@+id/irgps"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15sp"
         android:layout_gravity="end"
         android:background="@drawable/bord_boton_gps"
         android:elevation="3dp"
@@ -61,8 +62,9 @@
 
     <ImageButton
         android:id="@+id/ajustes"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="15sp"
         android:layout_gravity="end"
         android:background="@drawable/bord_boton_gps"
         android:elevation="3dp"
@@ -256,36 +258,78 @@
     </androidx.cardview.widget.CardView>
 
     <Button
-        android:id="@+id/posInicio"
-        android:layout_width="match_parent"
+        android:id="@+id/posDestino"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Seleccionar lugar de partida"
-        android:gravity="left|center"
-        android:layout_margin="10dp"
+        android:backgroundTint="#E7EBF8"
         android:drawableEnd="@drawable/ic_gps"
+        android:gravity="left|center"
+        android:padding="10dp"
+        android:text="Seleccionar lugar de destino   "
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.455"
+        app:layout_constraintHorizontal_bias="0.882"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.084"
+        app:layout_constraintVertical_bias="0.106"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/posInicio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#E7EBF8"
+        android:drawableEnd="@drawable/ic_gps"
+        android:gravity="left|center"
+        android:padding="10dp"
+        android:text="Seleccionar lugar de partida   "
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.882"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/posDestino"
+        app:layout_constraintVertical_bias="0.0"
         android:visibility="gone"/>
 
     <Button
-        android:id="@+id/posDestino"
-        android:layout_width="match_parent"
+        android:id="@+id/setUbicacion"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:text="Seleccionar lugar de destino"
-        android:gravity="left|center"
-        android:drawableEnd="@drawable/ic_gps"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        android:text="Guardar Posición"
+        android:backgroundTint="#E7EBF8"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.526"
+        app:layout_constraintHorizontal_bias="0.062"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/posInicio"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintVertical_bias="0.76"
         android:visibility="gone"/>
+
+    <ImageButton
+        android:id="@+id/calcAbajo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.183"
+        app:layout_constraintStart_toEndOf="@+id/calcArriba"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintVertical_bias="0.748"
+        app:srcCompat="@drawable/ic_flecha_abajo" />
+
+    <ImageButton
+        android:id="@+id/calcArriba"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.73"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
+        app:layout_constraintVertical_bias="0.748"
+        app:srcCompat="@drawable/ic_flecha_arriba" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
