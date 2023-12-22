@@ -4,17 +4,8 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageButton
-import androidx.lifecycle.lifecycleScope
-import com.terfess.busetasyopal.clases_utiles.DatosDeFirebase
 import com.terfess.busetasyopal.R
-import com.terfess.busetasyopal.clases_utiles.DatosASqliteLocal
-import com.terfess.busetasyopal.clases_utiles.allDatosRutas
-import com.terfess.busetasyopal.modelos_dato.EstructuraDatosBaseDatos
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.net.URLEncoder
 
 class AcercaDe : AppCompatActivity() {
@@ -37,15 +28,15 @@ class AcercaDe : AppCompatActivity() {
     }
 
     //enviar whatsapp
-    private fun enviarMensajeWhatsApp(numeroTelefono: String, mensaje: String) {
+    private fun enviarMensajeWhatsApp(numTel: String, msj: String) {
         // Codificar el número de teléfono en formato E.164
-        val numeroTelefonoCodificado = numeroTelefono.replace(" ", "")
+        val numeroTelefonoCodificado = numTel.replace(" ", "")
 
         // Crear el URI para abrir WhatsApp con el número de teléfono y mensaje
         val uri = Uri.parse(
             "https://wa.me/$numeroTelefonoCodificado?text=${
                 URLEncoder.encode(
-                    mensaje,
+                    msj,
                     "UTF-8"
                 )
             }"
