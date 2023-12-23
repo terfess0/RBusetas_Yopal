@@ -10,19 +10,19 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:padding="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
             android:background="@drawable/bord_suave"
             android:backgroundTint="#D4DAEF"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:padding="10dp">
 
             <TextView
                 android:id="@+id/textView2"
@@ -31,41 +31,96 @@
                 android:text="@string/tema_sugerido_sms"
                 android:textColor="#000000"
                 android:textSize="20sp" />
+
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <ImageButton
                     android:id="@+id/contc_wts"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_whatsapp"
-                    android:contentDescription="@string/mensaje_contacto_wts" />
+                    android:contentDescription="@string/mensaje_contacto_wts"
+                    android:src="@drawable/ic_whatsapp" />
+
                 <ImageButton
                     android:id="@+id/contc_mail"
-                    android:layout_marginStart="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_mail"
-                    android:contentDescription="@string/mensaje_contacto" />
+                    android:layout_marginStart="5dp"
+                    android:contentDescription="@string/mensaje_contacto"
+                    android:src="@drawable/ic_mail" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="8sp"
-                android:text="Iconos de Freepik"
                 android:gravity="center"
+                android:text="Iconos de Freepik"
+                android:textSize="8sp"
                 tools:ignore="SmallSp" />
+
+            <Button
+                android:id="@+id/verInfoHorarios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Información de Horarios"
+                android:textAlignment="textStart"
+                android:backgroundTint="#ffffff"
+                android:drawableEnd="@drawable/ic_flecha_aderecha" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/horarios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/creditos_texto"
-                android:textColor="#0E0E0E"
-                android:textSize="18sp" />
+                android:text="\nHorarios"
+                android:textColor="#000000"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="\nLos horarios muestran la hora en que sale la primera buseta y la hora en que sale la ultima buseta de la ruta correspondiente (Aproximadamente).\n\nHorarios Lunes a Viernes, Sabados y Domingos-Festivos. \n\nAbajo del horario esta la frecuencia, es el tiempo que hay entre la salida de cada buseta, es decir, cada cierto tiempo sale del parquedero la buseta.\n"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="De acuerdo al dia de la semana el horario adquirira un color que indica la disponibiliada del servicio\n- Cuando la buseta esta funcionando/en servicio:"
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:contentDescription="TODO"
+                android:src="@drawable/img_info_horario_on" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="\n- Cuando la buseta no esta funcionando/fuera de servicio."
+                android:textColor="#000000"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:contentDescription="TODO"
+                android:src="@drawable/img_info_horario_off"
+                android:layout_marginBottom="10dp"/>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
         </LinearLayout>
+
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

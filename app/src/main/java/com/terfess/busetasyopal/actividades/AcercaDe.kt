@@ -4,7 +4,10 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.Button
 import android.widget.ImageButton
+import androidx.appcompat.widget.LinearLayoutCompat
 import com.terfess.busetasyopal.R
 import java.net.URLEncoder
 
@@ -13,18 +16,42 @@ class AcercaDe : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.acerca_de)
 
+
+        val activarHorarios = findViewById<Button>(R.id.verInfoHorarios)
+        val infoHorarios = findViewById<LinearLayoutCompat>(R.id.horarios)
+        activarHorarios.setOnClickListener {//mostrar/ocultar informacion de horarios
+            if (infoHorarios.visibility == View.GONE){
+                infoHorarios.visibility = View.VISIBLE
+                activarHorarios.setCompoundDrawablesWithIntrinsicBounds(
+                    0,
+                    0,
+                    R.drawable.ic_flecha_abajo,
+                    0
+                ) // cambiar el icono al final del boton
+            }else{
+                infoHorarios.visibility = View.GONE
+                activarHorarios.setCompoundDrawablesWithIntrinsicBounds(
+                    0,
+                    0,
+                    R.drawable.ic_flecha_aderecha,
+                    0
+                ) // cambiar el icono al final del boton
+            }
+        }
+
         val whatsappConeccion = findViewById<ImageButton>(R.id.contc_wts)
         val mailConection = findViewById<ImageButton>(R.id.contc_mail)
 
-        whatsappConeccion.setOnClickListener{
+        whatsappConeccion.setOnClickListener{ //contectar a desarrollador por whatsapp
             enviarMensajeWhatsApp(
                 "+573219822620",
                 "Buenas, quiero hacer una felicitación/peticion/queja."
             )
         }
-        mailConection.setOnClickListener{
+        mailConection.setOnClickListener{//contectar a desarrollador por mail
             abrirAppCorreo("terdevfess@gmail.com")
         }
+
     }
 
     //enviar whatsapp
