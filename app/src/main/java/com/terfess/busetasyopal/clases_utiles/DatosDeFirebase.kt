@@ -7,8 +7,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.terfess.busetasyopal.modelos_dato.EstructuraDatosBaseDatos
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.coroutineScope
 
 interface DatosDeFirebaseCallback { //callback para detectar que los datos de una ruta han sido recibidos
     fun onDatosRecibidos(
@@ -22,7 +20,6 @@ interface allDatosRutas { //callback para detectar que los datos de todas las ru
 }
 
 class DatosDeFirebase {
-
     private var baseDatosFirebaseDatabase = FirebaseDatabase.getInstance()
 
     fun recibirCoordenadasRuta(idruta: Int, callback: DatosDeFirebaseCallback) {

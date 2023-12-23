@@ -1,3 +1,9 @@
 <resources>
-    <!-- Base application theme. -->
+    <style name="Theme.general" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="elevation">1dp</item>
+        <item name="colorPrimary">#FFFFFF</item>
+        <item name="menu">@menu/menu_rutas</item>
+        <item name="titleTextColor">#CE131F87</item>
+    </style>
+
 </resources>

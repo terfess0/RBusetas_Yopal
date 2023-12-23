@@ -305,31 +305,4 @@
         app:layout_constraintVertical_bias="0.76"
         android:visibility="gone"/>
 
-    <ImageButton
-        android:id="@+id/calcAbajo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#ffffff"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.183"
-        app:layout_constraintStart_toEndOf="@+id/calcArriba"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
-        app:layout_constraintVertical_bias="0.748"
-        app:srcCompat="@drawable/ic_flecha_abajo" />
-
-    <ImageButton
-        android:id="@+id/calcArriba"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#ffffff"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.73"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
-        app:layout_constraintVertical_bias="0.748"
-        app:srcCompat="@drawable/ic_flecha_arriba" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

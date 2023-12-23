@@ -2,8 +2,8 @@
 <resources>
 
     <array name="opciones_array">
-        <item>Mapa Normal</item>
         <item>Mapa Hybrido</item>
+        <item>Mapa Normal</item>
         <item>Mapa Satelital</item>
         <item>Mapa Relieve</item>
     </array>

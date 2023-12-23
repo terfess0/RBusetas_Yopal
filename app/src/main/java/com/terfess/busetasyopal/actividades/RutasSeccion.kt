@@ -23,6 +23,8 @@ import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.RutasAdapter
 import com.terfess.busetasyopal.clases_utiles.DatosASqliteLocal
 import com.terfess.busetasyopal.clases_utiles.DatosDeFirebase
+import com.terfess.busetasyopal.clases_utiles.RutaBasic
+import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.descargando
 import com.terfess.busetasyopal.clases_utiles.allDatosRutas
 import com.terfess.busetasyopal.databinding.PantPrincipalBinding
 import com.terfess.busetasyopal.listas_datos.ListaRutas
@@ -39,6 +41,7 @@ class RutasSeccion : AppCompatActivity() {
     private var precio: String = " $2,000"
     private var mensaje_controlado: String? = null
     private val adapter = RutasAdapter(ListaRutas.busetaRuta.toList())
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = PantPrincipalBinding.inflate(layoutInflater)
@@ -75,7 +78,10 @@ class RutasSeccion : AppCompatActivity() {
                         val versionNube = snapshot.value.toString().toInt()
                         if (versionLocal != versionNube) {
                             dbHelper.insertarVersionDatos(versionNube)
-                            descargarDatos()
+                            if (!descargando) { // la variable descargando esta en el objeto de la clase RutaBasic.kt
+                                descargarDatos()
+                                descargando = true
+                            }
                             Toast.makeText(
                                 this@RutasSeccion,
                                 "Descargando informacion",
@@ -244,6 +250,7 @@ class RutasSeccion : AppCompatActivity() {
                     "Se descargo toda la información correctamente",
                     Toast.LENGTH_SHORT
                 ).show()
+                RutaBasic.CreatRuta.descargando = false
                 reiniciarApp(this@RutasSeccion, RutasSeccion::class.java)
 
             }
