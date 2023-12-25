@@ -19,7 +19,6 @@ import android.text.Html
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -71,6 +70,7 @@ class Mapa : AppCompatActivity(), LocationListener,
         const val codigoLocalizacion = 0
         var ubiUser = LatLng(0.0, 0.0)
         var hayConexion = true
+        var contador = 0
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -447,7 +447,10 @@ class Mapa : AppCompatActivity(), LocationListener,
                             )
 
                             // El usuario rechazó la solicitud de activación del GPS
-                            UtilidadesMenores().crearToast(this, "Debes activar el GPS para usar esta función.")
+                            UtilidadesMenores().crearToast(
+                                this,
+                                "Debes activar el GPS para usar esta función."
+                            )
                             binding.irgps.setImageResource(R.drawable.ic_gps_off)
                         }
                     }
@@ -495,11 +498,12 @@ class Mapa : AppCompatActivity(), LocationListener,
                     binding.verDistancia.visibility = View.VISIBLE
                 }
                 //marcador en ubi de respaldo
-                val accuracyRadius = 14.0  // Cambia esto con la precisión real
+                val accuracyRadius = 12.0  // Cambia esto con la precisión real
                 val opcionesCirculo = CircleOptions()
                     .center(latLng)
                     .radius(accuracyRadius)
-                    .strokeWidth(1f)
+                    .strokeWidth(2f)
+                    .strokeColor(R.color.RutaEnServicio)
                     .fillColor(0x55ff00ff)
                 puntoProvisionalGps = if (puntoProvisionalGps == null) {
                     gmap.addCircle(opcionesCirculo)
@@ -540,6 +544,22 @@ class Mapa : AppCompatActivity(), LocationListener,
                 activarGps()
             } else {
                 gmap.isMyLocationEnabled = false
+                if (contador == 0){
+                    UtilidadesMenores().crearToast(this, "Permiso de ubicación no concedido.")
+                }
+                contador++ // omitir el primer click del usuario al boton gps
+                if (contador == 4) {
+                    contador = 0
+                    //mostrar alerta sobre persmiso denegado y dar opcion de activarlo desde ajustes -- se usa devolucion de llamada a onOpcionSeleccionada()
+                    UtilidadesMenores().crearAlerta(
+                        this,
+                        "ubicacion",
+                        "Permiso de localización ha sido denegado.\n\nPermite que Busetas Yopal tenga permiso de ubicación desde ajustes.",
+                        "Aceptar",
+                        "Ajustes",
+                        this
+                    )
+                }
             }
 
             else -> {}
@@ -553,8 +573,6 @@ class Mapa : AppCompatActivity(), LocationListener,
         if (!::gmap.isInitialized) return
         if (!permisoUbiCondecido()) {
             gmap.isMyLocationEnabled = false
-            //mostrar alerta sobre persmiso denegado y dar opcion de activarlo desde ajustes -- se usa devolucion de llamada a onOpcionSeleccionada()
-            UtilidadesMenores().crearAlerta(this, "ubicacion","Permiso de localización rechazado, activalo en ajustes.", "Aceptar", "Ajustes", this)
         }
     }
 
@@ -648,8 +666,11 @@ class Mapa : AppCompatActivity(), LocationListener,
         irPosGps()
     }
 
-    override fun onOpcionSeleccionada(opcion: Int, es_ajuste_permisos:Boolean) { //devolucion de llamada de la opcion seleccionada en UtilidadesMenores.CrearAlerta()
-        if (es_ajuste_permisos && opcion == 1){
+    override fun onOpcionSeleccionada(
+        opcion: Int,
+        tipo_de_solicitud: String
+    ) { //devolucion de llamada de la opcion seleccionada en UtilidadesMenores.CrearAlerta()
+        if (tipo_de_solicitud == "permiso_ubicacion" && opcion == 1) {
             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
             val uri = Uri.fromParts("package", packageName, null)
             intent.data = uri
