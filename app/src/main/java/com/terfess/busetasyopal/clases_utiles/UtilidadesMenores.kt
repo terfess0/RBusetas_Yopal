@@ -5,6 +5,11 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import javax.security.auth.callback.Callback
+
+interface AlertaCallback {
+    fun onOpcionSeleccionada(opcion: Int, es_ajuste_permiso: Boolean)
+}
 
 class UtilidadesMenores {
     //esta funcion comprobarConexion tiene su contraparte en la clase Mapa.kt y que detecta cuando regresa/se establece conexion
@@ -26,19 +31,28 @@ class UtilidadesMenores {
         return returne
     }
 
-    fun crearAlerta(contexto: Context, mensaje: String, op1: String, op2: String): Boolean {
+    fun crearAlerta(
+        contexto: Context,
+        tipo_solicitud: String,
+        mensaje: String,
+        op1: String,
+        op2: String,
+        Callback: AlertaCallback
+    ){
         val builder = AlertDialog.Builder(contexto)
-        var respuesta = false
         builder.setMessage(mensaje)
             .setPositiveButton(op1) { _, _ ->
-                respuesta = true
+                if (tipo_solicitud == "ubicacion") {
+                    Callback.onOpcionSeleccionada(2, true) //opcion lado derecho
+                }
             }
         builder.setNegativeButton(op2) { _, _ ->
-            respuesta = false
+            if (tipo_solicitud == "ubicacion") {
+                Callback.onOpcionSeleccionada(1, true) //opcion lado izquierdo
+            }
         }
         val dialog = builder.create()
         dialog.show()
-        return respuesta
     }
 
     fun crearToast(contexto: Context, mensaje: String) { //crear mensaje toast

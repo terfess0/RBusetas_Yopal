@@ -10,6 +10,7 @@ import android.location.Location
 import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.Network
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -18,6 +19,7 @@ import android.text.Html
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -44,6 +46,7 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.terfess.busetasyopal.R
+import com.terfess.busetasyopal.clases_utiles.AlertaCallback
 import com.terfess.busetasyopal.clases_utiles.PlanearRutaDestino.Datos
 import com.terfess.busetasyopal.clases_utiles.PlanearRutaDestino
 import com.terfess.busetasyopal.clases_utiles.RutaBasic
@@ -52,7 +55,7 @@ import com.terfess.busetasyopal.databinding.PantMapaBinding
 
 
 class Mapa : AppCompatActivity(), LocationListener,
-    ActivityCompat.OnRequestPermissionsResultCallback, OnMapReadyCallback {
+    ActivityCompat.OnRequestPermissionsResultCallback, OnMapReadyCallback, AlertaCallback {
     private lateinit var binding: PantMapaBinding
     private lateinit var gmap: GoogleMap
     private var contexto = this
@@ -261,7 +264,7 @@ class Mapa : AppCompatActivity(), LocationListener,
         binding.guardarAjustes.setOnClickListener {//cerrar ventana de ajustes
             binding.configuraciones.visibility = View.GONE
             binding.ajustes.visibility = View.VISIBLE
-            if (idruta != 0) binding.irgps.visibility = View.VISIBLE 
+            if (idruta != 0) binding.irgps.visibility = View.VISIBLE
         }
 
     }
@@ -412,6 +415,7 @@ class Mapa : AppCompatActivity(), LocationListener,
                 this,
                 "Permiso de ubicación no permitido--Activalo en ajustes."
             )
+            binding.irgps.setImageResource(R.drawable.ic_gps_off)
         }
         if (!::gmap.isInitialized) return
         if (!UtilidadesMenores().comprobarConexion(this)) {
@@ -441,12 +445,16 @@ class Mapa : AppCompatActivity(), LocationListener,
                                 "GPS",
                                 "Error al intentar abrir la configuración de ubicación: ${sendEx.message}"
                             )
+
+                            // El usuario rechazó la solicitud de activación del GPS
+                            UtilidadesMenores().crearToast(this, "Debes activar el GPS para usar esta función.")
+                            binding.irgps.setImageResource(R.drawable.ic_gps_off)
                         }
                     }
                 }
                 irPosGps()
             } else { //si ya esta activado el gps entonces ir a la posicion
-                binding.irgps.setImageResource(R.drawable.ic_progress_gps)
+                binding.irgps.setImageResource(R.drawable.ic_gps_find)
                 irPosGps()
             }
         }
@@ -513,7 +521,7 @@ class Mapa : AppCompatActivity(), LocationListener,
             Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
 
-    private fun activarLocalizacion() {
+    private fun activarLocalizacion() { //pide permiso de localicaion
         val permission = Manifest.permission.ACCESS_FINE_LOCATION
         ActivityCompat.requestPermissions(this, arrayOf(permission), codigoLocalizacion)
     }
@@ -525,6 +533,7 @@ class Mapa : AppCompatActivity(), LocationListener,
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
         when (requestCode) {
             codigoLocalizacion -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 gmap.isMyLocationEnabled = true
@@ -544,10 +553,8 @@ class Mapa : AppCompatActivity(), LocationListener,
         if (!::gmap.isInitialized) return
         if (!permisoUbiCondecido()) {
             gmap.isMyLocationEnabled = false
-            UtilidadesMenores().crearToast(
-                this,
-                "Permiso de localización no concedido. Puedes cambiarlo en ajustes."
-            )
+            //mostrar alerta sobre persmiso denegado y dar opcion de activarlo desde ajustes -- se usa devolucion de llamada a onOpcionSeleccionada()
+            UtilidadesMenores().crearAlerta(this, "ubicacion","Permiso de localización rechazado, activalo en ajustes.", "Aceptar", "Ajustes", this)
         }
     }
 
@@ -639,5 +646,14 @@ class Mapa : AppCompatActivity(), LocationListener,
         val ubiGps = LatLng(p0.latitude, p0.longitude)
         gmap.animateCamera(CameraUpdateFactory.newLatLngZoom(ubiGps, 20f), 3000, null)
         irPosGps()
+    }
+
+    override fun onOpcionSeleccionada(opcion: Int, es_ajuste_permisos:Boolean) { //devolucion de llamada de la opcion seleccionada en UtilidadesMenores.CrearAlerta()
+        if (es_ajuste_permisos && opcion == 1){
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            val uri = Uri.fromParts("package", packageName, null)
+            intent.data = uri
+            startActivity(intent)
+        }
     }
 }
