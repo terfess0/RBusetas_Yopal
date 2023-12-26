@@ -1,6 +1,8 @@
 package com.terfess.busetasyopal.clases_utiles
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -71,6 +73,23 @@ class UtilidadesMenores {
             toast?.cancel() // cancelar el toast anterior si existe
             toast = Toast.makeText(it, mensaje, Toast.LENGTH_LONG)
             toast?.show()
+        }
+    }
+
+    fun reiniciarApp(context: Context, claseObjetivo: Class<*>) {
+        val intent = Intent(context, claseObjetivo)
+
+        if (context.javaClass == claseObjetivo) {
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+            context.startActivity(intent)
+        } else {
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            context.startActivity(intent)
+        }
+
+        // Finalizar la actividad actual si es necesario
+        if (context is Activity) {
+            context.finish()
         }
     }
 

@@ -56,52 +56,6 @@ class RutasSeccion : AppCompatActivity() {
         cajaInfo.adapter = adapter
 
 
-        //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>
-        //DESCARGAR LOS DATOS DE COORDENADAS DE CADA RUTA DESDE FIREBASE Y GUARDARLOS EN SQLITE LOCAL
-        val versionLocal: Int
-        //buscar el numero de version actual (local)
-        val dbHelper = DatosASqliteLocal(this)
-        //obtener la version local
-        val cursor = dbHelper.readableDatabase.rawQuery("SELECT * FROM version", null)
-        versionLocal = if (cursor.moveToFirst()) {
-            cursor.getInt(0) //indices de columnas inician en 0
-        } else {
-            0
-        }
-        cursor.close()
-
-        //obtener la version externa y comparar
-        CoroutineScope(Dispatchers.IO).launch {
-            FirebaseDatabase.getInstance().getReference("/features/0/version")
-                .addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        val versionNube = snapshot.value.toString().toInt()
-                        if (versionLocal != versionNube) {
-                            dbHelper.insertarVersionDatos(versionNube)
-                            if (!descargando) { // la variable descargando esta en el objeto de la clase RutaBasic.kt
-                                descargarDatos()
-                                descargando = true
-                            }
-                            Toast.makeText(
-                                this@RutasSeccion,
-                                "Descargando informacion",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        Toast.makeText(
-                            binding.root.context,
-                            "La version no se pudo recibir desde internet",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                })
-        }
-
-
-        //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 
         //supportActionBar?.title = "Rutas"
@@ -235,27 +189,7 @@ class RutasSeccion : AppCompatActivity() {
         return calendar.get(Calendar.HOUR_OF_DAY)
     }
 
-    private fun descargarDatos() {
-        val dbHelper = DatosASqliteLocal(this)
-        DatosDeFirebase().descargarInformacion(object : allDatosRutas {
-            override fun todosDatosRecibidos(listaCompleta: MutableList<EstructuraDatosBaseDatos>) {
-                dbHelper.eliminarTodasLasRutas()
-                for (i in listaCompleta) {
-                    dbHelper.insertarRuta(i.idRuta)
-                    dbHelper.insertarCoordSalida(i.idRuta, i.listPrimeraParte)
-                    dbHelper.insertarCoordLlegada(i.idRuta, i.listSegundaParte)
-                }
-                Toast.makeText(
-                    this@RutasSeccion,
-                    "Se descargo toda la información correctamente",
-                    Toast.LENGTH_SHORT
-                ).show()
-                RutaBasic.CreatRuta.descargando = false
-                reiniciarApp(this@RutasSeccion, RutasSeccion::class.java)
 
-            }
-        })
-    }
 
     override fun onBackPressed() {
         if (filtrando || binding.filtro.requestFocus()) {
@@ -281,22 +215,7 @@ class RutasSeccion : AppCompatActivity() {
         }
     }
 
-    fun reiniciarApp(context: Context, claseObjetivo: Class<*>) {
-        val intent = Intent(context, claseObjetivo)
 
-        if (context.javaClass == claseObjetivo) {
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
-            context.startActivity(intent)
-        } else {
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            context.startActivity(intent)
-        }
-
-        // Finalizar la actividad actual si es necesario
-        if (context is Activity) {
-            context.finish()
-        }
-    }
 
 
 }

@@ -78,7 +78,7 @@ class RutaBasic(private val mapa: Context, private val gmap: GoogleMap) {
         val listaSegundaParte = dbAuxiliar.obtenerCoordenadas(idruta, "coordenadas2")
 
         if (listaPrimeraParte.size < 2 && listaSegundaParte.size < 2) { //comprobar si hay datos, posible causa para cumplirse es que no hay conexion interenet
-            RutasSeccion().reiniciarApp(mapa, RutasSeccion::class.java) //reinicia la app a la primera pantalla
+            UtilidadesMenores().reiniciarApp(mapa, RutasSeccion::class.java) //reinicia la app a la primera pantalla
             UtilidadesMenores().crearToast(mapa,"Se Necesita Conexión a Internet")
         } else {
 
