@@ -122,6 +122,7 @@ class RutasSeccion : AppCompatActivity() {
             R.id.buscar -> {
                 if (filtro.visibility == View.GONE) {
                     binding.cabezera.visibility = View.GONE
+                    binding.botonesRapidos.visibility = View.GONE
                     filtro.setText("")
                     filtro.visibility = View.VISIBLE //mostrar el campo del filtro
                     filtro.requestFocus()// Establece el foco en el EditText de filtro
@@ -161,6 +162,7 @@ class RutasSeccion : AppCompatActivity() {
                     ) //ocultar teclado virtual en esa ventana
                     adapter.updateLista(ListaRutas.busetaRuta, "333333")
                     binding.cabezera.visibility = View.VISIBLE
+                    binding.botonesRapidos.visibility = View.VISIBLE
                 }
             }
 
@@ -185,6 +187,7 @@ class RutasSeccion : AppCompatActivity() {
             binding.filtro.setText("")
             binding.filtro.visibility = View.GONE
             binding.noResultados.visibility = View.GONE
+            binding.botonesRapidos.visibility = View.VISIBLE
             binding.cabezera.visibility = View.VISIBLE
             binding.cajaInfo.requestFocus()
             filtrando = false
