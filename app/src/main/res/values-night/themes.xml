@@ -3,7 +3,7 @@
         <item name="elevation">1dp</item>
         <item name="colorPrimary">#FFFFFF</item>
         <item name="menu">@menu/menu_rutas</item>
-        <item name="titleTextColor">#FFFFFF</item>
+        <item name="titleTextColor">#000000</item>
     </style>
     <style name="Theme.splash" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="elevation">1dp</item>

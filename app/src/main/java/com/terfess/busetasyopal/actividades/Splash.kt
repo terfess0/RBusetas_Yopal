@@ -43,7 +43,7 @@ class Splash : AppCompatActivity() {
         if (UtilidadesMenores().comprobarConexion(this)){
             //si hay conexion a internet entonces
 
-            UtilidadesMenores().crearToast(this, "Conexión Reestablecida")
+            UtilidadesMenores().crearToast(this, "Conexión Establecida")
             //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>
             //DESCARGAR LOS DATOS DE COORDENADAS DE CADA RUTA DESDE FIREBASE Y GUARDARLOS EN SQLITE LOCAL
             val versionLocal: Int
