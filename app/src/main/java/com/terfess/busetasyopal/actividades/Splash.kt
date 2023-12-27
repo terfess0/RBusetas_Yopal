@@ -76,6 +76,7 @@ class Splash : AppCompatActivity() {
                                     Toast.LENGTH_SHORT
                                 ).show()
                             }else{
+                                //si la informacion descargable ya esta guardada entonces inciar
                                 startActivity(Intent(this@Splash, RutasSeccion::class.java))
                             }
                         }

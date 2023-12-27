@@ -4,9 +4,11 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.terfess.busetasyopal.R
 import java.net.URLEncoder
@@ -52,6 +54,22 @@ class AcercaDe : AppCompatActivity() {
             abrirAppCorreo("terdevfess@gmail.com")
         }
 
+        //_________LINK CLICKABLE____________________
+        val textView: TextView = findViewById(R.id.link_alcaldia) // Asegúrate de cambiar a tu TextView
+
+        val textoConEnlace = getString(R.string.enlace_alcaldia)
+
+        // Configura el TextView para que sea clickable y muestre el enlace
+        textView.movementMethod = LinkMovementMethod.getInstance()
+        textView.text = textoConEnlace
+
+        //cuando el usuario toca el textView se ejecuta un intent hacia la url de la alcaldia de Yopal
+        textView.setOnClickListener {
+            // Abre el enlace directamente al hacer clic en el TextView
+            val uri = Uri.parse("https://www.yopal-casanare.gov.co/")
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            startActivity(intent)
+        }
     }
 
     //enviar whatsapp
