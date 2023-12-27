@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.Polyline
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.actividades.RutasSeccion
+import com.terfess.busetasyopal.actividades.Splash
 import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.estamarcado1
 import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.estamarcado2
 import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.marcador1
@@ -78,7 +79,7 @@ class RutaBasic(private val mapa: Context, private val gmap: GoogleMap) {
         val listaSegundaParte = dbAuxiliar.obtenerCoordenadas(idruta, "coordenadas2")
 
         if (listaPrimeraParte.size < 2 && listaSegundaParte.size < 2) { //comprobar si hay datos, posible causa para cumplirse es que no hay conexion interenet
-            UtilidadesMenores().reiniciarApp(mapa, RutasSeccion::class.java) //reinicia la app a la primera pantalla
+            UtilidadesMenores().reiniciarApp(mapa, Splash::class.java) //reinicia la app a la primera pantalla
             UtilidadesMenores().crearToast(mapa,"Se Necesita Conexión a Internet")
         } else {
 

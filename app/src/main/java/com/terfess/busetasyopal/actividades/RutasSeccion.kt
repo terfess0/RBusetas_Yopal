@@ -1,6 +1,5 @@
 package com.terfess.busetasyopal.actividades
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -21,17 +20,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.RutasAdapter
-import com.terfess.busetasyopal.clases_utiles.DatosASqliteLocal
-import com.terfess.busetasyopal.clases_utiles.DatosDeFirebase
-import com.terfess.busetasyopal.clases_utiles.RutaBasic
-import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.descargando
-import com.terfess.busetasyopal.clases_utiles.allDatosRutas
 import com.terfess.busetasyopal.databinding.PantPrincipalBinding
 import com.terfess.busetasyopal.listas_datos.ListaRutas
-import com.terfess.busetasyopal.modelos_dato.EstructuraDatosBaseDatos
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.Calendar
 
 class RutasSeccion : AppCompatActivity() {
@@ -46,6 +36,7 @@ class RutasSeccion : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = PantPrincipalBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         //firebase
         db =
             FirebaseDatabase.getInstance("https://rutasbusetas-default-rtdb.firebaseio.com/").reference
@@ -54,9 +45,6 @@ class RutasSeccion : AppCompatActivity() {
 
         cajaInfo.layoutManager = LinearLayoutManager(this)
         cajaInfo.adapter = adapter
-
-
-
 
         //supportActionBar?.title = "Rutas"
         supportActionBar?.themedContext
@@ -189,8 +177,6 @@ class RutasSeccion : AppCompatActivity() {
         return calendar.get(Calendar.HOUR_OF_DAY)
     }
 
-
-
     override fun onBackPressed() {
         if (filtrando || binding.filtro.requestFocus()) {
             val tecladoV = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -214,8 +200,4 @@ class RutasSeccion : AppCompatActivity() {
             dialog.show()
         }
     }
-
-
-
-
 }
