@@ -136,12 +136,6 @@ class Mapa : AppCompatActivity(), LocationListener,
         }
         connectivityManager.registerDefaultNetworkCallback(networkCallback)
 
-        //Cuando se calcule la ruta
-        if (idruta == 0) {
-            binding.infoColor.visibility = View.GONE
-            //binding.parqueadero.visibility = View.GONE
-        }
-
         //inicializar arrays que se usaran para calcular rutas
         Datos.mejorPuntoaInicio[0] = -1 // inicializa el índice de la estación más cercana en -1
         Datos.mejorPuntoaInicio[1] = Int.MAX_VALUE // inicializa la distancia con un valor alto
@@ -191,6 +185,13 @@ class Mapa : AppCompatActivity(), LocationListener,
         }
 
         supportActionBar?.title = "Mapa con Recorrido de Ruta $idruta"  //titulo actionbar
+
+        //Cuando se calcule la ruta
+        if (idruta == 0) {
+            binding.infoColor.visibility = View.GONE
+            supportActionBar?.title = "Calcular viaje Inicio - Destino"  //titulo actionbar
+            //binding.parqueadero.visibility = View.GONE
+        }
 
         //botones verdistancia y calcular punto cercano
         binding.verDistancia.setOnClickListener {
