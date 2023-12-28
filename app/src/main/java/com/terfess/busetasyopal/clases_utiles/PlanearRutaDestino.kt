@@ -25,7 +25,7 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
         ubicacionDestino: LatLng
     ) {
         val dbhelper = DatosASqliteLocal(mapa)
-        val rutaIds = intArrayOf(2, 3, 6, 7, 8, 9, 10, 11, 13)
+        val rutaIds = intArrayOf(2, 3, 6, 7, 8, 9, 10, 11, 13)//indices para recuperar las rutas
         var puntosRutaSalida: List<DatoCalcularRuta>
         var puntosRutaLlegada: List<DatoCalcularRuta>
 
@@ -48,19 +48,20 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
             puntosRutaLlegada =
                 dbhelper.obtenerCoordenadasCalcularRuta(iterador, "coordenadas2")
             val idRuta = puntosRutaSalida[0].idRuta
+            val datosCompletos = puntosRutaSalida[0].coordenadas + puntosRutaLlegada[0].coordenadas
             //-------------------------------------------------------------
 
             //compara las distancias entre el usuario y cada estacion
             //compara las distancias entre el destino y cada estacion
             Distancia().compararDistanciasConDestino(
-                puntosRutaSalida[0].coordenadas,
+                datosCompletos,
                 ubiInicial,
                 ubiEstacion,
                 true,
                 idRuta
             )
             Distancia().compararDistanciasConDestino(
-                puntosRutaLlegada[0].coordenadas,
+                datosCompletos,
                 ubiDestino,
                 ubiEstacion,
                 false,
@@ -78,16 +79,30 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
 
         val puntoCorte1 =
             Datos.mejorPuntoaInicio[0] //numero elemento de arreglo de coordenadas mas cercano al inicio
-        val puntoCorte2 =
+        var puntoCorte2 =
             Datos.mejorPuntoaDestino[0] //numero elemento de arreglo de coordenadas mas cercano al destino
 
         //-----------------------------------------------------------------------------------------
 
         val totalSubida1 = puntosRutaSalida1[0].coordenadas.size
-        val puntosFinal1 =
-            puntosRutaSalida1[0].coordenadas.toMutableList().subList(puntoCorte1, totalSubida1 - 1)
-                .toMutableList()
 
+        var puntosFinal1 = mutableListOf<LatLng>()
+        if (puntoCorte1 < totalSubida1 && puntoCorte2 > puntoCorte1 && puntoCorte2 < totalSubida1) {
+            puntosFinal1 =
+                puntosRutaSalida1[0].coordenadas.toMutableList().subList(puntoCorte1, puntoCorte2)
+        } else if (puntoCorte1 < totalSubida1) {
+            puntosFinal1 =
+                puntosRutaSalida1[0].coordenadas.toMutableList().subList(puntoCorte1, totalSubida1)
+        } else if (puntoCorte2 > puntoCorte1 && puntoCorte2 > totalSubida1 && puntoCorte1 < totalSubida1) {
+            puntosFinal1 =
+                puntosRutaSalida1[0].coordenadas.toMutableList().subList(puntoCorte1, totalSubida1)
+        } else if (puntoCorte2 < puntoCorte1 && puntoCorte1 < totalSubida1) {
+            puntosFinal1 =
+                puntosRutaSalida1[0].coordenadas.toMutableList().subList(puntoCorte2, puntoCorte1)
+        } else if (puntoCorte2 < puntoCorte1 && puntoCorte1 > totalSubida1) {
+            puntosFinal1 =
+                puntosRutaSalida1[0].coordenadas.toMutableList().subList(puntoCorte2-totalSubida1, puntoCorte1-totalSubida1)
+        }
         polylineOptions.color(
             ContextCompat.getColor(
                 mapa,
@@ -106,7 +121,7 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
         //en caso de que el puntocorte2 sea mayor a los puntos de llegada de la ruta
         //debido a posible cruce de rutas distintas de hara de nuevo la comparacion
         //usando el idRuta de la variable mejorpuntoinicio
-        if (puntoCorte2 > puntosRutaLlegada1.size) {
+        /*if (puntoCorte2 > puntosRutaLlegada1.size) {
             val puntosReparadores =
                 dbhelper.obtenerCoordenadasCalcularRuta(idMejorRuta, "coordenadas2")
             Distancia().compararDistanciasConDestino(
@@ -116,11 +131,25 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
                 false,
                 idMejorRuta
             )
-        }
+        }*/
         //puntos polyline de llegada
-        val puntosFinal =
-            puntosRutaLlegada1[0].coordenadas.toMutableList().subList(0, puntoCorte2)
-                .toMutableList()
+        val totalSubida2 = puntosRutaSalida1[0].coordenadas.size
+        val totalLlegada1 = puntosRutaLlegada1[0].coordenadas.size
+        var puntosFinal = mutableListOf<LatLng>()
+        if (puntoCorte2 > totalSubida2 && puntoCorte2 - totalSubida2 < totalLlegada1) {
+            puntosFinal = puntosRutaLlegada1[0].coordenadas.toMutableList()
+                .subList(0, puntoCorte2 - totalSubida2)
+        } else if (puntoCorte2 > puntoCorte1 && puntoCorte2 > totalSubida1 && puntoCorte1 < totalSubida1) {
+            puntosFinal =
+                puntosRutaLlegada1[0].coordenadas.toMutableList()
+                    .subList(0, puntoCorte2 - totalSubida2)
+        }else if (puntoCorte2 < puntoCorte1 && puntoCorte1 > totalSubida1) {
+            puntosFinal =
+                puntosRutaLlegada1[0].coordenadas.toMutableList().subList(puntoCorte2, puntoCorte1-totalSubida2)
+        }else if (puntoCorte1 > totalSubida2 && puntoCorte2 > puntoCorte1) {
+            puntosFinal =
+                puntosRutaLlegada1[0].coordenadas.toMutableList().subList(puntoCorte1-totalSubida2, puntoCorte2-totalSubida2)
+        }
 
         polylineOptions.color(
             ContextCompat.getColor(

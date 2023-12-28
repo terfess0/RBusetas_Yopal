@@ -2,6 +2,8 @@ package com.terfess.busetasyopal.actividades
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -46,8 +48,10 @@ class RutasSeccion : AppCompatActivity() {
         cajaInfo.layoutManager = LinearLayoutManager(this)
         cajaInfo.adapter = adapter
 
+        //ACTIONBAR
         //supportActionBar?.title = "Rutas"
         supportActionBar?.themedContext
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT)) //dar color transparente a action bar para quitar linea divisora
 
         //mostrar saludo buenos dias
         val saludo: String = when (getHora()) {
