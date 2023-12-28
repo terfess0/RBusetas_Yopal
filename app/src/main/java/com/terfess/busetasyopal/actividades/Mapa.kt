@@ -333,7 +333,7 @@ class Mapa : AppCompatActivity(), LocationListener,
                             R.drawable.ic_gps_find,
                             0
                         ) // cambiar el icono al final del boton cuando se guarda la ubicacion
-                        binding.posInicio.text = "Lugar de partida guardado   "
+                        binding.posInicio.text = "Partida Guardada   "
 
                         marcador.remove() //borrar el marcador inicial (solo queda el de la ubicacion guardada)
 
@@ -343,6 +343,7 @@ class Mapa : AppCompatActivity(), LocationListener,
                                 ubiInicio,
                                 ubiDestino
                             )
+                            binding.infoColor.visibility = View.VISIBLE
                         }
                     }
                 }
@@ -389,7 +390,7 @@ class Mapa : AppCompatActivity(), LocationListener,
                             R.drawable.ic_gps_find,
                             0
                         )//cambiar el icono al final del boton al guardar ubicacion
-                        binding.posDestino.text = "Lugar de destino guardado   "
+                        binding.posDestino.text = "Destino Guardado   "
 
                         marcador.remove() //quitar marcador central en pantalla, del mapa
 
@@ -399,6 +400,7 @@ class Mapa : AppCompatActivity(), LocationListener,
                                 ubiInicio,
                                 ubiDestino
                             )
+                            binding.infoColor.visibility = View.VISIBLE
                         }
                     }
                 }

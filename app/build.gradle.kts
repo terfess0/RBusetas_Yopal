@@ -44,11 +44,11 @@ dependencies {
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.10.0")
+    implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     implementation("com.google.maps.android:android-maps-utils:2.3.0")//maps
-    implementation("com.google.android.gms:play-services-maps:18.1.0")//maps
+    implementation("com.google.android.gms:play-services-maps:18.2.0")//maps
     implementation("com.google.maps.android:maps-utils-ktx:3.4.0") //maps
     implementation("com.google.android.gms:play-services-location:21.0.1")
     implementation("androidx.cardview:cardview:1.0.0") //maps
@@ -66,7 +66,7 @@ dependencies {
     implementation("com.google.android.libraries.places:places:3.3.0")
 
     //coroutinas
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
 
 
 }

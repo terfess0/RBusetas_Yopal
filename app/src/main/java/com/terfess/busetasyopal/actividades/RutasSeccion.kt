@@ -28,7 +28,7 @@ class RutasSeccion : AppCompatActivity() {
     private lateinit var binding: PantPrincipalBinding
     private var filtrando = false
     private lateinit var db: DatabaseReference
-    private var precio: String = " $2,000"
+    private var precio: String = " $ 2,000"
     private var mensaje_controlado: String? = null
     private val adapter = RutasAdapter(ListaRutas.busetaRuta.toList())
 

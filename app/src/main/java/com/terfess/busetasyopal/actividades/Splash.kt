@@ -29,15 +29,23 @@ class Splash : AppCompatActivity() {
         setContentView(R.layout.pant_splash)
 
 
-        val videoView: VideoView = findViewById(R.id.videoView)
-        var idVideo = R.raw.ic_app_anim_light
+
         if (modoOscuroActivado(this)) {
             // Cargar video oscuro
-            idVideo = R.raw.ic_app_anim_dark
+            val videoView: VideoView = findViewById(R.id.videoView)
+            val idVideo = R.raw.ic_app_anim_dark
+            val videoUri: Uri = Uri.parse("android.resource://$packageName/$idVideo")
+            videoView.setVideoURI(videoUri)
+            videoView.start()
+        }else{
+            // Cargar video claro
+            val videoView: VideoView = findViewById(R.id.videoView)
+            val idVideo = R.raw.ic_app_anim_light
+            val videoUri: Uri = Uri.parse("android.resource://$packageName/$idVideo")
+            videoView.setVideoURI(videoUri)
+            videoView.start()
         }
-        val videoUri: Uri = Uri.parse("android.resource://$packageName/$idVideo")
-        videoView.setVideoURI(videoUri)
-        videoView.start()
+
 
 
         if (UtilidadesMenores().comprobarConexion(this)){
