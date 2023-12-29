@@ -107,14 +107,14 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="\nLos horarios muestran la hora en que sale la primera buseta y la hora en que sale la ultima buseta de la ruta correspondiente (Aproximadamente).\n\nHorarios Lunes a Viernes, Sabados y Domingos-Festivos. \n\nAbajo del horario esta la frecuencia, es el tiempo que hay entre la salida de cada buseta, es decir, cada cierto tiempo sale del parquedero la buseta.\n"
+                android:text="\nLos horarios muestran la hora en que sale la primera buseta y la hora en que sale la última buseta de la ruta correspondiente (aproximadamente).\n\nHorarios: Lunes a Viernes, Sábados y Domingos-Festivos. \n\nAbajo del horario está la frecuencia, es el tiempo que hay entre la salida de cada buseta; es decir, cada cierto tiempo sale del parqueadero la buseta.\n"
                 android:textColor="#000000"
                 android:textSize="20sp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="De acuerdo al dia de la semana el horario adquirira un color que indica la disponibiliada del servicio\n- Cuando la buseta esta funcionando/en servicio:"
+                android:text="De acuerdo al día de la semana, el horario adquirirá un color que indica la disponibilidad del servicio.\n* Cuando la buseta está funcionando/en servicio:"
                 android:textColor="#000000"
                 android:textSize="20sp" />
 
@@ -127,7 +127,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="\n- Cuando la buseta no esta funcionando/fuera de servicio."
+                android:text="\n* Cuando la buseta no está funcionando/fuera de servicio:"
                 android:textColor="#000000"
                 android:textSize="20sp" />
 
