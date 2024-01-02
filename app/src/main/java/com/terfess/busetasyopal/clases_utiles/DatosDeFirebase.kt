@@ -9,8 +9,12 @@ import com.google.firebase.database.ValueEventListener
 import com.terfess.busetasyopal.modelos_dato.EstructuraDatosBaseDatos
 
 interface DatosDeFirebaseCallback { //callback para detectar que los datos de una ruta han sido recibidos
-    fun onDatosRecibidos(
-        listaCoorPrimParte: MutableList<LatLng>,
+    //se divide en dos callbacks para mejor funcionamiento / evitar bucles
+    fun onDatosRecibidos1(
+        listaCoorPrimParte: MutableList<LatLng>
+    )
+
+    fun onDatosRecibidos2(
         listaCoorSegParte: MutableList<LatLng>
     )
 }
@@ -38,11 +42,7 @@ class DatosDeFirebase {
                         val ubicacion = LatLng(latValue, lngValue)
                         listaCoorPrimParte.add(ubicacion)
                     }
-                    // Llamamos al método callback cuando los datos están listos
-                    callback.onDatosRecibidos(
-                        listaCoorPrimParte,
-                        mutableListOf()
-                    )//se reemplaza el faltante con lista vacia
+                    callback.onDatosRecibidos1(listaCoorPrimParte) //primera parte de ruta X recibida
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
@@ -67,7 +67,7 @@ class DatosDeFirebase {
                         listaCoorSegParte.add(ubicacion)
                     }
                     // Llamamos al método callback cuando los datos están listos
-                    callback.onDatosRecibidos(mutableListOf(), listaCoorSegParte)
+                    callback.onDatosRecibidos2(listaCoorSegParte) //segunda parte de ruta X recibida
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
@@ -83,26 +83,36 @@ class DatosDeFirebase {
         listaCompleta: MutableList<EstructuraDatosBaseDatos> = mutableListOf()
     ) {
         val idRuta = intArrayOf(2, 3, 6, 7, 8, 9, 10, 11, 13)
-
-        for (i in 0.. idRuta.size-1) {
-            var rutaId = idRuta[i]
+        var sentenciador = 0
+        var primeraLista = mutableListOf<LatLng>()
+        for (i in 0..idRuta.size - 1) {
+            val rutaId = idRuta[i]
             recibirCoordenadasRuta(rutaId, object : DatosDeFirebaseCallback {
-                override fun onDatosRecibidos(
-                    listaCoorPrimParte: MutableList<LatLng>,
-                    listaCoorSegParte: MutableList<LatLng>
+                override fun onDatosRecibidos1(
+                    listaCoorPrimParte: MutableList<LatLng>
                 ) {
-                    listaCompleta.add(
-                        EstructuraDatosBaseDatos(
-                            rutaId,
-                            listaCoorPrimParte,
-                            listaCoorSegParte
+                    //primera parte recibida, se asigna a primeraLista y se aumenta variable guia
+                    sentenciador += 1
+                    primeraLista = listaCoorPrimParte
+                }
+                override fun onDatosRecibidos2(listaCoorSegParte: MutableList<LatLng>) {
+                    //Se aumenta variable guia para entrar en el if teniendo las dos listas recibidas
+                    sentenciador += 1
+                    if (sentenciador >= 2 && primeraLista.size > 1) { //verifica que primera lista tenga varios elementos
+                        //se agrega la ruta y sus coordenadas a la lista que se enviara por callback a descargar_informacion()
+                        listaCompleta.add(
+                            EstructuraDatosBaseDatos(
+                                rutaId,
+                                primeraLista,
+                                listaCoorSegParte
+                            )
                         )
-                    )
-
-                    if (rutaId == idRuta[idRuta.size-1]) {
-                        // Se ejecuta cuando se han procesado todas las rutas
-                        Log.i("Informe", "Se recibió toda la información")
-                        callback.todosDatosRecibidos(listaCompleta)
+                        sentenciador == 0 // se reinicia variable guia
+                        if (rutaId == idRuta[idRuta.size-1]) {//cuando se llega a la ultima ruta (y se descarga)
+                            // Se ejecuta cuando se han procesado todas las rutas
+                            Log.i("Informe", "Se recibió toda la información")
+                            callback.todosDatosRecibidos(listaCompleta) //callback con la lista de  todas las rutas
+                        }
                     }
                 }
             })

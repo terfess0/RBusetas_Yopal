@@ -14,7 +14,6 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.Polyline
 import com.terfess.busetasyopal.R
-import com.terfess.busetasyopal.actividades.RutasSeccion
 import com.terfess.busetasyopal.actividades.Splash
 import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.estamarcado1
 import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.estamarcado2
@@ -54,8 +53,6 @@ class RutaBasic(private val mapa: Context, private val gmap: GoogleMap) {
         var estamarcado1: Boolean? = null
         var estamarcado2: Boolean? = null
 
-        //esta descargandose algo
-        var descargando = false
     }
 
     fun crearRuta(idruta: Int) {
@@ -79,11 +76,16 @@ class RutaBasic(private val mapa: Context, private val gmap: GoogleMap) {
         val listaSegundaParte = dbAuxiliar.obtenerCoordenadas(idruta, "coordenadas2")
 
         if (listaPrimeraParte.size < 2 && listaSegundaParte.size < 2) { //comprobar si hay datos, posible causa para cumplirse es que no hay conexion interenet
+            //cambiar la version de informacion a 0 para que en splash de haga la descarga correspondiente ----
+            val db = DatosASqliteLocal(mapa)
+            db.insertarVersionDatos(0)
+            //---------------------------------
+            // reiniciar app en pantalla splash para obtener informacion de firebase a local
             UtilidadesMenores().reiniciarApp(mapa, Splash::class.java) //reinicia la app a la primera pantalla
             UtilidadesMenores().crearToast(mapa,"Se Necesita Conexión a Internet")
         } else {
 
-            if (idruta != 0) {
+            if (idruta != 0) { //acciones si se va a usar el mapa para calcular ruta
                 polySalida = gmap.addPolyline(polylineOptions) //crear polyline salida
                 polySalida.points = puntosSalida //darle las coordenadas que componen la polyline
                 polySalida.startCap = RoundCap() //redondear extremo inicial polyline

@@ -8,6 +8,9 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.ThemedSpinnerAdapter.Helper
+import com.google.firebase.database.DatabaseReference
+import com.terfess.busetasyopal.actividades.Splash
 
 
 interface AlertaCallback { //devolucion de llamada para el CrearAlerta
@@ -86,6 +89,7 @@ class UtilidadesMenores {
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
             context.startActivity(intent)
         }
+
 
         // Finalizar la actividad actual si es necesario
         if (context is Activity) {

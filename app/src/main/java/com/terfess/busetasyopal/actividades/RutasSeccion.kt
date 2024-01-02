@@ -26,7 +26,7 @@ import com.terfess.busetasyopal.databinding.PantPrincipalBinding
 import com.terfess.busetasyopal.listas_datos.ListaRutas
 import java.util.Calendar
 
-class RutasSeccion : AppCompatActivity() {
+class RutasSeccion : AppCompatActivity() {//CLASE DE LAYOUT PANTALLA PRINCIPAL
     private lateinit var binding: PantPrincipalBinding
     private var filtrando = false
     private lateinit var db: DatabaseReference

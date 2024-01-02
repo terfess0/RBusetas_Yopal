@@ -17,7 +17,6 @@ import com.google.firebase.database.ValueEventListener
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.clases_utiles.DatosASqliteLocal
 import com.terfess.busetasyopal.clases_utiles.DatosDeFirebase
-import com.terfess.busetasyopal.clases_utiles.RutaBasic
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.clases_utiles.allDatosRutas
 import com.terfess.busetasyopal.modelos_dato.EstructuraDatosBaseDatos
@@ -30,24 +29,23 @@ class Splash : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.pant_splash)
 
-
+        //---------------ICONO O VIDEO DE LA APP AL INICIAR--------------------
 
         if (modoOscuroActivado(this)) {
             // Cargar video oscuro
-            findViewById<ImageView>(R.id.img).visibility = View.GONE
+            findViewById<ImageView>(R.id.img).visibility = View.GONE //ocultar imagen del icono claro de la app
             val videoView: VideoView = findViewById(R.id.videoView)
             val idVideo = R.raw.ic_app_anim_dark
             val videoUri: Uri = Uri.parse("android.resource://$packageName/$idVideo")
             videoView.setVideoURI(videoUri)
             videoView.start()
         }else{
-            // Cargar video claro
+            //ocultar reproductor de video y dejar visible la imagen de la app (icono claro)
             findViewById<VideoView>(R.id.videoView).visibility = View.GONE
-
         }
 
 
-
+        //---------------DESCARGAR INFORAMACION SI ES NECESARIO--------------------------
         if (UtilidadesMenores().comprobarConexion(this)){
             //si hay conexion a internet entonces
 
@@ -74,10 +72,7 @@ class Splash : AppCompatActivity() {
                             val versionNube = snapshot.value.toString().toInt()
                             if (versionLocal != versionNube) {
                                 dbHelper.insertarVersionDatos(versionNube)
-                                if (!RutaBasic.CreatRuta.descargando) { // la variable descargando esta en el objeto de la clase RutaBasic.kt
-                                    descargarDatos()
-                                    RutaBasic.CreatRuta.descargando = true
-                                }
+                                descargarDatos()
                                 Toast.makeText(
                                     this@Splash,
                                     "Descargando informacion",
@@ -121,7 +116,6 @@ class Splash : AppCompatActivity() {
                     "Se descargo toda la información correctamente",
                     Toast.LENGTH_SHORT
                 ).show()
-                RutaBasic.CreatRuta.descargando = false
                 UtilidadesMenores().reiniciarApp(this@Splash, Splash::class.java)
             }
         })
