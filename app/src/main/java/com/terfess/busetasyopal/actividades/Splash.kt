@@ -6,6 +6,8 @@ import android.content.res.Configuration
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import android.widget.VideoView
 import com.google.firebase.database.DataSnapshot
@@ -32,6 +34,7 @@ class Splash : AppCompatActivity() {
 
         if (modoOscuroActivado(this)) {
             // Cargar video oscuro
+            findViewById<ImageView>(R.id.img).visibility = View.GONE
             val videoView: VideoView = findViewById(R.id.videoView)
             val idVideo = R.raw.ic_app_anim_dark
             val videoUri: Uri = Uri.parse("android.resource://$packageName/$idVideo")
@@ -39,11 +42,8 @@ class Splash : AppCompatActivity() {
             videoView.start()
         }else{
             // Cargar video claro
-            val videoView: VideoView = findViewById(R.id.videoView)
-            val idVideo = R.raw.ic_app_anim_light
-            val videoUri: Uri = Uri.parse("android.resource://$packageName/$idVideo")
-            videoView.setVideoURI(videoUri)
-            videoView.start()
+            findViewById<VideoView>(R.id.videoView).visibility = View.GONE
+
         }
 
 

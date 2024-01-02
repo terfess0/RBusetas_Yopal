@@ -1,6 +1,8 @@
 package com.terfess.busetasyopal.actividades
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -18,7 +20,10 @@ class AcercaDe : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.acerca_de)
 
+        //actionbar transparente
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
+        //---------------------------------------------------------------------------
         val activarHorarios = findViewById<Button>(R.id.verInfoHorarios)
         val infoHorarios = findViewById<LinearLayoutCompat>(R.id.horarios)
         activarHorarios.setOnClickListener {//mostrar/ocultar informacion de horarios
