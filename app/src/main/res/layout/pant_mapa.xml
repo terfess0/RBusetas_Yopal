@@ -40,7 +40,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageButton
         android:id="@+id/irgps"
@@ -178,12 +180,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#DAFFFFFF"
-        android:backgroundTint="#3C5187"
+        android:backgroundTint="#4D5161"
         android:padding="3dp"
         android:text="TextView"
         android:textAlignment="center"
-        android:textColor="#FAFBFF"
-        android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="@+id/map"
@@ -191,7 +193,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.047"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -262,48 +264,48 @@
         android:id="@+id/posDestino"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#E7EBF8"
+        android:layout_marginTop="204dp"
+        android:backgroundTint="#FFFFFF"
         android:drawableEnd="@drawable/ic_gps"
         android:gravity="left|center"
         android:padding="10dp"
         android:text="Seleccionar lugar de destino   "
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.882"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.106"
+        app:layout_constraintTop_toTopOf="@+id/guideline"
         android:visibility="gone" />
 
     <Button
         android:id="@+id/posInicio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#E7EBF8"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#FFFFFF"
         android:drawableEnd="@drawable/ic_gps"
         android:gravity="left|center"
         android:padding="10dp"
         android:text="Seleccionar lugar de partida   "
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintBottom_toTopOf="@+id/failConection"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.882"
+        app:layout_constraintHorizontal_bias="0.889"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/posDestino"
         app:layout_constraintVertical_bias="0.0"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/setUbicacion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#7BC664"
         android:text="Guardar Posición"
-        android:backgroundTint="#E7EBF8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.062"
+        app:layout_constraintHorizontal_bias="0.937"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
-        app:layout_constraintVertical_bias="0.76"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toBottomOf="@+id/irgps"
+        app:layout_constraintVertical_bias="0.11"
+        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
