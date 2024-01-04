@@ -273,6 +273,11 @@ class Mapa : AppCompatActivity(), LocationListener,
     private fun selector() { // decide que ruta creara o que tipo de mapa creara
         val buildRuta = RutaBasic(contexto, gmap)
         when (idruta) {
+
+            //--------------------------------------------------------------------------------------
+            //---------------------------CALCULAR RUTA----------------------------------------------
+            //--------------------------------------------------------------------------------------
+
             0 -> { //el numero 0 de id_ruta sera el que cree un mapa para calcular ruta
                 //activarLocalizacion()
                 //irPosGps()
@@ -344,6 +349,8 @@ class Mapa : AppCompatActivity(), LocationListener,
                                 ubiDestino
                             )
                             binding.infoColor.visibility = View.VISIBLE
+                            binding.indicaciones.visibility = View.VISIBLE
+                            binding.indicaciones.text = " |- Camina desde tu posicion hasta tomar la ruta ${Datos.mejorPuntoaInicio[2]}. | Haz el recorrido para bajarte en el punto marcado. | Camina hasta el punto de destino. "
                         }
                     }
                 }
@@ -401,10 +408,17 @@ class Mapa : AppCompatActivity(), LocationListener,
                                 ubiDestino
                             )
                             binding.infoColor.visibility = View.VISIBLE
+                            binding.indicaciones.visibility = View.VISIBLE
+                            binding.indicaciones.text = " |- Camina desde tu posicion hasta tomar la ruta ${Datos.mejorPuntoaInicio[2]}. | Haz el recorrido para bajarte en el punto marcado. | Camina hasta el punto de destino. "
                         }
                     }
                 }
             }
+
+            //--------------------------------------------------------------------------------------
+            //--------------------------------------------------------------------------------------
+
+
             //crear las rutas normales dependiendo de la elegida por el usuario
             //se identifica por un id_ruta que se envia desde la pantalla principal por medio del holder y usando intent.extras
             in listOf(2, 3, 6, 7, 8, 9, 10, 11, 13) -> buildRuta.crearRuta(idruta)
