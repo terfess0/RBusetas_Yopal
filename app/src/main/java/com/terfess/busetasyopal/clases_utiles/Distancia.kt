@@ -30,7 +30,7 @@ class Distancia {
                     mejorPuntoInicio[0] = puntoEstacion
                     mejorPuntoInicio[1] = distancia
                     mejorPuntoInicio[2] = idRuta
-                    println("--IDRuta:${mejorPuntoInicio[2]}  PuntoCorte1: ${mejorPuntoInicio[0]}")
+
                 }
             }
             if (!esInicio) {
@@ -38,7 +38,7 @@ class Distancia {
                     mejorPuntoDestino[0] = puntoEstacion
                     mejorPuntoDestino[1] = distancia
                     mejorPuntoDestino[2] = idRuta
-                    println("IDRuta:${mejorPuntoDestino[2]}  PuntoCorte2: ${mejorPuntoDestino[0]}")
+
                 }
             }
         }
