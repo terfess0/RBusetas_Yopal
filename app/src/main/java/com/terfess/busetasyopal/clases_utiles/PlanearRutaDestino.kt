@@ -3,6 +3,7 @@ package com.terfess.busetasyopal.clases_utiles
 import android.content.Context
 import android.location.Location
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.JointType
 import com.google.android.gms.maps.model.LatLng
@@ -68,7 +69,8 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
                 idRuta
             )
         }
-
+        println("--IDRuta:${Datos.mejorPuntoaInicio[2]}  PuntoCorte1: ${Datos.mejorPuntoaInicio[0]}")
+        println("IDRuta:${Datos.mejorPuntoaDestino[2]}  PuntoCorte2: ${Datos.mejorPuntoaDestino[0]}")
         //-------------------------------------------------------------
         //MODIFICAR/PREPARAR LOS PUNTOS DE LAS POLYLINEAS
 
@@ -79,31 +81,65 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
 
         val puntoCorte1 =
             Datos.mejorPuntoaInicio[0] //numero elemento de arreglo de coordenadas mas cercano al inicio
-        var puntoCorte2 =
+        val puntoCorte2 =
             Datos.mejorPuntoaDestino[0] //numero elemento de arreglo de coordenadas mas cercano al destino
 
         //-----------------------------------------------------------------------------------------
+        //en caso de que el puntocorte2 sea mayor a los puntos de llegada de la ruta
+        //debido a posible cruce de rutas distintas de hara de nuevo la comparacion
+        //usando el idRuta de la variable mejorpuntoinicio
+
+
+        if (Datos.mejorPuntoaInicio[2] != Datos.mejorPuntoaDestino[2]) {
+            Datos.mejorPuntoaDestino[1] = Int.MAX_VALUE
+            val puntosReparadores =
+                dbhelper.obtenerCoordenadasCalcularRuta(idMejorRuta, "coordenadas2")
+            Distancia().compararDistanciasConDestino(
+                puntosReparadores[0].coordenadas.toMutableList(),
+                ubiInicial,
+                ubiDestino,
+                false,
+                idMejorRuta
+            )
+        }
+
+        println("--IDRuta:${Datos.mejorPuntoaInicio[2]}  PuntoCorte1: ${Datos.mejorPuntoaInicio[0]}")
+        println("IDRuta:${Datos.mejorPuntoaDestino[2]}  PuntoCorte2: ${Datos.mejorPuntoaDestino[0]}")
+        //-----------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------
+
 
         val totalSubida1 = puntosRutaSalida1[0].coordenadas.size
-
         var puntosFinal1 = mutableListOf<LatLng>()
+
+        //comienza creacion de los puntos a trazar de acuerdo al caso
         if (puntoCorte1 < totalSubida1 && puntoCorte2 > puntoCorte1 && puntoCorte2 < totalSubida1) {
+            //si el puntocorte1 es menor a total pts salida y puntocorte2 es mayor a puntocorte1 y si puntocorte2 esta en pts salida
             puntosFinal1 =
                 puntosRutaSalida1[0].coordenadas.toMutableList().subList(puntoCorte1, puntoCorte2)
-        } else if (puntoCorte1 < totalSubida1) {
-            puntosFinal1 =
-                puntosRutaSalida1[0].coordenadas.toMutableList().subList(puntoCorte1, totalSubida1)
+
+
         } else if (puntoCorte2 > puntoCorte1 && puntoCorte2 > totalSubida1 && puntoCorte1 < totalSubida1) {
+            //si puntocorte2 es mayor a puntocorte1 y puntocorte2 esta en pts llegada y puntocorte1 esta dentro de pts salida
             puntosFinal1 =
                 puntosRutaSalida1[0].coordenadas.toMutableList().subList(puntoCorte1, totalSubida1)
-        } else if (puntoCorte2 < puntoCorte1 && puntoCorte1 < totalSubida1) {
+
+
+        } else if (puntoCorte1 > puntoCorte2 && puntoCorte1 < totalSubida1) {
+            //si puntocorte1 es mayor a puntocorte2 y puntocorte1 esta dentro de pts salida
             puntosFinal1 =
                 puntosRutaSalida1[0].coordenadas.toMutableList().subList(puntoCorte2, puntoCorte1)
-        } else if (puntoCorte2 < puntoCorte1 && puntoCorte1 > totalSubida1) {
+
+
+        } else if (puntoCorte2 < puntoCorte1 && puntoCorte1 > totalSubida1 && puntoCorte2 < totalSubida1) {
+            //si puntocorte2 es menor a puntocorte1 y puntocorte1 esta en pts llegada
             puntosFinal1 =
-                puntosRutaSalida1[0].coordenadas.toMutableList().subList(puntoCorte2-totalSubida1, puntoCorte1-totalSubida1)
+                puntosRutaSalida1[0].coordenadas.toMutableList()
+                    .subList(puntoCorte2, totalSubida1)
         }
-        polylineOptions.color(
+
+
+        polylineOptions.width(9f).color(
             ContextCompat.getColor(
                 mapa,
                 R.color.recorridoIda
@@ -117,38 +153,40 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
         rutaResultante1.endCap = RoundCap()
         rutaResultante1.startCap = RoundCap()
 
+
         //-----------------------------------------------------------------------------------------
-        //en caso de que el puntocorte2 sea mayor a los puntos de llegada de la ruta
-        //debido a posible cruce de rutas distintas de hara de nuevo la comparacion
-        //usando el idRuta de la variable mejorpuntoinicio
-        /*if (puntoCorte2 > puntosRutaLlegada1.size) {
-            val puntosReparadores =
-                dbhelper.obtenerCoordenadasCalcularRuta(idMejorRuta, "coordenadas2")
-            Distancia().compararDistanciasConDestino(
-                puntosReparadores[0].coordenadas.toMutableList(),
-                ubiInicial,
-                ubiDestino,
-                false,
-                idMejorRuta
-            )
-        }*/
+
         //puntos polyline de llegada
         val totalSubida2 = puntosRutaSalida1[0].coordenadas.size
         val totalLlegada1 = puntosRutaLlegada1[0].coordenadas.size
         var puntosFinal = mutableListOf<LatLng>()
+
+        //comienza creacion de los puntos a trazar de acuerdo al caso
         if (puntoCorte2 > totalSubida2 && puntoCorte2 - totalSubida2 < totalLlegada1) {
+            //si puntocorte2 esta en pts llegada y puntocorte2 esta dentro del rango de pts llegada
             puntosFinal = puntosRutaLlegada1[0].coordenadas.toMutableList()
-                .subList(0, puntoCorte2 - totalSubida2)
-        } else if (puntoCorte2 > puntoCorte1 && puntoCorte2 > totalSubida1 && puntoCorte1 < totalSubida1) {
+                .subList(0, (puntoCorte2 - totalSubida2))
+
+
+        } else if (puntoCorte2 > puntoCorte1 && puntoCorte2 > totalSubida2 && puntoCorte1 < totalSubida2) {
+            //si puntocorte2 es mayor a puntocorte1 y puntocorte2 esta en pts llegada y puntocorte1 esta dentro del rango de pts salida
             puntosFinal =
                 puntosRutaLlegada1[0].coordenadas.toMutableList()
-                    .subList(0, puntoCorte2 - totalSubida2)
-        }else if (puntoCorte2 < puntoCorte1 && puntoCorte1 > totalSubida1) {
+                    .subList(0, (puntoCorte2 - totalSubida2))
+
+
+        } else if (puntoCorte2 < puntoCorte1 && puntoCorte2 > totalSubida2) {
+            //si puntocorte2 es menor a puntocorte1 y puntocorte2 esta en pts llegada
             puntosFinal =
-                puntosRutaLlegada1[0].coordenadas.toMutableList().subList(puntoCorte2, puntoCorte1-totalSubida2)
-        }else if (puntoCorte1 > totalSubida2 && puntoCorte2 > puntoCorte1) {
+                puntosRutaLlegada1[0].coordenadas.toMutableList()
+                    .subList((puntoCorte2 - totalSubida2), (puntoCorte1 - totalSubida2))
+
+
+        } else if (puntoCorte1 > totalSubida2 && puntoCorte2 > puntoCorte1) {
+            //si puntocorte1 esta en pts llegada y puntocorte2 es mayor a puntocorte1
             puntosFinal =
-                puntosRutaLlegada1[0].coordenadas.toMutableList().subList(puntoCorte1-totalSubida2, puntoCorte2-totalSubida2)
+                puntosRutaLlegada1[0].coordenadas.toMutableList()
+                    .subList(puntoCorte1 - totalSubida2, puntoCorte2 - totalSubida2)
         }
 
         polylineOptions.color(
@@ -163,6 +201,7 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
         rutaResultante.jointType = JointType.ROUND
         rutaResultante.endCap = RoundCap()
         rutaResultante.startCap = RoundCap()
-    }
 
+
+    }
 }
