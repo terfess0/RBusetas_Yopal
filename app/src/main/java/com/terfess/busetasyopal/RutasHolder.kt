@@ -6,7 +6,6 @@ import android.content.Intent
 import android.text.Html
 import android.text.Html.FROM_HTML_MODE_LEGACY
 import android.view.View
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.terfess.busetasyopal.actividades.Mapa
 import com.terfess.busetasyopal.clases_utiles.RangoHorarios
@@ -30,7 +29,7 @@ class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
 
         val ruta = "Ruta\n" + dato.numRuta
         val sitios =
-            "<font color='$colorDia' style='text-align:center'><b>Lugares Relevantes</b></font> <br> ${dato.sitios}"
+            "<font color='$colorDia' style='text-align:center'><b>Lugares Relevantes</b></font> <br> <font color='attr?/colorPrimary' >${dato.sitios}</font>"
         val datos2: DatoHorario = ListaHorarios.busetaHorario[dato.numRuta - 1] // se resta 1 para ir acorde a las posiciones del arreglo busetaHorario
         val claseRango = RangoHorarios()
         val horaInicioLV = datos2.horaInicioLunesViernes
@@ -45,33 +44,33 @@ class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
         fun darColorDisponibilidadLunVie(){
             when (resultado1) {
                 0 -> {
-                    this.rutaEnServicioLV = "#8a0322" //rojo oscuro
+                    this.rutaEnServicioLV = "#a63e3a" //rojo oscuro
                 }
 
                 1 -> {
-                    this.rutaEnServicioLV = "#006b15" //verde oscuro
+                    this.rutaEnServicioLV = "#4aa63a" //verde oscuro
                 }
             }
         }
         fun darColorDisponibilidadSab(){
             when (resultado2) {
                 0 -> {
-                    this.rutaEnServicioSab = "#8a0322" //rojo oscuro
+                    this.rutaEnServicioSab = "#a63e3a" //rojo oscuro
                 }
 
                 1 -> {
-                    this.rutaEnServicioSab = "#006b15" //verde oscuro
+                    this.rutaEnServicioSab = "#4aa63a" //verde oscuro
                 }
             }
         }
         fun darColorDisponibilidadDom(){
             when (resultado3) {
                 0 -> {
-                    this.rutaEnServicioDom = "#8a0322" //rojo oscuro
+                    this.rutaEnServicioDom = "#a63e3a" //rojo oscuro
                 }
 
                 1 -> {
-                    this.rutaEnServicioDom = "#006b15" //verde oscuro
+                    this.rutaEnServicioDom = "#4aa63a" //verde oscuro
                 }
             }
         }
