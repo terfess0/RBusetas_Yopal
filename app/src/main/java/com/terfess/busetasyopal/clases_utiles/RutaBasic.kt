@@ -114,15 +114,19 @@ class RutaBasic(private val mapa: Context, private val gmap: GoogleMap) {
 
             puntosLlegada = listaSegundaParte.subList(0, listaSegundaParte.size)
                 .toMutableList() //compatibilidad
+
             if (idruta != 0) {
                 polyLlegada = gmap.addPolyline(polylineOptions) //crear polyline salida
                 polyLlegada.points = puntosLlegada//darle las coordenadas que componen la polyline
                 polyLlegada.startCap = RoundCap() //redondear extremo inicial polyline
                 polyLlegada.endCap = RoundCap() //redondear extremo final polyline
                 polyLlegada.jointType = JointType.ROUND
+
+                //agregar icono parqueadero
                 agregarMarcador(
                     listaSegundaParte[listaSegundaParte.size - 1],
-                    R.drawable.ic_parqueadero
+                    R.drawable.ic_parqueadero,
+                    "Parqueadero de la ruta $idruta"
                 )
             }
         }
@@ -198,7 +202,8 @@ class RutaBasic(private val mapa: Context, private val gmap: GoogleMap) {
                 //se coloca un marcador en la estacion cercana
                 marcador1 = agregarMarcador(
                     puntos1[masCortaInicio[0]],
-                    R.drawable.ic_estacion
+                    R.drawable.ic_estacion,
+                    "Estación más cercana"
                 )
                 estamarcado1 = true
                 //mueve la camara al marcador de estacion cercana
@@ -245,7 +250,8 @@ class RutaBasic(private val mapa: Context, private val gmap: GoogleMap) {
                 //se coloca un marcador en la estacion cercana
                 marcador2 = agregarMarcador(
                     puntos2[masCortaInicio[0]],
-                    R.drawable.ic_estacion
+                    R.drawable.ic_estacion,
+                    "Estación más cercana"
                 )
                 estamarcado2 = true
 
@@ -299,10 +305,10 @@ class RutaBasic(private val mapa: Context, private val gmap: GoogleMap) {
         polylineOptions.points.clear()
     }
 
-    private fun agregarMarcador(punto: LatLng, icono: Int): Marker? {
+    private fun agregarMarcador(punto: LatLng, icono: Int, titulo:String): Marker? {
         val opcionesMarcador = MarkerOptions()
             .position(punto).icon(BitmapDescriptorFactory.fromResource(icono))
-            .title("Punto mas cercano")
+            .title(titulo)
         return gmap.addMarker(opcionesMarcador)
     }
 

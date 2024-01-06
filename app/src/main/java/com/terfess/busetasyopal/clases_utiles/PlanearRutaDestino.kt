@@ -106,8 +106,7 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
             )
         }
 
-        println("--IDRuta:${Datos.mejorPuntoaInicio[2]}  PuntoCorte1: ${Datos.mejorPuntoaInicio[0]}")
-        println("IDRuta:${Datos.mejorPuntoaDestino[2]}  PuntoCorte2: ${Datos.mejorPuntoaDestino[0]}")
+
         //-----------------------------------------------------------------------------------------
         //-----------------------------------------------------------------------------------------
 
@@ -263,6 +262,8 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
             dibujarPolylineaCaminata(gmap, mapa, dosPuntosCaminata)
         }
 
+        println("--IDRuta:${Datos.mejorPuntoaInicio[2]}  PuntoCorte1: ${Datos.mejorPuntoaInicio[0]} TamañoSalida: $totalSubida1")
+        println("IDRuta:${Datos.mejorPuntoaDestino[2]}  PuntoCorte2: ${Datos.mejorPuntoaDestino[0]} TamañoLlegada: $totalLlegada1")
 
     }
 
