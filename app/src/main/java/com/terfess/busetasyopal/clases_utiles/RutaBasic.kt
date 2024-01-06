@@ -11,9 +11,12 @@ import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.gms.maps.model.RoundCap
 import android.location.Location
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.Dash
+import com.google.android.gms.maps.model.Gap
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.Polyline
 import com.terfess.busetasyopal.R
+import com.terfess.busetasyopal.actividades.Mapa
 import com.terfess.busetasyopal.actividades.Splash
 import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.estamarcado1
 import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.estamarcado2
@@ -21,9 +24,11 @@ import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.marcador1
 import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.marcador2
 import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.masCortaInicio
 import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.polyCalculada
+import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.polyCaminata
 import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.polyLlegada
 import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.polySalida
 import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.puntosCalculada
+import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.puntosCaminata
 import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.puntosLlegada
 import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.puntosSalida
 
@@ -43,9 +48,11 @@ class RutaBasic(private val mapa: Context, private val gmap: GoogleMap) {
         var puntosSalida = mutableListOf<LatLng>()
         var puntosLlegada = mutableListOf<LatLng>()
         var puntosCalculada = mutableListOf<LatLng>()
+        var puntosCaminata = mutableListOf<LatLng>()
         lateinit var polySalida: Polyline
         lateinit var polyLlegada: Polyline
         lateinit var polyCalculada: Polyline
+        lateinit var polyCaminata: Polyline
 
         //declarar los marcadores posibles para poder trabajarlos mejor
         var marcador1: Marker? = null
@@ -81,8 +88,11 @@ class RutaBasic(private val mapa: Context, private val gmap: GoogleMap) {
             db.insertarVersionDatos(0)
             //---------------------------------
             // reiniciar app en pantalla splash para obtener informacion de firebase a local
-            UtilidadesMenores().reiniciarApp(mapa, Splash::class.java) //reinicia la app a la primera pantalla
-            UtilidadesMenores().crearToast(mapa,"Se Necesita Conexión a Internet")
+            UtilidadesMenores().reiniciarApp(
+                mapa,
+                Splash::class.java
+            ) //reinicia la app a la primera pantalla
+            UtilidadesMenores().crearToast(mapa, "Se Necesita Conexión a Internet")
         } else {
 
             if (idruta != 0) { //acciones si se va a usar el mapa para calcular ruta
@@ -212,6 +222,25 @@ class RutaBasic(private val mapa: Context, private val gmap: GoogleMap) {
                 polyCalculada.endCap = RoundCap()
                 polyCalculada.startCap = RoundCap()
 
+                //Trazar caminata
+                if (puntosCaminata.size > 1) {
+                    polyCaminata.remove()
+                    puntosCaminata.clear()
+                }
+                puntosCaminata.add(ubicacionUsuario)
+                puntosCaminata.add(puntosCalculada[0])
+                val polylineOptionsCaminar = PolylineOptions()
+                polylineOptionsCaminar.color(
+                    ContextCompat.getColor(
+                        mapa,
+                        R.color.distancia_caminar
+                    )
+                )
+                polylineOptionsCaminar.pattern(listOf(Dash(20f), Gap(10f)))
+                polylineOptionsCaminar.addAll(puntosCaminata)
+                polyCaminata = gmap.addPolyline(polylineOptionsCaminar)
+
+
             } else {
 
                 //se coloca un marcador en la estacion cercana
@@ -240,9 +269,27 @@ class RutaBasic(private val mapa: Context, private val gmap: GoogleMap) {
                 polyCalculada.jointType = JointType.ROUND
                 polyCalculada.endCap = RoundCap()
                 polyCalculada.startCap = RoundCap()
+
+                //Trazar caminata
+                if (puntosCaminata.size > 1) {
+                    polyCaminata.remove()
+                    puntosCaminata.clear()
+                }
+                puntosCaminata.add(ubicacionUsuario)
+                puntosCaminata.add(puntosCalculada[0])
+                val polylineOptionsCaminar = PolylineOptions()
+                polylineOptionsCaminar.color(
+                    ContextCompat.getColor(
+                        mapa,
+                        R.color.distancia_caminar
+                    )
+                )
+                polylineOptionsCaminar.pattern(listOf(Dash(20f), Gap(10f)))
+                polylineOptionsCaminar.addAll(puntosCaminata)
+                polyCaminata = gmap.addPolyline(polylineOptionsCaminar)
             }
         } else {
-            UtilidadesMenores().crearToast(mapa,"Datos de recorridos no han sido recibidos")
+            UtilidadesMenores().crearToast(mapa, "Datos de recorridos no han sido recibidos")
         }
 
     }

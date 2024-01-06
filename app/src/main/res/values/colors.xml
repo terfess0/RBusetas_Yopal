@@ -11,4 +11,5 @@
     <color name="rojo">#A60000</color>
     <color name="azul">#012B75</color>
     <color name="verde">#0E7E0B</color>
+    <color name="distancia_caminar">#DF3DFFD9</color>
 </resources>

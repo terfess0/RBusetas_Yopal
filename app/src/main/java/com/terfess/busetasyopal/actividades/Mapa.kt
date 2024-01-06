@@ -19,6 +19,7 @@ import android.text.Html
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -40,10 +41,13 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.Circle
 import com.google.android.gms.maps.model.CircleOptions
+import com.google.android.gms.maps.model.Dash
+import com.google.android.gms.maps.model.Gap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolylineOptions
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.clases_utiles.AlertaCallback
 import com.terfess.busetasyopal.clases_utiles.PlanearRutaDestino.Datos
@@ -123,6 +127,8 @@ class Mapa : AppCompatActivity(), LocationListener,
             !hayConexion
         }
 
+
+
         // Registrar un NetworkCallback para recibir actualizaciones de conectividad
         val connectivityManager =
             getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -186,7 +192,9 @@ class Mapa : AppCompatActivity(), LocationListener,
 
         supportActionBar?.title = "Mapa con Recorrido de Ruta $idruta"  //titulo actionbar
 
+        //-------------------------------------------------------------------------------
         //Cuando se calcule la ruta
+
         if (idruta == 0) {
             binding.infoColor.visibility = View.GONE
             supportActionBar?.title = "Calcular viaje Inicio - Destino"  //titulo actionbar
@@ -204,6 +212,7 @@ class Mapa : AppCompatActivity(), LocationListener,
             RutaBasic.CreatRuta.estamarcado2 = false //evitar dobles marcadores de estacion
         }
         binding.sentidoSubida.setOnClickListener {
+
             if (RutaBasic.CreatRuta.estamarcado1 == false) {
                 calcularDistancia("salida")
                 mostrarIndicaciones()
@@ -216,6 +225,7 @@ class Mapa : AppCompatActivity(), LocationListener,
             }
         }
 
+        //-------------------------------------------------------------------------------
         //botones cambiar ajustes del mapa -----------------------------------------------
 
         binding.ajustes.setOnClickListener {
@@ -350,7 +360,8 @@ class Mapa : AppCompatActivity(), LocationListener,
                             )
                             binding.infoColor.visibility = View.VISIBLE
                             binding.indicaciones.visibility = View.VISIBLE
-                            binding.indicaciones.text = " |- Camina desde tu posicion hasta tomar la ruta ${Datos.mejorPuntoaInicio[2]}. | Haz el recorrido para bajarte en el punto marcado. | Camina hasta el punto de destino. "
+                            binding.indicaciones.text =
+                                " |- Camina desde tu posicion hasta tomar la ruta ${Datos.mejorPuntoaInicio[2]}. | Haz el recorrido para bajarte en el punto marcado. | Camina hasta el punto de destino. "
                         }
                     }
                 }
@@ -409,7 +420,8 @@ class Mapa : AppCompatActivity(), LocationListener,
                             )
                             binding.infoColor.visibility = View.VISIBLE
                             binding.indicaciones.visibility = View.VISIBLE
-                            binding.indicaciones.text = " |- Camina desde tu posicion hasta tomar la ruta ${Datos.mejorPuntoaInicio[2]}. | Haz el recorrido para bajarte en el punto marcado. | Camina hasta el punto de destino. "
+                            binding.indicaciones.text =
+                                " |- Camina desde tu posicion hasta tomar la ruta ${Datos.mejorPuntoaInicio[2]}. | Haz el recorrido para bajarte en el punto marcado. | Camina hasta el punto de destino. "
                         }
                     }
                 }
@@ -561,7 +573,7 @@ class Mapa : AppCompatActivity(), LocationListener,
                 activarGps()
             } else {
                 gmap.isMyLocationEnabled = false
-                if (contador == 0){
+                if (contador == 0) {
                     UtilidadesMenores().crearToast(this, "Permiso de ubicación no concedido.")
                 }
                 contador++ // omitir el primer click del usuario al boton gps
@@ -571,7 +583,7 @@ class Mapa : AppCompatActivity(), LocationListener,
                     UtilidadesMenores().crearAlerta(
                         this,
                         "ubicacion",
-                        "Permiso de localización ha sido denegado.\n\nPermite que Busetas Yopal tenga permiso de ubicación desde ajustes.",
+                        "Permiso de localización ha sido denegado.\n\nPermite que Busetas Yopal tenga permiso de ubicación desde ajustes para aprovechar la aplicación al maximo!.",
                         "Aceptar",
                         "Ajustes",
                         this
@@ -661,10 +673,11 @@ class Mapa : AppCompatActivity(), LocationListener,
 
 
     private fun mostrarIndicaciones() {
+        //indicaciones para tomar la buseta en las rutas individuales
         val metros = RutaBasic.CreatRuta.masCortaInicio[1]
         val punto = RutaBasic.CreatRuta.masCortaInicio[0]
         binding.indicaciones.visibility = View.VISIBLE
-        "Camina $metros m hasta el punto $punto marcado con el icono.".also {
+        "Camina $metros m hasta el punto marcado con el icono y toma la buseta ruta $idruta.".also {
             binding.indicaciones.text = it
         }
 

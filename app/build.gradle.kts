@@ -50,7 +50,7 @@ dependencies {
     implementation("com.google.maps.android:android-maps-utils:2.3.0")//maps
     implementation("com.google.android.gms:play-services-maps:18.2.0")//maps
     implementation("com.google.maps.android:maps-utils-ktx:3.4.0") //maps
-    implementation("com.google.android.gms:play-services-location:21.0.1")
+    implementation("com.google.android.gms:play-services-location:21.0.1") //ubicacion
     implementation("androidx.cardview:cardview:1.0.0") //maps
 
     testImplementation("junit:junit:4.13.2")
@@ -66,7 +66,7 @@ dependencies {
     implementation("com.google.android.libraries.places:places:3.3.0")
 
     //coroutinas
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
 
 
 }

@@ -1,14 +1,25 @@
 package com.terfess.busetasyopal.clases_utiles
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Path
 import android.location.Location
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.Dash
+import com.google.android.gms.maps.model.Gap
 import com.google.android.gms.maps.model.JointType
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PatternItem
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.gms.maps.model.RoundCap
+import com.google.maps.android.collections.PolylineManager
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.listas_datos.DatoCalcularRuta
 
@@ -117,25 +128,46 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
             //si el puntocorte1 es menor a total pts salida y puntocorte2 es mayor a puntocorte1 y si puntocorte2 esta en pts salida
             puntosFinal1 =
                 puntosRutaSalida1[0].coordenadas.toMutableList().subList(puntoCorte1, puntoCorte2)
+            println("Caso If numero 1")
+            if (puntosFinal1.isNotEmpty()) {
+                //agregar marcador para indicar el lugar de bajada de la buseta
+                val puntoFinalPuntos = puntosFinal1.size-1
+                val opcionesMarcador = MarkerOptions().position(puntosFinal1[puntoFinalPuntos]).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_estacion_fin_ruta)).title("Baja de la buseta")
+                gmap.addMarker(opcionesMarcador)
+
+                val dosPuntosCaminata = mutableListOf<LatLng>()
+                dosPuntosCaminata.add(puntosFinal1[puntosFinal1.size-1])
+                dosPuntosCaminata.add(ubicacionDestino)
+                val polylineOptions = PolylineOptions()
+                polylineOptions.color(ContextCompat.getColor(mapa, R.color.distancia_caminar))
+                polylineOptions.pattern(listOf(Dash(20f), Gap(10f)))
+                polylineOptions.addAll(dosPuntosCaminata)
+
+                gmap.addPolyline(polylineOptions)
+            }
 
 
         } else if (puntoCorte2 > puntoCorte1 && puntoCorte2 > totalSubida1 && puntoCorte1 < totalSubida1) {
             //si puntocorte2 es mayor a puntocorte1 y puntocorte2 esta en pts llegada y puntocorte1 esta dentro de pts salida
             puntosFinal1 =
                 puntosRutaSalida1[0].coordenadas.toMutableList().subList(puntoCorte1, totalSubida1)
+            println("Caso If numero 2")
 
 
         } else if (puntoCorte1 > puntoCorte2 && puntoCorte1 < totalSubida1) {
             //si puntocorte1 es mayor a puntocorte2 y puntocorte1 esta dentro de pts salida
             puntosFinal1 =
                 puntosRutaSalida1[0].coordenadas.toMutableList().subList(puntoCorte2, puntoCorte1)
+            println("Caso If numero 3")
 
 
         } else if (puntoCorte2 < puntoCorte1 && puntoCorte1 > totalSubida1 && puntoCorte2 < totalSubida1) {
             //si puntocorte2 es menor a puntocorte1 y puntocorte1 esta en pts llegada
+            //ESTE ES CASO 4 RUTA SALIDA
             puntosFinal1 =
                 puntosRutaSalida1[0].coordenadas.toMutableList()
                     .subList(puntoCorte2, totalSubida1)
+            println("Caso If numero 4")
         }
 
 
@@ -144,7 +176,7 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
                 mapa,
                 R.color.recorridoIda
             )
-        ) //color polyline salida
+        )//color polyline salida
 
         val rutaResultante1 = gmap.addPolyline(polylineOptions) //agregar polyline
         //demas propiedades polyline
@@ -152,6 +184,17 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
         rutaResultante1.jointType = JointType.ROUND
         rutaResultante1.endCap = RoundCap()
         rutaResultante1.startCap = RoundCap()
+
+        if (puntosFinal1.isNotEmpty()) {
+            //agregar marcador para indicar el lugar de subida a la buseta
+            val opcionesMarcador1 = MarkerOptions().position(puntosFinal1[0]).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_estacion_inicio_ruta)).title("Toma la buseta")
+            gmap.addMarker(opcionesMarcador1)
+
+            val dosPuntosCaminata = mutableListOf<LatLng>()
+            dosPuntosCaminata.add(ubicacionUsuario)
+            dosPuntosCaminata.add(puntosFinal1[0])
+            dibujarPolylineaCaminata(gmap, mapa, dosPuntosCaminata)
+        }
 
 
         //-----------------------------------------------------------------------------------------
@@ -165,7 +208,8 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
         if (puntoCorte2 > totalSubida2 && puntoCorte2 - totalSubida2 < totalLlegada1) {
             //si puntocorte2 esta en pts llegada y puntocorte2 esta dentro del rango de pts llegada
             puntosFinal = puntosRutaLlegada1[0].coordenadas.toMutableList()
-                .subList(0, (puntoCorte2 - totalSubida2))
+                .subList(0, (puntoCorte2 - totalSubida2)-1)
+            println("Caso If numero 5")
 
 
         } else if (puntoCorte2 > puntoCorte1 && puntoCorte2 > totalSubida2 && puntoCorte1 < totalSubida2) {
@@ -173,6 +217,7 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
             puntosFinal =
                 puntosRutaLlegada1[0].coordenadas.toMutableList()
                     .subList(0, (puntoCorte2 - totalSubida2))
+            println("Caso If numero 6")
 
 
         } else if (puntoCorte2 < puntoCorte1 && puntoCorte2 > totalSubida2) {
@@ -180,6 +225,7 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
             puntosFinal =
                 puntosRutaLlegada1[0].coordenadas.toMutableList()
                     .subList((puntoCorte2 - totalSubida2), (puntoCorte1 - totalSubida2))
+            println("Caso If numero 7")
 
 
         } else if (puntoCorte1 > totalSubida2 && puntoCorte2 > puntoCorte1) {
@@ -187,8 +233,19 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
             puntosFinal =
                 puntosRutaLlegada1[0].coordenadas.toMutableList()
                     .subList(puntoCorte1 - totalSubida2, puntoCorte2 - totalSubida2)
-        }
+            println("Caso If numero 8")
 
+
+        }else if (puntoCorte2 < puntoCorte1 && puntoCorte1 > totalSubida1 && puntoCorte2 < totalSubida1) {
+            //si puntocorte2 es menor a puntocorte1 y puntocorte1 esta en pts llegada
+            //esta es contraparte del caso 4 de ruta salida
+            puntosFinal =
+                puntosRutaLlegada1[0].coordenadas.toMutableList()
+                    .subList(0, (puntoCorte1-totalSubida1))
+            println("Caso If numero 9")
+
+
+        }
         polylineOptions.color(
             ContextCompat.getColor(
                 mapa,
@@ -202,6 +259,27 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
         rutaResultante.endCap = RoundCap()
         rutaResultante.startCap = RoundCap()
 
+        if (puntosFinal.isNotEmpty()) {
+            //agregar marcador para indicar el lugar de bajada de la buseta
+            val puntoFinalPuntos = puntosFinal.size-1
+            val opcionesMarcador = MarkerOptions().position(puntosFinal[puntoFinalPuntos]).icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_estacion_fin_ruta)).title("Baja de la buseta")
+            gmap.addMarker(opcionesMarcador)
 
+            val dosPuntosCaminata = mutableListOf<LatLng>()
+            dosPuntosCaminata.add(puntosFinal[puntosFinal.size-1])
+            dosPuntosCaminata.add(ubicacionDestino)
+            dibujarPolylineaCaminata(gmap, mapa, dosPuntosCaminata)
+        }
+
+
+    }
+
+    fun dibujarPolylineaCaminata(gmap:GoogleMap, mapa:Context, puntosCaminar:MutableList<LatLng>){
+        val polylineOptions = PolylineOptions()
+        polylineOptions.color(ContextCompat.getColor(mapa, R.color.distancia_caminar))
+        polylineOptions.pattern(listOf(Dash(20f), Gap(10f)))
+        polylineOptions.addAll(puntosCaminar)
+
+        gmap.addPolyline(polylineOptions)
     }
 }
