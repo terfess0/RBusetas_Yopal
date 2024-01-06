@@ -16,7 +16,6 @@ import com.google.android.gms.maps.model.Gap
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.Polyline
 import com.terfess.busetasyopal.R
-import com.terfess.busetasyopal.actividades.Mapa
 import com.terfess.busetasyopal.actividades.Splash
 import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.estamarcado1
 import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.estamarcado2

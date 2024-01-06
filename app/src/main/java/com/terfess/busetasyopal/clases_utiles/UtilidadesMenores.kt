@@ -8,16 +8,6 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.ThemedSpinnerAdapter.Helper
-import androidx.core.content.ContextCompat
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.model.Dash
-import com.google.android.gms.maps.model.Gap
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.PolylineOptions
-import com.google.firebase.database.DatabaseReference
-import com.terfess.busetasyopal.R
-import com.terfess.busetasyopal.actividades.Splash
 
 
 interface AlertaCallback { //devolucion de llamada para el CrearAlerta

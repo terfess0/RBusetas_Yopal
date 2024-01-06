@@ -41,13 +41,10 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.Circle
 import com.google.android.gms.maps.model.CircleOptions
-import com.google.android.gms.maps.model.Dash
-import com.google.android.gms.maps.model.Gap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.PolylineOptions
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.clases_utiles.AlertaCallback
 import com.terfess.busetasyopal.clases_utiles.PlanearRutaDestino.Datos
@@ -127,7 +124,8 @@ class Mapa : AppCompatActivity(), LocationListener,
             !hayConexion
         }
 
-
+        //mensaje "cargando mapa" importante en primera vez usando la aplicacion
+        Toast.makeText(this, "Cargando Mapa", Toast.LENGTH_SHORT).show()
 
         // Registrar un NetworkCallback para recibir actualizaciones de conectividad
         val connectivityManager =
@@ -675,7 +673,7 @@ class Mapa : AppCompatActivity(), LocationListener,
     private fun mostrarIndicaciones() {
         //indicaciones para tomar la buseta en las rutas individuales
         val metros = RutaBasic.CreatRuta.masCortaInicio[1]
-        val punto = RutaBasic.CreatRuta.masCortaInicio[0]
+        //val punto = RutaBasic.CreatRuta.masCortaInicio[0]
         binding.indicaciones.visibility = View.VISIBLE
         "Camina $metros m hasta el punto marcado con el icono y toma la buseta ruta $idruta.".also {
             binding.indicaciones.text = it
