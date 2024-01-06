@@ -71,7 +71,7 @@ class UtilidadesMenores {
     fun crearToast(contexto: Context?, mensaje: String) {
         contexto?.applicationContext?.let {//si contexto y contexo aplicacion no son nulos entonces let ejecutara el bloque de codigo en {}
             toast?.cancel() // cancelar el toast anterior si existe
-            toast = Toast.makeText(it, mensaje, Toast.LENGTH_LONG)
+            toast = Toast.makeText(it, mensaje, Toast.LENGTH_SHORT)
             toast?.show()
         }
     }

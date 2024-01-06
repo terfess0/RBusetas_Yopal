@@ -125,7 +125,7 @@ class Mapa : AppCompatActivity(), LocationListener,
         }
 
         //mensaje "cargando mapa" importante en primera vez usando la aplicacion
-        Toast.makeText(this, "Cargando Mapa", Toast.LENGTH_SHORT).show()
+        UtilidadesMenores().crearToast(this, "Cargando Mapa")
 
         // Registrar un NetworkCallback para recibir actualizaciones de conectividad
         val connectivityManager =
