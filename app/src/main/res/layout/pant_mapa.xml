@@ -101,10 +101,11 @@
         android:id="@+id/failConection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:gravity="center"
         android:background="@drawable/borde_leyenda"
         android:backgroundTint="@color/fondoLeyenda"
+        android:gravity="center"
+        android:padding="5dp"
+        android:textSize="10sp"
         android:textStyle="bold"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/map"
@@ -307,5 +308,16 @@
         app:layout_constraintTop_toBottomOf="@+id/irgps"
         app:layout_constraintVertical_bias="0.11"
         android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ESTA OPCIÓN ESTÁ EN PRUEBAS"
+        android:textColor="#FB9494"
+        android:textSize="8sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
