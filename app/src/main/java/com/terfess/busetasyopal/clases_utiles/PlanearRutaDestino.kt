@@ -112,6 +112,24 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
         println("IDRuta:${Datos.mejorPuntoaDestino[2]}  PuntoCorte2: ${Datos.mejorPuntoaDestino[0]}")
         //-----------------------------------------------------------------------------------------
 
+        //------AGREGAR POLYLINEAS TENUES DE LA RUTA ORIGINAL-----
+        val puntosSalida = puntosRutaSalida1[0].coordenadas.toMutableList()
+        val puntosLlegada = puntosRutaLlegada1[0].coordenadas.toMutableList()
+        if (puntosSalida.isNotEmpty() && puntosLlegada.isNotEmpty()) {
+            val opcionesPolylineaSubida = PolylineOptions()
+            val opcionesPolylineaBajada = PolylineOptions()
+
+            opcionesPolylineaSubida.points.addAll(puntosSalida)
+            opcionesPolylineaSubida.color(ContextCompat.getColor(mapa, R.color.azul_parcial))
+                .width(10f)
+            gmap.addPolyline(opcionesPolylineaSubida)
+
+            opcionesPolylineaBajada.points.addAll(puntosLlegada)
+            opcionesPolylineaBajada.color(ContextCompat.getColor(mapa, R.color.rojo_parcial))
+                .width(10f)
+            gmap.addPolyline(opcionesPolylineaBajada)
+        }
+
         //-----------------------------------------------------------------------------------------
 
         if (Datos.mejorPuntoaInicio[2] == Datos.mejorPuntoaDestino[2]) {
