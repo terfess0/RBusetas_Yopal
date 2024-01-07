@@ -34,7 +34,7 @@ class Distancia {
                 }
             }
             if (!esInicio) {
-                if (distancia < mejorPuntoDestino[1] && mejorPuntoInicio[2] == idRuta) {
+                if (distancia < mejorPuntoDestino[1]) {
                     mejorPuntoDestino[0] = puntoEstacion
                     mejorPuntoDestino[1] = distancia
                     mejorPuntoDestino[2] = idRuta

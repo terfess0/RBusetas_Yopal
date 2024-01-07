@@ -10,8 +10,8 @@
     <color name="RutaCalculada">#903E92</color>
     <color name="rojo">#A60000</color>
     <color name="azul">#012B75</color>
-    <color name="rojo_parcial">#26FF0026</color>
-    <color name="azul_parcial">#26005DFF</color>
+    <color name="salida_parcial">#7436E4BB</color>
+    <color name="llegada_parcial">#74FF5900</color>
     <color name="verde">#0E7E0B</color>
     <color name="distancia_caminar">#DF3DFFD9</color>
 </resources>

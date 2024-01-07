@@ -10,7 +10,6 @@ import com.google.android.gms.maps.model.Gap
 import com.google.android.gms.maps.model.JointType
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.gms.maps.model.RoundCap
 import com.terfess.busetasyopal.R
@@ -106,6 +105,7 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
                 false,
                 idMejorRuta
             )
+            println("nnReparados")
         }
 
         println("--IDRuta:${Datos.mejorPuntoaInicio[2]}  PuntoCorte1: ${Datos.mejorPuntoaInicio[0]}")
@@ -120,13 +120,13 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
             val opcionesPolylineaBajada = PolylineOptions()
 
             opcionesPolylineaSubida.points.addAll(puntosSalida)
-            opcionesPolylineaSubida.color(ContextCompat.getColor(mapa, R.color.azul_parcial))
-                .width(10f)
+            opcionesPolylineaSubida.color(ContextCompat.getColor(mapa, R.color.salida_parcial))
+                .width(14f)
             gmap.addPolyline(opcionesPolylineaSubida)
 
             opcionesPolylineaBajada.points.addAll(puntosLlegada)
-            opcionesPolylineaBajada.color(ContextCompat.getColor(mapa, R.color.rojo_parcial))
-                .width(10f)
+            opcionesPolylineaBajada.color(ContextCompat.getColor(mapa, R.color.llegada_parcial))
+                .width(14f)
             gmap.addPolyline(opcionesPolylineaBajada)
         }
 
@@ -146,7 +146,7 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
                 //si el puntocorte1 es menor a total pts salida y puntocorte2 es mayor a puntocorte1 y si puntocorte2 esta en pts salida
                 puntosFinal1 =
                     puntosRutaSalida1[0].coordenadas.toMutableList()
-                        .subList(puntoCorte1, puntoCorte2)
+                        .subList(puntoCorte1+1, puntoCorte2+1)
                 println("Caso If numero 1")
                 if (puntosFinal1.isNotEmpty()) {
                     //agregar marcador para indicar el lugar de bajada de la buseta
@@ -261,7 +261,7 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
             //comienza creacion de los puntos a trazar de acuerdo al caso
             if (puntoCorte2 > puntoCorte1 && puntoCorte2 > totalSubida1 && puntoCorte1 < totalSubida1) {
                 //si puntocorte2 es mayor a puntocorte1 y puntocorte2 esta en pts llegada y puntocorte1 esta dentro del rango de pts salida
-                val x = puntoCorte2 - totalSubida1
+                val x = puntoCorte2 + 1 - totalSubida1
                 puntosFinal =
                     puntosRutaLlegada1[0].coordenadas.toMutableList()
                         .subList(0, x)
