@@ -310,13 +310,14 @@
         android:visibility="gone" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textPruebas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ESTA OPCIÓN ESTÁ EN PRUEBAS"
         android:textColor="#FB9494"
         android:textSize="8sp"
         android:textStyle="bold"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

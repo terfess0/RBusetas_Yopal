@@ -192,9 +192,9 @@ class Mapa : AppCompatActivity(), LocationListener,
 
         //-------------------------------------------------------------------------------
         //Cuando se calcule la ruta
-
         if (idruta == 0) {
             binding.infoColor.visibility = View.GONE
+            binding.textPruebas.visibility = View.VISIBLE
             supportActionBar?.title = "Calcular viaje Inicio - Destino"  //titulo actionbar
             //binding.parqueadero.visibility = View.GONE
         }
