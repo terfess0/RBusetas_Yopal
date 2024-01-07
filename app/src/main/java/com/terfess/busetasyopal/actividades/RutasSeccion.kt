@@ -30,7 +30,7 @@ class RutasSeccion : AppCompatActivity() {//CLASE DE LAYOUT PANTALLA PRINCIPAL
     private lateinit var binding: PantPrincipalBinding
     private var filtrando = false
     private lateinit var db: DatabaseReference
-    private var precio: String = " $ 2,000"
+    private var precio: String = " $ 2,000 COP"
     private var mensaje_controlado: String? = null
     private val adapter = RutasAdapter(ListaRutas.busetaRuta.toList())
 
@@ -200,11 +200,13 @@ class RutasSeccion : AppCompatActivity() {//CLASE DE LAYOUT PANTALLA PRINCIPAL
             val builder = AlertDialog.Builder(this)
             builder.setMessage("¿Seguro que quieres salir?")
                 .setPositiveButton("Sí") { _, _ ->
-                    finish()
+                    //cerrar la app
+                    finishAffinity()
                 }
             builder.setNegativeButton("No") { _, _ -> }
             val dialog = builder.create()
             dialog.show()
+
         }
     }
 }
