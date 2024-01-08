@@ -7,6 +7,7 @@
     tools:context=".actividades.AcercaDe">
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="10dp"
@@ -33,14 +34,14 @@
 
             <TextView
                 android:id="@+id/link_alcaldia"
-                android:textAlignment="center"
-                android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
+                android:textAlignment="center"
                 android:textColor="#072EA3"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView2"
@@ -84,10 +85,10 @@
                 android:id="@+id/verInfoHorarios"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Información de Horarios"
-                android:textAlignment="textStart"
                 android:backgroundTint="#ffffff"
-                android:drawableEnd="@drawable/ic_flecha_aderecha" />
+                android:drawableEnd="@drawable/ic_flecha_aderecha"
+                android:text="Información de Horarios"
+                android:textAlignment="textStart" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/horarios"
@@ -95,50 +96,62 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="gone">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="\nHorarios"
-                android:textColor="#000000"
-                android:textSize="20sp"
-                android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="\nLos horarios muestran la hora en que sale la primera buseta y la hora en que sale la última buseta de la ruta correspondiente (aproximadamente).\n\nHorarios: Lunes a Viernes, Sábados y Domingos-Festivos. \n\nAbajo del horario está la frecuencia, es el tiempo que hay entre la salida de cada buseta; es decir, cada cierto tiempo sale del parqueadero la buseta.\n"
-                android:textColor="#000000"
-                android:textSize="20sp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="\nHorarios"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="De acuerdo al día de la semana, el horario adquirirá un color que indica la disponibilidad del servicio.\n* Cuando la buseta está funcionando/en servicio:"
-                android:textColor="#000000"
-                android:textSize="20sp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="\nLos horarios muestran la hora en que sale la primera buseta y la hora en que sale la última buseta de la ruta correspondiente (aproximadamente).\n\nHorarios: Lunes a Viernes, Sábados y Domingos-Festivos. \n\nAbajo del horario está la frecuencia, es el tiempo que hay entre la salida de cada buseta; es decir, cada cierto tiempo sale del parqueadero la buseta.\n"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:contentDescription="TODO"
-                android:src="@drawable/img_info_horario_on" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="De acuerdo al día de la semana, el horario adquirirá un color que indica la disponibilidad del servicio.\n* Cuando la buseta está funcionando/en servicio:"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="\n* Cuando la buseta no está funcionando/fuera de servicio:"
-                android:textColor="#000000"
-                android:textSize="20sp" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:contentDescription="TODO"
+                    android:src="@drawable/img_info_horario_on" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:contentDescription="TODO"
-                android:src="@drawable/img_info_horario_off"
-                android:layout_marginBottom="10dp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="\n* Cuando la buseta no está funcionando/fuera de servicio:"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_marginBottom="10dp"
+                    android:contentDescription="TODO"
+                    android:src="@drawable/img_info_horario_off" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </LinearLayout>
 
     </ScrollView>
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#1abc9c"
+        app:adSize="BANNER"
+        app:adUnitId="ca-app-pub-3940256099942544/6300978111"
+        app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

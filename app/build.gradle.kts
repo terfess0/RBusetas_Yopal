@@ -66,7 +66,10 @@ dependencies {
     implementation("com.google.android.libraries.places:places:3.3.0")
 
     //coroutinas
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+
+    //anuncios admob
+    implementation("com.google.android.gms:play-services-ads:22.6.0")
 
 
 }

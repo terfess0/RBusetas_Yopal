@@ -12,13 +12,24 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.widget.LinearLayoutCompat
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.MobileAds
 import com.terfess.busetasyopal.R
 import java.net.URLEncoder
 
 class AcercaDe : AppCompatActivity() {
+
+    lateinit var mAdView : AdView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.acerca_de)
+
+
+        //anuncios
+        mAdView = findViewById(R.id.adView)
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
 
         //actionbar transparente
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

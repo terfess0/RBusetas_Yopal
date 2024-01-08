@@ -2,16 +2,24 @@
 <resources>
     <color name="recorridoIda">#00B6FF</color>
     <color name="recorridoVuelta">#C70039 </color>
+
     <color name="anuncioGrave">#B80000</color>
     <color name="anuncioLeve">#5A4F27</color>
+
     <color name="fondoLeyenda">#ABFFFFFF</color>
+
     <color name="RutaEnServicio">#D54CEA09</color>
     <color name="RutaFueraServicio">#2C2E2B</color>
+
     <color name="RutaCalculada">#903E92</color>
-    <color name="rojo">#A60000</color>
-    <color name="azul">#012B75</color>
+
+    <color name="rojo">#D54848</color>
+    <color name="azul">#3D67B1</color>
+    <color name="verde">#67CA65</color>
+    <color name="amarillo">#CDD14D</color>
+
     <color name="salida_parcial">#7436E4BB</color>
     <color name="llegada_parcial">#74FF5900</color>
-    <color name="verde">#0E7E0B</color>
+
     <color name="distancia_caminar">#DF3DFFD9</color>
 </resources>

@@ -203,7 +203,7 @@ class RutaBasic(private val mapa: Context, private val gmap: GoogleMap) {
                 marcador1 = agregarMarcador(
                     puntos1[masCortaInicio[0]],
                     R.drawable.ic_estacion,
-                    "Estación más cercana"
+                    "Estación más cercana subiendo"
                 )
                 estamarcado1 = true
                 //mueve la camara al marcador de estacion cercana
@@ -251,7 +251,7 @@ class RutaBasic(private val mapa: Context, private val gmap: GoogleMap) {
                 marcador2 = agregarMarcador(
                     puntos2[masCortaInicio[0]],
                     R.drawable.ic_estacion,
-                    "Estación más cercana"
+                    "Estación más cercana bajando"
                 )
                 estamarcado2 = true
 
@@ -314,12 +314,13 @@ class RutaBasic(private val mapa: Context, private val gmap: GoogleMap) {
 
 
     private fun colorRandom(): Int {
-        val numero = (0..2).random()
+        val numero = (0..3).random()
         var color = 0
         when (numero) {
             0 -> color = R.color.rojo
             1 -> color = R.color.verde
             2 -> color = R.color.azul
+            3 -> color = R.color.amarillo
         }
         return color
     }

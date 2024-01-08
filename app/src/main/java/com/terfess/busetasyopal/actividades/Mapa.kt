@@ -19,11 +19,13 @@ import android.text.Html
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Granularity
@@ -65,6 +67,7 @@ class Mapa : AppCompatActivity(), LocationListener,
     private val tiempos = Handler(Looper.getMainLooper())
     private var puntoProvisionalGps: Circle? = null
     private lateinit var marcador: Marker
+    lateinit var mAdView: AdView //anuncios
 
 
     companion object { //accesibles desde cualquier lugar de este archivo/clase y proyectos
@@ -82,6 +85,11 @@ class Mapa : AppCompatActivity(), LocationListener,
         //mapa
         val fragmentoMapa = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         fragmentoMapa.getMapAsync(this)
+
+        //anuncios
+        mAdView = findViewById(R.id.adView)
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
 
         /*//lugares/places api   //HAY QUE PAGAR EN CLOUD POR ESO SE DESACTIVARA PLACES
         if (!Places.isInitialized()) {
@@ -115,7 +123,7 @@ class Mapa : AppCompatActivity(), LocationListener,
         val infoSalida = "<font color='${getColor(R.color.recorridoIda)}' >Azul</font>"
         val infoLlegada = "<font color='${getColor(R.color.recorridoVuelta)}' >Rojo</font>"
         binding.infoColor.text = Html.fromHtml(
-            " Ruta Salida: $infoSalida <br> Ruta Llegada: $infoLlegada",
+            " Ruta Salida: $infoSalida - Ruta Llegada: $infoLlegada",
             Html.FROM_HTML_MODE_LEGACY
         )
         //estado de conexion
@@ -210,13 +218,18 @@ class Mapa : AppCompatActivity(), LocationListener,
             RutaBasic.CreatRuta.estamarcado2 = false //evitar dobles marcadores de estacion
         }
         binding.sentidoSubida.setOnClickListener {
-
+            if (binding.infoColor.isVisible) {
+                binding.infoColor.visibility = View.GONE //ocultar leyenda al ver distancia
+            }
             if (RutaBasic.CreatRuta.estamarcado1 == false) {
                 calcularDistancia("salida")
                 mostrarIndicaciones()
             }
         }
         binding.sentidoLlegada.setOnClickListener {
+            if (binding.infoColor.isVisible) {
+                binding.infoColor.visibility = View.GONE //ocultar leyenda al ver distancia
+            }
             if (RutaBasic.CreatRuta.estamarcado2 == false) {
                 calcularDistancia("llegada")
                 mostrarIndicaciones()
@@ -675,7 +688,7 @@ class Mapa : AppCompatActivity(), LocationListener,
         val metros = RutaBasic.CreatRuta.masCortaInicio[1]
         //val punto = RutaBasic.CreatRuta.masCortaInicio[0]
         binding.indicaciones.visibility = View.VISIBLE
-        "Camina $metros m hasta el punto marcado con el icono y toma la buseta ruta $idruta.".also {
+        "Camina $metros m hasta el icono y toma la buseta (ruta $idruta).".also {
             binding.indicaciones.text = it
         }
 

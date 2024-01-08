@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -26,7 +27,8 @@ import com.terfess.busetasyopal.databinding.PantPrincipalBinding
 import com.terfess.busetasyopal.listas_datos.ListaRutas
 import java.util.Calendar
 
-class RutasSeccion : AppCompatActivity() {//CLASE DE LAYOUT PANTALLA PRINCIPAL
+class RutasSeccion : AppCompatActivity() {
+    //CLASE DE LAYOUT PANTALLA PRINCIPAL
     private lateinit var binding: PantPrincipalBinding
     private var filtrando = false
     private lateinit var db: DatabaseReference
@@ -34,10 +36,13 @@ class RutasSeccion : AppCompatActivity() {//CLASE DE LAYOUT PANTALLA PRINCIPAL
     private var mensaje_controlado: String? = null
     private val adapter = RutasAdapter(ListaRutas.busetaRuta.toList())
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = PantPrincipalBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        MobileAds.initialize(this) {}//inicializar sdk de anuncios google
 
         //firebase
         db =
@@ -110,6 +115,7 @@ class RutasSeccion : AppCompatActivity() {//CLASE DE LAYOUT PANTALLA PRINCIPAL
             intent.putExtra("selector", 0)
             startActivity(intent)
         }
+
     }
 
     //menu en el ActionBar

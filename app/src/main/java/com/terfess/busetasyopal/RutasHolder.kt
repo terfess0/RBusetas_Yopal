@@ -48,7 +48,7 @@ class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
                 }
 
                 1 -> {
-                    this.rutaEnServicioLV = "#4aa63a" //verde oscuro
+                    this.rutaEnServicioLV = "#119400" //verde oscuro
                 }
             }
         }
@@ -59,7 +59,7 @@ class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
                 }
 
                 1 -> {
-                    this.rutaEnServicioSab = "#4aa63a" //verde oscuro
+                    this.rutaEnServicioSab = "#119400" //verde oscuro
                 }
             }
         }
@@ -70,7 +70,7 @@ class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
                 }
 
                 1 -> {
-                    this.rutaEnServicioDom = "#4aa63a" //verde oscuro
+                    this.rutaEnServicioDom = "#119400" //verde oscuro
                 }
             }
         }

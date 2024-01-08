@@ -4,8 +4,8 @@
     android:id="@+id/fondox"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:backgroundTint="#ffffff">
+    android:backgroundTint="#ffffff"
+    android:orientation="vertical">
 
     <EditText
         android:id="@+id/filtro"
@@ -14,16 +14,17 @@
         android:layout_margin="10dp"
         android:background="@drawable/bord_filtro"
         android:backgroundTint="#E3E5EA"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:gravity="center_vertical"
         android:elevation="3dp"
         android:ems="10"
+        android:gravity="center_vertical"
         android:hint="Busca sitios o rutas"
         android:imeOptions="actionDone"
         android:inputType="text"
         android:maxLines="1"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:visibility="gone" />
+
     <TextView
         android:id="@+id/noResultados"
         android:layout_width="match_parent"
@@ -31,13 +32,12 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
+        android:gravity="center"
+        android:minHeight="90dp"
+        android:text="Sin Resultados"
         android:textColor="#9A0000"
         android:textStyle="bold"
-        android:text="Sin Resultados"
-        android:gravity="center"
-        android:visibility="gone"
-        android:minHeight="90dp"
-        />
+        android:visibility="gone" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cabezera"
@@ -139,13 +139,14 @@
         android:layout_marginBottom="5dp"
         android:orientation="horizontal"
         android:visibility="gone">
+
         <Button
             android:id="@+id/calcularRuta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="5dp"
-            android:padding="5dp"
             android:background="@drawable/bord_boton_relevant"
+            android:padding="5dp"
             android:text="Calcular Ruta"
             android:textAllCaps="false"
             android:textSize="12sp" />
@@ -154,7 +155,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cajaInfo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent" />
+
+
+
 
 </LinearLayout>

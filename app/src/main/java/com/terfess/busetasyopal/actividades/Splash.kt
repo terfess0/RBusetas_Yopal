@@ -10,6 +10,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import android.widget.VideoView
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -98,6 +99,7 @@ class Splash : AppCompatActivity() {
             UtilidadesMenores().crearToast(this, "Sin conexión a Internet")
             startActivity(Intent(this@Splash, RutasSeccion::class.java))
         }
+
 
     }
 
