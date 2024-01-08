@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Busetas Yopal</string>
+
     <string name="textview">TextView</string>
+
+    <string name="linkBaseDatos">https://rutasbusetas-default-rtdb.firebaseio.com/</string>
+
     <string name="creditos_texto">Agradecemos a todos los que contribuyeron al desarrollo de esta aplicación:\n\n- Desarrollador: Terfess\n- Diseño Gráfico: Terfess\n- Iconos por elaboración propia y recursos Android Studio.
 \n\n\nQueremos asegurarte que valoramos tu privacidad.\n\n- Esta aplicación no recopila ni almacena ningún dato personal tuyo.\n- No realizamos seguimientos ni compartimos información con terceros.\n- Tu privacidad es nuestra prioridad.\n\n¡Gracias por usar nuestra aplicación!</string>
+
     <string name="mensaje_contacto">Enviar mensaje por correo al desarrollador</string>
+
     <string name="mensaje_contacto_wts">Enviar mensaje a whatsapp al desarrollador</string>
+
+    <string name="fuente_datos">Los datos sobre el sistema de transporte público provienen de la información publicada en los canales de la Alcaldía Municipal de Yopal, de publicaciones realizadas por empresas encargadas y a través de verificación interna e investigación de campo.</string>
+
+    <string name="enlace_alcaldia">Sitio Web Alcaldía de Yopal</string>
+
     <string name="tema_sugerido_sms">Contactanos ante cualquier queja/sugerencia/corrección por nuestros canales de comunicación.</string>
 
 </resources>

@@ -46,7 +46,7 @@ class RutasSeccion : AppCompatActivity() {
 
         //firebase
         db =
-            FirebaseDatabase.getInstance("https://rutasbusetas-default-rtdb.firebaseio.com/").reference
+            FirebaseDatabase.getInstance(getString(R.string.linkBaseDatos)).reference
         FirebaseApp.initializeApp(this)
         val cajaInfo = binding.cajaInfo
 
