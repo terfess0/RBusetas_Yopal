@@ -42,7 +42,6 @@ class RutasSeccion : AppCompatActivity() {
         binding = PantPrincipalBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        MobileAds.initialize(this) {}//inicializar sdk de anuncios google
 
         //firebase
         db =

@@ -30,6 +30,8 @@ class Splash : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.pant_splash)
 
+        MobileAds.initialize(this) {}//inicializar sdk de anuncios google
+
         //---------------ICONO O VIDEO DE LA APP AL INICIAR--------------------
 
         if (modoOscuroActivado(this)) {
