@@ -54,8 +54,10 @@ class Splash : AppCompatActivity() {
 
         //---------------DESCARGAR INFORMACION SI ES NECESARIO--------------------------
         var conexionComprobador = 0
+        var conexionComprobadorDos = 0
         if (UtilidadesMenores().comprobarConexion(this)) {
             //si hay conexion a internet entonces
+            conexionComprobadorDos = 1
 
             UtilidadesMenores().crearToast(this, "Conexión Establecida")
             //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>
@@ -77,7 +79,7 @@ class Splash : AppCompatActivity() {
                 FirebaseDatabase.getInstance().getReference("/features/0/version")
                     .addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
-                            conexionComprobador = 1
+                            conexionComprobador = 2
                             val versionNube = snapshot.value.toString().toInt()
                             if (versionLocal != versionNube) {
                                 dbHelper.insertarVersionDatos(versionNube)
@@ -109,8 +111,9 @@ class Splash : AppCompatActivity() {
         }
 
         //----------------------------TIEMPO AGOTADO---------------------------------
+
         tiempo.postDelayed({
-            if (conexionComprobador == 0) {
+            if (conexionComprobador == 1 && conexionComprobadorDos != 1) {
                 //si no pudo conectarse correctamente tras 10 segundos (mala conexion)
                 UtilidadesMenores().crearToast(this, "Tiempo de conexión agotado.")
                 startActivity(Intent(this@Splash, RutasSeccion::class.java))
@@ -140,7 +143,7 @@ class Splash : AppCompatActivity() {
         })
     }
 
-    fun modoOscuroActivado(context: Context): Boolean {
+    private fun modoOscuroActivado(context: Context): Boolean {
         val currentNightMode =
             context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         return currentNightMode == Configuration.UI_MODE_NIGHT_YES
