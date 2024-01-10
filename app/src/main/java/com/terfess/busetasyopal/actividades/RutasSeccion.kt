@@ -29,7 +29,7 @@ import java.util.Calendar
 class RutasSeccion : AppCompatActivity() {
     //CLASE DE LAYOUT PANTALLA PRINCIPAL
     private lateinit var binding: PantPrincipalBinding
-    private var filtrando = false
+    var filtrando = false
     private lateinit var db: DatabaseReference
     private var precio: String = " $ 2,000 "
     private var mensaje_controlado: String? = null
@@ -130,6 +130,7 @@ class RutasSeccion : AppCompatActivity() {
             R.id.buscar -> {
                 if (filtro.visibility == View.GONE) {
                     binding.cabezera.visibility = View.GONE
+                    filtrando = true
                     binding.botonesRapidos.visibility = View.GONE
                     filtro.setText("")
                     filtro.visibility = View.VISIBLE //mostrar el campo del filtro
@@ -141,7 +142,7 @@ class RutasSeccion : AppCompatActivity() {
                     adapter.updateLista(ListaRutas.busetaSitios, "#2196F3")
                     //detectar lo que se va escribiendo en el filtro
                     filtro.addTextChangedListener { claveFilter ->
-                        filtrando = true
+
                         val textFiltro = claveFilter?.toString() ?: "es nulo"
                         if (textFiltro.isEmpty()) {
                             adapter.updateLista(ListaRutas.busetaSitios, "#2196F3")
