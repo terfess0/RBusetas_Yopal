@@ -6,6 +6,8 @@ import android.content.res.Configuration
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -26,6 +28,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class Splash : AppCompatActivity() {
+    private var tiempo = Handler(Looper.getMainLooper()) //variable para temporizadores
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.pant_splash)
@@ -72,6 +75,7 @@ class Splash : AppCompatActivity() {
                 FirebaseDatabase.getInstance().getReference("/features/0/version")
                     .addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
+
                             val versionNube = snapshot.value.toString().toInt()
                             if (versionLocal != versionNube) {
                                 dbHelper.insertarVersionDatos(versionNube)
@@ -101,6 +105,13 @@ class Splash : AppCompatActivity() {
             UtilidadesMenores().crearToast(this, "Sin conexión a Internet")
             startActivity(Intent(this@Splash, RutasSeccion::class.java))
         }
+
+        //----------------------------TIEMPO AGOTADO---------------------------------
+        tiempo.postDelayed({
+            //si no pudo conectarse correctamente tras 15 segundos (mala conexion)
+            UtilidadesMenores().crearToast(this, "Tiempo de conexión agotado.")
+            startActivity(Intent(this@Splash, RutasSeccion::class.java))
+        }, 10000)
 
 
     }
