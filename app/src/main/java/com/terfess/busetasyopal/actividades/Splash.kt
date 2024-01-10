@@ -39,20 +39,22 @@ class Splash : AppCompatActivity() {
 
         if (modoOscuroActivado(this)) {
             // Cargar video oscuro
-            findViewById<ImageView>(R.id.img).visibility = View.GONE //ocultar imagen del icono claro de la app
+            findViewById<ImageView>(R.id.img).visibility =
+                View.GONE //ocultar imagen del icono claro de la app
             val videoView: VideoView = findViewById(R.id.videoView)
             val idVideo = R.raw.ic_app_anim_dark
             val videoUri: Uri = Uri.parse("android.resource://$packageName/$idVideo")
             videoView.setVideoURI(videoUri)
             videoView.start()
-        }else{
+        } else {
             //ocultar reproductor de video y dejar visible la imagen de la app (icono claro)
             findViewById<VideoView>(R.id.videoView).visibility = View.GONE
         }
 
 
-        //---------------DESCARGAR INFORAMACION SI ES NECESARIO--------------------------
-        if (UtilidadesMenores().comprobarConexion(this)){
+        //---------------DESCARGAR INFORMACION SI ES NECESARIO--------------------------
+        var conexionComprobador = 0
+        if (UtilidadesMenores().comprobarConexion(this)) {
             //si hay conexion a internet entonces
 
             UtilidadesMenores().crearToast(this, "Conexión Establecida")
@@ -75,7 +77,7 @@ class Splash : AppCompatActivity() {
                 FirebaseDatabase.getInstance().getReference("/features/0/version")
                     .addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
-
+                            conexionComprobador = 1
                             val versionNube = snapshot.value.toString().toInt()
                             if (versionLocal != versionNube) {
                                 dbHelper.insertarVersionDatos(versionNube)
@@ -85,7 +87,7 @@ class Splash : AppCompatActivity() {
                                     "Descargando informacion",
                                     Toast.LENGTH_SHORT
                                 ).show()
-                            }else{
+                            } else {
                                 //si la informacion descargable ya esta guardada entonces inciar
                                 startActivity(Intent(this@Splash, RutasSeccion::class.java))
                             }
@@ -100,7 +102,7 @@ class Splash : AppCompatActivity() {
                     })
             }
             //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-        }else{
+        } else {
             //si no hay conexion
             UtilidadesMenores().crearToast(this, "Sin conexión a Internet")
             startActivity(Intent(this@Splash, RutasSeccion::class.java))
@@ -108,13 +110,15 @@ class Splash : AppCompatActivity() {
 
         //----------------------------TIEMPO AGOTADO---------------------------------
         tiempo.postDelayed({
-            //si no pudo conectarse correctamente tras 15 segundos (mala conexion)
-            UtilidadesMenores().crearToast(this, "Tiempo de conexión agotado.")
-            startActivity(Intent(this@Splash, RutasSeccion::class.java))
+            if (conexionComprobador == 0) {
+                //si no pudo conectarse correctamente tras 10 segundos (mala conexion)
+                UtilidadesMenores().crearToast(this, "Tiempo de conexión agotado.")
+                startActivity(Intent(this@Splash, RutasSeccion::class.java))
+            }
         }, 10000)
 
-
     }
+
 
     private fun descargarDatos() {
         val dbHelper = DatosASqliteLocal(this)
@@ -137,7 +141,8 @@ class Splash : AppCompatActivity() {
     }
 
     fun modoOscuroActivado(context: Context): Boolean {
-        val currentNightMode = context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        val currentNightMode =
+            context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
         return currentNightMode == Configuration.UI_MODE_NIGHT_YES
     }
 }
