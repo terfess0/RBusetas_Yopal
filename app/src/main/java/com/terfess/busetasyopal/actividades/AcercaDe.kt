@@ -25,11 +25,7 @@ class AcercaDe : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.acerca_de)
 
-
-        //anuncios
-        mAdView = findViewById(R.id.adView)
-        val adRequest = AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
+        cargarAnuncios()
 
         //actionbar transparente
         supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -86,6 +82,13 @@ class AcercaDe : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_VIEW, uri)
             startActivity(intent)
         }
+    }
+
+    private fun cargarAnuncios() {
+        //anuncios
+        mAdView = findViewById(R.id.adView)
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
     }
 
     //enviar whatsapp

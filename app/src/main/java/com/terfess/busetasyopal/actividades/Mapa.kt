@@ -86,10 +86,7 @@ class Mapa : AppCompatActivity(), LocationListener,
         val fragmentoMapa = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         fragmentoMapa.getMapAsync(this)
 
-        //anuncios
-        mAdView = findViewById(R.id.adView)
-        val adRequest = AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
+        cargarAnuncios()
 
         /*//lugares/places api   //HAY QUE PAGAR EN CLOUD POR ESO SE DESACTIVARA PLACES
         if (!Places.isInitialized()) {
@@ -155,6 +152,13 @@ class Mapa : AppCompatActivity(), LocationListener,
         Datos.mejorPuntoaDestino[0] = -1
         Datos.mejorPuntoaDestino[1] = Int.MAX_VALUE
         //-----------------------------------------------------
+    }
+
+    private fun cargarAnuncios() {
+        //anuncios
+        mAdView = findViewById(R.id.adView)
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
     }
 
     override fun onMapReady(mapa: GoogleMap) {
