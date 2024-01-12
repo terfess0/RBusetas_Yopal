@@ -1,5 +1,6 @@
 package com.terfess.busetasyopal
 
+import android.content.Intent
 import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.terfess.busetasyopal.actividades.Mapa
 import com.terfess.busetasyopal.databinding.FormatoRecyclerBinding
 import com.terfess.busetasyopal.listas_datos.DatosListaFiltro
 
@@ -29,6 +31,13 @@ class FiltroAdapter(var textoFiltro: String) :
             binding.numRuta.text = "Ruta\n ${item.idRuta}"
             binding.sitios.text = spannableString
 
+            //el usuario selecciona una de las rutas
+            binding.contenedor.setOnClickListener {
+                val selector = item.idRuta
+                val intent = Intent(binding.contenedor.context, Mapa::class.java)
+                intent.putExtra("selector", selector)
+                binding.root.context.startActivity(intent)
+            }
         }
 
         private fun getSpannableString(texto: String, filtro: String): SpannableString {
