@@ -76,7 +76,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline"
         app:layout_constraintVertical_bias="0.3"
-        app:srcCompat="@drawable/ic_condiguracion"
+        app:srcCompat="@drawable/ic_configuracion"
         android:contentDescription="Ajustar el mapa" />
 
     <TextView
@@ -224,7 +224,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="30dp"
                 android:gravity="start"
-                android:hint="Cambiar la condiguración inicial del mapa"
+                android:hint="Cambiar la configuración inicial del mapa"
                 android:textSize="16sp" />
 
             <Spinner

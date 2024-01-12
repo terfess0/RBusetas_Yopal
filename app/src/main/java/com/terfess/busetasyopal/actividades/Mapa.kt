@@ -67,7 +67,7 @@ class Mapa : AppCompatActivity(), LocationListener,
     private val tiempos = Handler(Looper.getMainLooper())
     private var puntoProvisionalGps: Circle? = null
     private lateinit var marcador: Marker
-    lateinit var mAdView: AdView //anuncios
+    private lateinit var mAdView: AdView //anuncios
 
 
     companion object { //accesibles desde cualquier lugar de este archivo/clase y proyectos
