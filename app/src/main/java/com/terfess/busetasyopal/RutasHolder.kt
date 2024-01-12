@@ -17,6 +17,7 @@ import com.terfess.busetasyopal.modelos_dato.DatosPrimariosRuta
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
     private val binding = FormatoRecyclerBinding.bind(vista)
@@ -133,15 +134,18 @@ class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
                 val horDom =
                     "<font color='$colorDom'><b>Domingos y Festivos</b></font> <br> <font color='$rutaEnServicioDom'>${dato.horDomFest}<br>${dato.frecDomFest}</font>"
 
-                //aplicar textos a recyclerview prinipal junto a color disponibilidad en ellos
-                if (dato.horLunVie.isNotEmpty() && dato.frecLunVie.isNotEmpty()){
-                    binding.horarioLV.text = Html.fromHtml(horLunVie, FROM_HTML_MODE_LEGACY)
-                }
-                if (dato.horSab.isNotEmpty() && dato.frecSab.isNotEmpty()){
-                    binding.horarioS.text = Html.fromHtml(horSab, FROM_HTML_MODE_LEGACY)
-                }
-                if (dato.horDomFest.isNotEmpty() && dato.frecDomFest.isNotEmpty()){
-                    binding.horarioDF.text = Html.fromHtml(horDom, FROM_HTML_MODE_LEGACY)
+                withContext(Dispatchers.Main) {
+
+                    //aplicar textos a recyclerview hilo prinipal junto a color disponibilidad en ellos
+                    if (dato.horLunVie.isNotEmpty() && dato.frecLunVie.isNotEmpty()) {
+                        binding.horarioLV.text = Html.fromHtml(horLunVie, FROM_HTML_MODE_LEGACY)
+                    }
+                    if (dato.horSab.isNotEmpty() && dato.frecSab.isNotEmpty()) {
+                        binding.horarioS.text = Html.fromHtml(horSab, FROM_HTML_MODE_LEGACY)
+                    }
+                    if (dato.horDomFest.isNotEmpty() && dato.frecDomFest.isNotEmpty()) {
+                        binding.horarioDF.text = Html.fromHtml(horDom, FROM_HTML_MODE_LEGACY)
+                    }
                 }
             }
         }
