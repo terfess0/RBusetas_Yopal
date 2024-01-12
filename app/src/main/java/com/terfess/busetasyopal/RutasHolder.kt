@@ -134,9 +134,15 @@ class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
                     "<font color='$colorDom'><b>Domingos y Festivos</b></font> <br> <font color='$rutaEnServicioDom'>${dato.horDomFest}<br>${dato.frecDomFest}</font>"
 
                 //aplicar textos a recyclerview prinipal junto a color disponibilidad en ellos
+                if (dato.horLunVie.isNotEmpty() && dato.frecLunVie.isNotEmpty()){
                     binding.horarioLV.text = Html.fromHtml(horLunVie, FROM_HTML_MODE_LEGACY)
+                }
+                if (dato.horSab.isNotEmpty() && dato.frecSab.isNotEmpty()){
                     binding.horarioS.text = Html.fromHtml(horSab, FROM_HTML_MODE_LEGACY)
+                }
+                if (dato.horDomFest.isNotEmpty() && dato.frecDomFest.isNotEmpty()){
                     binding.horarioDF.text = Html.fromHtml(horDom, FROM_HTML_MODE_LEGACY)
+                }
             }
         }
 
@@ -144,11 +150,11 @@ class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
 
         if (colorDia == "#2196F3") {
             binding.contenedorHor.visibility = View.GONE
-            binding.guideline2.setGuidelinePercent(1.0f)//se establece porcentage de 100% para que se adapte bien al contenido
+            binding.guideline2.setGuidelinePercent(1.0f) //se establece porcentage de 100% para que se adapte bien al contenido
 
         } else {
             binding.contenedorHor.visibility = View.VISIBLE
-            binding.guideline2.setGuidelinePercent(0.56f)//se establece porcentage por defecto 56% para que siga adaptandose
+            binding.guideline2.setGuidelinePercent(0.56f) //se establece porcentage por defecto 56% para que siga adaptandose
 
         }
 
