@@ -1,6 +1,7 @@
 package com.terfess.busetasyopal
 
 import android.annotation.SuppressLint
+import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -29,4 +30,5 @@ class RutasAdapter(private var listado: List<DatosPrimariosRuta>) : RecyclerView
         this.color = coloriltrando
         notifyDataSetChanged()
     }
+
 }

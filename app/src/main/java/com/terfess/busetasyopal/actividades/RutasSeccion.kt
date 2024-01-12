@@ -20,10 +20,15 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.terfess.busetasyopal.FiltroAdapter
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.RutasAdapter
 import com.terfess.busetasyopal.databinding.PantPrincipalBinding
+import com.terfess.busetasyopal.listas_datos.DatosListaFiltro
 import com.terfess.busetasyopal.listas_datos.ListaRutas
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
 class RutasSeccion : AppCompatActivity() {
@@ -33,7 +38,8 @@ class RutasSeccion : AppCompatActivity() {
     private lateinit var db: DatabaseReference
     private var precio: String = " $ 2,000 "
     private var mensaje_controlado: String? = null
-    private val adapter = RutasAdapter(ListaRutas.busetaRuta.toList())
+    private var adapter = RutasAdapter(ListaRutas.busetaRuta.toList())
+    private var adapterFiltro = FiltroAdapter("")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -130,7 +136,6 @@ class RutasSeccion : AppCompatActivity() {
             R.id.buscar -> {
                 if (filtro.visibility == View.GONE) {
                     binding.cabezera.visibility = View.GONE
-                    filtrando = true
                     binding.botonesRapidos.visibility = View.GONE
                     filtro.setText("")
                     filtro.visibility = View.VISIBLE //mostrar el campo del filtro
@@ -141,24 +146,44 @@ class RutasSeccion : AppCompatActivity() {
                     )//para controlar el teclado virtual
                     adapter.updateLista(ListaRutas.busetaSitios, "#2196F3")
                     //detectar lo que se va escribiendo en el filtro
-                    filtro.addTextChangedListener { claveFilter ->
-
-                        val textFiltro = claveFilter?.toString() ?: "es nulo"
-                        if (textFiltro.isEmpty()) {
-                            adapter.updateLista(ListaRutas.busetaSitios, "#2196F3")
-                        } else {
-                            val rutasFiltradas =
-                                ListaRutas.busetaSitios.filter { busqueda ->
-                                    busqueda.sitios.lowercase()
-                                        .contains(textFiltro.lowercase()) || busqueda.numRuta.toString()
-                                        .contains(textFiltro)
-                                }
-                            if (rutasFiltradas.isEmpty()) {
-                                binding.noResultados.visibility = View.VISIBLE
+                    CoroutineScope(Dispatchers.Default).launch {
+                        filtro.addTextChangedListener { claveFilter ->
+                            filtrando = true
+                            val textFiltro = claveFilter?.toString() ?: ""
+                            if (textFiltro.isEmpty()) {
+                                adapter.updateLista(ListaRutas.busetaSitios, "#2196F3")
                             } else {
-                                binding.noResultados.visibility = View.GONE
+
+                                val sitiosFiltrados = ListaRutas.busetaSitios.filter { busqueda ->
+                                    busqueda.sitios.lowercase().contains(textFiltro.lowercase())
+                                }
+
+                                val numRutasFiltradas = ListaRutas.busetaSitios.filter { busqueda ->
+                                    busqueda.numRuta.toString().contains(textFiltro)
+                                }
+                                val listaf = mutableListOf<DatosListaFiltro>()
+
+                                sitiosFiltrados.forEach { busqueda ->
+                                    val p = busqueda.numRuta
+                                    val s = busqueda.sitios
+
+
+                                    listaf.add(DatosListaFiltro(p, s))
+                                }
+
+                                if (sitiosFiltrados.isEmpty()) {
+                                    binding.noResultados.visibility = View.VISIBLE
+                                } else {
+                                    binding.noResultados.visibility = View.GONE
+                                }
+
+
+                                adapterFiltro.actualizarLista(listaf, textFiltro)
+
+
+                                //cambiar el adaptador del recyclerView
+                                binding.cajaInfo.adapter = adapterFiltro
                             }
-                            adapter.updateLista(rutasFiltradas, "#2196F3")
                         }
                     }
                 } else {
@@ -169,7 +194,11 @@ class RutasSeccion : AppCompatActivity() {
                         binding.root.windowToken,
                         0
                     ) //ocultar teclado virtual en esa ventana
+
+                    //cambiar el adaptador del recyclerView
+                    binding.cajaInfo.adapter = adapter
                     adapter.updateLista(ListaRutas.busetaRuta, "333333")
+
                     binding.cabezera.visibility = View.VISIBLE
                     binding.botonesRapidos.visibility = View.VISIBLE
                 }
@@ -200,6 +229,10 @@ class RutasSeccion : AppCompatActivity() {
             binding.cabezera.visibility = View.VISIBLE
             binding.cajaInfo.requestFocus()
             filtrando = false
+
+            //cambiar el adaptador del recyclerView
+            binding.cajaInfo.adapter = adapter
+
             adapter.updateLista(ListaRutas.busetaRuta, "#333333")
         } else {
             val builder = AlertDialog.Builder(this)
