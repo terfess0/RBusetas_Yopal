@@ -20,7 +20,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.terfess.busetasyopal.FiltroAdapter
+import com.terfess.busetasyopal.FiltroAdapterHolder
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.RutasAdapter
 import com.terfess.busetasyopal.databinding.PantPrincipalBinding
@@ -39,7 +39,7 @@ class RutasSeccion : AppCompatActivity() {
     private var precio: String = " $ 2,000 "
     private var mensaje_controlado: String? = null
     private var adapter = RutasAdapter(ListaRutas.busetaRuta.toList())
-    private var adapterFiltro = FiltroAdapter("")
+    private var adapterFiltro = FiltroAdapterHolder("")
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

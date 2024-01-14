@@ -2,9 +2,11 @@ package com.terfess.busetasyopal
 
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +15,8 @@ import com.terfess.busetasyopal.actividades.Mapa
 import com.terfess.busetasyopal.databinding.FormatoRecyclerBinding
 import com.terfess.busetasyopal.listas_datos.DatosListaFiltro
 
-class FiltroAdapter(var textoFiltro: String) :
-    RecyclerView.Adapter<FiltroAdapter.FiltroViewHolder>() {
+class FiltroAdapterHolder(var textoFiltro: String) :
+    RecyclerView.Adapter<FiltroAdapterHolder.FiltroViewHolder>() {
 
     private var listaFiltro: List<DatosListaFiltro> = emptyList()
 
@@ -55,6 +57,15 @@ class FiltroAdapter(var textoFiltro: String) :
                     endIndex,
                     Spannable.SPAN_EXCLUSIVE_INCLUSIVE
                 )
+
+                // Agregar StyleSpan para hacer el texto en negrita
+                spannable.setSpan(
+                    StyleSpan(Typeface.BOLD),
+                    startIndex,
+                    endIndex,
+                    Spannable.SPAN_EXCLUSIVE_INCLUSIVE
+                )
+
                 startIndex = lowerTexto.indexOf(lowerFiltro, endIndex)
             }
 
