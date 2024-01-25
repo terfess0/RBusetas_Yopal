@@ -170,7 +170,7 @@ class Mapa : AppCompatActivity(), LocationListener,
 
         //rendimiento
         mapa.mapType =
-            GoogleMap.MAP_TYPE_HYBRID//tratar de cargar un mapa simple evitar renderizados congelantes
+            GoogleMap.MAP_TYPE_NORMAL//tratar de cargar un mapa simple evitar renderizados congelantes
         gmap.isBuildingsEnabled = false //para dar mejor rendimiento desactivar edificaciones
         gmap.isTrafficEnabled = false //para dar mejor rendimiento desactivar trafico
         gmap.isIndoorEnabled =
@@ -259,12 +259,12 @@ class Mapa : AppCompatActivity(), LocationListener,
                     id: Long
                 ) {
                     when (parent?.getItemAtPosition(position).toString()) {
-                        "Mapa Hybrido" -> {
-                            gmap.mapType = GoogleMap.MAP_TYPE_HYBRID //set tipo de mapa hybrido
-                        }
-
                         "Mapa Normal" -> {
                             gmap.mapType = GoogleMap.MAP_TYPE_NORMAL //set tipo de mapa normal
+                        }
+
+                        "Mapa Hybrido" -> {
+                            gmap.mapType = GoogleMap.MAP_TYPE_HYBRID //set tipo de mapa hybrido
                         }
 
                         "Mapa Satelital" -> {
