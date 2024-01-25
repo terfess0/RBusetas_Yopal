@@ -13,7 +13,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.gms.maps.model.RoundCap
 import com.terfess.busetasyopal.R
-import com.terfess.busetasyopal.listas_datos.DatoCalcularRuta
+import com.terfess.busetasyopal.modelos_dato.DatoCalcularRuta
 
 class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap) {
 

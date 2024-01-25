@@ -1,7 +1,6 @@
 package com.terfess.busetasyopal.clases_utiles
 
 import android.content.Context
-import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -37,7 +36,7 @@ class DatosDeFirebase {
     private var descargando = false
 
 
-    fun recibirCoordenadasRuta(idruta: Int, callback: DatosDeFirebaseCallback) {
+    private fun recibirCoordenadasRuta(idruta: Int, callback: DatosDeFirebaseCallback) {
         val listaCoorPrimParte = mutableListOf<LatLng>()
 
         baseDatosFirebaseDatabase.getReference("features/0/rutas/$idruta/salida")

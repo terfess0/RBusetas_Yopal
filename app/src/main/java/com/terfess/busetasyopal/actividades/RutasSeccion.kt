@@ -20,12 +20,11 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.ktx.Firebase
 import com.terfess.busetasyopal.FiltroAdapterHolder
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.RutasAdapter
 import com.terfess.busetasyopal.databinding.PantPrincipalBinding
-import com.terfess.busetasyopal.listas_datos.DatosListaFiltro
+import com.terfess.busetasyopal.modelos_dato.DatosListaFiltro
 import com.terfess.busetasyopal.listas_datos.ListaRutas
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -38,7 +37,7 @@ class RutasSeccion : AppCompatActivity() {
     var filtrando = false
     private lateinit var db: DatabaseReference
     private var precio: String = " $ 2,000 "
-    private var mensaje_controlado: String? = null
+    private var mensajeEnVivo: String? = null
     private var adapter = RutasAdapter(ListaRutas.busetaRuta.toList())
     private var adapterFiltro = FiltroAdapterHolder("")
 
@@ -94,7 +93,7 @@ class RutasSeccion : AppCompatActivity() {
 
 
         //mensaje controlado en vivo base datos
-        if (mensaje_controlado == null) {
+        if (mensajeEnVivo == null) {
             binding.mensajeControlado.visibility = View.GONE
         }
         FirebaseDatabase.getInstance().getReference("/features/0/mensaje")
@@ -166,9 +165,9 @@ class RutasSeccion : AppCompatActivity() {
                                     busqueda.sitios.lowercase().contains(textFiltro.lowercase())
                                 }
 
-                                val numRutasFiltradas = ListaRutas.busetaSitios.filter { busqueda ->
-                                    busqueda.numRuta.toString().contains(textFiltro)
-                                }
+                                //val numRutasFiltradas = ListaRutas.busetaSitios.filter { busqueda ->
+                                //    busqueda.numRuta.toString().contains(textFiltro)
+                                //}
                                 val listaf = mutableListOf<DatosListaFiltro>()
 
                                 sitiosFiltrados.forEach { busqueda ->

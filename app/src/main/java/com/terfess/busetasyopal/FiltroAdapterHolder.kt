@@ -13,7 +13,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.terfess.busetasyopal.actividades.Mapa
 import com.terfess.busetasyopal.databinding.FormatoRecyclerBinding
-import com.terfess.busetasyopal.listas_datos.DatosListaFiltro
+import com.terfess.busetasyopal.modelos_dato.DatosListaFiltro
 
 class FiltroAdapterHolder(var textoFiltro: String) :
     RecyclerView.Adapter<FiltroAdapterHolder.FiltroViewHolder>() {
@@ -92,6 +92,5 @@ class FiltroAdapterHolder(var textoFiltro: String) :
         this.listaFiltro = listaFiltro
         this.textoFiltro = textoFiltro
         notifyDataSetChanged()
-
     }
 }

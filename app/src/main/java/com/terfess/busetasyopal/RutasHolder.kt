@@ -8,12 +8,9 @@ import android.text.Html.FROM_HTML_MODE_LEGACY
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.terfess.busetasyopal.actividades.Mapa
-import com.terfess.busetasyopal.actividades.RutasSeccion
 import com.terfess.busetasyopal.clases_utiles.DatosASqliteLocal
 import com.terfess.busetasyopal.clases_utiles.RangoHorarios
 import com.terfess.busetasyopal.databinding.FormatoRecyclerBinding
-import com.terfess.busetasyopal.listas_datos.ListaHorarios
-import com.terfess.busetasyopal.modelos_dato.DatoHorario
 import com.terfess.busetasyopal.modelos_dato.DatosPrimariosRuta
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.google.android.gms.maps.model.LatLng
 import com.terfess.busetasyopal.R
-import com.terfess.busetasyopal.listas_datos.DatoCalcularRuta
+import com.terfess.busetasyopal.modelos_dato.DatoCalcularRuta
 import com.terfess.busetasyopal.modelos_dato.DatoFrecuencia
 import com.terfess.busetasyopal.modelos_dato.DatoHorario
 
