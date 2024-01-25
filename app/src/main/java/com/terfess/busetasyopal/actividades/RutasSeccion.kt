@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.ktx.Firebase
 import com.terfess.busetasyopal.FiltroAdapterHolder
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.RutasAdapter
@@ -88,6 +89,10 @@ class RutasSeccion : AppCompatActivity() {
                 }
             })
 
+        //cerrar base datos firebase
+        db.database.goOffline()
+
+
         //mensaje controlado en vivo base datos
         if (mensaje_controlado == null) {
             binding.mensajeControlado.visibility = View.GONE
@@ -112,6 +117,9 @@ class RutasSeccion : AppCompatActivity() {
                     ).show()
                 }
             })
+
+        //cerrar base datos firebase
+        db.database.goOffline()
 
         //el usuario elige calcular la ruta al destino
         binding.calcularRuta.setOnClickListener {

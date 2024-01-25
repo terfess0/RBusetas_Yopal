@@ -5,37 +5,40 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.google.android.gms.maps.model.LatLng
+import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.listas_datos.DatoCalcularRuta
+import com.terfess.busetasyopal.modelos_dato.DatoFrecuencia
+import com.terfess.busetasyopal.modelos_dato.DatoHorario
 
 class DatosASqliteLocal(context: Context) : SQLiteOpenHelper(context, "Datos_App", null, 1) {
+    private val contexto = context
     override fun onCreate(db: SQLiteDatabase?) {
         // Crear las tablas
-        val crearTablaVersion = "CREATE TABLE version" +
-                "(numVersion INTEGER NOT NULL DEFAULT 0);"
+        val crearTablaVersion = contexto.getString(R.string.crearTablaVersion)
 
-        val crearTablaRuta = "CREATE TABLE ruta" +
-                "(id_ruta INTEGER NOT NULL);"
+        val crearTablaRuta = contexto.getString(R.string.crearTablaRuta)
 
         // Crear la tabla coordenadas con una clave foránea hacia la tabla ruta
-        val crearTablaCoorPrimeraPart = "CREATE TABLE coordenadas1" +
-                "(id_ruta INTEGER," +
-                "latitud REAL NOT NULL," +
-                "longitud REAL NOT NULL," +
-                "FOREIGN KEY (id_ruta) REFERENCES ruta(id_ruta));"
+        val crearTablaCoorPrimeraPart =
+            contexto.getString(R.string.crearTablaCoordenadas1)
 
-        val crearTablaCoordSegundaPart = "CREATE TABLE coordenadas2" +
-                "(id_ruta INTEGER," +
-                "latitud REAL NOT NULL," +
-                "longitud REAL NOT NULL," +
-                "FOREIGN KEY (id_ruta) REFERENCES ruta(id_ruta));"
+        val crearTablaCoordSegundaPart =
+            contexto.getString(R.string.crearTablaCoordenadas2)
+
+        val crearTablaHorario =
+            contexto.getString(R.string.crearTablaHorario)
+
+        val crearTablaFrecuencia =
+            contexto.getString(R.string.crearTablaFrecuencia)
 
         // Ejecutar las sentencias SQL para crear las tablas
         db?.execSQL(crearTablaVersion)
         db?.execSQL(crearTablaRuta)
         db?.execSQL(crearTablaCoorPrimeraPart)
         db?.execSQL(crearTablaCoordSegundaPart)
+        db?.execSQL(crearTablaHorario)
+        db?.execSQL(crearTablaFrecuencia)
     }
-
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         // Eliminar las tablas existentes si es necesario
@@ -43,11 +46,15 @@ class DatosASqliteLocal(context: Context) : SQLiteOpenHelper(context, "Datos_App
         val eliminarTablaRuta = "DROP TABLE IF EXISTS ruta;"
         val eliminarTablaCoordenadas1 = "DROP TABLE IF EXISTS coordenadas1;"
         val eliminarTablaCoordenadas2 = "DROP TABLE IF EXISTS coordenadas2;"
+        val eliminarTablaHorario = "DROP TABLE IF EXISTS horario;"
+        val eliminarTablaFrecuencia = "DROP TABLE IF EXISTS frecuencia;"
 
+        db?.execSQL(eliminarTablaRuta)
         db?.execSQL(eliminarTablaCoordenadas1)
         db?.execSQL(eliminarTablaCoordenadas2)
-        db?.execSQL(eliminarTablaRuta)
         db?.execSQL(eliminarTablaVersion)
+        db?.execSQL(eliminarTablaHorario)
+        db?.execSQL(eliminarTablaFrecuencia)
 
         // Volver a crear las tablas con la nueva estructura
         onCreate(db)
@@ -55,15 +62,15 @@ class DatosASqliteLocal(context: Context) : SQLiteOpenHelper(context, "Datos_App
 
 
     // Método para insertar una nueva ruta
-    fun insertarRuta(idRuta: Int): Long {
+    fun insertarRuta(idRuta: Int) {
         val db = writableDatabase
         val values = ContentValues()
         values.put("id_ruta", idRuta)
-        return db.insert("ruta", null, values)
+        db.insertWithOnConflict("ruta", null, values, SQLiteDatabase.CONFLICT_REPLACE)
     }
 
     // Método para insertar coordenadas para una ruta específica
-    fun insertarCoordSalida(idRuta:Int, listaCoordenadas1: List<LatLng>) {
+    fun insertarCoordSalida(idRuta: Int, listaCoordenadas1: List<LatLng>) {
         val db = writableDatabase
 
         for (coordenada in listaCoordenadas1) {
@@ -72,11 +79,11 @@ class DatosASqliteLocal(context: Context) : SQLiteOpenHelper(context, "Datos_App
             values.put("latitud", coordenada.latitude)
             values.put("longitud", coordenada.longitude)
 
-            db.insert("coordenadas1", null, values)
+            db.insertWithOnConflict("coordenadas1", null, values, SQLiteDatabase.CONFLICT_REPLACE)
         }
     }
 
-    fun insertarCoordLlegada(idRuta:Int, listaCoordenadas2: List<LatLng>) {
+    fun insertarCoordLlegada(idRuta: Int, listaCoordenadas2: List<LatLng>) {
         val db = writableDatabase
 
         for (coordenada in listaCoordenadas2) {
@@ -85,7 +92,34 @@ class DatosASqliteLocal(context: Context) : SQLiteOpenHelper(context, "Datos_App
             values.put("latitud", coordenada.latitude)
             values.put("longitud", coordenada.longitude)
 
-            db.insert("coordenadas2", null, values)
+            db.insertWithOnConflict("coordenadas2", null, values, SQLiteDatabase.CONFLICT_REPLACE)
+        }
+    }
+
+    fun insertarHorario(idRuta: Int, Horarios: DatoHorario) {
+        writableDatabase.use { db ->
+            val values = ContentValues()
+            values.put("id_ruta", idRuta)
+            values.put("horLunVie1", Horarios.horaInicioLunesViernes)
+            values.put("horLunVie2", Horarios.horaFinalLunesViernes)
+            values.put("horSab1", Horarios.horaInicioSab)
+            values.put("horSab2", Horarios.horaFinalSab)
+            values.put("horDomFest1", Horarios.horaInicioDom)
+            values.put("horDomFest2", Horarios.horaFinalDom)
+
+            db.insertWithOnConflict("horario", null, values, SQLiteDatabase.CONFLICT_REPLACE)
+        }
+    }
+
+    fun insertarFrecuencia(idRuta: Int, Frecuencia: DatoFrecuencia) {
+        writableDatabase.use { db ->
+            val values = ContentValues()
+            values.put("id_ruta", idRuta)
+            values.put("frecLunVie", Frecuencia.frecLunVie)
+            values.put("frecSab", Frecuencia.frecSab)
+            values.put("frecDomFest", Frecuencia.frecDomFest)
+
+            db.insertWithOnConflict("frecuencia", null, values, SQLiteDatabase.CONFLICT_REPLACE)
         }
     }
 
@@ -99,7 +133,7 @@ class DatosASqliteLocal(context: Context) : SQLiteOpenHelper(context, "Datos_App
         db.insertWithOnConflict("version", null, values, SQLiteDatabase.CONFLICT_REPLACE)
     }
 
-    fun obtenerCoordenadas(idRuta: Int, tabla:String): List<LatLng> {
+    fun obtenerCoordenadas(idRuta: Int, tabla: String): List<LatLng> {
         val coordenadas = mutableListOf<LatLng>()
         val db = readableDatabase
 
@@ -136,7 +170,7 @@ class DatosASqliteLocal(context: Context) : SQLiteOpenHelper(context, "Datos_App
         return coordenadas
     }
 
-    fun obtenerCoordenadasCalcularRuta(idRuta: Int, tabla:String): List<DatoCalcularRuta> {
+    fun obtenerCoordenadasCalcularRuta(idRuta: Int, tabla: String): List<DatoCalcularRuta> {
         val coordenadas = mutableListOf<LatLng>()
 
         val db = readableDatabase
@@ -175,12 +209,60 @@ class DatosASqliteLocal(context: Context) : SQLiteOpenHelper(context, "Datos_App
         return datoRuta
     }
 
-    fun eliminarTodasLasRutas() {
-        val db = writableDatabase
-        db.execSQL("DELETE FROM ruta;")
-        db.execSQL("DELETE FROM coordenadas1;")
-        db.execSQL("DELETE FROM coordenadas2;")
+    fun obtenerHorarioRuta(idRuta: Int): DatoHorario {
+        val horario = DatoHorario(0, "", "", "", "", "", "")
 
+        readableDatabase.use { db ->
+            val obtenerHorario =
+                "SELECT id_ruta, horLunVie1, horLunVie2, horSab1, horSab2, horDomFest1, horDomFest2 FROM horario WHERE id_ruta=$idRuta"
+
+            val consultaHorario = db.rawQuery(obtenerHorario, null)
+            consultaHorario.moveToFirst()
+
+            if (consultaHorario.moveToFirst()) {
+                horario.numRuta = consultaHorario.getInt(0)
+                horario.horaInicioLunesViernes = consultaHorario.getString(1)
+                horario.horaFinalLunesViernes = consultaHorario.getString(2)
+                horario.horaInicioSab = consultaHorario.getString(3)
+                horario.horaFinalSab = consultaHorario.getString(4)
+                horario.horaInicioDom = consultaHorario.getString(5)
+                horario.horaFinalDom = consultaHorario.getString(6)
+            }
+
+            consultaHorario.close()
+        }
+
+        return horario
     }
 
+
+    fun obtenerFrecuenciaRuta(idRuta: Int): DatoFrecuencia {
+        val db = readableDatabase
+
+        val obtenerFrecuenia =
+            "SELECT id_ruta, frecLunVie, frecSab, frecDomFest FROM frecuencia WHERE id_ruta=$idRuta"
+
+        val consultaFrecuencia = db.rawQuery(obtenerFrecuenia, null)
+        consultaFrecuencia.moveToFirst()
+        val idruta = consultaFrecuencia.getInt(0)
+        val frecLunVie = consultaFrecuencia.getString(1)
+        val frecSab = consultaFrecuencia.getString(2)
+        val frecDomFest = consultaFrecuencia.getString(3)
+
+        consultaFrecuencia.close()
+        db.close()
+
+        return DatoFrecuencia(idruta, frecLunVie, frecSab, frecDomFest)
+    }
+
+    fun borrarDatosRutas() {
+        val db = readableDatabase
+        db.use {
+            db?.execSQL("DELETE FROM ruta;")
+            db?.execSQL("DELETE FROM coordenadas1;")
+            db?.execSQL("DELETE FROM coordenadas2;")
+            db?.execSQL("DELETE FROM horario;")
+            db?.execSQL("DELETE FROM frecuencia;")
+        }
+    }
 }

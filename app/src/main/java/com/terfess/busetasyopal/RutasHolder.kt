@@ -9,6 +9,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.terfess.busetasyopal.actividades.Mapa
 import com.terfess.busetasyopal.actividades.RutasSeccion
+import com.terfess.busetasyopal.clases_utiles.DatosASqliteLocal
 import com.terfess.busetasyopal.clases_utiles.RangoHorarios
 import com.terfess.busetasyopal.databinding.FormatoRecyclerBinding
 import com.terfess.busetasyopal.listas_datos.ListaHorarios
@@ -26,6 +27,7 @@ class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
     private var rutaEnServicioSab = "#000000" //negro
     private var rutaEnServicioDom = "#000000" //negro
     private var rutaEnDia = "#221785"
+    private val baseSql = DatosASqliteLocal(vista.context)
 
     fun mostrar(dato: DatosPrimariosRuta, colorDia: String) {
         var colorLunVier = "#524e4e"
@@ -33,125 +35,117 @@ class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
         var colorDom = "#524e4e"
 
         val ruta = "Ruta\n" + dato.numRuta
-
+        val contextoHolder = this //recuperar el contexto para usarlo en el scope coroutina
         val sitios =
             "<font color='$colorDia' style='text-align:center'><b>Lugares Relevantes</b></font> <br> <font color='attr?/colorPrimary' >${dato.sitios}</font>"
-        val datos2: DatoHorario =
-            ListaHorarios.busetaHorario[dato.numRuta - 1] // se resta 1 para ir acorde a las posiciones del arreglo busetaHorario
-        val claseRango = RangoHorarios()
-
-        //obtener rangos (valores) de horarios
-        val horaInicioLV = datos2.horaInicioLunesViernes
-        val horaFinalLV = datos2.horaFinalLunesViernes
-        val horaInicioSab = datos2.horaInicioSab
-        val horaFinalSab = datos2.horaFinalSab
-        val horaInicioDom = datos2.horaInicioDom
-        val horaFinalDom = datos2.horaFinalDom
 
 
-        var resultado1: Int
-        var resultado2: Int
-        var resultado3: Int
+        //se usa coroutinas para evitar congelamientos de la ui (xd es obvio)
+        CoroutineScope(Dispatchers.Default).launch {//hilo default optimizado para operaciones cpu
+            val horarioRuta =
+                baseSql.obtenerHorarioRuta(dato.numRuta) //ListaHorarios.busetaHorario[dato.numRuta - 1] se resta 1 para ir acorde a las posiciones del arreglo busetaHorario
+            val frecuenciaRuta = baseSql.obtenerFrecuenciaRuta(dato.numRuta)
+            val claseRango = RangoHorarios()
 
-        val contextoHolder = this //recuperar el contexto para usarlo en el scope coroutina
+            //obtener rangos (valores) de horarios
+            val horaInicioLV = horarioRuta.horaInicioLunesViernes
+            val horaFinalLV = horarioRuta.horaFinalLunesViernes
+            val horaInicioSab = horarioRuta.horaInicioSab
+            val horaFinalSab = horarioRuta.horaFinalSab
+            val horaInicioDom = horarioRuta.horaInicioDom
+            val horaFinalDom = horarioRuta.horaFinalDom
 
-        //cuando no este usandose el filtro entonces: (operaciones para cargar horarios en recycler view principal)
-        if (!RutasSeccion().filtrando) {
-            //se usa coroutinas para evitar congelamientos de la ui (xd es obvio)
-            CoroutineScope(Dispatchers.Default).launch {//hilo default optimizado para operaciones cpu
+            //obtener disponibilidad de rutas segun horarios
+            var resultado1: Int = claseRango.busetaEnServicio(horaInicioLV, horaFinalLV)
+            var resultado2: Int = claseRango.busetaEnServicio(horaInicioSab, horaFinalSab)
+            var resultado3: Int = claseRango.busetaEnServicio(horaInicioDom, horaFinalDom)
 
-                //obtener disponibilidad de rutas segun horarios
-                resultado1 = claseRango.busetaEnServicio(horaInicioLV, horaFinalLV)
-                resultado2 = claseRango.busetaEnServicio(horaInicioSab, horaFinalSab)
-                resultado3 = claseRango.busetaEnServicio(horaInicioDom, horaFinalDom)
+            //dar color disponibilidad
+            fun darColorDisponibilidadLunVie() {
+                when (resultado1) {
+                    0 -> {
+                        contextoHolder.rutaEnServicioLV = "#a63e3a" //rojo oscuro
+                    }
 
-                //dar color disponibilidad
-                fun darColorDisponibilidadLunVie() {
-                    when (resultado1) {
-                        0 -> {
-                            contextoHolder.rutaEnServicioLV = "#a63e3a" //rojo oscuro
-                        }
-
-                        1 -> {
-                            contextoHolder.rutaEnServicioLV = "#119400" //verde oscuro
-                        }
+                    1 -> {
+                        contextoHolder.rutaEnServicioLV = "#119400" //verde oscuro
                     }
                 }
+            }
 
-                fun darColorDisponibilidadSab() {
-                    when (resultado2) {
-                        0 -> {
-                            contextoHolder.rutaEnServicioSab = "#a63e3a" //rojo oscuro
-                        }
+            fun darColorDisponibilidadSab() {
+                when (resultado2) {
+                    0 -> {
+                        contextoHolder.rutaEnServicioSab = "#a63e3a" //rojo oscuro
+                    }
 
-                        1 -> {
-                            contextoHolder.rutaEnServicioSab = "#119400" //verde oscuro
-                        }
+                    1 -> {
+                        contextoHolder.rutaEnServicioSab = "#119400" //verde oscuro
                     }
                 }
+            }
 
-                fun darColorDisponibilidadDom() {
-                    when (resultado3) {
-                        0 -> {
-                            contextoHolder.rutaEnServicioDom = "#a63e3a" //rojo oscuro
-                        }
+            fun darColorDisponibilidadDom() {
+                when (resultado3) {
+                    0 -> {
+                        contextoHolder.rutaEnServicioDom = "#a63e3a" //rojo oscuro
+                    }
 
-                        1 -> {
-                            contextoHolder.rutaEnServicioDom = "#119400" //verde oscuro
-                        }
+                    1 -> {
+                        contextoHolder.rutaEnServicioDom = "#119400" //verde oscuro
                     }
                 }
-                //obtener dia actual y actuar en consecuencia
-                when (RangoHorarios().busetaEnDia()) {
-                    //aqui se cambia el color del texto seccion horarios segun el dia de la semana, lunes a viernes, sabados, domingos
-                    2, 3, 4, 5, 6 -> { //entre semana
-                        colorLunVier = rutaEnDia
-                        colorSab = colorDia
-                        colorDom = colorDia
-                        darColorDisponibilidadLunVie()
-                    }
-
-                    7 -> { //sabado
-                        colorLunVier = colorDia
-                        colorSab = rutaEnDia
-                        colorDom = colorDia
-                        darColorDisponibilidadSab()
-                    }
-
-                    1 -> { //domingo
-                        colorLunVier = colorDia
-                        colorSab = colorDia
-                        colorDom = rutaEnDia
-                        darColorDisponibilidadDom()
-                    }
+            }
+            //obtener dia actual y actuar en consecuencia
+            when (RangoHorarios().busetaEnDia()) {
+                //aqui se cambia el color del texto seccion horarios segun el dia de la semana, lunes a viernes, sabados, domingos
+                2, 3, 4, 5, 6 -> { //entre semana
+                    colorLunVier = rutaEnDia
+                    colorSab = colorDia
+                    colorDom = colorDia
+                    darColorDisponibilidadLunVie()
                 }
 
-                //comenzar a prepararas textos horarios con y sin color disponibilidad
-                val horLunVie =
-                    "<font color='$colorLunVier'><b>Lunes a Viernes</b></font> <br> <font color='$rutaEnServicioLV'>${dato.horLunVie}<br>${dato.frecLunVie}</font>"
-                val horSab =
-                    "<font color='$colorSab'><b>Sabados</b></font> <br> <font color='$rutaEnServicioSab'>${dato.horSab}<br>${dato.frecSab}</font>"
-                val horDom =
-                    "<font color='$colorDom'><b>Domingos y Festivos</b></font> <br> <font color='$rutaEnServicioDom'>${dato.horDomFest}<br>${dato.frecDomFest}</font>"
+                7 -> { //sabado
+                    colorLunVier = colorDia
+                    colorSab = rutaEnDia
+                    colorDom = colorDia
+                    darColorDisponibilidadSab()
+                }
 
-                withContext(Dispatchers.Main) {
+                1 -> { //domingo
+                    colorLunVier = colorDia
+                    colorSab = colorDia
+                    colorDom = rutaEnDia
+                    darColorDisponibilidadDom()
+                }
+            }
 
-                    //aplicar textos a recyclerview hilo prinipal junto a color disponibilidad en ellos
-                    if (dato.horLunVie.isNotEmpty() && dato.frecLunVie.isNotEmpty()) {
-                        binding.horarioLV.text = Html.fromHtml(horLunVie, FROM_HTML_MODE_LEGACY)
-                    }
-                    if (dato.horSab.isNotEmpty() && dato.frecSab.isNotEmpty()) {
-                        binding.horarioS.text = Html.fromHtml(horSab, FROM_HTML_MODE_LEGACY)
-                    }
-                    if (dato.horDomFest.isNotEmpty() && dato.frecDomFest.isNotEmpty()) {
-                        binding.horarioDF.text = Html.fromHtml(horDom, FROM_HTML_MODE_LEGACY)
-                    }
+            //comenzar a prepararas textos horarios con y sin color disponibilidad
+            val horLunVie =
+                "<font color='$colorLunVier'><b>Lunes a Viernes</b></font><br><font color='$rutaEnServicioLV'>${horarioRuta.horaInicioLunesViernes} am - ${horarioRuta.horaFinalLunesViernes} pm<br>${frecuenciaRuta.frecLunVie}</font></center>"
+            val horSab =
+                "<font color='$colorSab'><b>Sabados</b></font> <br> <font color='$rutaEnServicioSab'>${horarioRuta.horaInicioSab} am -${horarioRuta.horaFinalSab} pm<br>${frecuenciaRuta.frecSab}</font>"
+            val horDom =
+                "<font color='$colorDom'><b>Domingos y Festivos</b></font> <br> <font color='$rutaEnServicioDom'>${horarioRuta.horaInicioDom} am -${horarioRuta.horaFinalDom} pm<br>${frecuenciaRuta.frecDomFest}</font>"
+
+            withContext(Dispatchers.Main) {
+
+                //aplicar textos a recyclerview hilo prinipal junto a color disponibilidad en ellos
+                if (horarioRuta.horaInicioLunesViernes.isNotBlank() && frecuenciaRuta.frecLunVie.isNotBlank()) {
+                    binding.horarioLV.text = Html.fromHtml(horLunVie, FROM_HTML_MODE_LEGACY)
+                }
+                if (horarioRuta.horaInicioSab.isNotBlank() && frecuenciaRuta.frecSab.isNotBlank()) {
+                    binding.horarioS.text = Html.fromHtml(horSab, FROM_HTML_MODE_LEGACY)
+                }
+                if (horarioRuta.horaInicioDom.isNotBlank() && frecuenciaRuta.frecDomFest.isNotBlank()) {
+                    binding.horarioDF.text = Html.fromHtml(horDom, FROM_HTML_MODE_LEGACY)
                 }
             }
         }
 
-        //demas acciones recyclerview
 
+        //demas acciones recyclerview
         if (colorDia == "#2196F3") {
             binding.contenedorHor.visibility = View.GONE
             binding.guideline2.setGuidelinePercent(1.0f) //se establece porcentage de 100% para que se adapte bien al contenido

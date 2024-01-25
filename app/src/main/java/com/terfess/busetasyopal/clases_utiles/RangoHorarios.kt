@@ -13,7 +13,10 @@ class RangoHorarios {
             TODO("VERSION.SDK_INT < O")
         }
         val horaInicioTipoLT = LocalTime.parse(horaInicio)
-        val horaFinalTipoLT = LocalTime.parse(horaFinal)
+        var horaFinalTipoLT = LocalTime.parse(horaFinal)
+
+        // agregar 12 horas a la hora final debido a que se usan los mismos datos que se presentan en ui y estan en am y pm
+        horaFinalTipoLT = horaFinalTipoLT.plusHours(12)
 
         //comprueba si la hora actual está dentro del rango
         // LT es LocalTime

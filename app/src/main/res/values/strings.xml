@@ -18,6 +18,12 @@
     <string name="enlace_alcaldia">Sitio Web Alcaldía de Yopal</string>
 
     <string name="tema_sugerido_sms">Contactanos ante cualquier queja/sugerencia/corrección por nuestros canales de comunicación.</string>
+    <string name="crearTablaVersion">CREATE TABLE version(numVersion INTEGER NOT NULL DEFAULT 0);</string>
+    <string name="crearTablaRuta">CREATE TABLE ruta(id_ruta INTEGER NOT NULL);</string>
+    <string name="crearTablaCoordenadas1">CREATE TABLE coordenadas1(id_ruta INTEGER,latitud REAL NOT NULL,longitud REAL NOT NULL,FOREIGN KEY (id_ruta) REFERENCES ruta(id_ruta));</string>
+    <string name="crearTablaCoordenadas2">CREATE TABLE coordenadas2(id_ruta INTEGER,latitud REAL NOT NULL,longitud REAL NOT NULL,FOREIGN KEY (id_ruta) REFERENCES ruta(id_ruta));</string>
+    <string name="crearTablaHorario">CREATE TABLE horario(id_ruta INTEGER,horLunVie1 TEXT NOT NULL,horLunVie2 TEXT NOT NULL,horSab1 TEXT NOT NULL,horSab2 TEXT NOT NULL,horDomFest1 TEXT NOT NULL,horDomFest2 TEXT NOT NULL,FOREIGN KEY (id_ruta) REFERENCES ruta(id_ruta));</string>
+    <string name="crearTablaFrecuencia">CREATE TABLE frecuencia(id_ruta INTEGER,frecLunVie TEXT NOT NULL,frecSab TEXT NOT NULL,frecDomFest TEXT NOT NULL,FOREIGN KEY (id_ruta) REFERENCES ruta(id_ruta));</string>
 
 </resources>
 

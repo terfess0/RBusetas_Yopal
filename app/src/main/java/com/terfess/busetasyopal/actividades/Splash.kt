@@ -59,7 +59,6 @@ class Splash : AppCompatActivity() {
             //si hay conexion a internet entonces
             conexionComprobadorDos = 1
 
-            UtilidadesMenores().crearToast(this, "Conexión Establecida")
             //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>
             //DESCARGAR LOS DATOS DE COORDENADAS DE CADA RUTA DESDE FIREBASE Y GUARDARLOS EN SQLITE LOCAL
             val versionLocal: Int
@@ -76,19 +75,25 @@ class Splash : AppCompatActivity() {
 
             //obtener la version externa y comparar
             CoroutineScope(Dispatchers.IO).launch {
-                FirebaseDatabase.getInstance().getReference("/features/0/version")
+                FirebaseDatabase.getInstance().getReference("/features/0/versionPruebas")
                     .addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             conexionComprobador = 2
                             val versionNube = snapshot.value.toString().toInt()
                             if (versionLocal != versionNube) {
-                                dbHelper.insertarVersionDatos(versionNube)
+                                dbHelper.borrarDatosRutas()
+                                dbHelper.onUpgrade(
+                                    dbHelper.readableDatabase,
+                                    versionLocal,
+                                    versionNube
+                                )
                                 descargarDatos()
                                 Toast.makeText(
                                     this@Splash,
                                     "Descargando informacion",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                dbHelper.insertarVersionDatos(versionNube)
                             } else {
                                 //si la informacion descargable ya esta guardada entonces inciar
                                 startActivity(Intent(this@Splash, RutasSeccion::class.java))
@@ -113,7 +118,7 @@ class Splash : AppCompatActivity() {
         //----------------------------TIEMPO AGOTADO---------------------------------
 
         tiempo.postDelayed({
-            if (conexionComprobador == 1 && conexionComprobadorDos != 1) {
+            if (conexionComprobador == 1 && conexionComprobadorDos != 2) {
                 //si no pudo conectarse correctamente tras 10 segundos (mala conexion)
                 UtilidadesMenores().crearToast(this, "Tiempo de conexión agotado.")
                 startActivity(Intent(this@Splash, RutasSeccion::class.java))
@@ -124,23 +129,27 @@ class Splash : AppCompatActivity() {
 
 
     private fun descargarDatos() {
-        val dbHelper = DatosASqliteLocal(this)
-        DatosDeFirebase().descargarInformacion(object : allDatosRutas {
-            override fun todosDatosRecibidos(listaCompleta: MutableList<EstructuraDatosBaseDatos>) {
-                dbHelper.eliminarTodasLasRutas() //evitar errores en trazos de rutas por puntos repetidos
-                for (i in listaCompleta) {
-                    dbHelper.insertarRuta(i.idRuta)
-                    dbHelper.insertarCoordSalida(i.idRuta, i.listPrimeraParte)
-                    dbHelper.insertarCoordLlegada(i.idRuta, i.listSegundaParte)
+        val contexto = this
+        CoroutineScope(Dispatchers.Default).launch {
+            val dbHelper = DatosASqliteLocal(contexto)
+            DatosDeFirebase().descargarInformacion(contexto, object : allDatosRutas {
+                override fun todosDatosRecibidos(listaCompleta: MutableList<EstructuraDatosBaseDatos>) {
+                    println("Tamaño ------------- ${listaCompleta.size}")
+                    for (f in 0..listaCompleta.size - 1) {
+                        val i = listaCompleta[f]
+                        dbHelper.insertarRuta(i.idRuta)
+                        dbHelper.insertarCoordSalida(i.idRuta, i.listPrimeraParte)
+                        dbHelper.insertarCoordLlegada(i.idRuta, i.listSegundaParte)
+                    }
+                    Toast.makeText(
+                        this@Splash,
+                        "Se descargo toda la información correctamente",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    UtilidadesMenores().reiniciarApp(this@Splash, Splash::class.java)
                 }
-                Toast.makeText(
-                    this@Splash,
-                    "Se descargo toda la información correctamente",
-                    Toast.LENGTH_SHORT
-                ).show()
-                UtilidadesMenores().reiniciarApp(this@Splash, Splash::class.java)
-            }
-        })
+            })
+        }
     }
 
     private fun modoOscuroActivado(context: Context): Boolean {
