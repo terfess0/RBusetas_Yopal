@@ -24,6 +24,7 @@
     <string name="crearTablaCoordenadas2">CREATE TABLE coordenadas2(id_ruta INTEGER,latitud REAL NOT NULL,longitud REAL NOT NULL,FOREIGN KEY (id_ruta) REFERENCES ruta(id_ruta));</string>
     <string name="crearTablaHorario">CREATE TABLE horario(id_ruta INTEGER,horLunVie1 VARCHAR NOT NULL,horLunVie2 VARCHAR NOT NULL,horSab1 VARCHAR NOT NULL,horSab2 VARCHAR NOT NULL,horDomFest1 VARCHAR NOT NULL,horDomFest2 VARCHAR NOT NULL,FOREIGN KEY (id_ruta) REFERENCES ruta(id_ruta));</string>
     <string name="crearTablaFrecuencia">CREATE TABLE frecuencia(id_ruta INTEGER,frecLunVie VARCHAR NOT NULL,frecSab VARCHAR NOT NULL,frecDomFest VARCHAR NOT NULL,FOREIGN KEY (id_ruta) REFERENCES ruta(id_ruta));</string>
+    <string name="seccion_rutas">RUTAS HABILITADAS</string>
 
 </resources>
 
