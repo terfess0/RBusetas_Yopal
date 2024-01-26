@@ -33,7 +33,6 @@ interface allDatosRutas { //callback para detectar que los datos de todas las ru
 
 class DatosDeFirebase {
     private var baseDatosFirebaseDatabase = FirebaseDatabase.getInstance()
-    private var descargando = false
 
 
     private fun recibirCoordenadasRuta(idruta: Int, callback: DatosDeFirebaseCallback) {
@@ -52,7 +51,6 @@ class DatosDeFirebase {
                         val ubicacion = LatLng(latValue, lngValue)
                         listaCoorPrimParte.add(ubicacion)
                     }
-                    descargando = true
                     callback.onDatosRecibidos1(listaCoorPrimParte) //primera parte de ruta X recibida
                 }
 
@@ -77,7 +75,6 @@ class DatosDeFirebase {
                         val ubicacion = LatLng(latValue, lngValue)
                         listaCoorSegParte.add(ubicacion)
                     }
-                    descargando = true
                     // Llamamos al método callback cuando los datos están listos
                     callback.onDatosRecibidos2(listaCoorSegParte) //segunda parte de ruta X recibida
                 }
@@ -89,11 +86,9 @@ class DatosDeFirebase {
             })
 
         //HORARIOS Y FRECUENCIAS DE LA RUTA
-
         baseDatosFirebaseDatabase.getReference("features/0/rutas/$idruta")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    descargando = true
                     //recuperar los datos de interes
                     val horLunVie1 =
                         dataSnapshot.child("horarioLunVie").child("0").value.toString()
@@ -145,7 +140,7 @@ class DatosDeFirebase {
         callback: allDatosRutas,
         listaCompleta: MutableList<EstructuraDatosBaseDatos> = mutableListOf()
     ) {
-        if (!descargando){
+
             val idRuta = intArrayOf(2, 3, 6, 7, 8, 9, 10, 11, 13)
             var primeraLista = mutableListOf<LatLng>()
 
@@ -182,7 +177,6 @@ class DatosDeFirebase {
                                 // Se ejecuta cuando se han procesado todas las rutas
                                 println("Se recibió toda la información")
                                 callback.todosDatosRecibidos(listaCompleta) //callback con la lista de  todas las rutas
-                                descargando = false
                                 baseDatosFirebaseDatabase.goOffline()
                             }
                         }else{
@@ -191,9 +185,7 @@ class DatosDeFirebase {
                     }
                 })
             }
-        }else{
-            println("Ya esta descargando")
-        }
+
     }
 
 
