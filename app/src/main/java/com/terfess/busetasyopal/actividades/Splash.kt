@@ -88,11 +88,8 @@ class Splash : AppCompatActivity() {
                                     versionNube
                                 )
                                 descargarDatos()
-                                Toast.makeText(
-                                    this@Splash,
-                                    "Descargando informacion",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                println(
+                                    "Descargando informacion")
                                 dbHelper.insertarVersionDatos(versionNube)
                             } else {
                                 //si la informacion descargable ya esta guardada entonces inciar
@@ -141,11 +138,8 @@ class Splash : AppCompatActivity() {
                         dbHelper.insertarCoordSalida(i.idRuta, i.listPrimeraParte)
                         dbHelper.insertarCoordLlegada(i.idRuta, i.listSegundaParte)
                     }
-                    Toast.makeText(
-                        this@Splash,
-                        "Se descargo toda la información correctamente",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    println(
+                        "Se descargo toda la información correctamente")
                     UtilidadesMenores().reiniciarApp(this@Splash, Splash::class.java)
                 }
             })
