@@ -182,15 +182,6 @@ class Mapa : AppCompatActivity(), LocationListener,
 
         irYopal() //colocar la camara en la ciudad de yopal
 
-        // Restringe el área visible del mapa a los límites definidos
-        gmap.setLatLngBoundsForCameraTarget(
-            LatLngBounds(
-                LatLng(
-                    5.281131860479474, -72.45110302340585
-                ), LatLng(5.416921200734255, -72.33615929140124)
-            )
-        )
-
         selector()  //seleccionar que ruta cargar
 
         gmap.uiSettings.isMyLocationButtonEnabled = false //desactivar el boton default de gps
