@@ -10,15 +10,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.terfess.busetasyopal.actividades.Mapa
 import com.terfess.busetasyopal.clases_utiles.DatosASqliteLocal
 import com.terfess.busetasyopal.clases_utiles.RangoHorarios
-import com.terfess.busetasyopal.databinding.FormatoRecyclerBinding
+import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
+import com.terfess.busetasyopal.databinding.FormatoRecyclerPrincBinding
 import com.terfess.busetasyopal.modelos_dato.DatosPrimariosRuta
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
-    private val binding = FormatoRecyclerBinding.bind(vista)
+class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
+    private val binding = FormatoRecyclerPrincBinding.bind(vista)
     private val caja = vista.context as Activity
     private var rutaEnServicioLV = "#000000" //negro
     private var rutaEnServicioSab = "#000000" //negro
@@ -163,6 +164,9 @@ class RutasHolder(vista: View) : RecyclerView.ViewHolder(vista) {
             val intent = Intent(binding.contenedor.context, Mapa::class.java)
             intent.putExtra("selector", selector)
             caja.startActivity(intent)
+
+            //mensaje "cargando mapa" importante en primera vez usando la aplicacion
+            UtilidadesMenores().crearToast(binding.contenedor.context, "Cargando Mapa")
         }
     }
 

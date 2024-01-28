@@ -17,22 +17,22 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.Polyline
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.actividades.Splash
-import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.estamarcado1
-import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.estamarcado2
-import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.marcador1
-import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.marcador2
-import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.masCortaInicio
-import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.polyCalculada
-import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.polyCaminata
-import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.polyLlegada
-import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.polySalida
-import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.puntosCalculada
-import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.puntosCaminata
-import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.puntosLlegada
-import com.terfess.busetasyopal.clases_utiles.RutaBasic.CreatRuta.puntosSalida
+import com.terfess.busetasyopal.clases_utiles.PolylinesPrincipal.CreatRuta.estamarcado1
+import com.terfess.busetasyopal.clases_utiles.PolylinesPrincipal.CreatRuta.estamarcado2
+import com.terfess.busetasyopal.clases_utiles.PolylinesPrincipal.CreatRuta.marcador1
+import com.terfess.busetasyopal.clases_utiles.PolylinesPrincipal.CreatRuta.marcador2
+import com.terfess.busetasyopal.clases_utiles.PolylinesPrincipal.CreatRuta.masCortaInicio
+import com.terfess.busetasyopal.clases_utiles.PolylinesPrincipal.CreatRuta.polyCalculada
+import com.terfess.busetasyopal.clases_utiles.PolylinesPrincipal.CreatRuta.polyCaminata
+import com.terfess.busetasyopal.clases_utiles.PolylinesPrincipal.CreatRuta.polyLlegada
+import com.terfess.busetasyopal.clases_utiles.PolylinesPrincipal.CreatRuta.polySalida
+import com.terfess.busetasyopal.clases_utiles.PolylinesPrincipal.CreatRuta.puntosCalculada
+import com.terfess.busetasyopal.clases_utiles.PolylinesPrincipal.CreatRuta.puntosCaminata
+import com.terfess.busetasyopal.clases_utiles.PolylinesPrincipal.CreatRuta.puntosLlegada
+import com.terfess.busetasyopal.clases_utiles.PolylinesPrincipal.CreatRuta.puntosSalida
 
 
-class RutaBasic(private val mapa: Context, private val gmap: GoogleMap) {
+class PolylinesPrincipal(private val mapa: Context, private val gmap: GoogleMap) {
     private var polylineOptions = PolylineOptions()
     private var dbAuxiliar = DatosASqliteLocal(mapa)
 

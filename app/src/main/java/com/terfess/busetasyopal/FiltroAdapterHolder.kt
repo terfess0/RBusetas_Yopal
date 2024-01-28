@@ -12,7 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.terfess.busetasyopal.actividades.Mapa
-import com.terfess.busetasyopal.databinding.FormatoRecyclerBinding
+import com.terfess.busetasyopal.databinding.FormatoRecyclerPrincBinding
 import com.terfess.busetasyopal.modelos_dato.DatosListaFiltro
 
 class FiltroAdapterHolder(var textoFiltro: String) :
@@ -22,7 +22,7 @@ class FiltroAdapterHolder(var textoFiltro: String) :
 
 
     inner class FiltroViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val binding: FormatoRecyclerBinding = FormatoRecyclerBinding.bind(itemView)
+        private val binding: FormatoRecyclerPrincBinding = FormatoRecyclerPrincBinding.bind(itemView)
 
         fun bind(item: DatosListaFiltro) {
             //acomodar margenes y objetos
@@ -75,7 +75,7 @@ class FiltroAdapterHolder(var textoFiltro: String) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FiltroViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.formato_recycler, parent, false)
+        val view = inflater.inflate(R.layout.formato_recycler_princ, parent, false)
         return FiltroViewHolder(view)
     }
 

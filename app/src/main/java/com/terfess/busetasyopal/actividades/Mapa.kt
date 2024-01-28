@@ -24,6 +24,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.common.api.ResolvableApiException
@@ -47,11 +49,13 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.terfess.busetasyopal.OpMapaAdapterHolder
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.clases_utiles.AlertaCallback
 import com.terfess.busetasyopal.clases_utiles.PlanearRutaDestino.Datos
 import com.terfess.busetasyopal.clases_utiles.PlanearRutaDestino
-import com.terfess.busetasyopal.clases_utiles.RutaBasic
+import com.terfess.busetasyopal.clases_utiles.PolylinesPrincipal
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.PantMapaBinding
 
@@ -129,9 +133,6 @@ class Mapa : AppCompatActivity(), LocationListener,
             !hayConexion
         }
 
-        //mensaje "cargando mapa" importante en primera vez usando la aplicacion
-        UtilidadesMenores().crearToast(this, "Cargando Mapa")
-
         // Registrar un NetworkCallback para recibir actualizaciones de conectividad
         val connectivityManager =
             getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -208,7 +209,13 @@ class Mapa : AppCompatActivity(), LocationListener,
             binding.infoColor.visibility = View.GONE
             binding.textPruebas.visibility = View.VISIBLE
             supportActionBar?.title = "Calcular viaje Inicio - Destino"  //titulo actionbar
-            //binding.parqueadero.visibility = View.GONE
+        }
+
+        //cuando se vea el mapa con todas las rutas
+        if (idruta == 20){
+            supportActionBar?.title = "Ver Mapa con Rutas"
+            binding.infoColor.visibility = View.GONE
+            binding.listaRutasOpMapa.visibility = View.VISIBLE
         }
 
         //botones verdistancia y calcular punto cercano
@@ -218,14 +225,14 @@ class Mapa : AppCompatActivity(), LocationListener,
             binding.sentidoSubida.visibility = View.VISIBLE
             binding.sentidoLlegada.visibility = View.VISIBLE
 
-            RutaBasic.CreatRuta.estamarcado1 = false //evitar dobles marcadores de estacion
-            RutaBasic.CreatRuta.estamarcado2 = false //evitar dobles marcadores de estacion
+            PolylinesPrincipal.CreatRuta.estamarcado1 = false //evitar dobles marcadores de estacion
+            PolylinesPrincipal.CreatRuta.estamarcado2 = false //evitar dobles marcadores de estacion
         }
         binding.sentidoSubida.setOnClickListener {
             if (binding.infoColor.isVisible) {
                 binding.infoColor.visibility = View.GONE //ocultar leyenda al ver distancia
             }
-            if (RutaBasic.CreatRuta.estamarcado1 == false) {
+            if (PolylinesPrincipal.CreatRuta.estamarcado1 == false) {
                 calcularDistancia("salida")
                 mostrarIndicaciones()
             }
@@ -234,7 +241,7 @@ class Mapa : AppCompatActivity(), LocationListener,
             if (binding.infoColor.isVisible) {
                 binding.infoColor.visibility = View.GONE //ocultar leyenda al ver distancia
             }
-            if (RutaBasic.CreatRuta.estamarcado2 == false) {
+            if (PolylinesPrincipal.CreatRuta.estamarcado2 == false) {
                 calcularDistancia("llegada")
                 mostrarIndicaciones()
             }
@@ -296,7 +303,7 @@ class Mapa : AppCompatActivity(), LocationListener,
     }
 
     private fun selector() { // decide que ruta creara o que tipo de mapa creara
-        val buildRuta = RutaBasic(contexto, gmap)
+        val buildRuta = PolylinesPrincipal(contexto, gmap)
         when (idruta) {
 
             //--------------------------------------------------------------------------------------
@@ -445,6 +452,51 @@ class Mapa : AppCompatActivity(), LocationListener,
             //--------------------------------------------------------------------------------------
             //--------------------------------------------------------------------------------------
 
+            20 -> {
+                val listaRutasOpMapa = intArrayOf(2, 3, 6, 7, 8, 9, 10, 11, 13)
+
+                // Inflar el layout del BottomSheet
+                val sheetView = layoutInflater.inflate(R.layout.rutassheet, null)
+
+                // Obtener la referencia del RecyclerView del layout inflado
+                val recyclerOpMapa = sheetView.findViewById<RecyclerView>(R.id.recycler_op_mapa)
+
+                // Configurar el LinearLayoutManager y el Adapter
+                recyclerOpMapa.layoutManager = LinearLayoutManager(this)
+                recyclerOpMapa.adapter = OpMapaAdapterHolder(listaRutasOpMapa, this, gmap)
+
+                // Crear y mostrar el BottomSheetDialog
+                val sheetRuta = BottomSheetDialog(this, R.style.Theme_BotonSheet)
+
+                // Establecer el contenido del BottomSheetDialog
+                sheetRuta.setContentView(sheetView)
+
+                // Obtener el comportamiento del BottomSheetDialog
+                val behavior = sheetRuta.behavior
+
+                //behavior.expandedOffset = 2
+
+                // Configurar la altura del peek (porcentaje de la pantalla)
+                val alturaPantalla = resources.displayMetrics.heightPixels
+                val alturaMax = (alturaPantalla * 0.3).toInt()
+                //val alturaMinima = (alturaPantalla * 0.2).toInt() // 30% de la pantalla
+
+                // Configurar el nivel de atenuación a 0.0 para eliminar la sombra
+                sheetRuta.window?.setDimAmount(0.0f)
+
+                behavior.maxHeight = alturaMax
+
+                // Mostrar el BottomSheetDialog
+                sheetRuta.show()
+
+                binding.listaRutasOpMapa.setOnClickListener {
+                    if (!sheetRuta.isShowing){
+                        sheetRuta.show()
+                    }else{
+                        sheetRuta.hide()
+                    }
+                }
+            }
 
             //crear las rutas normales dependiendo de la elegida por el usuario
             //se identifica por un id_ruta que se envia desde la pantalla principal por medio del holder y usando intent.extras
@@ -538,7 +590,7 @@ class Mapa : AppCompatActivity(), LocationListener,
                 binding.irgps.setImageResource(R.drawable.ic_gps_find)
                 gmap.animateCamera(CameraUpdateFactory.newLatLngZoom((latLng), 16.5f), 3000, null)
                 ubiUser = latLng
-                if (binding.sentidoSubida.visibility != View.VISIBLE) {
+                if (binding.sentidoSubida.visibility != View.VISIBLE && idruta != 20) { //diferente de 20 para evitar la activacion del distancia a recorrido en opcion mostrar mapa con rutas
                     binding.verDistancia.visibility = View.VISIBLE
                 }
                 //marcador en ubi de respaldo
@@ -636,7 +688,7 @@ class Mapa : AppCompatActivity(), LocationListener,
                 )
             }
             tiempos.postDelayed({ // terminar o ejecutar tareas despues de cierto tiempo
-                if (RutaBasic.CreatRuta.rutasCreadas) {
+                if (PolylinesPrincipal.CreatRuta.rutasCreadas) {
                     binding.failConection.visibility = View.GONE
 
                 } else {
@@ -679,7 +731,7 @@ class Mapa : AppCompatActivity(), LocationListener,
     private fun calcularDistancia(sentido: String) {
         val defecto = LatLng(0.0, 0.0)
         if (ubiUser != defecto) {
-            RutaBasic(contexto, this.gmap).rutaMasCerca(ubiUser, sentido)
+            PolylinesPrincipal(contexto, this.gmap).rutaMasCerca(ubiUser, sentido)
         } else {
             activarLocalizacion()
             irPosGps()
@@ -689,8 +741,8 @@ class Mapa : AppCompatActivity(), LocationListener,
 
     private fun mostrarIndicaciones() {
         //indicaciones para tomar la buseta en las rutas individuales
-        val metros = RutaBasic.CreatRuta.masCortaInicio[1]
-        //val punto = RutaBasic.CreatRuta.masCortaInicio[0]
+        val metros = PolylinesPrincipal.CreatRuta.masCortaInicio[1]
+        //val punto = PolylinesPrincipal.CreatRuta.masCortaInicio[0]
         binding.indicaciones.visibility = View.VISIBLE
         "Camina $metros m hasta el icono y toma la buseta (ruta $idruta).".also {
             binding.indicaciones.text = it

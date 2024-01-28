@@ -12,6 +12,7 @@
     <color name="RutaFueraServicio">#2C2E2B</color>
 
     <color name="RutaCalculada">#903E92</color>
+    <color name="btn_op_mapa">#B97E9ACA</color>
 
     <color name="rojo">#D54848</color>
     <color name="azul">#3D67B1</color>
@@ -22,4 +23,47 @@
     <color name="llegada_parcial">#74FF5900</color>
 
     <color name="distancia_caminar">#DF3DFFD9</color>
+
+    <color name="unoSalida">#E57373</color>
+    <color name="unoLlegada">#4DB6AC</color>
+
+    <color name="dosSalida">#F06292</color>
+    <color name="dosLlegada">#81C784</color>
+
+    <color name="tresSalida">#BA68C8</color>
+    <color name="tresLlegada">#AED581</color>
+
+    <color name="cuatroSalida">#9575CD</color>
+    <color name="cuatroLlegada">#DCE775</color>
+
+    <color name="cincoSalida">#7986CB</color>
+    <color name="cincoLlegada">#FFF176</color>
+
+    <color name="seisSalida">#64B5F6</color>
+    <color name="seisLlegada">#FFD54F</color>
+
+    <color name="sieteSalida">#4FC3F7</color>
+    <color name="sieteLlegada">#FFB74D</color>
+
+    <color name="ochoSalida">#FF442F</color>
+    <color name="ochoLlegada">#90ee90</color>
+
+    <color name="nueveSalida">#4DD0E1</color>
+    <color name="nueveLlegada">#FF8A65</color>
+
+    <color name="diezSalida">#D32F2F</color>
+    <color name="diezLlegada">#00796B</color>
+
+    <color name="onceSalida">#C2185B</color>
+    <color name="onceLlegada">#388E3C</color>
+
+    <color name="doceSalida">#7B1FA2</color>
+    <color name="doceLlegada">#689F38</color>
+
+    <color name="treceSalida">#512DA8</color>
+    <color name="treceLlegada">#AFB42B</color>
+
+    <color name="catorceSalida">#0288D1</color>
+    <color name="catorceLlegada">#F57C00</color>
+
 </resources>

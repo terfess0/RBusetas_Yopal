@@ -22,7 +22,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.terfess.busetasyopal.FiltroAdapterHolder
 import com.terfess.busetasyopal.R
-import com.terfess.busetasyopal.RutasAdapter
+import com.terfess.busetasyopal.AdapterPrincipal
 import com.terfess.busetasyopal.databinding.PantPrincipalBinding
 import com.terfess.busetasyopal.modelos_dato.DatosListaFiltro
 import com.terfess.busetasyopal.listas_datos.ListaRutas
@@ -38,7 +38,7 @@ class RutasSeccion : AppCompatActivity() {
     private lateinit var db: DatabaseReference
     private var precio: String = " $ 2,000 "
     private var mensajeEnVivo: String? = null
-    private var adapter = RutasAdapter(ListaRutas.busetaRuta.toList())
+    private var adapter = AdapterPrincipal(ListaRutas.busetaRuta.toList())
     private var adapterFiltro = FiltroAdapterHolder("")
 
 
@@ -120,13 +120,19 @@ class RutasSeccion : AppCompatActivity() {
         //cerrar base datos firebase
         db.database.goOffline()
 
-        //el usuario elige calcular la ruta al destino
+        //el usuario elige boton calcular la ruta al destino
         binding.calcularRuta.setOnClickListener {
             val intent = Intent(this, Mapa::class.java)
             intent.putExtra("selector", 0)
             startActivity(intent)
         }
 
+        //el usuario elige boton ver mapa con rutas
+        binding.mapaRutas.setOnClickListener {
+            val intent = Intent(this, Mapa::class.java)
+            intent.putExtra("selector", 20)
+            startActivity(intent)
+        }
     }
 
     //menu en el ActionBar

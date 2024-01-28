@@ -1,24 +1,23 @@
 package com.terfess.busetasyopal
 
 import android.annotation.SuppressLint
-import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.terfess.busetasyopal.modelos_dato.DatosPrimariosRuta
 
-class RutasAdapter(private var listado: List<DatosPrimariosRuta>) : RecyclerView.Adapter<RutasHolder>() {
+class AdapterPrincipal(private var listado: List<DatosPrimariosRuta>) : RecyclerView.Adapter<HolderPrincipal>() {
     var color: String = "#524e4e"
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RutasHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HolderPrincipal {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return RutasHolder(layoutInflater.inflate(R.layout.formato_recycler, parent, false))
+        return HolderPrincipal(layoutInflater.inflate(R.layout.formato_recycler_princ, parent, false))
     }
 
     override fun getItemCount(): Int {
         return listado.size
     }
 
-    override fun onBindViewHolder(holder: RutasHolder, position: Int) {
+    override fun onBindViewHolder(holder: HolderPrincipal, position: Int) {
         val buseta = listado[position]
         holder.mostrar(buseta, color)
     }

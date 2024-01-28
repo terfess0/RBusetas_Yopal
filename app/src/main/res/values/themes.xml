@@ -1,12 +1,23 @@
 <resources>
+
     <style name="Theme.general" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="elevation">1dp</item>
         <item name="colorPrimary">#FFFFFF</item>
-        <item name="menu">@menu/menu_rutas</item>
+
         <item name="titleTextColor">#CE000000</item>
     </style>
+
     <style name="Theme.splash" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="elevation">1dp</item>
         <item name="colorPrimary">#FFFFFF</item>
+    </style>
+
+    <style name="Theme.BotonSheet" parent="Theme.Design.BottomSheetDialog">
+        <item name="elevation">2dp</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:backgroundDimAmount">0.0</item> <!-- Ajusta según sea necesario -->
     </style>
 </resources>

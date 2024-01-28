@@ -61,9 +61,9 @@ class Distancia {
                 (ubiInicio.distanceTo(ubiDestino)).toInt() //aqui se saca la distancia en metros
 
             //comprobar distancia obtenida con la distancia guardada en la iteracion
-            if (distancia < RutaBasic.CreatRuta.masCortaInicio[1]) {
-                RutaBasic.CreatRuta.masCortaInicio[0] = f
-                RutaBasic.CreatRuta.masCortaInicio[1] = distancia
+            if (distancia < PolylinesPrincipal.CreatRuta.masCortaInicio[1]) {
+                PolylinesPrincipal.CreatRuta.masCortaInicio[0] = f
+                PolylinesPrincipal.CreatRuta.masCortaInicio[1] = distancia
             }
 
             puntoMasCerca = LatLng(estacion.latitude, estacion.longitude)
