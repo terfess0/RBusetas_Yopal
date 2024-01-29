@@ -449,6 +449,9 @@ class Mapa : AppCompatActivity(), LocationListener,
                 // Obtener la referencia del layout inflado
                 val listaOpMapa = binding.listaOpMapa
                 val listaViewRutas = binding.listaRutas
+
+                listaViewRutas.visibility = View.VISIBLE
+
                 listaOpMapa.visibility = View.VISIBLE
                 val listaRutas = intArrayOf(2, 3, 6, 7, 8, 9, 10, 11, 13)
                 val listaRutasOpMapa = mutableListOf<DatoOpMapa>()

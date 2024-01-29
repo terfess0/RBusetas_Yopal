@@ -14,13 +14,13 @@ import com.terfess.busetasyopal.databinding.FormatoRecyclerBtnRutasBinding
 import com.terfess.busetasyopal.modelos_dato.DatoOpMapa
 
 class OpMapaAdapterHolder(
-    val listaRutasOpMapa: MutableList<DatoOpMapa>,
-    private val mapa: GoogleMap,
+    private val listaRutasOpMapa: MutableList<DatoOpMapa>,
+    mapa: GoogleMap,
     private val contexto: Context
 ) : BaseAdapter() {
-    val inflater = contexto.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-    var contador = 0
-    var claseRutas = PolylinesOpMapa(mapa, contexto)
+    private val inflater = contexto.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+    private var contador = 0
+    private var claseRutas = PolylinesOpMapa(mapa, contexto)
 
     override fun getCount(): Int {
         return listaRutasOpMapa.size
@@ -36,10 +36,10 @@ class OpMapaAdapterHolder(
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         val view = inflater.inflate(R.layout.formato_recycler_btn_rutas, null)
-        var binding = FormatoRecyclerBtnRutasBinding.bind(view)
+        val binding = FormatoRecyclerBtnRutasBinding.bind(view)
         val datoOpMapa = listaRutasOpMapa[position]
 
-        var numRuta = datoOpMapa.id
+        val numRuta = datoOpMapa.id
 
         // Obtener el TextView del diseño
         val textView = view.findViewById<TextView>(R.id.numRutaOpMapa)
@@ -66,7 +66,7 @@ class OpMapaAdapterHolder(
         }
 
         // Configurar el texto del TextView con los datos del elemento actual
-        textView.text = "Ruta ${numRuta}"
+        textView.text = "Ruta $numRuta"
 
         // Configurar el OnClickListener
         val button = view.findViewById<Button>(R.id.verRutaOpMapa)
@@ -146,14 +146,14 @@ class OpMapaAdapterHolder(
         }
     }
 
-    fun darColorFondo(binding: FormatoRecyclerBtnRutasBinding, dirColor: Int, dirColor2: Int) {
+    private fun darColorFondo(binding: FormatoRecyclerBtnRutasBinding, dirColor: Int, dirColor2: Int) {
         binding.colorSalidaOpMapa.backgroundTintList =
             ContextCompat.getColorStateList(contexto, dirColor)
         binding.colorLlegadaOpMapa.backgroundTintList =
             ContextCompat.getColorStateList(contexto, dirColor2)
     }
 
-    fun estaSeleccionado(dirColor: Int, dirColor2: Int, idRuta:Int, posicion:Int){
+    private fun estaSeleccionado(dirColor: Int, dirColor2: Int, idRuta:Int, posicion:Int){
         val estaSeleccionado = listaRutasOpMapa[posicion].seleccionado
 
         if (estaSeleccionado == 0) {
@@ -164,11 +164,6 @@ class OpMapaAdapterHolder(
         }
     }
 
-}
-
-private class ViewHolder(view: View) {
-    val textView: TextView = view.findViewById(R.id.numRutaOpMapa)
-    val button: Button = view.findViewById(R.id.verRutaOpMapa)
 }
 
 
