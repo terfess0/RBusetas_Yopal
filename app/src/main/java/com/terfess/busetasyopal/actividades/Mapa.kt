@@ -19,13 +19,13 @@ import android.text.Html
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
+import android.widget.Button
+import android.widget.ListView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.common.api.ResolvableApiException
@@ -46,7 +46,6 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.Circle
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -58,6 +57,7 @@ import com.terfess.busetasyopal.clases_utiles.PlanearRutaDestino
 import com.terfess.busetasyopal.clases_utiles.PolylinesPrincipal
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.PantMapaBinding
+import com.terfess.busetasyopal.modelos_dato.DatoOpMapa
 
 
 class Mapa : AppCompatActivity(), LocationListener,
@@ -446,49 +446,27 @@ class Mapa : AppCompatActivity(), LocationListener,
             //--------------------------------------------------------------------------------------
 
             20 -> {
-                val listaRutasOpMapa = intArrayOf(2, 3, 6, 7, 8, 9, 10, 11, 13)
-
-                // Inflar el layout del BottomSheet
-                val sheetView = layoutInflater.inflate(R.layout.rutassheet, null)
-
-                // Obtener la referencia del RecyclerView del layout inflado
-                val recyclerOpMapa = sheetView.findViewById<RecyclerView>(R.id.recycler_op_mapa)
+                // Obtener la referencia del layout inflado
+                val listaOpMapa = binding.listaOpMapa
+                val listaViewRutas = binding.listaRutas
+                listaOpMapa.visibility = View.VISIBLE
+                val listaRutas = intArrayOf(2, 3, 6, 7, 8, 9, 10, 11, 13)
+                val listaRutasOpMapa = mutableListOf<DatoOpMapa>()
+                for (i in 0..listaRutas.size - 1){
+                    listaRutasOpMapa.add(DatoOpMapa(listaRutas[i], 0, R.color.ida_venida_op_mapa, R.color.ida_venida_op_mapa))
+                }
 
                 // Configurar el LinearLayoutManager y el Adapter
-                recyclerOpMapa.layoutManager = LinearLayoutManager(this)
-                recyclerOpMapa.adapter = OpMapaAdapterHolder(listaRutasOpMapa, this, gmap)
-
-                // Crear y mostrar el BottomSheetDialog
-                val sheetRuta = BottomSheetDialog(this, R.style.Theme_BotonSheet)
-
-                // Establecer el contenido del BottomSheetDialog
-                sheetRuta.setContentView(sheetView)
-
-                // Obtener el comportamiento del BottomSheetDialog
-                val behavior = sheetRuta.behavior
-
-                //behavior.expandedOffset = 2
-
-                // Configurar la altura del peek (porcentaje de la pantalla)
-                val alturaPantalla = resources.displayMetrics.heightPixels
-                val alturaMax = (alturaPantalla * 0.3).toInt()
-                //val alturaMinima = (alturaPantalla * 0.2).toInt() // 30% de la pantalla
-
-                // Configurar el nivel de atenuación a 0.0 para eliminar la sombra
-                sheetRuta.window?.setDimAmount(0.0f)
-
-                behavior.maxHeight = alturaMax
-
-                // Mostrar el BottomSheetDialog
-                sheetRuta.show()
+                listaOpMapa.adapter = OpMapaAdapterHolder(listaRutasOpMapa, gmap, this)
 
                 binding.listaRutasOpMapa.setOnClickListener {
-                    if (!sheetRuta.isShowing){
-                        sheetRuta.show()
+                    if (!listaViewRutas.isVisible){
+                        listaViewRutas.visibility = View.VISIBLE
                     }else{
-                        sheetRuta.hide()
+                        listaViewRutas.visibility = View.GONE
                     }
                 }
+
             }
 
             //crear las rutas normales dependiendo de la elegida por el usuario

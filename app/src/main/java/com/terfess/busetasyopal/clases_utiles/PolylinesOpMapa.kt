@@ -97,7 +97,6 @@ class PolylinesOpMapa(private val mapa: GoogleMap, private val contexto: Context
                         "Parqueadero Ruta $idRuta"
                     )
                 }
-
                 polyRuta2 = mapa.addPolyline(opcionesRutaSalida)
                 polyRuta2.points = puntosSalida
 
@@ -413,6 +412,8 @@ class PolylinesOpMapa(private val mapa: GoogleMap, private val contexto: Context
 
                 polyRuta13_1 = mapa.addPolyline(opcionesRutallegada)
                 polyRuta13_1.points = puntosLlegada
+
+
 
             }
 

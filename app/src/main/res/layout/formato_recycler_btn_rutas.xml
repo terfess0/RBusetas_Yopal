@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bord_suave"
-    android:backgroundTint="#A1CDF6E4"
     android:layout_margin="4dp"
+    android:background="@drawable/bord_suave"
+    android:backgroundTint="#1EFFFFFF"
     android:padding="4dp">
 
     <TextView
@@ -41,7 +41,7 @@
         android:layout_margin="4dp"
         android:layout_marginStart="10dp"
         android:background="@drawable/bord_suave"
-        android:backgroundTint="#7C776E6E"
+        android:backgroundTint="@color/ida_venida_op_mapa"
         android:foregroundGravity="center_horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -55,7 +55,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/bord_suave"
-        android:backgroundTint="#7C776E6E"
+        android:backgroundTint="@color/ida_venida_op_mapa"
         android:foregroundGravity="center_horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView6"

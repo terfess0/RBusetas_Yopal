@@ -54,9 +54,9 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
             val horaFinalDom = horarioRuta.horaFinalDom
 
             //obtener disponibilidad de rutas segun horarios
-            var resultado1: Int = claseRango.busetaEnServicio(horaInicioLV, horaFinalLV)
-            var resultado2: Int = claseRango.busetaEnServicio(horaInicioSab, horaFinalSab)
-            var resultado3: Int = claseRango.busetaEnServicio(horaInicioDom, horaFinalDom)
+            val resultado1: Int = claseRango.busetaEnServicio(horaInicioLV, horaFinalLV)
+            val resultado2: Int = claseRango.busetaEnServicio(horaInicioSab, horaFinalSab)
+            val resultado3: Int = claseRango.busetaEnServicio(horaInicioDom, horaFinalDom)
 
             //dar color disponibilidad
             fun darColorDisponibilidadLunVie() {
@@ -160,10 +160,12 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
 
         //el usuario selecciona una de las rutas
         binding.contenedor.setOnClickListener {
-            val selector = dato.numRuta
-            val intent = Intent(binding.contenedor.context, Mapa::class.java)
-            intent.putExtra("selector", selector)
-            caja.startActivity(intent)
+            CoroutineScope(Dispatchers.Default).launch {
+                val selector = dato.numRuta
+                val intent = Intent(binding.contenedor.context, Mapa::class.java)
+                intent.putExtra("selector", selector)
+                caja.startActivity(intent)
+            }
 
             //mensaje "cargando mapa" importante en primera vez usando la aplicacion
             UtilidadesMenores().crearToast(binding.contenedor.context, "Cargando Mapa")
