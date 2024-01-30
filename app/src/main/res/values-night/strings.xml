@@ -9,7 +9,7 @@
     <string name="creditos_texto">Agradecemos a todos los que contribuyeron al desarrollo de esta aplicación:\n\n- Desarrollador: Terfess\n- Diseño Gráfico: Terfess\n- Iconos por elaboración propia y recursos Android Studio.
 \n\n\nQueremos asegurarte que valoramos tu privacidad.\n\n- Esta aplicación no recopila ni almacena ningún dato personal tuyo.\n- No realizamos seguimientos ni compartimos información con terceros.\n- Tu privacidad es nuestra prioridad.\n\n¡Gracias por usar nuestra aplicación!</string>
 
-    <string name="mensaje_contacto">Enviar mensaje por correo al desarrollador</string>
+    <string name="mensaje_contacto">Enviar mensaje por correo del desarrollador</string>
 
     <string name="mensaje_contacto_wts">Enviar mensaje a whatsapp al desarrollador</string>
 
@@ -24,7 +24,8 @@
     <string name="crearTablaCoordenadas2">CREATE TABLE coordenadas2(id_ruta INTEGER,latitud REAL NOT NULL,longitud REAL NOT NULL,FOREIGN KEY (id_ruta) REFERENCES ruta(id_ruta));</string>
     <string name="crearTablaHorario">CREATE TABLE horario(id_ruta INTEGER,horLunVie1 VARCHAR NOT NULL,horLunVie2 VARCHAR NOT NULL,horSab1 VARCHAR NOT NULL,horSab2 VARCHAR NOT NULL,horDomFest1 VARCHAR NOT NULL,horDomFest2 VARCHAR NOT NULL,FOREIGN KEY (id_ruta) REFERENCES ruta(id_ruta));</string>
     <string name="crearTablaFrecuencia">CREATE TABLE frecuencia(id_ruta INTEGER,frecLunVie VARCHAR NOT NULL,frecSab VARCHAR NOT NULL,frecDomFest VARCHAR NOT NULL,FOREIGN KEY (id_ruta) REFERENCES ruta(id_ruta));</string>
-    <string name="seccion_rutas">RUTAS HABILITADAS</string>
+    <string name="seccion_rutas">RUTAS HABILITADAS (9)</string>
+    <string name="seccion_botones">OPCIONES</string>
 
 </resources>
 

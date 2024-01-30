@@ -17,7 +17,7 @@
         android:elevation="3dp"
         android:ems="10"
         android:gravity="center_vertical"
-        android:hint="Busca sitios o rutas"
+        android:hint="Busca sitios"
         android:imeOptions="actionDone"
         android:inputType="text"
         android:maxLines="1"
@@ -131,6 +131,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
     <RelativeLayout
         android:id="@+id/botones_rapidos"
         android:layout_width="match_parent"
@@ -203,8 +204,5 @@
         android:id="@+id/cajaInfo"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-
-
 
 </LinearLayout>

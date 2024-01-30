@@ -149,9 +149,11 @@ class RutasSeccion : AppCompatActivity() {
         when (item.itemId) {
             R.id.buscar -> {
                 if (filtro.visibility == View.GONE) {
+                    //ocultar elementos
                     binding.cabezera.visibility = View.GONE
                     binding.botonesRapidos.visibility = View.GONE
                     binding.separador1.visibility = View.GONE
+
                     filtro.setText("")
                     filtro.visibility = View.VISIBLE //mostrar el campo del filtro
                     filtro.requestFocus()// Establece el foco en el EditText de filtro
@@ -238,12 +240,17 @@ class RutasSeccion : AppCompatActivity() {
             val tecladoV = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             tecladoV.hideSoftInputFromWindow(binding.root.windowToken, 0)
             binding.cajaInfo.requestFocus()
+
             binding.filtro.setText("")
             binding.filtro.visibility = View.GONE
+
             binding.noResultados.visibility = View.GONE
             binding.botonesRapidos.visibility = View.VISIBLE
+
             binding.separador1.visibility = View.VISIBLE
+
             binding.cabezera.visibility = View.VISIBLE
+
             binding.cajaInfo.requestFocus()
             filtrando = false
 

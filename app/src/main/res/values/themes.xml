@@ -4,7 +4,7 @@
         <item name="elevation">1dp</item>
         <item name="colorPrimary">#FFFFFF</item>
 
-        <item name="titleTextColor">#CE000000</item>
+        <item name="titleTextColor">@color/enfasis_azul</item>
     </style>
 
     <style name="Theme.splash" parent="Theme.AppCompat.Light.NoActionBar">

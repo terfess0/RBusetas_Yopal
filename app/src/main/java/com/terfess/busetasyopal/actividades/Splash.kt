@@ -53,11 +53,9 @@ class Splash : AppCompatActivity() {
 
 
         //---------------DESCARGAR INFORMACION SI ES NECESARIO--------------------------
-        var conexionComprobador = 0
-        var conexionComprobadorDos = 0
         if (UtilidadesMenores().comprobarConexion(this)) {
             //si hay conexion a internet entonces
-            conexionComprobadorDos = 1
+
 
             //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>
             //DESCARGAR LOS DATOS DE COORDENADAS DE CADA RUTA DESDE FIREBASE Y GUARDARLOS EN SQLITE LOCAL
@@ -75,10 +73,10 @@ class Splash : AppCompatActivity() {
 
             //obtener la version externa y comparar
             CoroutineScope(Dispatchers.IO).launch {
-                FirebaseDatabase.getInstance().getReference("/features/0/versionPruebas")
+                FirebaseDatabase.getInstance().getReference("/features/0/version")
                     .addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
-                            conexionComprobador = 2
+
                             val versionNube = snapshot.value.toString().toInt()
                             if (versionLocal != versionNube) {
                                 dbHelper.borrarDatosRutas()
@@ -89,7 +87,8 @@ class Splash : AppCompatActivity() {
                                 )
                                 descargarDatos()
                                 println(
-                                    "Descargando informacion")
+                                    "Descargando informacion"
+                                )
                                 dbHelper.insertarVersionDatos(versionNube)
                             } else {
                                 //si la informacion descargable ya esta guardada entonces inciar
@@ -115,12 +114,10 @@ class Splash : AppCompatActivity() {
         //----------------------------TIEMPO AGOTADO---------------------------------
 
         tiempo.postDelayed({
-            if (conexionComprobador == 1 && conexionComprobadorDos != 2) {
-                //si no pudo conectarse correctamente tras 10 segundos (mala conexion)
-                UtilidadesMenores().crearToast(this, "Tiempo de conexión agotado.")
-                startActivity(Intent(this@Splash, RutasSeccion::class.java))
-            }
-        }, 10000)
+            //si no pudo conectarse correctamente tras 10 segundos (mala conexion)
+            UtilidadesMenores().crearToast(this, "Tiempo de conexión agotado.")
+            startActivity(Intent(this@Splash, RutasSeccion::class.java))
+        }, 15000)
 
     }
 
@@ -139,7 +136,8 @@ class Splash : AppCompatActivity() {
                         dbHelper.insertarCoordLlegada(i.idRuta, i.listSegundaParte)
                     }
                     println(
-                        "Se descargo toda la información correctamente")
+                        "Se descargo toda la información correctamente"
+                    )
                     UtilidadesMenores().reiniciarApp(this@Splash, Splash::class.java)
                 }
             })
