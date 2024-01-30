@@ -36,9 +36,9 @@
         style="@style/Widget.AppCompat.ProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scrollbarStyle="outsideOverlay"
         android:backgroundTint="#0040FF"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:scrollbarStyle="outsideOverlay"
+        app:layout_constraintBottom_toTopOf="@+id/tiempoAgotado"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,5 +50,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="559dp" />
+        app:layout_constraintGuide_percent="0.7660739" />
+
+    <TextView
+        android:id="@+id/tiempoAgotado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="56dp"
+        android:fontFamily="@font/roboto"
+        android:foregroundGravity="center"
+        android:gravity="center"
+        android:text="Tiempo Agotado\nConéctate a internet."
+        android:textAlignment="center"
+        android:textColor="@color/enfasis_azul"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,7 +10,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.View
 import android.widget.ImageView
-import android.widget.Toast
+import android.widget.TextView
 import android.widget.VideoView
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.database.DataSnapshot
@@ -29,6 +29,7 @@ import kotlinx.coroutines.launch
 
 class Splash : AppCompatActivity() {
     private var tiempo = Handler(Looper.getMainLooper()) //variable para temporizadores
+    var contador = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.pant_splash)
@@ -53,9 +54,9 @@ class Splash : AppCompatActivity() {
 
 
         //---------------DESCARGAR INFORMACION SI ES NECESARIO--------------------------
+
         if (UtilidadesMenores().comprobarConexion(this)) {
             //si hay conexion a internet entonces
-
 
             //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>
             //DESCARGAR LOS DATOS DE COORDENADAS DE CADA RUTA DESDE FIREBASE Y GUARDARLOS EN SQLITE LOCAL
@@ -73,7 +74,7 @@ class Splash : AppCompatActivity() {
 
             //obtener la version externa y comparar
             CoroutineScope(Dispatchers.IO).launch {
-                FirebaseDatabase.getInstance().getReference("/features/0/version")
+                FirebaseDatabase.getInstance().getReference("/features/0/versionPruebas")
                     .addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
 
@@ -87,12 +88,12 @@ class Splash : AppCompatActivity() {
                                 )
                                 descargarDatos()
                                 println(
-                                    "Descargando informacion"
-                                )
+                                    "Descargando informacion")
                                 dbHelper.insertarVersionDatos(versionNube)
                             } else {
-                                //si la informacion descargable ya esta guardada entonces inciar
+                                //si la informacion descargable ya esta guardada entonces iniciar
                                 startActivity(Intent(this@Splash, RutasSeccion::class.java))
+                                tiempo.removeCallbacksAndMessages(null)
                             }
                         }
 
@@ -109,15 +110,32 @@ class Splash : AppCompatActivity() {
             //si no hay conexion
             UtilidadesMenores().crearToast(this, "Sin conexión a Internet")
             startActivity(Intent(this@Splash, RutasSeccion::class.java))
+            tiempo.removeCallbacksAndMessages(null)
         }
 
         //----------------------------TIEMPO AGOTADO---------------------------------
 
-        tiempo.postDelayed({
-            //si no pudo conectarse correctamente tras 10 segundos (mala conexion)
-            UtilidadesMenores().crearToast(this, "Tiempo de conexión agotado.")
-            startActivity(Intent(this@Splash, RutasSeccion::class.java))
-        }, 15000)
+        val tiempoAgotado = Runnable {
+            // Si no pudo conectarse correctamente tras 15 segundos (mala conexion)
+            if (contador != 1) {
+                val sqlDB = DatosASqliteLocal(this)
+                val dato = sqlDB.obtenerHorarioRuta(2).horaFinalDom
+                if (dato.isBlank()){
+                    findViewById<TextView>(R.id.tiempoAgotado).visibility = View.VISIBLE
+                }else{
+                    UtilidadesMenores().crearToast(this, "Tiempo Agotado")
+                    startActivity(Intent(this@Splash, RutasSeccion::class.java))
+                }
+            }
+        }
+
+// Postdelayed con 15 segundos
+        tiempo.postDelayed(tiempoAgotado, 15000)
+
+// Para cancelar el temporizador en caso de que la conexión sea exitosa
+// o para manejar el caso de tiempo de descarga agotado
+// (Puedes llamar a esto en el lugar apropiado de tu código)
+
 
     }
 
@@ -136,9 +154,10 @@ class Splash : AppCompatActivity() {
                         dbHelper.insertarCoordLlegada(i.idRuta, i.listSegundaParte)
                     }
                     println(
-                        "Se descargo toda la información correctamente"
-                    )
+                        "Se descargo toda la información correctamente")
+                    contador = 1
                     UtilidadesMenores().reiniciarApp(this@Splash, Splash::class.java)
+                    tiempo.removeCallbacksAndMessages(null)
                 }
             })
         }

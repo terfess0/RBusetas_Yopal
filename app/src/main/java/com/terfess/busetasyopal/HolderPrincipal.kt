@@ -41,7 +41,7 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
         //se usa coroutinas para evitar congelamientos de la ui (xd es obvio)
         CoroutineScope(Dispatchers.Default).launch {//hilo default optimizado para operaciones cpu
             val horarioRuta =
-                baseSql.obtenerHorarioRuta(dato.numRuta) //ListaHorarios.busetaHorario[dato.numRuta - 1] se resta 1 para ir acorde a las posiciones del arreglo busetaHorario
+                baseSql.obtenerHorarioRuta(dato.numRuta)  //ListaHorarios.busetaHorario[dato.numRuta - 1] se resta 1 para ir acorde a las posiciones del arreglo busetaHorario
             val frecuenciaRuta = baseSql.obtenerFrecuenciaRuta(dato.numRuta)
             val claseRango = RangoHorarios()
 
