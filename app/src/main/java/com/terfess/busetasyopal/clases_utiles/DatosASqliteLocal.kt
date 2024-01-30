@@ -41,6 +41,13 @@ class DatosASqliteLocal(context: Context) : SQLiteOpenHelper(context, "Datos_App
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
+
+        if (oldVersion <= 56) {
+            // Realiza acciones para actualizar desde la versión 1 a la versión 2
+            db?.execSQL("CREATE TABLE IF NOT EXISTS horario(id_ruta INTEGER,horLunVie1 TEXT NOT NULL,horLunVie2 TEXT NOT NULL,horSab1 TEXT NOT NULL,horSab2 TEXT NOT NULL,horDomFest1 TEXT NOT NULL,horDomFest2 TEXT NOT NULL,FOREIGN KEY (id_ruta) REFERENCES ruta(id_ruta));")
+            db?.execSQL("CREATE TABLE IF NOT EXISTS frecuencia(id_ruta INTEGER,frecLunVie TEXT NOT NULL,frecSab TEXT NOT NULL,frecDomFest TEXT NOT NULL,FOREIGN KEY (id_ruta) REFERENCES ruta(id_ruta));")
+
+        }
         // Eliminar las tablas existentes si es necesario
         val eliminarTablaVersion = "DROP TABLE IF EXISTS version;"
         val eliminarTablaRuta = "DROP TABLE IF EXISTS ruta;"
@@ -255,14 +262,4 @@ class DatosASqliteLocal(context: Context) : SQLiteOpenHelper(context, "Datos_App
         return DatoFrecuencia(idruta, frecLunVie, frecSab, frecDomFest)
     }
 
-    fun borrarDatosRutas() {
-        val db = readableDatabase
-        db.use {
-            db?.execSQL("DELETE FROM ruta;")
-            db?.execSQL("DELETE FROM coordenadas1;")
-            db?.execSQL("DELETE FROM coordenadas2;")
-            db?.execSQL("DELETE FROM horario;")
-            db?.execSQL("DELETE FROM frecuencia;")
-        }
-    }
 }
