@@ -46,7 +46,7 @@
         android:minHeight="150dp"
         android:layout_margin="10dp"
         android:background="@drawable/bord_cabecera"
-        android:backgroundTint="#2196F3"
+        android:backgroundTint="@color/enfasis_azul"
         app:layout_constraintBottom_toBottomOf="@+id/saludo"
         app:layout_constraintTop_toBottomOf="@+id/saludo">
 
