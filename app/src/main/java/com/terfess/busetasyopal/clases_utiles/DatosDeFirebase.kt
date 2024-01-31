@@ -141,7 +141,7 @@ class DatosDeFirebase {
         listaCompleta: MutableList<EstructuraDatosBaseDatos> = mutableListOf()
     ) {
 
-            val idRuta = intArrayOf(2, 3, 6, 7, 8, 9, 10, 11, 13)
+            val idRuta = intArrayOf(2, 3, 6, 7, 8, 9, 10, 13)
             var primeraLista = mutableListOf<LatLng>()
 
             for (i in 0..idRuta.size - 1) {

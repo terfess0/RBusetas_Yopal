@@ -35,10 +35,10 @@ class ListaRutas {
                 10,
                 "Villa David, Aeropuerto Alcaravan, La Herradura, Centro, Unicentro, Sena, Unitropico, Las Americas"
             ),
-            DatosPrimariosRuta(
+            /*DatosPrimariosRuta(
                 11,
                 "Villa David, Terminal, Olimpica, Clinica Casanare, Horo, Centro, Las Americas"
-            ),
+            ),*/
             DatosPrimariosRuta(
                 13,
                 "La Bendicion, Central de Abastos, EDS La Carpa, Bomberos, Centro, Calle 24, Llano Lindo, La Bendicion"
@@ -100,12 +100,12 @@ class ListaRutas {
                         "Clinica Casanare, Gobernacion, La Estancia, Centro, Sena, Unitropico, " +
                         "Colegio Tereza de Calcuta, Villa David"
             ),
-            DatosPrimariosRuta(
+            /*DatosPrimariosRuta(
                 11,
                 "Getsemani, Villa David, Las Americas, Parque Barrio El Oasis, Terminal de Transporte, Mascotilandia, " +
                         "Clinica Casanare, RapiRoy, Hospital HORO, Patinodromo, I.E Luis Hernandez Vargas, La Estancia, " +
                         "Insulab Diagnostic, Canchas Multigol, Las Americas, Cementerio de Yopal, Getsemani"
-            ),
+            ),*/
             /*DatosPrimariosRuta(12, "Sin sitios---","---","---","---","---","---","---"),*/
             DatosPrimariosRuta(
                 13, "La Bendicion, Llano Lindo, Central de Abastos, " +

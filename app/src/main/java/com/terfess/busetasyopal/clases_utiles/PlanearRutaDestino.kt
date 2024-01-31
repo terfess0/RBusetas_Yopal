@@ -29,7 +29,7 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
         ubicacionDestino: LatLng
     ) {
         val dbhelper = DatosASqliteLocal(mapa)
-        val rutaIds = intArrayOf(2, 3, 6, 7, 8, 9, 10, 11, 13)//indices para recuperar las rutas
+        val rutaIds = intArrayOf(2, 3, 6, 7, 8, 9, 10, 13)//indices para recuperar las rutas
         var puntosRutaSalida: List<DatoCalcularRuta>
         var puntosRutaLlegada: List<DatoCalcularRuta>
         println("---------------------------------------")

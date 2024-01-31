@@ -453,7 +453,7 @@ class Mapa : AppCompatActivity(), LocationListener,
                 listaViewRutas.visibility = View.VISIBLE
 
                 listaOpMapa.visibility = View.VISIBLE
-                val listaRutas = intArrayOf(2, 3, 6, 7, 8, 9, 10, 11, 13)
+                val listaRutas = intArrayOf(2, 3, 6, 7, 8, 9, 10, 13)
                 val listaRutasOpMapa = mutableListOf<DatoOpMapa>()
                 for (i in 0..listaRutas.size - 1){
                     listaRutasOpMapa.add(DatoOpMapa(listaRutas[i], 0, R.color.ida_venida_op_mapa, R.color.ida_venida_op_mapa))
@@ -474,7 +474,7 @@ class Mapa : AppCompatActivity(), LocationListener,
 
             //crear las rutas normales dependiendo de la elegida por el usuario
             //se identifica por un id_ruta que se envia desde la pantalla principal por medio del holder y usando intent.extras
-            in listOf(2, 3, 6, 7, 8, 9, 10, 11, 13) -> buildRuta.crearRuta(idruta)
+            in listOf(2, 3, 6, 7, 8, 9, 10, 13) -> buildRuta.crearRuta(idruta)
         }
     }
 
