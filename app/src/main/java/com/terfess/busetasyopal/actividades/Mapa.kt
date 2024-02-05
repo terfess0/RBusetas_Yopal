@@ -289,7 +289,7 @@ class Mapa : AppCompatActivity(), LocationListener,
         binding.guardarAjustes.setOnClickListener {//cerrar ventana de ajustes
             binding.configuraciones.visibility = View.GONE
             binding.ajustes.visibility = View.VISIBLE
-            binding.listaRutasOpMapa.visibility = View.VISIBLE
+            if (idruta == 20)binding.listaRutasOpMapa.visibility = View.VISIBLE
             if (idruta != 0) binding.irgps.visibility = View.VISIBLE
         }
 
