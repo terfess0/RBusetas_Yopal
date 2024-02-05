@@ -378,11 +378,11 @@
         android:layout_gravity="center"
         android:backgroundTint="#1abc9c"
         app:adSize="BANNER"
-        app:adUnitId="ca-app-pub-3940256099942544/6300978111"
+        app:adUnitId="ca-app-pub-8000181315504515/1390003052"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
     <!-- id de ejemplo admob = ca-app-pub-3940256099942544/6300978111 -->
-    <!-- id de admob acercade = ca-app-pub-8000181315504515/1390003052 -->
+    <!-- id de admob mapa = ca-app-pub-8000181315504515/1390003052 -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
