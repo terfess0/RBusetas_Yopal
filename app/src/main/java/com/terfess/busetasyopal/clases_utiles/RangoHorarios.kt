@@ -16,7 +16,7 @@ class RangoHorarios {
         var horaFinalTipoLT = LocalTime.parse(horaFinal)
 
         // agregar 12 horas a la hora final debido a que se usan los mismos datos que se presentan en ui y estan en am y pm
-        if (horaFinal != "12:00"){
+        if (horaFinal != "00:00" && horaFinal != "12:00"){
             horaFinalTipoLT = horaFinalTipoLT.plusHours(12)
         }
 
