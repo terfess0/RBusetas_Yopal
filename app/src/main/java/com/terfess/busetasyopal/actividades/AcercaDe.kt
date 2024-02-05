@@ -14,7 +14,6 @@ import android.widget.TextView
 import androidx.appcompat.widget.LinearLayoutCompat
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.MobileAds
 import com.terfess.busetasyopal.R
 import java.net.URLEncoder
 

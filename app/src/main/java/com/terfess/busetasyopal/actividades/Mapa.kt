@@ -19,8 +19,6 @@ import android.text.Html
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
-import android.widget.Button
-import android.widget.ListView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -48,12 +46,11 @@ import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.terfess.busetasyopal.OpMapaAdapterHolder
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.clases_utiles.AlertaCallback
-import com.terfess.busetasyopal.clases_utiles.PlanearRutaDestino.Datos
 import com.terfess.busetasyopal.clases_utiles.PlanearRutaDestino
+import com.terfess.busetasyopal.clases_utiles.PlanearRutaDestino.Datos
 import com.terfess.busetasyopal.clases_utiles.PolylinesPrincipal
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.PantMapaBinding
