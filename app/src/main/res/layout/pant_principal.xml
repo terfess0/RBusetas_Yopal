@@ -147,17 +147,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <Button
-                    android:id="@+id/calcularRuta"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/bord_boton_relevant"
-                    android:padding="5dp"
-                    android:text="Calcular Ruta"
-                    android:textAllCaps="false"
-                    android:textSize="12sp"
-                    android:visibility="gone"/>
-                <Button
                     android:id="@+id/mapaRutas"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -165,6 +154,16 @@
                     android:background="@drawable/bord_boton_relevant"
                     android:padding="5dp"
                     android:text="Mapa de Rutas"
+                    android:textAllCaps="false"
+                    android:textSize="12sp" />
+                <Button
+                    android:id="@+id/calcularRuta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/bord_boton_relevant"
+                    android:padding="5dp"
+                    android:text="Calcular Ruta"
                     android:textAllCaps="false"
                     android:textSize="12sp" />
             </LinearLayout>

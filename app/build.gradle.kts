@@ -13,8 +13,8 @@ android {
         applicationId = "com.terfess.busetasyopal"
         minSdk = 24
         targetSdk = 34
-        versionCode = 10
-        versionName = "1.0.4"
+        versionCode = 12
+        versionName = "1.0.6-Beta"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -50,7 +50,7 @@ dependencies {
     implementation("com.google.maps.android:android-maps-utils:2.3.0")//maps
     implementation("com.google.android.gms:play-services-maps:18.2.0")//maps
     implementation("com.google.maps.android:maps-utils-ktx:3.4.0") //maps
-    implementation("com.google.android.gms:play-services-location:21.0.1") //ubicacion
+    implementation("com.google.android.gms:play-services-location:21.1.0") //ubicacion
     implementation("androidx.cardview:cardview:1.0.0") //maps
 
     testImplementation("junit:junit:4.13.2")
