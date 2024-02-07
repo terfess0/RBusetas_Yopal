@@ -102,7 +102,7 @@
         app:layout_constraintGuide_percent="0.5645161" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/tocaParaVer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/bord_suave"

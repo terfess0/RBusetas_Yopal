@@ -26,6 +26,7 @@ class FiltroAdapterHolder(var textoFiltro: String) :
 
         fun bind(item: DatosListaFiltro) {
             //acomodar margenes y objetos
+            binding.tocaParaVer.visibility = View.GONE
             binding.contenedorHor.visibility = View.GONE
             binding.guideline2.setGuidelinePercent(1.0f)//se establece porcentage de 100% para que se adapte bien al contenido
 
