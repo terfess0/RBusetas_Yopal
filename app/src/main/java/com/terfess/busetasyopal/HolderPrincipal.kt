@@ -24,13 +24,13 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
     private var rutaEnServicioLV = "#000000" //negro
     private var rutaEnServicioSab = "#000000" //negro
     private var rutaEnServicioDom = "#000000" //negro
-    private var rutaEnDia = "#221785"
+    private var rutaEnDia = "#002fa7"
     private val baseSql = DatosASqliteLocal(vista.context)
 
     fun mostrar(dato: DatosPrimariosRuta, colorDia: String) {
-        var colorLunVier = "#524e4e"
-        var colorSab = "#524e4e"
-        var colorDom = "#524e4e"
+        var colorLunVier = "#000000" //color titulo "Lunes a Viernes"
+        var colorSab = "#000000" //color titulo "sabados"
+        var colorDom = "#000000" //color titulo "domingos y festivos"
 
         val ruta = "Ruta\n" + dato.numRuta
         val contextoHolder = this //recuperar el contexto para usarlo en el scope coroutina
@@ -62,11 +62,11 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
             fun darColorDisponibilidadLunVie() {
                 when (resultado1) {
                     0 -> {
-                        contextoHolder.rutaEnServicioLV = "#a63e3a" //rojo oscuro
+                        contextoHolder.rutaEnServicioLV = "#f50b0b" //rojo intenso
                     }
 
                     1 -> {
-                        contextoHolder.rutaEnServicioLV = "#119400" //verde oscuro
+                        contextoHolder.rutaEnServicioLV = "#10b028" //verde intenso
                     }
                 }
             }
@@ -74,11 +74,11 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
             fun darColorDisponibilidadSab() {
                 when (resultado2) {
                     0 -> {
-                        contextoHolder.rutaEnServicioSab = "#a63e3a" //rojo oscuro
+                        contextoHolder.rutaEnServicioSab = "#f50b0b" //rojo intenso
                     }
 
                     1 -> {
-                        contextoHolder.rutaEnServicioSab = "#119400" //verde oscuro
+                        contextoHolder.rutaEnServicioSab = "#10b028" //verde intenso
                     }
                 }
             }
@@ -86,11 +86,11 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
             fun darColorDisponibilidadDom() {
                 when (resultado3) {
                     0 -> {
-                        contextoHolder.rutaEnServicioDom = "#a63e3a" //rojo oscuro
+                        contextoHolder.rutaEnServicioDom = "#f50b0b" //rojo intenso
                     }
 
                     1 -> {
-                        contextoHolder.rutaEnServicioDom = "#119400" //verde oscuro
+                        contextoHolder.rutaEnServicioDom = "#10b028" //verde intenso
                     }
                 }
             }
