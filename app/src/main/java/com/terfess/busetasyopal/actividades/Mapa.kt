@@ -49,6 +49,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.terfess.busetasyopal.OpMapaAdapterHolder
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.clases_utiles.AlertaCallback
+import com.terfess.busetasyopal.clases_utiles.DatosASqliteLocal
 import com.terfess.busetasyopal.clases_utiles.PlanearRutaDestino
 import com.terfess.busetasyopal.clases_utiles.PlanearRutaDestino.Datos
 import com.terfess.busetasyopal.clases_utiles.PolylinesPrincipal
@@ -190,21 +191,17 @@ class Mapa : AppCompatActivity(), LocationListener,
         }
 
         supportActionBar?.title = "Mapa con Recorrido de Ruta $idruta"  //titulo actionbar
+        if (idruta == 0) {
+            supportActionBar?.title = "Calcular Ruta Inicio a Destino"  //titulo opcion calcular ruta
+        }else if (idruta == 20) {
+            supportActionBar?.title =
+                "Ver Mapa con las Rutas"  //titulo opcion ver mapa con ruta
+        }else if (idruta == 40){
+            supportActionBar?.title =
+                "Ver Mapa con Parqueaderos"  //titulo opcion mapa con parqueaderos
+        }
 
         //-------------------------------------------------------------------------------
-        //Cuando se calcule la ruta
-        if (idruta == 0) {
-            binding.infoColor.visibility = View.GONE
-            binding.textPruebas.visibility = View.VISIBLE
-            supportActionBar?.title = "Calcular viaje Inicio - Destino"  //titulo actionbar
-        }
-
-        //cuando se vea el mapa con todas las rutas
-        if (idruta == 20){
-            supportActionBar?.title = "Ver Mapa con Rutas"
-            binding.infoColor.visibility = View.GONE
-            binding.listaRutasOpMapa.visibility = View.VISIBLE
-        }
 
         //botones verdistancia y calcular punto cercano
         binding.verDistancia.setOnClickListener {
@@ -282,7 +279,7 @@ class Mapa : AppCompatActivity(), LocationListener,
         binding.guardarAjustes.setOnClickListener {//cerrar ventana de ajustes
             binding.configuraciones.visibility = View.GONE
             binding.ajustes.visibility = View.VISIBLE
-            if (idruta == 20)binding.listaRutasOpMapa.visibility = View.VISIBLE
+            if (idruta == 20) binding.listaRutasOpMapa.visibility = View.VISIBLE
             if (idruta != 0) binding.irgps.visibility = View.VISIBLE
         }
 
@@ -299,6 +296,11 @@ class Mapa : AppCompatActivity(), LocationListener,
             0 -> { //el numero 0 de id_ruta sera el que cree un mapa para calcular ruta
                 //activarLocalizacion()
                 //irPosGps()
+
+                //Cuando se calcule la ruta
+                binding.infoColor.visibility = View.GONE
+                binding.textPruebas.visibility = View.VISIBLE
+                supportActionBar?.title = "Calcular viaje Inicio - Destino"  //titulo actionbar
 
                 var ubiInicio = LatLng(0.0, 0.0)
                 var ubiDestino = LatLng(0.0, 0.0)
@@ -439,6 +441,16 @@ class Mapa : AppCompatActivity(), LocationListener,
             //--------------------------------------------------------------------------------------
 
             20 -> {
+                //cuando se vea el mapa con todas las rutas
+                supportActionBar?.title = "Ver Mapa con Rutas"
+                binding.infoColor.visibility = View.GONE
+                binding.listaRutasOpMapa.visibility = View.VISIBLE
+
+                //mostrar info relacionada
+                binding.indicaciones.visibility = View.VISIBLE
+                binding.indicaciones.text = "Compara cualquier recorrido de las rutas habilitadas con tu posición en el mapa, presiona el boton gps, elige 'VER RUTA' y aleja el mapa."
+
+
                 // Obtener la referencia del layout inflado
                 val listaOpMapa = binding.listaOpMapa
                 val listaViewRutas = binding.listaRutas
@@ -448,21 +460,48 @@ class Mapa : AppCompatActivity(), LocationListener,
                 listaOpMapa.visibility = View.VISIBLE
                 val listaRutas = intArrayOf(2, 3, 6, 7, 8, 9, 10, 13)
                 val listaRutasOpMapa = mutableListOf<DatoOpMapa>()
-                for (i in 0..listaRutas.size - 1){
-                    listaRutasOpMapa.add(DatoOpMapa(listaRutas[i], 0, R.color.ida_venida_op_mapa, R.color.ida_venida_op_mapa))
+                for (i in 0..listaRutas.size - 1) {
+                    listaRutasOpMapa.add(
+                        DatoOpMapa(
+                            listaRutas[i],
+                            0,
+                            R.color.ida_venida_op_mapa,
+                            R.color.ida_venida_op_mapa
+                        )
+                    )
                 }
 
                 // Configurar el LinearLayoutManager y el Adapter
                 listaOpMapa.adapter = OpMapaAdapterHolder(listaRutasOpMapa, gmap, this)
 
                 binding.listaRutasOpMapa.setOnClickListener {
-                    if (!listaViewRutas.isVisible){
+                    if (!listaViewRutas.isVisible) {
                         listaViewRutas.visibility = View.VISIBLE
-                    }else{
+                    } else {
                         listaViewRutas.visibility = View.GONE
                     }
                 }
 
+            }
+
+            //--------------------------------------------------------------------------------------
+            //--------------------------------------------------------------------------------------
+
+            40 -> {
+                //cuando se vea el mapa con parqueaderos
+                supportActionBar?.title = "Ver Mapa con Parqueaderos"
+                binding.infoColor.visibility = View.GONE
+
+                //mostrar info relacionada
+                binding.indicaciones.visibility = View.VISIBLE
+                binding.indicaciones.text = "Los puntos rojos son parqueaderos, toca cualquiera de ellos para saber a que ruta pertenecen."
+                val listaRutas = intArrayOf(2, 3, 6, 7, 8, 9, 10, 13)
+                for (i in 0..listaRutas.size - 1) {
+                    val iterator = listaRutas[i]
+                    val dbHelper = DatosASqliteLocal(this)
+                    val datosSeleccionRuta = dbHelper.obtenerCoordenadas(iterator, "coordenadas2")
+                    agregarMarcador(datosSeleccionRuta[datosSeleccionRuta.size -1], R.drawable.ic_parqueadero, "Parqueadero Ruta $iterator")
+                }
             }
 
             //crear las rutas normales dependiendo de la elegida por el usuario
@@ -528,9 +567,15 @@ class Mapa : AppCompatActivity(), LocationListener,
     }
 
     private fun irYopal() {
+        //mayor zoom si se ve parqueaderos (opcion)
+        val zoom = if (idruta == 40){
+            12f
+        }else{
+            14f
+        }
         val cameraPosicion = CameraPosition.Builder()
             .target(LatLng(5.329894555473376, -72.40242298156761))
-            .zoom(14f)
+            .zoom(zoom)
             .build()
         gmap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosicion))
     }
@@ -557,7 +602,7 @@ class Mapa : AppCompatActivity(), LocationListener,
                 binding.irgps.setImageResource(R.drawable.ic_gps_find)
                 gmap.animateCamera(CameraUpdateFactory.newLatLngZoom((latLng), 16.5f), 3000, null)
                 ubiUser = latLng
-                if (binding.sentidoSubida.visibility != View.VISIBLE && idruta != 20) { //diferente de 20 para evitar la activacion del distancia a recorrido en opcion mostrar mapa con rutas
+                if (binding.sentidoSubida.visibility != View.VISIBLE && idruta != 20 && idruta != 40) { //diferente de 20 y 40 para evitar la activacion del distancia a recorrido en opcion mostrar mapa con rutas
                     binding.verDistancia.visibility = View.VISIBLE
                 }
                 //marcador en ubi de respaldo
@@ -593,7 +638,7 @@ class Mapa : AppCompatActivity(), LocationListener,
         ActivityCompat.requestPermissions(this, arrayOf(permission), codigoLocalizacion)
     }
 
-    @SuppressLint("MissingPermission")
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -630,7 +675,6 @@ class Mapa : AppCompatActivity(), LocationListener,
     }
 
     //retorno usuario desde el background
-    @SuppressLint("MissingPermission")
     override fun onResumeFragments() {
         super.onResumeFragments()
         if (!::gmap.isInitialized) return
@@ -740,5 +784,14 @@ class Mapa : AppCompatActivity(), LocationListener,
             intent.data = uri
             startActivity(intent)
         }
+    }
+
+    private fun agregarMarcador(punto: LatLng, icono: Int, titulo: String): Marker? {
+        //FUNCION AÑADIR MARCADOR AL MAPA
+        val opcionesMarcador = MarkerOptions()
+            .position(punto).icon(BitmapDescriptorFactory.fromResource(icono))
+            .title(titulo)
+
+        return gmap.addMarker(opcionesMarcador)
     }
 }
