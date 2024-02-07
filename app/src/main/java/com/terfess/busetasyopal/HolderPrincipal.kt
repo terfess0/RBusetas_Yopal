@@ -62,7 +62,7 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
             fun darColorDisponibilidadLunVie() {
                 when (resultado1) {
                     0 -> {
-                        contextoHolder.rutaEnServicioLV = "#f50b0b" //rojo intenso
+                        contextoHolder.rutaEnServicioLV = "#c4120c" //rojo intenso
                     }
 
                     1 -> {
@@ -74,7 +74,7 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
             fun darColorDisponibilidadSab() {
                 when (resultado2) {
                     0 -> {
-                        contextoHolder.rutaEnServicioSab = "#f50b0b" //rojo intenso
+                        contextoHolder.rutaEnServicioSab = "#c4120c" //rojo intenso
                     }
 
                     1 -> {
@@ -86,7 +86,7 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
             fun darColorDisponibilidadDom() {
                 when (resultado3) {
                     0 -> {
-                        contextoHolder.rutaEnServicioDom = "#f50b0b" //rojo intenso
+                        contextoHolder.rutaEnServicioDom = "#c4120c" //rojo intenso
                     }
 
                     1 -> {
