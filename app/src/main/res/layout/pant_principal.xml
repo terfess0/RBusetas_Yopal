@@ -139,13 +139,15 @@
         android:layout_marginStart="10dp"
         android:layout_marginBottom="5dp">
 
-        <ScrollView
+        <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <Button
                     android:id="@+id/mapaRutas"
                     android:layout_width="wrap_content"
@@ -160,6 +162,7 @@
                     android:textAllCaps="false"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:textSize="12sp" />
+
                 <Button
                     android:id="@+id/calcularRuta"
                     android:layout_width="wrap_content"
@@ -175,14 +178,32 @@
                     android:foreground="?android:attr/selectableItemBackground"
                     android:textSize="12sp"
                     android:visibility="gone"/>
+
+                <Button
+                    android:id="@+id/mapaParqueaderos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bord_boton_relevant"
+                    android:backgroundTint="@color/enfasis_azul"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="5dp"
+                    android:textColor="@color/quantum_white_100"
+                    android:padding="5dp"
+                    android:text="Ver Mapa con Parqueaderos Ruta"
+                    android:textAllCaps="false"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:textSize="12sp" />
+
             </LinearLayout>
-        </ScrollView>
+        </HorizontalScrollView>
     </RelativeLayout>
+
 
     <RelativeLayout
         android:id="@+id/separador1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="-10dp"
         android:layout_marginHorizontal="10dp">
         <LinearLayout
             android:layout_width="match_parent"
