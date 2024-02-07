@@ -53,6 +53,23 @@ class Splash : AppCompatActivity() {
         }
 
 
+        //----------------------------TIEMPO AGOTADO---------------------------------
+
+        val tiempoAgotado = Runnable {
+            // Si no pudo conectarse correctamente tras 15 segundos (mala conexion)
+            if (contador != 1) {
+                val sqlDB = DatosASqliteLocal(this)
+                val dato = sqlDB.obtenerHorarioRuta(2).horaFinalDom
+                if (dato.isBlank()){
+                    findViewById<TextView>(R.id.tiempoAgotado).visibility = View.VISIBLE
+                }else{
+                    UtilidadesMenores().crearToast(this, "Tiempo Agotado")
+                    startActivity(Intent(this@Splash, RutasSeccion::class.java))
+                }
+            }
+        }
+        tiempo.postDelayed(tiempoAgotado, 15000)
+
         //---------------DESCARGAR INFORMACION SI ES NECESARIO--------------------------
 
         if (UtilidadesMenores().comprobarConexion(this)) {
@@ -107,34 +124,18 @@ class Splash : AppCompatActivity() {
             //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         } else {
             //si no hay conexion
-            UtilidadesMenores().crearToast(this, "Sin conexión a Internet")
-            startActivity(Intent(this@Splash, RutasSeccion::class.java))
             tiempo.removeCallbacksAndMessages(null)
-        }
 
-        //----------------------------TIEMPO AGOTADO---------------------------------
-
-        val tiempoAgotado = Runnable {
-            // Si no pudo conectarse correctamente tras 15 segundos (mala conexion)
-            if (contador != 1) {
-                val sqlDB = DatosASqliteLocal(this)
-                val dato = sqlDB.obtenerHorarioRuta(2).horaFinalDom
-                if (dato.isBlank()){
-                    findViewById<TextView>(R.id.tiempoAgotado).visibility = View.VISIBLE
-                }else{
-                    UtilidadesMenores().crearToast(this, "Tiempo Agotado")
-                    startActivity(Intent(this@Splash, RutasSeccion::class.java))
-                }
+            val sqlDB = DatosASqliteLocal(this)
+            val dato = sqlDB.obtenerHorarioRuta(2).horaFinalDom
+            if (dato.isBlank()){
+                findViewById<TextView>(R.id.tiempoAgotado).visibility = View.VISIBLE
+                findViewById<TextView>(R.id.tiempoAgotado).text = "Sin Conexión"
+            }else{
+                UtilidadesMenores().crearToast(this, "Sin conexión a Internet")
+                startActivity(Intent(this@Splash, RutasSeccion::class.java))
             }
         }
-
-// Postdelayed con 15 segundos
-        tiempo.postDelayed(tiempoAgotado, 15000)
-
-// Para cancelar el temporizador en caso de que la conexión sea exitosa
-// o para manejar el caso de tiempo de descarga agotado
-// (Puedes llamar a esto en el lugar apropiado de tu código)
-
 
     }
 
