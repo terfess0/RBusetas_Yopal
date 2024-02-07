@@ -112,7 +112,7 @@
         android:layout_marginTop="-3dp"
         android:layout_marginEnd="-3dp"
         android:textAlignment="viewEnd"
-        android:textColor="#C9FFFFFF"
+        android:textColor="#D8FFFFFF"
         android:textSize="10sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
