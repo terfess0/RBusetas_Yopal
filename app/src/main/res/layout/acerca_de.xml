@@ -156,7 +156,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="#1abc9c"
         app:adSize="BANNER"
-        app:adUnitId="ca-app-pub-8000181315504515/2866219338"
+        app:adUnitId="ca-app-pub-3940256099942544/6300978111"
         app:layout_constraintBottom_toBottomOf="@+id/scrollView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
