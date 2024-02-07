@@ -61,7 +61,7 @@ class OpMapaAdapterHolder(
 
             boton.text = "ver ruta"
             boton.backgroundTintList =
-                ContextCompat.getColorStateList(contexto, R.color.btn_op_mapa)
+                ContextCompat.getColorStateList(contexto, R.color.enfasis_azul)
 
         }
 
@@ -93,7 +93,7 @@ class OpMapaAdapterHolder(
         } else {
             boton.text = "ver ruta"
             boton.backgroundTintList =
-                ContextCompat.getColorStateList(contexto, R.color.btn_op_mapa)
+                ContextCompat.getColorStateList(contexto, R.color.enfasis_azul)
         }
 
         when (numRuta) {
