@@ -279,10 +279,6 @@ class Mapa : AppCompatActivity(), LocationListener,
                 }
 
             }
-        binding.opcionTrafico.setOnCheckedChangeListener { _, isChecked -> //ver trafico en el mapa
-            // Acciones a realizar cuando el estado del CheckBox cambia
-            gmap.isTrafficEnabled = isChecked
-        }
         binding.guardarAjustes.setOnClickListener {//cerrar ventana de ajustes
             binding.configuraciones.visibility = View.GONE
             binding.ajustes.visibility = View.VISIBLE

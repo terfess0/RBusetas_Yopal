@@ -122,11 +122,11 @@
         android:layout_height="wrap_content"
         android:background="@drawable/borde_leyenda"
         android:backgroundTint="@color/fondoLeyenda"
+        android:elevation="20dp"
         android:gravity="center"
         android:padding="5dp"
         android:textStyle="bold"
         android:visibility="visible"
-        android:elevation="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/map"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -246,7 +246,15 @@
                 android:layout_marginBottom="30dp"
                 android:gravity="start"
                 android:hint="Cambiar la configuración inicial del mapa"
+                android:textColor="@color/enfasis_azul"
                 android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Tipo de Mapa:"
+                android:textAlignment="viewStart"
+                android:textColor="@color/enfasis_azul" />
 
             <Spinner
                 android:id="@+id/opciones_tipo_mapa"
@@ -256,13 +264,6 @@
                 android:entries="@array/opciones_array"
                 android:spinnerMode="dropdown" />
 
-            <CheckBox
-                android:id="@+id/opcion_trafico"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:checked="false"
-                android:text="Ver Trafico" />
-
             <Button
                 android:id="@+id/guardar_ajustes"
                 android:layout_width="wrap_content"
@@ -271,6 +272,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/bord_suave"
                 android:backgroundTint="#4D5161"
+                android:paddingHorizontal="5dp"
                 android:text="Aceptar"
                 android:textColor="#ffffff" />
         </LinearLayout>
@@ -328,13 +330,13 @@
         android:id="@+id/lista_rutas"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:cardCornerRadius="8dp"
         android:layout_marginTop="180dp"
+        android:visibility="gone"
+        app:cardCornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
-        android:visibility="gone">
+        app:layout_constraintTop_toTopOf="@+id/guideline">
 
         <LinearLayout
             android:layout_width="match_parent"
