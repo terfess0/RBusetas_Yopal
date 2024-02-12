@@ -192,11 +192,12 @@ class Mapa : AppCompatActivity(), LocationListener,
 
         supportActionBar?.title = "Mapa con Recorrido de Ruta $idruta"  //titulo actionbar
         if (idruta == 0) {
-            supportActionBar?.title = "Calcular Ruta Inicio a Destino"  //titulo opcion calcular ruta
-        }else if (idruta == 20) {
+            supportActionBar?.title =
+                "Calcular Ruta Inicio a Destino"  //titulo opcion calcular ruta
+        } else if (idruta == 20) {
             supportActionBar?.title =
                 "Ver Mapa con las Rutas"  //titulo opcion ver mapa con ruta
-        }else if (idruta == 40){
+        } else if (idruta == 40) {
             supportActionBar?.title =
                 "Ver Mapa con Parqueaderos"  //titulo opcion mapa con parqueaderos
         }
@@ -448,7 +449,8 @@ class Mapa : AppCompatActivity(), LocationListener,
 
                 //mostrar info relacionada
                 binding.indicaciones.visibility = View.VISIBLE
-                binding.indicaciones.text = "Compara cualquier recorrido de las rutas habilitadas con tu posición en el mapa, presiona el boton gps, elige 'VER RUTA' y aleja el mapa."
+                binding.indicaciones.text =
+                    "Compara cualquier recorrido de las rutas habilitadas con tu posición en el mapa, presiona el boton gps, elige 'VER RUTA' y aleja el mapa."
 
 
                 // Obtener la referencia del layout inflado
@@ -494,13 +496,18 @@ class Mapa : AppCompatActivity(), LocationListener,
 
                 //mostrar info relacionada
                 binding.indicaciones.visibility = View.VISIBLE
-                binding.indicaciones.text = "Los puntos rojos son parqueaderos, toca cualquiera de ellos para saber a que ruta pertenecen."
+                binding.indicaciones.text =
+                    "Los puntos rojos son parqueaderos, toca cualquiera de ellos para saber a que ruta pertenecen."
                 val listaRutas = intArrayOf(2, 3, 6, 7, 8, 9, 10, 13)
                 for (i in 0..listaRutas.size - 1) {
                     val iterator = listaRutas[i]
                     val dbHelper = DatosASqliteLocal(this)
                     val datosSeleccionRuta = dbHelper.obtenerCoordenadas(iterator, "coordenadas2")
-                    agregarMarcador(datosSeleccionRuta[datosSeleccionRuta.size -1], R.drawable.ic_parqueadero, "Parqueadero Ruta $iterator")
+                    agregarMarcador(
+                        datosSeleccionRuta[datosSeleccionRuta.size - 1],
+                        R.drawable.ic_parqueadero,
+                        "Parqueadero Ruta $iterator"
+                    )
                 }
             }
 
@@ -568,9 +575,9 @@ class Mapa : AppCompatActivity(), LocationListener,
 
     private fun irYopal() {
         //mayor zoom si se ve parqueaderos (opcion)
-        val zoom = if (idruta == 40){
+        val zoom = if (idruta == 40) {
             12f
-        }else{
+        } else {
             14f
         }
         val cameraPosicion = CameraPosition.Builder()

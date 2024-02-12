@@ -16,12 +16,11 @@ class Distancia {
     ){
         //devuelve el punto mas cercano entre una ubicacion y una lista de ubicaciones
 
-        var distancia: Int
-        for (puntoEstacion in puntosRuta.indices) {
+        for (puntoEstacion in 0 .. puntosRuta.size -1) {
             val estacion = puntosRuta[puntoEstacion]
             ubisPuntos.latitude = estacion.latitude
             ubisPuntos.longitude = estacion.longitude
-            distancia =
+             val distancia =
                 (ubiInicio.distanceTo(ubisPuntos)).toInt() //aqui se saca la distancia en metros
 
             //hay array para inicio y uno para destino, por eso la comprobacion
@@ -30,7 +29,6 @@ class Distancia {
                     mejorPuntoInicio[0] = puntoEstacion
                     mejorPuntoInicio[1] = distancia
                     mejorPuntoInicio[2] = idRuta
-
                 }
             }
             if (!esInicio) {
@@ -38,7 +36,6 @@ class Distancia {
                     mejorPuntoDestino[0] = puntoEstacion
                     mejorPuntoDestino[1] = distancia
                     mejorPuntoDestino[2] = idRuta
-
                 }
             }
         }
