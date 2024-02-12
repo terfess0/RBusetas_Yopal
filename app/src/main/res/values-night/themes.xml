@@ -4,10 +4,14 @@
         <item name="colorPrimary">#FFFFFF</item>
         <item name="titleTextColor">@color/enfasis_azul</item>
     </style>
-    <style name="Theme.splash" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="elevation">1dp</item>
-        <item name="colorPrimary">#000000</item>
+
+    <style name="Theme.splash" parent="Theme.SplashScreen.IconBackground">
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="windowSplashScreenBackground">@color/enfasis_azul</item>
+        <item name="windowSplashScreenAnimationDuration">500</item>
+        <item name="postSplashScreenTheme">@style/Theme.general</item>
     </style>
+
     <style name="Theme.BotonSheet" parent="Theme.Design.BottomSheetDialog">
         <item name="elevation">2dp</item>
         <item name="android:windowBackground">@android:color/transparent</item>

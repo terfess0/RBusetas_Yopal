@@ -1,17 +1,12 @@
 package com.terfess.busetasyopal.actividades
 
-import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.VideoView
+import android.widget.Toast
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -31,27 +26,15 @@ class Splash : AppCompatActivity() {
     private var tiempo = Handler(Looper.getMainLooper()) //variable para temporizadores
     var contador = 0
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.pant_splash)
 
+        //splash
+        splashScreen.setKeepOnScreenCondition { true }
+
+        //ads
         MobileAds.initialize(this) {}//inicializar sdk de anuncios google
-
-        //---------------ICONO O VIDEO DE LA APP AL INICIAR--------------------
-
-        if (modoOscuroActivado(this)) {
-            // Cargar video oscuro
-            findViewById<ImageView>(R.id.img).visibility =
-                View.GONE //ocultar imagen del icono claro de la app
-            val videoView: VideoView = findViewById(R.id.videoView)
-            val idVideo = R.raw.ic_app_anim_dark
-            val videoUri: Uri = Uri.parse("android.resource://$packageName/$idVideo")
-            videoView.setVideoURI(videoUri)
-            videoView.start()
-        } else {
-            //ocultar reproductor de video y dejar visible la imagen de la app (icono claro)
-            findViewById<VideoView>(R.id.videoView).visibility = View.GONE
-        }
-
 
         //----------------------------TIEMPO AGOTADO---------------------------------
 
@@ -60,11 +43,15 @@ class Splash : AppCompatActivity() {
             if (contador != 1) {
                 val sqlDB = DatosASqliteLocal(this)
                 val dato = sqlDB.obtenerHorarioRuta(2).horaFinalDom
-                if (dato.isBlank()){
-                    findViewById<TextView>(R.id.tiempoAgotado).visibility = View.VISIBLE
-                }else{
+                if (dato.isBlank()) {
+                    Toast.makeText(this, "Se necesita conexión a Internet", Toast.LENGTH_LONG)
+                        .show()
+                    finish()
+//                    findViewById<TextView>(R.id.tiempoAgotado).visibility = View.VISIBLE
+                } else {
                     UtilidadesMenores().crearToast(this, "Tiempo Agotado")
                     startActivity(Intent(this@Splash, RutasSeccion::class.java))
+                    finish()
                 }
             }
         }
@@ -91,7 +78,7 @@ class Splash : AppCompatActivity() {
 
             //obtener la version externa y comparar
             CoroutineScope(Dispatchers.IO).launch {
-                FirebaseDatabase.getInstance().getReference("/features/0/version")
+                FirebaseDatabase.getInstance().getReference("/features/0/versionPruebas")
                     .addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
 
@@ -104,12 +91,14 @@ class Splash : AppCompatActivity() {
                                 )
                                 descargarDatos()
                                 println(
-                                    "Descargando informacion")
+                                    "Descargando informacion"
+                                )
                                 dbHelper.insertarVersionDatos(versionNube)
                             } else {
                                 //si la informacion descargable ya esta guardada entonces iniciar
                                 startActivity(Intent(this@Splash, RutasSeccion::class.java))
                                 tiempo.removeCallbacksAndMessages(null)
+                                finish()
                             }
                         }
 
@@ -128,15 +117,17 @@ class Splash : AppCompatActivity() {
 
             val sqlDB = DatosASqliteLocal(this)
             val dato = sqlDB.obtenerHorarioRuta(2).horaFinalDom
-            if (dato.isBlank()){
-                findViewById<TextView>(R.id.tiempoAgotado).visibility = View.VISIBLE
-                findViewById<TextView>(R.id.tiempoAgotado).text = "Sin Conexión"
-            }else{
+            if (dato.isBlank()) {
+                Toast.makeText(this, "Se necesita conexión a Internet", Toast.LENGTH_LONG).show()
+                finish()
+//                findViewById<TextView>(R.id.tiempoAgotado).visibility = View.VISIBLE
+//                findViewById<TextView>(R.id.tiempoAgotado).text = "Sin Conexión"
+            } else {
                 UtilidadesMenores().crearToast(this, "Sin conexión a Internet")
                 startActivity(Intent(this@Splash, RutasSeccion::class.java))
+                finish()
             }
         }
-
     }
 
 
@@ -154,7 +145,8 @@ class Splash : AppCompatActivity() {
                         dbHelper.insertarCoordLlegada(i.idRuta, i.listSegundaParte)
                     }
                     println(
-                        "Se descargo toda la información correctamente")
+                        "Se descargo toda la información correctamente"
+                    )
                     contador = 1
                     UtilidadesMenores().reiniciarApp(this@Splash, Splash::class.java)
                     tiempo.removeCallbacksAndMessages(null)
@@ -163,9 +155,4 @@ class Splash : AppCompatActivity() {
         }
     }
 
-    private fun modoOscuroActivado(context: Context): Boolean {
-        val currentNightMode =
-            context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-        return currentNightMode == Configuration.UI_MODE_NIGHT_YES
-    }
 }

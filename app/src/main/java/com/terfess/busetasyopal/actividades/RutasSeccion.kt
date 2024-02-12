@@ -48,7 +48,6 @@ class RutasSeccion : AppCompatActivity() {
         binding = PantPrincipalBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         //firebase
         db =
             FirebaseDatabase.getInstance(getString(R.string.linkBaseDatos)).reference
@@ -89,8 +88,6 @@ class RutasSeccion : AppCompatActivity() {
                 }
             })
 
-        //cerrar base datos firebase
-        db.database.goOffline()
 
 
         //mensaje controlado en vivo base datos

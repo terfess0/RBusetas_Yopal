@@ -83,9 +83,8 @@ class UtilidadesMenores {
         }
     }
 
-    fun crearSnackbar(contexto: Context?, mensaje: String, rootView: View) {
-        val snackbar = Snackbar.make(rootView, mensaje, Snackbar.LENGTH_SHORT)
-        snackbar.show()
+    fun crearSnackbar(mensaje: String, rootView: View) {
+        Snackbar.make(rootView, mensaje, Snackbar.LENGTH_SHORT).show()
     }
 
     fun reiniciarApp(context: Context, claseObjetivo: Class<*>) {

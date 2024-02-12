@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="recorridoIda">#00B6FF</color>
-    <color name="recorridoVuelta">#C70039 </color>
+    <color name="recorridoVuelta">#C71700</color>
 
-    <color name="enfasis_azul">#002fa7</color>
+    <color name="enfasis_azul">#000000</color>
 
     <color name="anuncioGrave">#B80000</color>
     <color name="anuncioLeve">#5A4F27</color>
@@ -27,6 +27,8 @@
     <color name="llegada_parcial">#74FF5900</color>
 
     <color name="distancia_caminar">#DF3DFFD9</color>
+    <color name="distancia_caminar_inicio">#DF040404</color>
+    <color name="distancia_caminar_destino">#DF362A26</color>
 
     <color name="unoSalida">#E57373</color>
     <color name="unoLlegada">#4DB6AC</color>

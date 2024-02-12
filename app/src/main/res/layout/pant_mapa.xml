@@ -252,6 +252,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:text="Tipo de Mapa:"
                 android:textAlignment="viewStart"
                 android:textColor="@color/enfasis_azul" />
