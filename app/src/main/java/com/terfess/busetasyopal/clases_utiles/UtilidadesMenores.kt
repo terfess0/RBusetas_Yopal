@@ -6,12 +6,19 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
+import com.google.android.material.snackbar.Snackbar
+import com.terfess.busetasyopal.R
 
 
 interface AlertaCallback { //devolucion de llamada para el CrearAlerta
-    fun onOpcionSeleccionada(opcion: Int, tipo_de_solicitud:String)
+    fun onOpcionSeleccionada(opcion: Int, tipo_de_solicitud: String)
 }
 
 class UtilidadesMenores {
@@ -41,7 +48,7 @@ class UtilidadesMenores {
         op1: String,
         op2: String,
         Callback: AlertaCallback
-    ){
+    ) {
         val builder = AlertDialog.Builder(contexto)
         builder.setTitle("Alerta!")
         builder.setMessage(mensaje)
@@ -74,6 +81,11 @@ class UtilidadesMenores {
             toast = Toast.makeText(it, mensaje, Toast.LENGTH_SHORT)
             toast?.show()
         }
+    }
+
+    fun crearSnackbar(contexto: Context?, mensaje: String, rootView: View) {
+        val snackbar = Snackbar.make(rootView, mensaje, Snackbar.LENGTH_SHORT)
+        snackbar.show()
     }
 
     fun reiniciarApp(context: Context, claseObjetivo: Class<*>) {
