@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <corners  android:radius="6dp"/>
-    <stroke
-        android:width="1.2dp"
-        android:color="#61214B6A" />
-    <solid android:color="#E4EAF4"/>
-
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Shadow -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#20000000" />
+            <corners android:radius="6dp" />
+        </shape>
+    </item>
+    <!-- Card Background -->
+    <item android:top="1dp" android:right="1dp" android:left="1dp" android:bottom="3dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#E1E8F6" />
+            <corners android:radius="7dp" />
+        </shape>
+    </item>
+</layer-list>

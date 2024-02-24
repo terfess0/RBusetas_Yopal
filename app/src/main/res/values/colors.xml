@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="recorridoIda">#00B6FF</color>
-    <color name="recorridoVuelta">#C71700</color>
+    <color name="recorridoVuelta">#C70039 </color>
 
-    <color name="enfasis_azul">#000000</color>
+    <color name="enfasis_azul">#002fa7</color>
 
     <color name="anuncioGrave">#B80000</color>
     <color name="anuncioLeve">#5A4F27</color>
@@ -30,46 +30,46 @@
     <color name="distancia_caminar_inicio">#DF040404</color>
     <color name="distancia_caminar_destino">#DF362A26</color>
 
-    <color name="unoSalida">#E57373</color>
-    <color name="unoLlegada">#4DB6AC</color>
+    <color name="unoSalida">#F44336</color>
+    <color name="unoLlegada">#009688</color>
 
-    <color name="dosSalida">#F06292</color>
-    <color name="dosLlegada">#81C784</color>
+    <color name="dosSalida">#E91E63</color>
+    <color name="dosLlegada">#4CAF50</color>
 
-    <color name="tresSalida">#BA68C8</color>
-    <color name="tresLlegada">#AED581</color>
+    <color name="tresSalida">#9C27B0</color>
+    <color name="tresLlegada">#8BC34A</color>
 
-    <color name="cuatroSalida">#9575CD</color>
-    <color name="cuatroLlegada">#DCE775</color>
+    <color name="cuatroSalida">#673AB7</color>
+    <color name="cuatroLlegada">#CDDC39</color>
 
-    <color name="cincoSalida">#7986CB</color>
-    <color name="cincoLlegada">#FFF176</color>
+    <color name="cincoSalida">#3F51B5</color>
+    <color name="cincoLlegada">#FFEB3B</color>
 
-    <color name="seisSalida">#64B5F6</color>
+    <color name="seisSalida">#2196F3</color>
     <color name="seisLlegada">#FFD54F</color>
 
     <color name="sieteSalida">#4FC3F7</color>
-    <color name="sieteLlegada">#FFB74D</color>
+    <color name="sieteLlegada">#FFC107</color>
 
-    <color name="ochoSalida">#FF442F</color>
-    <color name="ochoLlegada">#90ee90</color>
+    <color name="ochoSalida">#03A9F4</color>
+    <color name="ochoLlegada">#FF5722</color>
 
-    <color name="nueveSalida">#4DD0E1</color>
-    <color name="nueveLlegada">#FF8A65</color>
+    <color name="nueveSalida">#7B1FA2</color>
+    <color name="nueveLlegada">#689F38</color>
 
-    <color name="diezSalida">#D32F2F</color>
-    <color name="diezLlegada">#00796B</color>
+    <color name="diezSalida">#512DA8</color>
+    <color name="diezLlegada">#AFB42B</color>
 
-    <color name="onceSalida">#C2185B</color>
-    <color name="onceLlegada">#388E3C</color>
+    <color name="onceSalida">#303F9F</color>
+    <color name="onceLlegada">#D32F2F</color>
 
-    <color name="doceSalida">#7B1FA2</color>
-    <color name="doceLlegada">#689F38</color>
+    <color name="doceSalida">#01579B</color>
+    <color name="doceLlegada">#E65100</color>
 
-    <color name="treceSalida">#512DA8</color>
-    <color name="treceLlegada">#AFB42B</color>
+    <color name="treceSalida">#006064</color>
+    <color name="treceLlegada">#BF360C</color>
 
-    <color name="catorceSalida">#0288D1</color>
-    <color name="catorceLlegada">#F57C00</color>
+    <color name="catorceSalida">#1B5E20</color>
+    <color name="catorceLlegada">#B71C1C</color>
 
 </resources>

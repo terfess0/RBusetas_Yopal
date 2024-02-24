@@ -78,7 +78,7 @@ class Splash : AppCompatActivity() {
 
             //obtener la version externa y comparar
             CoroutineScope(Dispatchers.IO).launch {
-                FirebaseDatabase.getInstance().getReference("/features/0/versionPruebas")
+                FirebaseDatabase.getInstance().getReference("/features/0/version")
                     .addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
 

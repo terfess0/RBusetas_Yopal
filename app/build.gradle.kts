@@ -13,8 +13,8 @@ android {
         applicationId = "com.terfess.busetasyopal"
         minSdk = 24
         targetSdk = 34
-        versionCode = 15
-        versionName = "1.0.7-beta"
+        versionCode = 17
+        versionName = "1.0.8"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
