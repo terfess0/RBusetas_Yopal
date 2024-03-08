@@ -1,7 +1,6 @@
 package com.terfess.busetasyopal.actividades
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
@@ -295,8 +294,6 @@ class Mapa : AppCompatActivity(), LocationListener,
             //--------------------------------------------------------------------------------------
 
             0 -> { //el numero 0 de id_ruta sera el que cree un mapa para calcular ruta
-                //activarLocalizacion()
-                //irPosGps()
 
                 //Cuando se calcule la ruta
                 binding.infoColor.visibility = View.GONE
@@ -315,6 +312,7 @@ class Mapa : AppCompatActivity(), LocationListener,
 
 
                 binding.posInicio.setOnClickListener {
+                    UtilidadesMenores().crearToast(this, "Arrastra la pantalla")
                     binding.posInicio.isClickable =
                         false //despues de seleccionado se desactiva el boton
 
@@ -333,7 +331,10 @@ class Mapa : AppCompatActivity(), LocationListener,
                         )
                     ) //misma ubicacion inicial de la camara
                     marcador = gmap.addMarker(centerMarker)!!
+
+                    //mostrar botones setubi y setubigps
                     binding.setUbicacion.visibility = View.VISIBLE
+                    binding.setUbiGps.visibility = View.VISIBLE
                     gmap.setOnCameraMoveListener { //listener que permite que el marcador se mueva de acuerdo al movimiento de la camara del mapa
                         marcador.position = gmap.cameraPosition.target
                     }
@@ -341,6 +342,7 @@ class Mapa : AppCompatActivity(), LocationListener,
                     //guardar la ubicacion y representarla con un marcador
                     binding.setUbicacion.setOnClickListener {
                         binding.setUbicacion.visibility = View.GONE
+                        binding.setUbiGps.visibility = View.GONE
 
                         ubiInicio = LatLng(
                             marcador.position.latitude,
@@ -359,7 +361,7 @@ class Mapa : AppCompatActivity(), LocationListener,
                             R.drawable.ic_gps_find,
                             0
                         ) // cambiar el icono al final del boton cuando se guarda la ubicacion
-                        binding.posInicio.text = "Partida Guardada   "
+                        binding.posInicio.text = "Partida   "
 
                         marcador.remove() //borrar el marcador inicial (solo queda el de la ubicacion guardada)
 
@@ -370,9 +372,83 @@ class Mapa : AppCompatActivity(), LocationListener,
                                 ubiDestino
                             )
                             binding.infoColor.visibility = View.VISIBLE
-                            binding.indicaciones.visibility = View.VISIBLE
-                            binding.indicaciones.text =
-                                " |- Camina desde tu posicion hasta tomar la ruta ${Datos.mejorPuntoaInicio[2]}. | Haz el recorrido para bajarte en el punto marcado. | Camina hasta el punto de destino. "
+                            binding.indicacionesCalcular.visibility = View.VISIBLE
+                            binding.indicacion1.text =
+                                " Camina desde tu posicion hasta tomar la ruta ${Datos.mejorPuntoaInicio[2]}."
+                            binding.indicacion2.text =
+                                " Haz el recorrido para bajarte en el punto marcado."
+                            binding.indicacion3.text = " Camina hasta el punto de destino."
+
+                            //cambiar iconos de ubicacion inicio y fin en boton por checks verdes
+                            binding.posInicio.setCompoundDrawablesWithIntrinsicBounds(
+                                0,
+                                0,
+                                R.drawable.ic_check,
+                                0
+                            )
+                            binding.posDestino.setCompoundDrawablesWithIntrinsicBounds(
+                                0,
+                                0,
+                                R.drawable.ic_check,
+                                0
+                            )
+                        }
+                    }
+
+                    //guardar la ubicacion y representarla con un marcador
+                    binding.setUbiGps.setOnClickListener {
+                        binding.setUbiGps.visibility = View.GONE
+
+                        activarLocalizacion()
+                        irPosGps()
+
+                        ubiInicio = ubiUser//guardar ubicacion gps
+
+                        if (ubiInicio != LatLng(0.0, 0.0)) {
+                            gmap.addMarker(
+                                MarkerOptions().position(ubiInicio).title("Punto de Partida").icon(
+                                    BitmapDescriptorFactory.fromResource(R.drawable.ic_salida)
+                                )
+                            ) //representar la ubicacion guardada con un marcador con icono personalizado
+
+                            binding.posInicio.setCompoundDrawablesWithIntrinsicBounds(
+                                0,
+                                0,
+                                R.drawable.ic_gps_find,
+                                0
+                            ) // cambiar el icono al final del boton cuando se guarda la ubicacion
+                            binding.posInicio.text = "Partida   "
+
+                            marcador.remove() //borrar el marcador inicial (solo queda el de la ubicacion guardada)
+                        }
+
+                        // si las dos ubicaciones han sido obtenidas (inicio - destino) comenzara a calcularse la ruta
+                        if (ubiInicio != LatLng(0.0, 0.0) && ubiDestino != LatLng(0.0, 0.0)) {
+                            PlanearRutaDestino(this, gmap).rutaToDestino(
+                                ubiInicio,
+                                ubiDestino
+                            )
+                            binding.infoColor.visibility = View.VISIBLE
+                            binding.indicacionesCalcular.visibility = View.VISIBLE
+                            binding.indicacion1.text =
+                                " Camina desde tu posicion hasta tomar la ruta ${Datos.mejorPuntoaInicio[2]}."
+                            binding.indicacion2.text =
+                                " Haz el recorrido para bajarte en el punto marcado."
+                            binding.indicacion3.text = " Camina hasta el punto de destino."
+
+                            //cambiar iconos de ubicacion inicio y fin en boton por checks verdes
+                            binding.posInicio.setCompoundDrawablesWithIntrinsicBounds(
+                                0,
+                                0,
+                                R.drawable.ic_check,
+                                0
+                            )
+                            binding.posDestino.setCompoundDrawablesWithIntrinsicBounds(
+                                0,
+                                0,
+                                R.drawable.ic_check,
+                                0
+                            )
                         }
                     }
                 }
@@ -380,6 +456,7 @@ class Mapa : AppCompatActivity(), LocationListener,
                 //--------------------------------------------------------------------
                 //boton guardar ubicacion de destino
                 binding.posDestino.setOnClickListener {
+                    UtilidadesMenores().crearToast(this, "Arrastra la pantalla")
                     binding.posDestino.isClickable =
                         false //despues de oprimido no se puede presionar de nuevo
 
@@ -419,7 +496,7 @@ class Mapa : AppCompatActivity(), LocationListener,
                             R.drawable.ic_gps_find,
                             0
                         )//cambiar el icono al final del boton al guardar ubicacion
-                        binding.posDestino.text = "Destino Guardado   "
+                        binding.posDestino.text = "Destino   "
 
                         marcador.remove() //quitar marcador central en pantalla, del mapa
 
@@ -430,9 +507,26 @@ class Mapa : AppCompatActivity(), LocationListener,
                                 ubiDestino
                             )
                             binding.infoColor.visibility = View.VISIBLE
-                            binding.indicaciones.visibility = View.VISIBLE
-                            binding.indicaciones.text =
-                                " |- Camina desde tu posicion hasta tomar la ruta ${Datos.mejorPuntoaInicio[2]}. | Haz el recorrido para bajarte en el punto marcado. | Camina hasta el punto de destino. "
+                            binding.indicacionesCalcular.visibility = View.VISIBLE
+                            binding.indicacion1.text =
+                                " Camina desde tu posicion hasta tomar la ruta ${Datos.mejorPuntoaInicio[2]}."
+                            binding.indicacion2.text =
+                                " Haz el recorrido para bajarte en el punto marcado."
+                            binding.indicacion3.text = " Camina hasta el punto de destino."
+
+                            //cambiar iconos de ubicacion inicio y fin en boton por checks verdes
+                            binding.posInicio.setCompoundDrawablesWithIntrinsicBounds(
+                                0,
+                                0,
+                                R.drawable.ic_check,
+                                0
+                            )
+                            binding.posDestino.setCompoundDrawablesWithIntrinsicBounds(
+                                0,
+                                0,
+                                R.drawable.ic_check,
+                                0
+                            )
                         }
                     }
                 }
@@ -455,7 +549,7 @@ class Mapa : AppCompatActivity(), LocationListener,
 
                 // Obtener la referencia del layout inflado
                 val listaOpMapa = binding.listaOpMapa
-                val listaViewRutas = binding.listaRutas
+                val listaViewRutas = binding.espacioMapaUtil
 
                 listaViewRutas.visibility = View.VISIBLE
 
@@ -607,9 +701,9 @@ class Mapa : AppCompatActivity(), LocationListener,
             if (location != null) {
                 val latLng = LatLng(location.latitude, location.longitude)
                 binding.irgps.setImageResource(R.drawable.ic_gps_find)
-                gmap.animateCamera(CameraUpdateFactory.newLatLngZoom((latLng), 16.5f), 3000, null)
+                gmap.animateCamera(CameraUpdateFactory.newLatLngZoom((latLng), 16.5f), 2000, null)
                 ubiUser = latLng
-                if (binding.sentidoSubida.visibility != View.VISIBLE && idruta != 20 && idruta != 40) { //diferente de 20 y 40 para evitar la activacion del distancia a recorrido en opcion mostrar mapa con rutas
+                if (binding.sentidoSubida.visibility != View.VISIBLE && idruta != 20 && idruta != 40 && idruta != 0) { //diferente de 0, 20 y 40 para evitar la activacion del distancia a recorrido en opcion mostrar mapa con rutas, calcular ruta y parqueaderos
                     binding.verDistancia.visibility = View.VISIBLE
                 }
                 //marcador en ubi de respaldo

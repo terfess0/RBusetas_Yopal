@@ -7,7 +7,6 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.google.android.gms.ads.MobileAds
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -33,8 +32,6 @@ class Splash : AppCompatActivity() {
         //splash
         splashScreen.setKeepOnScreenCondition { true }
 
-        //ads
-        MobileAds.initialize(this) {}//inicializar sdk de anuncios google
 
         //----------------------------TIEMPO AGOTADO---------------------------------
 

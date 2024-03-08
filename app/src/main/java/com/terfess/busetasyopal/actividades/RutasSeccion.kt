@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -56,6 +57,9 @@ class RutasSeccion : AppCompatActivity() {
 
         cajaInfo.layoutManager = LinearLayoutManager(this)
         cajaInfo.adapter = adapter
+
+        //ads
+        MobileAds.initialize(this) {}//inicializar sdk de anuncios google
 
         //ACTIONBAR
         //supportActionBar?.title = "Rutas"
