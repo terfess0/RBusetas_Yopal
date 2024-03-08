@@ -1,8 +1,8 @@
 <resources>
     <style name="Theme.general" parent="Theme.AppCompat.Light">
         <item name="elevation">1dp</item>
-        <item name="colorPrimary">#FFFFFF</item>
-        <item name="titleTextColor">@color/enfasis_azul</item>
+        <item name="colorPrimary">#323131</item>
+        <item name="titleTextColor">#6B7FB1</item>
     </style>
 
     <style name="Theme.splash" parent="Theme.SplashScreen.IconBackground">

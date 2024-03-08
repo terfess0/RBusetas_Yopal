@@ -369,15 +369,13 @@ class Mapa : AppCompatActivity(), LocationListener,
                         if (ubiInicio != LatLng(0.0, 0.0) && ubiDestino != LatLng(0.0, 0.0)) {
                             PlanearRutaDestino(this, gmap).rutaToDestino(
                                 ubiInicio,
-                                ubiDestino
+                                ubiDestino,
+                                this
                             )
                             binding.infoColor.visibility = View.VISIBLE
-                            binding.indicacionesCalcular.visibility = View.VISIBLE
-                            binding.indicacion1.text =
-                                " Camina desde tu posicion hasta tomar la ruta ${Datos.mejorPuntoaInicio[2]}."
-                            binding.indicacion2.text =
-                                " Haz el recorrido para bajarte en el punto marcado."
-                            binding.indicacion3.text = " Camina hasta el punto de destino."
+
+                            //si la distancia hasta el punto salida es menor a 200 m mostrar indicaciones calculadas
+                            mostrarIndicacionesCalculadas(false)
 
                             //cambiar iconos de ubicacion inicio y fin en boton por checks verdes
                             binding.posInicio.setCompoundDrawablesWithIntrinsicBounds(
@@ -426,15 +424,13 @@ class Mapa : AppCompatActivity(), LocationListener,
                         if (ubiInicio != LatLng(0.0, 0.0) && ubiDestino != LatLng(0.0, 0.0)) {
                             PlanearRutaDestino(this, gmap).rutaToDestino(
                                 ubiInicio,
-                                ubiDestino
+                                ubiDestino,
+                                this
                             )
                             binding.infoColor.visibility = View.VISIBLE
-                            binding.indicacionesCalcular.visibility = View.VISIBLE
-                            binding.indicacion1.text =
-                                " Camina desde tu posicion hasta tomar la ruta ${Datos.mejorPuntoaInicio[2]}."
-                            binding.indicacion2.text =
-                                " Haz el recorrido para bajarte en el punto marcado."
-                            binding.indicacion3.text = " Camina hasta el punto de destino."
+
+                            //si la distancia hasta el punto salida es menor a 200 m mostrar indicaciones calculadas
+                            mostrarIndicacionesCalculadas(false)
 
                             //cambiar iconos de ubicacion inicio y fin en boton por checks verdes
                             binding.posInicio.setCompoundDrawablesWithIntrinsicBounds(
@@ -504,15 +500,15 @@ class Mapa : AppCompatActivity(), LocationListener,
                         if (ubiInicio != LatLng(0.0, 0.0) && ubiDestino != LatLng(0.0, 0.0)) {
                             PlanearRutaDestino(this, gmap).rutaToDestino(
                                 ubiInicio,
-                                ubiDestino
+                                ubiDestino,
+                                this
                             )
                             binding.infoColor.visibility = View.VISIBLE
-                            binding.indicacionesCalcular.visibility = View.VISIBLE
-                            binding.indicacion1.text =
-                                " Camina desde tu posicion hasta tomar la ruta ${Datos.mejorPuntoaInicio[2]}."
-                            binding.indicacion2.text =
-                                " Haz el recorrido para bajarte en el punto marcado."
-                            binding.indicacion3.text = " Camina hasta el punto de destino."
+
+                            //si la distancia hasta el punto salida es menor a 300 m mostrar indicaciones calculadas
+
+                            mostrarIndicacionesCalculadas(false)
+
 
                             //cambiar iconos de ubicacion inicio y fin en boton por checks verdes
                             binding.posInicio.setCompoundDrawablesWithIntrinsicBounds(
@@ -894,5 +890,25 @@ class Mapa : AppCompatActivity(), LocationListener,
             .title(titulo)
 
         return gmap.addMarker(opcionesMarcador)
+    }
+
+    fun mostrarIndicacionesCalculadas(hayImpedimento: Boolean){
+        val numeroRuta = Datos.mejorPuntoaInicio[2]
+        //si la distancia hasta el punto salida es menor a 300 m mostrar indicaciones calculadas
+        if(Datos.mejorPuntoaInicio[1] > 200 || hayImpedimento){
+            println("Distancia: ${Datos.mejorPuntoaInicio[1]}")
+            //mostrar mensaje "no se pudo generar recorrido"
+            binding.msjNoSeEncontroRuta.visibility = View.VISIBLE
+            binding.opcionesNoCalculada.text = "\n-Se esta mostrando la ruta: $numeroRuta"
+        }else{
+            //mostrar indicaciones
+            binding.indicacionesCalcular.visibility = View.VISIBLE
+            binding.indicacion1.text =
+                " Camina desde tu posicion hasta tomar la ruta $numeroRuta."
+            binding.indicacion2.text =
+                " Haz el recorrido para bajarte en el punto marcado."
+            binding.indicacion3.text = " Camina hasta el punto de destino."
+        }
+
     }
 }

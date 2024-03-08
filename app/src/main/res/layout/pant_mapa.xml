@@ -424,6 +424,32 @@
                         android:textStyle="bold" />
 
                 </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/msjNoSeEncontroRuta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Info: No se pudo generar el recorrido."
+                        android:textStyle="bold"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="\nPosibles razones: \n- No hay rutas cerca (menos 200 metros)."
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/opciones_no_calculada"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold|italic" />
+                </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
 

@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.gms.maps.model.RoundCap
 import com.terfess.busetasyopal.R
+import com.terfess.busetasyopal.actividades.Mapa
 import com.terfess.busetasyopal.modelos_dato.DatoCalcularRuta
 
 class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap) {
@@ -28,7 +29,8 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
 
     fun rutaToDestino(
         ubicacionUsuario: LatLng,
-        ubicacionDestino: LatLng
+        ubicacionDestino: LatLng,
+        instanciaMapa: Mapa
     ) {
         val dbhelper = DatosASqliteLocal(mapa)
         val rutaIds = intArrayOf(2, 3, 6, 7, 8, 9, 10, 13)//indices para recuperar las rutas
@@ -184,17 +186,16 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
                         null
                     )
                 }
-            }
-            else if (puntoCorte1 < totalSubida1 && puntoCorte2 < totalSubida1 && puntoCorte1 > puntoCorte2) {
-                UtilidadesMenores().crearToast(mapa, "No fue posible generar camino")
+            } else if (puntoCorte1 < totalSubida1 && puntoCorte2 < totalSubida1 && puntoCorte1 > puntoCorte2) {
+                //no se pudo generar camino
+                instanciaMapa.mostrarIndicacionesCalculadas(true)
                 println("Caso If negacion numero 1 salida")
-            }
-            else if (puntoCorte1 < totalSubida1 && puntoCorte2 > totalSubida1 && puntoCorte1 < puntoCorte2) {
+            } else if (puntoCorte1 < totalSubida1 && puntoCorte2 > totalSubida1 && puntoCorte1 < puntoCorte2) {
                 puntosFinal1 = puntosSalida.subList(puntoCorte1, totalSubida1)
                 println("Caso If 2 salida")
-            }
-            else if (puntoCorte1 < totalSubida1 && puntoCorte2 > totalSubida1 && puntoCorte1 > puntoCorte2){
-                UtilidadesMenores().crearToast(mapa, "No fue posible generar camino")
+            } else if (puntoCorte1 < totalSubida1 && puntoCorte2 > totalSubida1 && puntoCorte1 > puntoCorte2) {
+                //no se pudo generar camino
+                instanciaMapa.mostrarIndicacionesCalculadas(true)
                 println("Caso If negacion numero 2 salida")
             }
 
@@ -295,18 +296,17 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
                     )
                 }
 
-            }
-            else if (puntoCorte1 > totalSubida1 && puntoCorte2 > totalSubida1 && puntoCorte2 < puntoCorte1) {
-                UtilidadesMenores().crearToast(mapa, "No fue posible generar camino")
+            } else if (puntoCorte1 > totalSubida1 && puntoCorte2 > totalSubida1 && puntoCorte2 < puntoCorte1) {
+                //no se pudo generar camino
+                instanciaMapa.mostrarIndicacionesCalculadas(true)
                 println("Caso If negacion numero 1 llegada")
-            }
-            else if (puntoCorte1 < totalSubida1 && puntoCorte2 > totalSubida1 && puntoCorte1 < puntoCorte2) {
+            } else if (puntoCorte1 < totalSubida1 && puntoCorte2 > totalSubida1 && puntoCorte1 < puntoCorte2) {
                 val topeLlegada = puntoCorte2 - totalSubida1
                 puntosFinal = puntosLlegada.subList(0, topeLlegada)
                 println("Caso If 2 llegada")
-            }
-            else if (puntoCorte1 < totalSubida1 && puntoCorte2 > totalSubida1 && puntoCorte1 > puntoCorte2){
-                UtilidadesMenores().crearToast(mapa, "No fue posible generar camino")
+            } else if (puntoCorte1 < totalSubida1 && puntoCorte2 > totalSubida1 && puntoCorte1 > puntoCorte2) {
+                //no se pudo generar camino
+                instanciaMapa.mostrarIndicacionesCalculadas(true)
                 println("Caso If negacion numero 2 llegada")
             }
 

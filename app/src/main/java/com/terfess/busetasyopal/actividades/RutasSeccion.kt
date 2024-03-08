@@ -93,7 +93,6 @@ class RutasSeccion : AppCompatActivity() {
             })
 
 
-
         //mensaje controlado en vivo base datos
         if (mensajeEnVivo == null) {
             binding.mensajeControlado.visibility = View.GONE
