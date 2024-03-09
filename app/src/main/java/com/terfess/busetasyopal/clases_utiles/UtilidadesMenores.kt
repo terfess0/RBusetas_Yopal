@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
@@ -105,4 +106,10 @@ class UtilidadesMenores {
         }
     }
 
+    fun colorTema(contexto: Context): String {
+        val typedValue = TypedValue()
+        val theme = contexto.theme
+        theme.resolveAttribute(androidx.appcompat.R.attr.titleTextColor, typedValue, true)
+        return String.format("#%06X", typedValue.data and 0xFFFFFF)
+    }
 }

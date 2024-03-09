@@ -4,7 +4,7 @@
     android:id="@+id/fondox"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="#ffffff"
+    android:background ="?attr/colorPrimary"
     android:orientation="vertical">
 
     <EditText
@@ -45,7 +45,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:background="@drawable/bord_cabecera"
-        android:backgroundTint="@color/enfasis_azul"
         android:minHeight="150dp"
         app:layout_constraintBottom_toBottomOf="@+id/saludo"
         app:layout_constraintTop_toBottomOf="@+id/saludo">
@@ -154,7 +153,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
                     android:background="@drawable/bord_boton_relevant"
-                    android:backgroundTint="@color/enfasis_azul"
+                    android:backgroundTint="?attr/colorAccent"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:padding="5dp"
                     android:text="Ver Mapa con las Rutas"
@@ -169,7 +168,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
                     android:background="@drawable/bord_boton_relevant"
-                    android:backgroundTint="@color/enfasis_azul"
+                    android:backgroundTint="?attr/colorAccent"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:padding="5dp"
                     android:text="Calcular Ruta Inicio a Destino"
@@ -184,7 +183,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="5dp"
                     android:background="@drawable/bord_boton_relevant"
-                    android:backgroundTint="@color/enfasis_azul"
+                    android:backgroundTint="?attr/colorAccent"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:padding="5dp"
                     android:text="Ver Mapa con Parqueaderos Ruta"
@@ -215,6 +214,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="4dp"
+                android:textColor="?attr/titleTextColor"
                 android:text="@string/seccion_rutas"
                 android:textSize="8sp"
                 android:textStyle="bold" />

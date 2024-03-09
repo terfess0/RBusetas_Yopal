@@ -1,9 +1,13 @@
 <resources>
     <style name="Theme.general" parent="Theme.AppCompat.Light">
         <item name="elevation">1dp</item>
-        <item name="colorPrimary">#323131</item>
-        <item name="titleTextColor">#6B7FB1</item>
+        <item name="colorPrimary">#000000</item>
+        <item name="colorPrimaryDark">#00000000</item> <!-- Transparente -->
+        <item name="titleTextColor">#c0c0c2</item>
+        <item name="colorBackgroundFloating">#1F2633</item>
+        <item name="colorAccent">#1F2633</item>
     </style>
+
 
     <style name="Theme.splash" parent="Theme.SplashScreen.IconBackground">
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>

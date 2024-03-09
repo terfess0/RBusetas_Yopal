@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -40,8 +41,9 @@ class RutasSeccion : AppCompatActivity() {
     private lateinit var db: DatabaseReference
     private var precio: String = " $ 2,000 "
     private var mensajeEnVivo: String? = null
-    private var adapter = AdapterPrincipal(ListaRutas.busetaRuta.toList())
+    private lateinit var adapter : AdapterPrincipal
     private var adapterFiltro = FiltroAdapterHolder("")
+    private lateinit var colorTema: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +57,7 @@ class RutasSeccion : AppCompatActivity() {
         FirebaseApp.initializeApp(this)
         val cajaInfo = binding.cajaInfo
 
+        adapter = AdapterPrincipal(ListaRutas.busetaRuta.toList(), UtilidadesMenores().colorTema(this))
         cajaInfo.layoutManager = LinearLayoutManager(this)
         cajaInfo.adapter = adapter
 
@@ -63,8 +66,8 @@ class RutasSeccion : AppCompatActivity() {
 
         //ACTIONBAR
         //supportActionBar?.title = "Rutas"
-        supportActionBar?.themedContext
-        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT)) //dar color transparente a action bar para quitar linea divisora
+
+
 
         //mostrar saludo buenos dias
         val saludo: String = when (getHora()) {
@@ -142,6 +145,8 @@ class RutasSeccion : AppCompatActivity() {
             intent.putExtra("selector", 40)
             startActivity(intent)
         }
+
+        colorTema = UtilidadesMenores().colorTema(this)
     }
 
     //menu en el ActionBar
@@ -222,7 +227,7 @@ class RutasSeccion : AppCompatActivity() {
 
                     //cambiar el adaptador del recyclerView
                     binding.cajaInfo.adapter = adapter
-                    adapter.updateLista(ListaRutas.busetaRuta, "333333")
+                    adapter.updateLista(ListaRutas.busetaRuta, colorTema)
 
                     binding.cabezera.visibility = View.VISIBLE
                     binding.botonesRapidos.visibility = View.VISIBLE
@@ -265,7 +270,7 @@ class RutasSeccion : AppCompatActivity() {
             //cambiar el adaptador del recyclerView
             binding.cajaInfo.adapter = adapter
 
-            adapter.updateLista(ListaRutas.busetaRuta, "#333333")
+            adapter.updateLista(ListaRutas.busetaRuta, colorTema)
         } else {
             val builder = AlertDialog.Builder(this)
             builder.setMessage("¿Seguro que quieres salir?")

@@ -1,9 +1,12 @@
 <resources>
 
-    <style name="Theme.general" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.general" parent="Theme.AppCompat.Light">
         <item name="elevation">1dp</item>
-        <item name="colorPrimary">#FFFFFF</item>
-        <item name="titleTextColor">@color/enfasis_azul</item>
+        <item name="colorPrimary">#F4F4F4</item>
+        <item name="colorPrimaryDark">#00000000</item> <!-- Transparente -->
+        <item name="titleTextColor">#070707</item>
+        <item name="colorBackgroundFloating">#E1E8F6</item>
+        <item name="colorAccent">@color/enfasis_azul</item>
     </style>
 
     <style name="Theme.splash" parent="Theme.SplashScreen.IconBackground">

@@ -4,10 +4,11 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.modelos_dato.DatosPrimariosRuta
 
-class AdapterPrincipal(private var listado: List<DatosPrimariosRuta>) : RecyclerView.Adapter<HolderPrincipal>() {
-    var color: String = "#524e4e"
+class AdapterPrincipal(private var listado: List<DatosPrimariosRuta>, colorTema:String) : RecyclerView.Adapter<HolderPrincipal>() {
+    var color: String = colorTema
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HolderPrincipal {
         val layoutInflater = LayoutInflater.from(parent.context)
         return HolderPrincipal(layoutInflater.inflate(R.layout.formato_recycler_princ, parent, false))
