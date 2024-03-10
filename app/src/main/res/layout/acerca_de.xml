@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorPrimary"
     tools:context=".actividades.AcercaDe" >
 
     <ScrollView
@@ -23,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bord_suave"
-            android:backgroundTint="#D4DAEF"
+            android:backgroundTint="?attr/colorBackgroundFloating"
             android:orientation="vertical"
             android:paddingTop="10dp"
             android:paddingStart="10dp"
@@ -35,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/fuente_datos"
-                android:textColor="#000000"
+                android:textColor="?attr/titleTextColor"
                 android:textSize="20sp" />
 
             <TextView
@@ -45,7 +46,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:textAlignment="center"
-                android:textColor="#072EA3"
+                android:textColor="@color/enfasis_azul"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -54,7 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/tema_sugerido_sms"
-                android:textColor="#000000"
+                android:textColor="?attr/titleTextColor"
                 android:textSize="20sp" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -67,6 +68,7 @@
                     android:id="@+id/contc_wts"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@color/transparente"
                     android:contentDescription="@string/mensaje_contacto_wts"
                     android:src="@drawable/ic_whatsapp" />
 
@@ -74,7 +76,8 @@
                     android:id="@+id/contc_mail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="10dp"
+                    android:background="@color/transparente"
                     android:contentDescription="@string/mensaje_contacto"
                     android:src="@drawable/ic_mail" />
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -84,6 +87,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Iconos de Freepik"
+                android:textColor="?attr/titleTextColor"
                 android:textSize="8sp"
                 tools:ignore="SmallSp" />
 
@@ -101,13 +105,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="gone" >
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="\nHorarios"
-                    android:textColor="#000000"
+                    android:textColor="?attr/titleTextColor"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -115,14 +119,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="\nLos horarios muestran la hora en que sale la primera buseta y la hora en que sale la última buseta de la ruta correspondiente (aproximadamente).\n\nHorarios: Lunes a Viernes, Sábados y Domingos-Festivos. \n\nAbajo del horario está la frecuencia, es el tiempo que hay entre la salida de cada buseta; es decir, cada cierto tiempo sale del parqueadero la buseta.\n"
-                    android:textColor="#000000"
+                    android:textColor="?attr/titleTextColor"
                     android:textSize="20sp" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="De acuerdo al día de la semana, el horario adquirirá un color que indica la disponibilidad del servicio.\n* Cuando la buseta está funcionando/en servicio:"
-                    android:textColor="#000000"
+                    android:textColor="?attr/titleTextColor"
                     android:textSize="20sp" />
 
                 <ImageView
@@ -135,7 +139,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="\n* Cuando la buseta no está funcionando/fuera de servicio:"
-                    android:textColor="#000000"
+                    android:textColor="?attr/titleTextColor"
                     android:textSize="20sp" />
 
                 <ImageView

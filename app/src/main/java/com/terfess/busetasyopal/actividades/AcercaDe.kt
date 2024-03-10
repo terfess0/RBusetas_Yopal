@@ -27,7 +27,7 @@ class AcercaDe : AppCompatActivity() {
         cargarAnuncios()
 
         //actionbar transparente
-        supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        //supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         //---------------------------------------------------------------------------
         val activarHorarios = findViewById<Button>(R.id.verInfoHorarios)
