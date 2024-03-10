@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
 
     <application
         android:allowBackup="true"
@@ -16,7 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.general"
-        tools:targetApi="31" >
+        tools:targetApi="31">
 
         <activity
             android:name=".actividades.Splash"
@@ -44,8 +44,7 @@
             android:name=".actividades.RutasSeccion"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.general" >
-        </activity>
+            android:theme="@style/Theme.general" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -57,16 +56,8 @@
         <!-- id de admob = ca-app-pub-8000181315504515~7188607722 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713"/>
+            android:value="ca-app-pub-3940256099942544~3347511713" />
 
-        <!-- servicio firebase cloud messsagin -->
-        <service
-            android:name=".services.FirebaseMessagingService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
 
         <!-- Color predeterminado notis firebase messagin -->
         <meta-data
@@ -77,7 +68,20 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/enfasis_azul" />
-    </application>
 
+        <!-- servicio firebase cloud messsagin -->
+        <service
+            android:name=".services.FirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <property
+            android:name="android.adservices.AD_SERVICES_CONFIG"
+            android:resource="@xml/gma_ad_services_config"
+            tools:replace="android:resource" />
+    </application>
 
 </manifest>

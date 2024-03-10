@@ -52,7 +52,6 @@ dependencies {
     implementation("com.google.maps.android:maps-utils-ktx:3.4.0") //maps
     implementation("com.google.android.gms:play-services-location:21.1.0") //ubicacion
     implementation("androidx.cardview:cardview:1.0.0")
-    implementation("com.google.firebase:firebase-messaging-ktx:23.4.1") //maps
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -62,6 +61,8 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-database-ktx")
+    // firebase cloud messagin
+    implementation("com.google.firebase:firebase-messaging:23.4.1")
 
     //api google places
     implementation("com.google.android.libraries.places:places:3.3.0")
