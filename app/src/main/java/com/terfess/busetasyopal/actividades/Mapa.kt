@@ -290,10 +290,10 @@ class Mapa : AppCompatActivity(), LocationListener,
         when (idruta) {
 
             //--------------------------------------------------------------------------------------
-            //---------------------------CALCULAR RUTA----------------------------------------------
+            //---------------------------OPCIONES BOTONES----------------------------------------------
             //--------------------------------------------------------------------------------------
-
-            0 -> { //el numero 0 de id_ruta sera el que cree un mapa para calcular ruta
+            //el numero 0 de id_ruta sera el que cree un mapa para calcular ruta
+            0 -> {
 
                 //Cuando se calcule la ruta
                 binding.infoColor.visibility = View.GONE
@@ -396,6 +396,7 @@ class Mapa : AppCompatActivity(), LocationListener,
                     //guardar la ubicacion y representarla con un marcador
                     binding.setUbiGps.setOnClickListener {
                         binding.setUbiGps.visibility = View.GONE
+                        UtilidadesMenores().crearToast(this, "Localizando...")
 
                         activarLocalizacion()
                         irPosGps()
@@ -530,9 +531,9 @@ class Mapa : AppCompatActivity(), LocationListener,
 
             //--------------------------------------------------------------------------------------
             //--------------------------------------------------------------------------------------
-
+            //cuando se vea el mapa con todas las rutas
             20 -> {
-                //cuando se vea el mapa con todas las rutas
+
                 supportActionBar?.title = "Ver Mapa con Rutas"
                 binding.infoColor.visibility = View.GONE
                 binding.listaRutasOpMapa.visibility = View.VISIBLE
@@ -578,9 +579,9 @@ class Mapa : AppCompatActivity(), LocationListener,
 
             //--------------------------------------------------------------------------------------
             //--------------------------------------------------------------------------------------
-
+            //cuando se vea el mapa con parqueaderos
             40 -> {
-                //cuando se vea el mapa con parqueaderos
+
                 supportActionBar?.title = "Ver Mapa con Parqueaderos"
                 binding.infoColor.visibility = View.GONE
 

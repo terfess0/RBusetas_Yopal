@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
     android:background="@drawable/bord_suave"
-    android:backgroundTint="#1EFFFFFF"
+    android:backgroundTint="?attr/colorPrimary"
     android:padding="4dp">
 
     <TextView
@@ -17,6 +17,7 @@
         android:foregroundGravity="center"
         android:text="TextView"
         android:textStyle="bold"
+        android:textColor="?attr/titleTextColor"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -30,7 +31,7 @@
         android:fontFamily="@font/roboto"
         android:foregroundGravity="center_horizontal"
         android:text="Salida:"
-        android:textColor="#000000"
+        android:textColor="?attr/titleTextColor"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="parent" />
@@ -71,7 +72,7 @@
         android:fontFamily="@font/roboto"
         android:foregroundGravity="center_horizontal"
         android:text="Llegada:"
-        android:textColor="#000000"
+        android:textColor="?attr/titleTextColor"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
