@@ -13,8 +13,8 @@ android {
         applicationId = "com.terfess.busetasyopal"
         minSdk = 24
         targetSdk = 34
-        versionCode = 17
-        versionName = "1.0.8"
+        versionCode = 18
+        versionName = "1.0.9"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -50,7 +50,7 @@ dependencies {
     implementation("com.google.maps.android:android-maps-utils:2.3.0")//maps
     implementation("com.google.android.gms:play-services-maps:18.2.0")//maps
     implementation("com.google.maps.android:maps-utils-ktx:3.4.0") //maps
-    implementation("com.google.android.gms:play-services-location:21.1.0") //ubicacion
+    implementation("com.google.android.gms:play-services-location:21.2.0") //ubicacion
     implementation("androidx.cardview:cardview:1.0.0")
 
     testImplementation("junit:junit:4.13.2")
@@ -58,7 +58,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     //firebase
-    implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
+    implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-database-ktx")
     // firebase cloud messagin
@@ -68,10 +68,10 @@ dependencies {
     implementation("com.google.android.libraries.places:places:3.3.0")
 
     //coroutinas
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     //anuncios admob
-    implementation("com.google.android.gms:play-services-ads:22.6.0")
+    implementation("com.google.android.gms:play-services-ads:23.0.0")
 
     //splash
     implementation("androidx.core:core-splashscreen:1.0.1")

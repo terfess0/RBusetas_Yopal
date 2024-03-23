@@ -282,7 +282,7 @@ class RutasSeccion : AppCompatActivity() {
 
             adapter.updateLista(ListaRutas.busetaRuta, colorTema)
         } else {
-            val builder = AlertDialog.Builder(this)
+            val builder = AlertDialog.Builder(this, R.style.AlertDialogTheme)
             builder.setMessage("¿Seguro que quieres salir?")
                 .setPositiveButton("Sí") { _, _ ->
                     //cerrar la app
@@ -322,4 +322,6 @@ class RutasSeccion : AppCompatActivity() {
             }
         }
     }
+
+    //---------------------------------------------------------
 }
