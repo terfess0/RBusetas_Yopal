@@ -191,9 +191,6 @@ class UtilidadesMenores {
                             instanciaMapa.irPosGps()
                             while (Mapa.ubiUser.latitude == 0.0 && Mapa.ubiUser.longitude == 0.0) {
                                 delay(1000) // Esperar 1 segundo antes de verificar la ubicación nuevamente
-                                withContext(Dispatchers.Main) {
-                                    crearToast(context, "paso")
-                                }
                             }
                             ubiUser = Mapa.ubiUser
                             ubicacion = ubiUser.toString()
