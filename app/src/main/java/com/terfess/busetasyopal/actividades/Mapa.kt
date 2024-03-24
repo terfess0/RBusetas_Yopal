@@ -16,6 +16,8 @@ import android.os.Looper
 import android.provider.Settings
 import android.text.Html
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import androidx.appcompat.app.AlertDialog
@@ -150,14 +152,10 @@ class Mapa : AppCompatActivity(), LocationListener,
         Datos.mejorPuntoaDestino[0] = -1
         Datos.mejorPuntoaDestino[1] = Int.MAX_VALUE
         //-----------------------------------------------------
+
+
     }
 
-    private fun cargarAnuncios() {
-        //anuncios
-        mAdView = findViewById(R.id.adView)
-        val adRequest = AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
-    }
 
     override fun onMapReady(mapa: GoogleMap) {
         gmap = mapa
@@ -911,5 +909,29 @@ class Mapa : AppCompatActivity(), LocationListener,
             binding.indicacion3.text = " Camina hasta el punto de destino."
         }
 
+    }
+
+    private fun cargarAnuncios() {
+        //anuncios
+        mAdView = findViewById(R.id.adView)
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
+    }
+
+    //inflar menu mapa opciones actionbar
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_mapa, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when(item.itemId){
+            R.id.reportar -> {
+                UtilidadesMenores().reportar(this)
+            }
+        }
+
+        return true
     }
 }

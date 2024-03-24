@@ -9,6 +9,14 @@
         <item name="colorAccent">@color/enfasis_azul</item>
     </style>
 
+    <style name="AlertDialogTheme" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="colorPrimary">#FFFFFF</item>
+        <item name="android:windowBackground">@drawable/bord_alerta</item>
+        <item name="buttonTint">@color/transparente</item>
+        <item name="android:textColorPrimary">@android:color/white</item> <!-- Cambiar el color del texto principal a blanco -->
+        <item name="android:textColorSecondary">@android:color/white</item> <!-- Cambiar el color del texto secundario a blanco -->
+    </style>
+
     <style name="Theme.splash" parent="Theme.SplashScreen.IconBackground">
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
         <item name="windowSplashScreenAnimationDuration">500</item>
