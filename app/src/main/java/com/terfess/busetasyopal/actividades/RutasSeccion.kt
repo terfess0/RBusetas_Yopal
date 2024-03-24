@@ -111,6 +111,7 @@ class RutasSeccion : AppCompatActivity() {
         val msj1 = binding.mensaje1
         val msj2 = binding.mensaje2
         val msj3 = binding.mensaje3
+        msj1.text = ""
         //contenido mensajes ->
         FirebaseDatabase.getInstance().getReference("/features/0/mensajes")
             .addValueEventListener(object : ValueEventListener {
@@ -311,13 +312,7 @@ class RutasSeccion : AppCompatActivity() {
     // Declare the launcher at the top of your Activity/Fragment:
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission(),
-    ) { isGranted: Boolean ->
-        if (isGranted) {
-            // FCM SDK (and your app) can post notifications.
-        } else {
-
-        }
-    }
+    ){}
 
     private fun pedirPermisoNotificacionesV33() {
         // This is only necessary for API level >= 33 (TIRAMISU)
