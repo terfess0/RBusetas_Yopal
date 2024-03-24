@@ -99,15 +99,31 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/textView"
-            app:layout_constraintTop_toBottomOf="@+id/mensaje_controlado"
+            app:layout_constraintTop_toBottomOf="@+id/mensaje3"
             app:layout_constraintVertical_bias="0.971" />
 
         <TextView
-            android:id="@+id/mensaje_controlado"
+            android:id="@+id/mensaje1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:padding="5dp"
+            android:text="TextView"
+            android:textColor="#76FFA4"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/saludo"
+            app:layout_constraintVertical_bias="0.0" />
+        <TextView
+            android:id="@+id/mensaje2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
             android:layout_marginEnd="10dp"
             android:padding="5dp"
             android:text="TextView"
@@ -117,8 +133,26 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/saludo"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/mensaje1"
+            app:layout_constraintVertical_bias="0.0"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/mensaje3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="10dp"
+            android:padding="5dp"
+            android:text="TextView"
+            android:textColor="#EF5656"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mensaje2"
+            app:layout_constraintVertical_bias="0.0"
+            android:visibility="gone"/>
 
         <!--androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"

@@ -47,8 +47,7 @@ class RutasSeccion : AppCompatActivity() {
     var filtrando = false
     private lateinit var db: DatabaseReference
     private var precio: String = " $ 2,000 "
-    private var mensajeEnVivo: String? = null
-    private lateinit var adapter : AdapterPrincipal
+    private lateinit var adapter: AdapterPrincipal
     private var adapterFiltro = FiltroAdapterHolder("")
     private lateinit var colorTema: String
 
@@ -64,7 +63,8 @@ class RutasSeccion : AppCompatActivity() {
         FirebaseApp.initializeApp(this)
         val cajaInfo = binding.cajaInfo
 
-        adapter = AdapterPrincipal(ListaRutas.busetaRuta.toList(), UtilidadesMenores().colorTema(this))
+        adapter =
+            AdapterPrincipal(ListaRutas.busetaRuta.toList(), UtilidadesMenores().colorTema(this))
         cajaInfo.layoutManager = LinearLayoutManager(this)
         cajaInfo.adapter = adapter
 
@@ -75,7 +75,7 @@ class RutasSeccion : AppCompatActivity() {
         //supportActionBar?.title = "Rutas"
 
         //pedir permiso notificacion si es mayor a android 13
-        if (VERSION.SDK_INT >= 33){
+        if (VERSION.SDK_INT >= 33) {
             pedirPermisoNotificacionesV33()
         }
 
@@ -106,31 +106,42 @@ class RutasSeccion : AppCompatActivity() {
             })
 
 
-        //mensaje controlado en vivo base datos
-        if (mensajeEnVivo == null) {
-            binding.mensajeControlado.visibility = View.GONE
-        }
-        FirebaseDatabase.getInstance().getReference("/features/0/mensaje")
+        //mensajes controlados en vivo base datos
+        //variables
+        val msj1 = binding.mensaje1
+        val msj2 = binding.mensaje2
+        val msj3 = binding.mensaje3
+        //contenido mensajes ->
+        FirebaseDatabase.getInstance().getReference("/features/0/mensajes")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val mensaje = snapshot.value.toString()
-                    if (mensaje != "null") {
-                        binding.mensajeControlado.visibility = View.VISIBLE
-                        binding.mensajeControlado.text = mensaje
-                    } else {
-                        binding.mensajeControlado.visibility = View.GONE
-                    }
+                    // Obtener los valores de la base de datos
+                    val mensaje1 = snapshot.child("mensaje1").value?.toString()
+                    val mensaje2 = snapshot.child("mensaje2").value?.toString()
+                    val mensaje3 = snapshot.child("mensaje3").value?.toString()
+
+                    // Establecer el texto de los elementos
+                    msj1.text = mensaje1
+                    msj2.text = mensaje2
+                    msj3.text = mensaje3
+
+                    // Mostrar u ocultar los elementos según los valores obtenidos
+                    msj1.visibility = if (mensaje1 != "" && mensaje1 != null) View.VISIBLE else View.GONE
+                    msj2.visibility = if (mensaje2 != "" && mensaje2 != null) View.VISIBLE else View.GONE
+                    msj3.visibility = if (mensaje3 != "" && mensaje3 != null) View.VISIBLE else View.GONE
+
                 }
 
                 override fun onCancelled(error: DatabaseError) {
                     Toast.makeText(
                         binding.root.context,
-                        "El precio no se pudo recibir desde internet",
+                        "Mensajes en vivo no se pudo recibir desde internet",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
             })
 
+        //termina mensajes en vivo-------------------------------------------------
 
         //el usuario elige boton calcular la ruta al destino
         binding.calcularRuta.setOnClickListener {
@@ -316,7 +327,7 @@ class RutasSeccion : AppCompatActivity() {
             ) {
                 // FCM SDK (and your app) can post notifications.
             } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-               } else {
+            } else {
                 // Directly ask for the permission
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
