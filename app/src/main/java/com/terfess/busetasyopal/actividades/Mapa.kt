@@ -676,7 +676,7 @@ class Mapa : AppCompatActivity(), LocationListener,
         gmap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosicion))
     }
 
-    private fun irPosGps() {
+    fun irPosGps() {
         //este if verifica que no tiene permiso ni de FINE ni de COURSE LoCATION
         if (ActivityCompat.checkSelfPermission(
                 this,
@@ -695,9 +695,10 @@ class Mapa : AppCompatActivity(), LocationListener,
             // Verifica si la ubicación no es nula
             if (location != null) {
                 val latLng = LatLng(location.latitude, location.longitude)
+                ubiUser = latLng
                 binding.irgps.setImageResource(R.drawable.ic_gps_find)
                 gmap.animateCamera(CameraUpdateFactory.newLatLngZoom((latLng), 16.5f), 2000, null)
-                ubiUser = latLng
+
                 if (binding.sentidoSubida.visibility != View.VISIBLE && idruta != 20 && idruta != 40 && idruta != 0) { //diferente de 0, 20 y 40 para evitar la activacion del distancia a recorrido en opcion mostrar mapa con rutas, calcular ruta y parqueaderos
                     binding.verDistancia.visibility = View.VISIBLE
                 }
@@ -729,7 +730,7 @@ class Mapa : AppCompatActivity(), LocationListener,
             Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
 
-    private fun activarLocalizacion() { //pide permiso de localicaion
+    fun activarLocalizacion() { //pide permiso de localicaion
         val permission = Manifest.permission.ACCESS_FINE_LOCATION
         ActivityCompat.requestPermissions(this, arrayOf(permission), codigoLocalizacion)
     }
@@ -928,7 +929,7 @@ class Mapa : AppCompatActivity(), LocationListener,
 
         when(item.itemId){
             R.id.reportar -> {
-                UtilidadesMenores().reportar(this)
+                UtilidadesMenores().reportar(this, this)
             }
         }
 

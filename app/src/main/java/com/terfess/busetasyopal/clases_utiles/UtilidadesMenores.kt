@@ -9,13 +9,36 @@ import android.net.NetworkCapabilities
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.marginLeft
+import androidx.core.view.marginStart
+import androidx.core.view.setPadding
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.FirebaseApp
+import com.google.firebase.app
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import com.terfess.busetasyopal.R
+import com.terfess.busetasyopal.actividades.Mapa
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
+import kotlin.coroutines.coroutineContext
 
 
 interface AlertaCallback { //devolucion de llamada para el CrearAlerta
@@ -112,4 +135,110 @@ class UtilidadesMenores {
         theme.resolveAttribute(androidx.appcompat.R.attr.titleTextColor, typedValue, true)
         return String.format("#%06X", typedValue.data and 0xFFFFFF)
     }
+
+    fun reportar(context: Context, instanciaMapa: Mapa) {
+        var ubiUser = Mapa.ubiUser
+        val builder = AlertDialog.Builder(context, R.style.AlertDialogTheme)
+        builder.setTitle("Reportar novedad")
+
+
+        // Crear un LinearLayout vertical para contener el EditText y el CheckBox
+        val layout = LinearLayout(context)
+        layout.orientation = LinearLayout.VERTICAL
+
+        // Agregar un EditText para que el usuario ingrese texto
+        val input = EditText(context)
+        input.hint = "Escribe tu reporte"
+        input.setTextColor(Color.WHITE)
+        input.setHintTextColor(Color.WHITE)
+        input.maxLines = 5
+        input.maxEms = 5
+        layout.addView(input)
+
+        // Agregar un CheckBox para permitir al usuario elegir si desea enviar la ubicación
+        val checkBox = CheckBox(context)
+        checkBox.text = "Enviar también ubicación actual"
+        checkBox.setTextColor(Color.WHITE)
+        layout.addView(checkBox)
+
+        // Establecer el LinearLayout como la vista del cuadro de diálogo
+        builder.setView(layout)
+        builder.setCancelable(false)
+        builder.setPositiveButton("Enviar") { dialog, which ->
+            if (comprobarConexion(context)) {
+                // Obtener el texto ingresado por el usuario
+                val texto = input.text.toString()
+                if (texto.isEmpty()) {
+                    crearToast(context, "Reporte vacío, no se envió.")
+                } else {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val firebase: FirebaseDatabase = FirebaseDatabase.getInstance()
+                        val ref: DatabaseReference = firebase.getReference("features/0/reportes")
+                        val nuevoReporteKey = ref.push().key ?: return@launch
+
+                        val currentDate: Date = Calendar.getInstance().time
+                        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                        val fechaFormateada: String = dateFormat.format(currentDate)
+                        val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+                        val horaFormateada: String = timeFormat.format(currentDate)
+
+                        var ubicacion = "Ninguna"
+                        if (checkBox.isChecked && ubiUser.latitude != 0.0 && ubiUser.longitude != 0.0) {
+                            ubicacion = ubiUser.toString()
+                        }
+                        if (checkBox.isChecked && (ubiUser.latitude == 0.0 && ubiUser.longitude == 0.0)) {
+                            instanciaMapa.activarLocalizacion()
+                            instanciaMapa.irPosGps()
+                            while (Mapa.ubiUser.latitude == 0.0 && Mapa.ubiUser.longitude == 0.0) {
+                                delay(1000) // Esperar 1 segundo antes de verificar la ubicación nuevamente
+                                withContext(Dispatchers.Main) {
+                                    crearToast(context, "paso")
+                                }
+                            }
+                            ubiUser = Mapa.ubiUser
+                            ubicacion = ubiUser.toString()
+                        }
+                        if (!checkBox.isChecked) {
+                            ubicacion = "No proporcionada"
+                        }
+
+                        // Crear un nuevo nodo con el ID único, fecha, texto y ubicación del reporte
+                        val nuevoReporte = mapOf<String, Any>(
+                            "fecha" to fechaFormateada,
+                            "hora" to horaFormateada,
+                            "situacion" to texto,
+                            "ubicacion" to ubicacion
+                        )
+
+                        // Subir el nuevo reporte a la base de datos de Firebase
+                        ref.child(nuevoReporteKey).setValue(nuevoReporte)
+                            .addOnCompleteListener { subida ->
+                                if (subida.isSuccessful) {
+                                    // La subida fue exitosa
+                                    Toast.makeText(
+                                        context,
+                                        "Reporte enviado exitosamente",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                } else {
+                                    // La subida falló
+                                    Toast.makeText(
+                                        context,
+                                        "Error al enviar el reporte. Inténtalo de nuevo más tarde",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                    }
+                }
+            } else {
+                crearToast(context, "No hay conexión, inténtalo de nuevo más tarde")
+            }
+        }
+
+
+
+        builder.show()
+    }
+
 }
