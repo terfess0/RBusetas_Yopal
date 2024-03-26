@@ -71,6 +71,7 @@ class Mapa : AppCompatActivity(), LocationListener,
     private var puntoProvisionalGps: Circle? = null
     private lateinit var marcador: Marker
     private lateinit var mAdView: AdView //anuncios
+    private lateinit var tarea_actual :String //que esta haciendo el mapa?
 
 
     companion object { //accesibles desde cualquier lugar de este archivo/clase y proyectos
@@ -174,6 +175,8 @@ class Mapa : AppCompatActivity(), LocationListener,
         gmap.uiSettings.isIndoorLevelPickerEnabled =
             false //desactivar selector de piso o nivel -- rendimiento
 
+        //definir estado accion del mapa (que esta mostrando)
+        tarea_actual = "Mostrando ruta $idruta"
 
         irYopal() //colocar la camara en la ciudad de yopal
 
@@ -292,6 +295,9 @@ class Mapa : AppCompatActivity(), LocationListener,
             //--------------------------------------------------------------------------------------
             //el numero 0 de id_ruta sera el que cree un mapa para calcular ruta
             0 -> {
+                //identificar estado mapa - tarea
+                tarea_actual = "Calculando ruta"
+                //---------------------------------
 
                 //Cuando se calcule la ruta
                 binding.infoColor.visibility = View.GONE
@@ -529,12 +535,16 @@ class Mapa : AppCompatActivity(), LocationListener,
 
             //--------------------------------------------------------------------------------------
             //--------------------------------------------------------------------------------------
-            //cuando se vea el mapa con todas las rutas
+            //cuando 20 se vea el mapa con todas las rutas
             20 -> {
+                //identificar estado mapa - tarea
+                tarea_actual = "Mapa con todas las rutas"
+                //---------------------------------
 
                 supportActionBar?.title = "Ver Mapa con Rutas"
                 binding.infoColor.visibility = View.GONE
                 binding.listaRutasOpMapa.visibility = View.VISIBLE
+
 
                 //mostrar info relacionada
                 binding.indicaciones.visibility = View.VISIBLE
@@ -577,8 +587,11 @@ class Mapa : AppCompatActivity(), LocationListener,
 
             //--------------------------------------------------------------------------------------
             //--------------------------------------------------------------------------------------
-            //cuando se vea el mapa con parqueaderos
+            //cuando 40 se vea el mapa con parqueaderos
             40 -> {
+                //identificar estado mapa - tarea
+                tarea_actual = "Mostrando mapa con parqueaderos"
+                //---------------------------------
 
                 supportActionBar?.title = "Ver Mapa con Parqueaderos"
                 binding.infoColor.visibility = View.GONE
@@ -926,10 +939,13 @@ class Mapa : AppCompatActivity(), LocationListener,
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        //variable para identificar la opcion entorno al reporte
+        val opcion_actual = tarea_actual
 
+        //opcion reportar
         when(item.itemId){
             R.id.reportar -> {
-                UtilidadesMenores().reportar(this, this)
+                UtilidadesMenores().reportar(this, this, opcion_actual)
             }
         }
 

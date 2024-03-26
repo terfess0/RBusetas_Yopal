@@ -136,7 +136,7 @@ class UtilidadesMenores {
         return String.format("#%06X", typedValue.data and 0xFFFFFF)
     }
 
-    fun reportar(context: Context, instanciaMapa: Mapa) {
+    fun reportar(context: Context, instanciaMapa: Mapa, opcion_actual:String) {
         var ubiUser = Mapa.ubiUser
         val builder = AlertDialog.Builder(context, R.style.AlertDialogTheme)
         builder.setTitle("Reportar novedad")
@@ -163,17 +163,16 @@ class UtilidadesMenores {
 
         // Establecer el LinearLayout como la vista del cuadro de diálogo
         builder.setView(layout)
-        builder.setCancelable(false)
         builder.setPositiveButton("Enviar") { dialog, which ->
             if (comprobarConexion(context)) {
                 // Obtener el texto ingresado por el usuario
                 val texto = input.text.toString()
                 if (texto.isEmpty()) {
-                    crearToast(context, "Reporte vacío, no se envió.")
+                    crearToast(context, "Reporte vacío, no se envió")
                 } else {
                     CoroutineScope(Dispatchers.IO).launch {
                         val firebase: FirebaseDatabase = FirebaseDatabase.getInstance()
-                        val ref: DatabaseReference = firebase.getReference("features/0/reportes")
+                        val ref: DatabaseReference = firebase.getReference(context.getString(R.string.ruta_reportes_db_nube))
                         val nuevoReporteKey = ref.push().key ?: return@launch
 
                         val currentDate: Date = Calendar.getInstance().time
@@ -204,7 +203,8 @@ class UtilidadesMenores {
                             "fecha" to fechaFormateada,
                             "hora" to horaFormateada,
                             "situacion" to texto,
-                            "ubicacion" to ubicacion
+                            "ubicacion" to ubicacion,
+                            "tareaActual" to opcion_actual
                         )
 
                         // Subir el nuevo reporte a la base de datos de Firebase
@@ -232,8 +232,6 @@ class UtilidadesMenores {
                 crearToast(context, "No hay conexión, inténtalo de nuevo más tarde")
             }
         }
-
-
 
         builder.show()
     }
