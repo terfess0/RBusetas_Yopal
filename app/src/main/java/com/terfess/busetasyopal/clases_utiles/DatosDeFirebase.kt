@@ -179,6 +179,8 @@ class DatosDeFirebase {
                             callback.todosDatosRecibidos(listaCompleta) //callback con la lista de  todas las rutas
                             baseDatosFirebaseDatabase.goOffline()
                             println("*** Off Firebase")
+                            baseDatosFirebaseDatabase.goOnline()
+                            println("***Conexion firebase abierta")
                         }
                     } else {
                         println("ERROR EN RUTA $rutaId")

@@ -61,6 +61,8 @@ class RutasSeccion : AppCompatActivity() {
         db =
             FirebaseDatabase.getInstance(getString(R.string.linkBaseDatos)).reference
         FirebaseApp.initializeApp(this)
+
+        //recycler
         val cajaInfo = binding.cajaInfo
 
         adapter =
