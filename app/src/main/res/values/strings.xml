@@ -26,6 +26,7 @@
     <string name="crearTablaFrecuencia">CREATE TABLE frecuencia(id_ruta INTEGER,frecLunVie TEXT NOT NULL,frecSab TEXT NOT NULL,frecDomFest TEXT NOT NULL,FOREIGN KEY (id_ruta) REFERENCES ruta(id_ruta));</string>
     <string name="seccion_rutas">RUTAS HABILITADAS</string>
     <string name="seccion_botones">OPCIONES</string>
+    <string name="ruta_reportes_db_nube">features/0/reportes</string>
 
 </resources>
 
