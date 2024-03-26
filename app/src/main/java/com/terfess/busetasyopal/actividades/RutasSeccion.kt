@@ -41,6 +41,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
+
 class RutasSeccion : AppCompatActivity() {
     //CLASE DE LAYOUT PANTALLA PRINCIPAL
     private lateinit var binding: PantPrincipalBinding
@@ -66,7 +67,7 @@ class RutasSeccion : AppCompatActivity() {
         val cajaInfo = binding.cajaInfo
 
         adapter =
-            AdapterPrincipal(ListaRutas.busetaRuta.toList(), UtilidadesMenores().colorTema(this))
+            AdapterPrincipal(ListaRutas.busetaRuta.toList(), UtilidadesMenores().colorTituloTema(this))
         cajaInfo.layoutManager = LinearLayoutManager(this)
         cajaInfo.adapter = adapter
 
@@ -170,7 +171,7 @@ class RutasSeccion : AppCompatActivity() {
             startActivity(intent)
         }
 
-        colorTema = UtilidadesMenores().colorTema(this)
+        colorTema = UtilidadesMenores().colorTituloTema(this)
     }
 
     //menu en el ActionBar

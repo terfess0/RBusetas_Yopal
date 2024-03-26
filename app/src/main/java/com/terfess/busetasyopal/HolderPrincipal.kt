@@ -21,10 +21,10 @@ import kotlinx.coroutines.withContext
 class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
     private val binding = FormatoRecyclerPrincBinding.bind(vista)
     private val caja = vista.context as Activity
-    private var colorTema = UtilidadesMenores().colorTema(vista.context) //color tema
-    private var rutaEnServicioLV = UtilidadesMenores().colorTema(vista.context) //color tema
-    private var rutaEnServicioSab = UtilidadesMenores().colorTema(vista.context) //color tema
-    private var rutaEnServicioDom = UtilidadesMenores().colorTema(vista.context) //color tema
+    private var colorSubTituloTema = UtilidadesMenores().colorSubTituloTema(vista.context) //color subtitulo tema
+    private var rutaEnServicioLV = colorSubTituloTema //color subtitulo tema
+    private var rutaEnServicioSab = colorSubTituloTema //color subtitulo tema
+    private var rutaEnServicioDom = colorSubTituloTema //color subtitulo tema
     private var rutaEnDia = "#002fa7"
     private val baseSql = DatosASqliteLocal(vista.context)
 
@@ -36,7 +36,7 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
         val ruta = "Ruta\n" + dato.numRuta
         val contextoHolder = this //recuperar el contexto para usarlo en el scope coroutina
         val sitios =
-            "<font color='$colorDia' style='text-align:center'><b>Lugares Relevantes</b></font> <br> <font color='$colorTema' >${dato.sitios}</font>"
+            "<font color='$colorDia' style='text-align:center'><b>Lugares Relevantes</b></font> <br> <font color='$colorSubTituloTema' >${dato.sitios}</font>"
 
 
         //se usa coroutinas para evitar congelamientos de la ui (xd es obvio)

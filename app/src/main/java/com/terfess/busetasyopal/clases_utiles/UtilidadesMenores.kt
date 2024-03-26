@@ -129,12 +129,29 @@ class UtilidadesMenores {
         }
     }
 
-    fun colorTema(contexto: Context): String {
+    fun colorTituloTema(contexto: Context): String {
+
         val typedValue = TypedValue()
+
         val theme = contexto.theme
         theme.resolveAttribute(androidx.appcompat.R.attr.titleTextColor, typedValue, true)
+
+        val typedValue2 = TypedValue()
+        val subTitulo = theme.resolveAttribute(androidx.appcompat.R.attr.subtitleTextColor, typedValue2, true)
+
         return String.format("#%06X", typedValue.data and 0xFFFFFF)
     }
+
+    fun colorSubTituloTema(contexto: Context): String {
+
+        val theme = contexto.theme
+        val typedValue2 = TypedValue()
+
+        val subTitulo = theme.resolveAttribute(androidx.appcompat.R.attr.subtitleTextColor, typedValue2, true)
+
+        return String.format("#%06X", typedValue2.data and 0xFFFFFF)
+    }
+
 
     fun reportar(context: Context, instanciaMapa: Mapa, opcion_actual:String) {
         var ubiUser = Mapa.ubiUser
