@@ -51,6 +51,7 @@ class RutasSeccion : AppCompatActivity() {
     private lateinit var adapter: AdapterPrincipal
     private var adapterFiltro = FiltroAdapterHolder("")
     private lateinit var colorTema: String
+    private var opcion_actual = "Viendo Menu Principal"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -263,6 +264,16 @@ class RutasSeccion : AppCompatActivity() {
             R.id.acercade -> {
                 val intent = Intent(this, AcercaDe::class.java)
                 startActivity(intent)
+            }
+
+            R.id.reportar -> {
+                if (filtro.visibility == View.VISIBLE){
+                    opcion_actual = "En filtro de sitios"
+                }
+                if (filtrando){
+                    opcion_actual = "Filtrando - buscando sitios"
+                }
+                UtilidadesMenores().reportar(this, null, opcion_actual)
             }
         }
         return true
