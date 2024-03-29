@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/reportar"
+        android:icon="@drawable/ic_reportar"
+        android:title="Reportar Novedad"
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/buscar"
-        android:title="Filtrar"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_buscar">
-    </item>
+        android:icon="@drawable/ic_buscar"
+        android:title="Buscar Sitios"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/acercade"
-        android:title="Acerca de"
         android:icon="@drawable/ic_acerca_de"
-        app:showAsAction="ifRoom">
-    </item>
+        android:title="Acerca de la App"
+        app:showAsAction="ifRoom" />
+
 </menu>
