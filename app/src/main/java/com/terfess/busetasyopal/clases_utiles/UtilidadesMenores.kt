@@ -153,8 +153,8 @@ class UtilidadesMenores {
     }
 
 
-    fun reportar(context: Context, instanciaMapa: Mapa, opcion_actual:String) {
-        var ubiUser = Mapa.ubiUser
+    fun reportar(context: Context, instanciaMapa: Mapa? = null, opcion_actual:String) {
+        var ubiUser = Mapa.ubiUser ?: LatLng(0.0, 0.0)
         val builder = AlertDialog.Builder(context, R.style.AlertDialogTheme)
         builder.setTitle("Reportar novedad")
 
@@ -176,7 +176,9 @@ class UtilidadesMenores {
         val checkBox = CheckBox(context)
         checkBox.text = "Enviar también ubicación actual"
         checkBox.setTextColor(Color.WHITE)
-        layout.addView(checkBox)
+        if (instanciaMapa != null) { // Verificar si se proporcionó una instancia del mapa
+            layout.addView(checkBox)
+        }
 
         // Establecer el LinearLayout como la vista del cuadro de diálogo
         builder.setView(layout)
@@ -203,8 +205,8 @@ class UtilidadesMenores {
                             ubicacion = ubiUser.toString()
                         }
                         if (checkBox.isChecked && (ubiUser.latitude == 0.0 && ubiUser.longitude == 0.0)) {
-                            instanciaMapa.activarLocalizacion()
-                            instanciaMapa.irPosGps()
+                            instanciaMapa?.activarLocalizacion()
+                            instanciaMapa?.irPosGps()
                             while (Mapa.ubiUser.latitude == 0.0 && Mapa.ubiUser.longitude == 0.0) {
                                 delay(1000) // Esperar 1 segundo antes de verificar la ubicación nuevamente
                             }
