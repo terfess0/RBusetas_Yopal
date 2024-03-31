@@ -2,21 +2,19 @@
     <style name="Theme.general" parent="Theme.AppCompat.Light">
         <item name="elevation">1dp</item>
         <item name="colorPrimary">#000000</item>
-        <item name="colorPrimaryDark">#040A0E</item>
-        <item name="subtitleTextColor">#CCCCCC</item>
+        <item name="colorPrimaryDark">#CCCCCC</item>
         <item name="titleTextColor">#FFFFFF</item><!-- Cambiar el color del texto del título a blanco -->
         <item name="colorBackgroundFloating">#1F2633</item>
         <item name="colorAccent">#1F2633</item>
     </style>
 
     <style name="AlertDialogTheme" parent="ThemeOverlay.AppCompat.Dialog.Alert">
-        <item name="colorPrimary">#FFFFFF</item>
-        <item name="android:windowBackground">@drawable/bord_alerta</item>
-        <item name="buttonTint">@color/transparente</item>
-        <item name="android:textColorPrimary">@android:color/white</item> <!-- Cambiar el color del texto principal a blanco -->
-        <item name="android:textColorSecondary">@android:color/white</item> <!-- Cambiar el color del texto secundario a blanco -->
+        <item name="colorPrimary">#FFFFFF</item> <!-- Color de fondo principal -->
+        <item name="android:windowBackground">@drawable/bord_alerta</item> <!-- Fondo de la ventana con el borde de alerta -->
+        <item name="buttonTint">@color/transparente</item> <!-- Tinte del botón -->
+        <item name="android:textColorPrimary">@android:color/black</item> <!-- Color del texto principal -->
+        <item name="android:textColorSecondary">@android:color/black</item> <!-- Color del texto secundario -->
     </style>
-
 
     <style name="Theme.splash" parent="Theme.SplashScreen.IconBackground">
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>

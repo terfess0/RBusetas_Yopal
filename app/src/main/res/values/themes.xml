@@ -10,17 +10,19 @@
     </style>
 
     <style name="AlertDialogTheme" parent="ThemeOverlay.AppCompat.Dialog.Alert">
-        <item name="colorPrimary">#FFFFFF</item>
-        <item name="android:windowBackground">@drawable/bord_alerta</item>
-        <item name="buttonTint">@color/transparente</item>
-        <item name="android:textColorPrimary">@android:color/white</item> <!-- Cambiar el color del texto principal a blanco -->
-        <item name="android:textColorSecondary">@android:color/white</item> <!-- Cambiar el color del texto secundario a blanco -->
+        <item name="colorPrimary">#FFFFFF</item> <!-- Color de fondo principal -->
+        <item name="android:windowBackground">@drawable/bord_alerta</item> <!-- Fondo de la ventana con el borde de alerta -->
+        <item name="buttonTint">@color/transparente</item> <!-- Tinte del botón -->
+        <item name="android:textColorPrimary">@android:color/black</item> <!-- Color del texto principal -->
+        <item name="android:textColorSecondary">@android:color/black</item> <!-- Color del texto secundario -->
     </style>
+
 
     <style name="Theme.splash" parent="Theme.SplashScreen.IconBackground">
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
         <item name="windowSplashScreenAnimationDuration">500</item>
         <item name="postSplashScreenTheme">@style/Theme.general</item>
+        <item name="android:windowFullscreen">true</item> <!-- Pantalla completa durante la carga -->
     </style>
 
     <style name="Theme.BotonSheet" parent="Theme.Design.BottomSheetDialog">
