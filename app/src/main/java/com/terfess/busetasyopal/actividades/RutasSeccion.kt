@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -55,6 +56,7 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = PantPrincipalBinding.inflate(layoutInflater)
+        applySavedNightMode()
         setContentView(binding.root)
 
         //firebase
@@ -288,6 +290,22 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
                 }
                 UtilidadesMenores().reportar(this, null, opcion_actual)
             }
+
+            R.id.modoTema -> {
+                val nightMode = AppCompatDelegate.getDefaultNightMode()
+                val newNightMode = if (nightMode == AppCompatDelegate.MODE_NIGHT_YES) {
+                    AppCompatDelegate.MODE_NIGHT_NO
+                } else {
+                    AppCompatDelegate.MODE_NIGHT_YES
+                }
+                AppCompatDelegate.setDefaultNightMode(newNightMode)
+                recreate()
+
+
+                val sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+                sharedPreferences.edit().putInt("night_mode", newNightMode).apply()
+
+            }
         }
         return true
     }
@@ -383,6 +401,12 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
         }
     }
     //---------------------------------------------------------
+
+    private fun applySavedNightMode() {
+        val sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+        val savedNightMode = sharedPreferences.getInt("night_mode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        AppCompatDelegate.setDefaultNightMode(savedNightMode)
+    }
 
 }
 

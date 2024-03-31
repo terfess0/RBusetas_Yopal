@@ -13,6 +13,13 @@
         android:icon="@drawable/ic_buscar"
         android:title="Buscar Sitios"
         app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/modoTema"
+        android:icon="@drawable/ic_tema"
+        android:title="Cambiar Tema"
+        app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/acercade"
         android:icon="@drawable/ic_acerca_de"
