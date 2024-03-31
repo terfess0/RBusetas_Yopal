@@ -71,7 +71,7 @@ class Mapa : AppCompatActivity(), LocationListener,
     private var puntoProvisionalGps: Circle? = null
     private lateinit var marcador: Marker
     private lateinit var mAdView: AdView //anuncios
-    private lateinit var tarea_actual :String //que esta haciendo el mapa?
+    private lateinit var tarea_actual: String //que esta haciendo el mapa?
 
 
     companion object { //accesibles desde cualquier lugar de este archivo/clase y proyectos
@@ -682,9 +682,11 @@ class Mapa : AppCompatActivity(), LocationListener,
         } else {
             14f
         }
+        val tilt = 45.0f // Grados de inclinación deseada
         val cameraPosicion = CameraPosition.Builder()
             .target(LatLng(5.329894555473376, -72.40242298156761))
             .zoom(zoom)
+            .tilt(tilt)
             .build()
         gmap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosicion))
     }
@@ -710,7 +712,18 @@ class Mapa : AppCompatActivity(), LocationListener,
                 val latLng = LatLng(location.latitude, location.longitude)
                 ubiUser = latLng
                 binding.irgps.setImageResource(R.drawable.ic_gps_find)
-                gmap.animateCamera(CameraUpdateFactory.newLatLngZoom((latLng), 16.5f), 2000, null)
+                val tilt = 45.0f // Grados de inclinación deseada
+                val zoomLevel = 16.5f // Nivel de zoom deseado
+
+                val cameraPosition = CameraPosition.Builder()
+                    .target(latLng) // Coordenadas del centro del mapa
+                    .zoom(zoomLevel) // Nivel de zoom
+                    .tilt(tilt) // Inclinación
+                    .build()
+
+                val cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition)
+
+                gmap.animateCamera(cameraUpdate, 2000, null)
 
                 if (binding.sentidoSubida.visibility != View.VISIBLE && idruta != 20 && idruta != 40 && idruta != 0) { //diferente de 0, 20 y 40 para evitar la activacion del distancia a recorrido en opcion mostrar mapa con rutas, calcular ruta y parqueaderos
                     binding.verDistancia.visibility = View.VISIBLE
@@ -905,15 +918,15 @@ class Mapa : AppCompatActivity(), LocationListener,
         return gmap.addMarker(opcionesMarcador)
     }
 
-    fun mostrarIndicacionesCalculadas(hayImpedimento: Boolean){
+    fun mostrarIndicacionesCalculadas(hayImpedimento: Boolean) {
         val numeroRuta = Datos.mejorPuntoaInicio[2]
         //si la distancia hasta el punto salida es menor a 300 m mostrar indicaciones calculadas
-        if(Datos.mejorPuntoaInicio[1] > 200 || hayImpedimento){
+        if (Datos.mejorPuntoaInicio[1] > 200 || hayImpedimento) {
             println("Distancia: ${Datos.mejorPuntoaInicio[1]}")
             //mostrar mensaje "no se pudo generar recorrido"
             binding.msjNoSeEncontroRuta.visibility = View.VISIBLE
             binding.opcionesNoCalculada.text = "\n-Se esta mostrando la ruta: $numeroRuta"
-        }else{
+        } else {
             //mostrar indicaciones
             binding.indicacionesCalcular.visibility = View.VISIBLE
             binding.indicacion1.text =
@@ -943,7 +956,7 @@ class Mapa : AppCompatActivity(), LocationListener,
         val opcion_actual = tarea_actual
 
         //opcion reportar
-        when(item.itemId){
+        when (item.itemId) {
             R.id.reportar -> {
                 UtilidadesMenores().reportar(this, this, opcion_actual)
             }
