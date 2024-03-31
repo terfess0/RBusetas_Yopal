@@ -56,8 +56,6 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = PantPrincipalBinding.inflate(layoutInflater)
-        //recuperar el tema guardado en shared preferences
-        applySavedNightMode()
         setContentView(binding.root)
 
         //firebase
@@ -189,6 +187,8 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
         }
 
         colorTema = UtilidadesMenores().colorTituloTema(this)
+
+
     }
 
     //menu en el ActionBar
@@ -403,11 +403,6 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
     }
     //---------------------------------------------------------
 
-    private fun applySavedNightMode() {
-        val sharedPreferences = getSharedPreferences("PreferenciasGuardadas", Context.MODE_PRIVATE)
-        val savedNightMode = sharedPreferences.getInt("night_mode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-        AppCompatDelegate.setDefaultNightMode(savedNightMode)
-    }
 
 }
 
