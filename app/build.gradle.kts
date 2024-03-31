@@ -65,7 +65,7 @@ dependencies {
     implementation("com.google.firebase:firebase-messaging:23.4.1")
 
     //api google places
-    implementation("com.google.android.libraries.places:places:3.3.0")
+    implementation("com.google.android.libraries.places:places:3.4.0")
 
     //coroutinas
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")

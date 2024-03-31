@@ -303,7 +303,7 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
                 recreate()
 
 
-                val sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+                val sharedPreferences = getSharedPreferences("PreferenciasGuardadas", Context.MODE_PRIVATE)
                 sharedPreferences.edit().putInt("night_mode", newNightMode).apply()
 
             }
