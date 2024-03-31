@@ -3,6 +3,7 @@ package com.terfess.busetasyopal.clases_utiles
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -15,6 +16,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.marginLeft
@@ -80,10 +82,16 @@ class UtilidadesMenores {
                 if (tipo_solicitud == "ubicacion") {
                     Callback.onOpcionSeleccionada(2, "permiso_ubicacion") //opcion lado derecho
                 }
+                if (tipo_solicitud == "notificacion") {
+                    Callback.onOpcionSeleccionada(1, "permiso_notificacion") //opcion lado derecho
+                }
             }
         builder.setNegativeButton(op2) { _, _ ->
             if (tipo_solicitud == "ubicacion") {
                 Callback.onOpcionSeleccionada(1, "permiso_ubicacion") //opcion lado izquierdo
+            }
+            if (tipo_solicitud == "notificacion") {
+                Callback.onOpcionSeleccionada(2, "permiso_notificacion") //opcion lado derecho
             }
         }
         val dialog = builder.create()
@@ -147,7 +155,7 @@ class UtilidadesMenores {
         val theme = contexto.theme
         val typedValue2 = TypedValue()
 
-        val subTitulo = theme.resolveAttribute(androidx.appcompat.R.attr.subtitleTextColor, typedValue2, true)
+        val subTitulo = theme.resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue2, true)
 
         return String.format("#%06X", typedValue2.data and 0xFFFFFF)
     }
@@ -158,7 +166,6 @@ class UtilidadesMenores {
         val builder = AlertDialog.Builder(context, R.style.AlertDialogTheme)
         builder.setTitle("Reportar novedad")
 
-
         // Crear un LinearLayout vertical para contener el EditText y el CheckBox
         val layout = LinearLayout(context)
         layout.orientation = LinearLayout.VERTICAL
@@ -166,16 +173,15 @@ class UtilidadesMenores {
         // Agregar un EditText para que el usuario ingrese texto
         val input = EditText(context)
         input.hint = "Escribe tu reporte"
-        input.setTextColor(Color.WHITE)
-        input.setHintTextColor(Color.WHITE)
         input.maxLines = 5
         input.maxEms = 5
+
         layout.addView(input)
 
         // Agregar un CheckBox para permitir al usuario elegir si desea enviar la ubicación
         val checkBox = CheckBox(context)
         checkBox.text = "Enviar también ubicación actual"
-        checkBox.setTextColor(Color.WHITE)
+
         if (instanciaMapa != null) { // Verificar si se proporcionó una instancia del mapa
             layout.addView(checkBox)
         }
@@ -255,4 +261,7 @@ class UtilidadesMenores {
         builder.show()
     }
 
+    fun estaEnModoOscuro():Boolean{
+        return  AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
+    }
 }

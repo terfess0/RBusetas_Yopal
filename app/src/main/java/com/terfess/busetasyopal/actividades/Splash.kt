@@ -1,6 +1,7 @@
 package com.terfess.busetasyopal.actividades
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -17,6 +18,7 @@ import com.terfess.busetasyopal.clases_utiles.DatosDeFirebase
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.clases_utiles.allDatosRutas
 import com.terfess.busetasyopal.modelos_dato.EstructuraDatosBaseDatos
+import com.terfess.busetasyopal.services.NotificationChannelHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,6 +34,17 @@ class Splash : AppCompatActivity() {
         //splash
         splashScreen.setKeepOnScreenCondition { true }
 
+        //crear canales notificaciones
+        NotificationChannelHelper(this).crearCanalesNotificaciones()
+
+        //recibir datos de notis en segundo plano firebase messaging
+        val link = intent.getStringExtra("link")
+        if (link != null) {
+            // Crear un intent para abrir el enlace de notis actualizaciones
+            val openLinkIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+            openLinkIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(openLinkIntent)
+        }
 
         //----------------------------TIEMPO AGOTADO---------------------------------
 
@@ -151,5 +164,4 @@ class Splash : AppCompatActivity() {
             })
         }
     }
-
 }

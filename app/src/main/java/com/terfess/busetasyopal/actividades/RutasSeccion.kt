@@ -4,13 +4,10 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.os.Build
+import android.net.Uri
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -32,6 +29,7 @@ import com.google.firebase.database.ValueEventListener
 import com.terfess.busetasyopal.FiltroAdapterHolder
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.AdapterPrincipal
+import com.terfess.busetasyopal.clases_utiles.AlertaCallback
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.PantPrincipalBinding
 import com.terfess.busetasyopal.modelos_dato.DatosListaFiltro
@@ -42,7 +40,7 @@ import kotlinx.coroutines.launch
 import java.util.Calendar
 
 
-class RutasSeccion : AppCompatActivity() {
+class RutasSeccion : AppCompatActivity(), AlertaCallback {
     //CLASE DE LAYOUT PANTALLA PRINCIPAL
     private lateinit var binding: PantPrincipalBinding
     var filtrando = false
@@ -68,7 +66,10 @@ class RutasSeccion : AppCompatActivity() {
         val cajaInfo = binding.cajaInfo
 
         adapter =
-            AdapterPrincipal(ListaRutas.busetaRuta.toList(), UtilidadesMenores().colorTituloTema(this))
+            AdapterPrincipal(
+                ListaRutas.busetaRuta.toList(),
+                UtilidadesMenores().colorTituloTema(this)
+            )
         cajaInfo.layoutManager = LinearLayoutManager(this)
         cajaInfo.adapter = adapter
 
@@ -81,6 +82,15 @@ class RutasSeccion : AppCompatActivity() {
         //pedir permiso notificacion si es mayor a android 13
         if (VERSION.SDK_INT >= 33) {
             pedirPermisoNotificacionesV33()
+        }
+
+        //recibir datos de notis en segundo plano firebase messaging
+        val link = intent.getStringExtra("link")
+        if (link != null) {
+            // Crear un intent para abrir el enlace de notis actualizaciones
+            val openLinkIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+            openLinkIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(openLinkIntent)
         }
 
         //mostrar saludo buenos dias
@@ -131,9 +141,12 @@ class RutasSeccion : AppCompatActivity() {
                     msj3.text = mensaje3
 
                     // Mostrar u ocultar los elementos según los valores obtenidos
-                    msj1.visibility = if (mensaje1 != "" && mensaje1 != null) View.VISIBLE else View.GONE
-                    msj2.visibility = if (mensaje2 != "" && mensaje2 != null) View.VISIBLE else View.GONE
-                    msj3.visibility = if (mensaje3 != "" && mensaje3 != null) View.VISIBLE else View.GONE
+                    msj1.visibility =
+                        if (mensaje1 != "" && mensaje1 != null) View.VISIBLE else View.GONE
+                    msj2.visibility =
+                        if (mensaje2 != "" && mensaje2 != null) View.VISIBLE else View.GONE
+                    msj3.visibility =
+                        if (mensaje3 != "" && mensaje3 != null) View.VISIBLE else View.GONE
 
                 }
 
@@ -267,10 +280,10 @@ class RutasSeccion : AppCompatActivity() {
             }
 
             R.id.reportar -> {
-                if (filtro.visibility == View.VISIBLE){
+                if (filtro.visibility == View.VISIBLE) {
                     opcion_actual = "En filtro de sitios"
                 }
-                if (filtrando){
+                if (filtrando) {
                     opcion_actual = "Filtrando - buscando sitios"
                 }
                 UtilidadesMenores().reportar(this, null, opcion_actual)
@@ -323,19 +336,36 @@ class RutasSeccion : AppCompatActivity() {
 
     //PERMISO NOTIFICACIONES--------------------------------------------
 
-    // Declare the launcher at the top of your Activity/Fragment:
     private val requestPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission(),
-    ){}
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            // El usuario concedió el permiso
+        } else {
+            // El usuario denegó el permiso noti
+            UtilidadesMenores().crearToast(this, "El permiso de notificaciones ha sido denegado")
+        }
+    }
 
     private fun pedirPermisoNotificacionesV33() {
         // This is only necessary for API level >= 33 (TIRAMISU)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
                 PackageManager.PERMISSION_GRANTED
             ) {
                 // FCM SDK (and your app) can post notifications.
             } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                // Aquí podrías mostrar un diálogo o mensaje explicativo al usuario
+                UtilidadesMenores().crearAlerta(
+                    this,
+                    "notificacion",
+                    "Permiso de notificación ha sido denegado." +
+                            "\n\nPermite que Busetas Yopal tenga permiso de " +
+                            "notificaciónes para estar al dia con nuestras novedades!.",
+                    "Dar permiso",
+                    "Cancelar",
+                    this
+                )
             } else {
                 // Directly ask for the permission
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
@@ -343,5 +373,18 @@ class RutasSeccion : AppCompatActivity() {
         }
     }
 
+    override fun onOpcionSeleccionada(opcion: Int, tipo_de_solicitud: String) {
+        //devolucion de llamada de la opcion seleccionada en UtilidadesMenores.CrearAlerta()
+        //si acepta en la alerta de iniciara el pedido de permiso noti
+        if (tipo_de_solicitud == "permiso_notificacion" && opcion == 1) {
+            if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+    }
     //---------------------------------------------------------
+
 }
+
+
+
