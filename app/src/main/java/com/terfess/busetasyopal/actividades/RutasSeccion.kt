@@ -20,6 +20,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.DataSnapshot
@@ -51,6 +53,7 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
     private var adapterFiltro = FiltroAdapterHolder("")
     private lateinit var colorTema: String
     private var opcion_actual = "Viendo Menu Principal"
+    private lateinit var mAdView: AdView //anuncios
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -76,6 +79,7 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
 
         //ads
         MobileAds.initialize(this) {}//inicializar sdk de anuncios google
+        cargarAnuncios()
 
         //ACTIONBAR
         //supportActionBar?.title = "Rutas"
@@ -402,7 +406,12 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
         }
     }
     //---------------------------------------------------------
-
+    private fun cargarAnuncios() {
+        //anuncios
+        mAdView = findViewById(R.id.adView)
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
+    }
 
 }
 

@@ -265,7 +265,20 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cajaInfo"
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0"
+        android:backgroundTint="#1abc9c"
+        app:adSize="BANNER"
+        app:adUnitId="ca-app-pub-3940256099942544/6300978111" />
+    <!-- id de ejemplo admob = ca-app-pub-3940256099942544/6300978111 -->
+    <!-- id de admob acercade = ca-app-pub-8000181315504515/2692496302 -->
 
 </LinearLayout>
