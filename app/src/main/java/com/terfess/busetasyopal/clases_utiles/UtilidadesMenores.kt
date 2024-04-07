@@ -28,6 +28,7 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.app
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.actividades.Mapa
 import kotlinx.coroutines.CoroutineScope
@@ -145,7 +146,8 @@ class UtilidadesMenores {
         theme.resolveAttribute(androidx.appcompat.R.attr.titleTextColor, typedValue, true)
 
         val typedValue2 = TypedValue()
-        val subTitulo = theme.resolveAttribute(androidx.appcompat.R.attr.subtitleTextColor, typedValue2, true)
+        val subTitulo =
+            theme.resolveAttribute(androidx.appcompat.R.attr.subtitleTextColor, typedValue2, true)
 
         return String.format("#%06X", typedValue.data and 0xFFFFFF)
     }
@@ -155,13 +157,14 @@ class UtilidadesMenores {
         val theme = contexto.theme
         val typedValue2 = TypedValue()
 
-        val subTitulo = theme.resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue2, true)
+        val subTitulo =
+            theme.resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue2, true)
 
         return String.format("#%06X", typedValue2.data and 0xFFFFFF)
     }
 
 
-    fun reportar(context: Context, instanciaMapa: Mapa? = null, opcion_actual:String) {
+    fun reportar(context: Context, instanciaMapa: Mapa? = null, opcion_actual: String) {
         var ubiUser = Mapa.ubiUser ?: LatLng(0.0, 0.0)
         val builder = AlertDialog.Builder(context, R.style.AlertDialogTheme)
         builder.setTitle("Reportar novedad")
@@ -189,27 +192,35 @@ class UtilidadesMenores {
         // Establecer el LinearLayout como la vista del cuadro de diálogo
         builder.setView(layout)
         builder.setPositiveButton("Enviar") { dialog, which ->
+
             if (comprobarConexion(context)) {
+
                 // Obtener el texto ingresado por el usuario
                 val texto = input.text.toString()
                 if (texto.isEmpty()) {
                     crearToast(context, "Reporte vacío, no se envió")
                 } else {
                     CoroutineScope(Dispatchers.IO).launch {
+
                         val firebase: FirebaseDatabase = FirebaseDatabase.getInstance()
-                        val ref: DatabaseReference = firebase.getReference(context.getString(R.string.ruta_reportes_db_nube))
+                        val ref: DatabaseReference =
+                            firebase.getReference(context.getString(R.string.ruta_reportes_db_nube))
                         val nuevoReporteKey = ref.push().key ?: return@launch
 
                         val currentDate: Date = Calendar.getInstance().time
                         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                         val fechaFormateada: String = dateFormat.format(currentDate)
+
                         val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
                         val horaFormateada: String = timeFormat.format(currentDate)
 
                         var ubicacion = "Ninguna"
+
+                        //if selecciona enviar ubicacion y la ubicacion ya fue obtenida
                         if (checkBox.isChecked && ubiUser.latitude != 0.0 && ubiUser.longitude != 0.0) {
                             ubicacion = ubiUser.toString()
                         }
+                        //si selecciona enviar ubicacion pero falta obtener ubicacion
                         if (checkBox.isChecked && (ubiUser.latitude == 0.0 && ubiUser.longitude == 0.0)) {
                             instanciaMapa?.activarLocalizacion()
                             instanciaMapa?.irPosGps()
@@ -219,38 +230,57 @@ class UtilidadesMenores {
                             ubiUser = Mapa.ubiUser
                             ubicacion = ubiUser.toString()
                         }
+                        //si no selecciona enviar ubicacion
                         if (!checkBox.isChecked) {
                             ubicacion = "No proporcionada"
                         }
 
-                        // Crear un nuevo nodo con el ID único, fecha, texto y ubicación del reporte
-                        val nuevoReporte = mapOf<String, Any>(
-                            "fecha" to fechaFormateada,
-                            "hora" to horaFormateada,
-                            "situacion" to texto,
-                            "ubicacion" to ubicacion,
-                            "tareaActual" to opcion_actual
-                        )
+                        // Obtener el token de registro
+                        var tokenIdApp = ""
+                        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                tokenIdApp = task.result
 
-                        // Subir el nuevo reporte a la base de datos de Firebase
-                        ref.child(nuevoReporteKey).setValue(nuevoReporte)
-                            .addOnCompleteListener { subida ->
-                                if (subida.isSuccessful) {
-                                    // La subida fue exitosa
-                                    Toast.makeText(
-                                        context,
-                                        "Reporte enviado exitosamente",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                } else {
-                                    // La subida falló
-                                    Toast.makeText(
-                                        context,
-                                        "Error al enviar el reporte. Inténtalo de nuevo más tarde",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }
+                                // Crear un nuevo nodo con el ID único, fecha, texto y ubicación del reporte
+                                val nuevoReporte = mapOf<String, Any>(
+                                    "fecha" to fechaFormateada,
+                                    "hora" to horaFormateada,
+                                    "situacion" to texto,
+                                    "ubicacion" to ubicacion,
+                                    "tareaActual" to opcion_actual,
+                                    "origen" to tokenIdApp
+                                )
+
+                                // Subir el nuevo reporte a la base de datos de Firebase
+                                ref.child(nuevoReporteKey).setValue(nuevoReporte)
+                                    .addOnCompleteListener { subida ->
+                                        if (subida.isSuccessful) {
+                                            // La subida fue exitosa
+                                            Toast.makeText(
+                                                context,
+                                                "Reporte enviado exitosamente",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        } else {
+                                            // La subida falló
+                                            Toast.makeText(
+                                                context,
+                                                "Error al enviar el reporte. Inténtalo de nuevo más tarde",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                    }
+                            } else {
+                                // La subida falló
+                                Toast.makeText(
+                                    context,
+                                    "Error al enviar el reporte. Inténtalo de nuevo más tarde",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
+                        }
+
+
                     }
                 }
             } else {
@@ -261,7 +291,7 @@ class UtilidadesMenores {
         builder.show()
     }
 
-    fun estaEnModoOscuro():Boolean{
-        return  AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
+    fun estaEnModoOscuro(): Boolean {
+        return AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
     }
 }

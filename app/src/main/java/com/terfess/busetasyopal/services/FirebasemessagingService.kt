@@ -11,6 +11,7 @@ import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.terfess.busetasyopal.R
+import com.terfess.busetasyopal.actividades.Splash
 import java.util.UUID
 
 class FirebaseMessagingService : FirebaseMessagingService() {
@@ -52,11 +53,17 @@ class FirebaseMessagingService : FirebaseMessagingService() {
         println("noti = $link")
         val notificationId = UUID.randomUUID().hashCode()
 
-        val openLinkIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+        val openLinkIntent :Intent
+        openLinkIntent = if (link != null) {
+            Intent(Intent.ACTION_VIEW, Uri.parse(link))
+        } else {
+            Intent(this, Splash::class.java)
+        }
         openLinkIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) // Asegúrate de que el intent se abra en una nueva tarea
 
         // Crear un PendingIntent para abrir el enlace cuando se hace clic en la notificación
-        val pendingIntent = PendingIntent.getActivity(this, 0, openLinkIntent, PendingIntent.FLAG_IMMUTABLE)
+        val pendingIntent =
+            PendingIntent.getActivity(this, 0, openLinkIntent, PendingIntent.FLAG_IMMUTABLE)
 
         // Construir la notificación
         val notificationBuilder = NotificationCompat.Builder(this, "CHANNEL_UPDATE")
