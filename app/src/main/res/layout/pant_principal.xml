@@ -4,7 +4,7 @@
     android:id="@+id/fondox"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background ="?attr/colorPrimary"
+    android:background="?attr/colorPrimary"
     android:orientation="vertical">
 
     <EditText
@@ -119,6 +119,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/saludo"
             app:layout_constraintVertical_bias="0.0" />
+
         <TextView
             android:id="@+id/mensaje2"
             android:layout_width="0dp"
@@ -129,13 +130,14 @@
             android:text="TextView"
             android:textColor="#F3D74E"
             android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mensaje1"
-            app:layout_constraintVertical_bias="0.0"
-            android:visibility="gone"/>
+            app:layout_constraintVertical_bias="0.0" />
+
         <TextView
             android:id="@+id/mensaje3"
             android:layout_width="0dp"
@@ -146,13 +148,13 @@
             android:text="TextView"
             android:textColor="#F3D74E"
             android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mensaje2"
-            app:layout_constraintVertical_bias="0.0"
-            android:visibility="gone"/>
+            app:layout_constraintVertical_bias="0.0" />
 
         <!--androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"
@@ -248,8 +250,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="4dp"
-                android:textColor="?attr/titleTextColor"
                 android:text="@string/seccion_rutas"
+                android:textColor="?attr/titleTextColor"
                 android:textSize="8sp"
                 android:textStyle="bold" />
 
@@ -265,9 +267,9 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/cajaInfo"
-        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
@@ -279,6 +281,6 @@
         app:adSize="BANNER"
         app:adUnitId="ca-app-pub-3940256099942544/6300978111" />
     <!-- id de ejemplo admob = ca-app-pub-3940256099942544/6300978111 -->
-    <!-- id de admob acercade = ca-app-pub-8000181315504515/2692496302 -->
+    <!-- id de admob principal = ca-app-pub-8000181315504515/2692496302 -->
 
 </LinearLayout>
