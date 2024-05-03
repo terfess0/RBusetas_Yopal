@@ -18,6 +18,23 @@
         app:layout_constraintVertical_bias="0.0"
         /> DESACTIVADO POR SER DE LA API PLACES, HAY QUE ACTIVAR FACTURACION EN CLOUD -->
 
+    <!-- <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/infoColor"
+        app:layout_constraintVertical_bias="0.0">
+        <AutoCompleteTextView
+            android:id="@+id/autocompleteTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:hint="Buscar dirección"
+            android:maxLines="1" />
+    </androidx.cardview.widget.CardView> DESACTIVADO, ES DE LA API DE OPENSTREETMAP AUTOCOMPLETE Y NO SIRVE POR FALTA DE MAPEOS Y INFO DE YOPAL-->
+
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
