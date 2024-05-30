@@ -59,8 +59,7 @@ import com.terfess.busetasyopal.databinding.PantMapaBinding
 import com.terfess.busetasyopal.modelos_dato.DatoOpMapa
 
 
-class Mapa : AppCompatActivity(), LocationListener,
-    ActivityCompat.OnRequestPermissionsResultCallback, OnMapReadyCallback, AlertaCallback {
+class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCallback {
     private lateinit var binding: PantMapaBinding
     private lateinit var gmap: GoogleMap
     private var contexto = this
@@ -745,6 +744,7 @@ class Mapa : AppCompatActivity(), LocationListener,
                 if (binding.sentidoSubida.visibility != View.VISIBLE && idruta != 20 && idruta != 40 && idruta != 0) { //diferente de 0, 20 y 40 para evitar la activacion del distancia a recorrido en opcion mostrar mapa con rutas, calcular ruta y parqueaderos
                     binding.verDistancia.visibility = View.VISIBLE
                 }
+
                 //marcador en ubi de respaldo
                 val accuracyRadius = 12.0  // Cambia esto con la precisión real
                 val opcionesCirculo = CircleOptions()

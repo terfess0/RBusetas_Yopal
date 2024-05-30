@@ -100,6 +100,33 @@ class PolylinesPrincipal(private val mapa: Context, private val gmap: GoogleMap)
                 polySalida.startCap = RoundCap() //redondear extremo inicial polyline
                 polySalida.endCap = RoundCap() //redondear extremo final polyline
                 polySalida.jointType = JointType.ROUND
+
+                var contador = 0
+                val puntosArrowsSalida = polySalida.points
+                if (puntosArrowsSalida.isNotEmpty()) {
+                    // Recorre los puntos para agregar los markers con direccion (flechas)
+                    for (i in 0 until puntosArrowsSalida.size - 1) {
+                        if (contador == 6) {
+                            val start = puntosArrowsSalida[i]
+                            val end = puntosArrowsSalida[i + 1]
+
+                            // Calcula el ángulo de dirección entre el punto actual y el siguiente
+                            val bearing = calculatrDireccionFlechas(start, end)
+
+                            // Crea el marker con la rotación calculada
+                            gmap.addMarker(
+                                MarkerOptions()
+                                    .position(start)
+                                    .rotation(bearing)
+                                    .anchor(0.5f, 0.5f)
+                                    .flat(true) //para que no rote si se mueve o gira el mapa
+                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_arrow_poli_rise))
+                            )
+                            contador = 0
+                        }
+                        contador++
+                    }
+                }
             }
 
 
@@ -128,6 +155,37 @@ class PolylinesPrincipal(private val mapa: Context, private val gmap: GoogleMap)
                     R.drawable.ic_parqueadero,
                     "Parqueadero de la ruta $idruta"
                 )
+
+                var contador = 0
+                val puntosArrowsLlegada = polyLlegada.points
+                if (puntosArrowsLlegada.isNotEmpty()) {
+                    // Recorre los puntos para agregar los markers
+                    for (i in 0 until puntosArrowsLlegada.size - 1) {
+
+                        if (contador == 6) {
+                            val start = puntosArrowsLlegada[i]
+                            val end = puntosArrowsLlegada[i + 1]
+
+                            // Calcula el ángulo de dirección entre el punto actual y el siguiente
+                            val bearing = calculatrDireccionFlechas(start, end)
+
+                            // Crea el marker con la rotación calculada
+                            gmap.addMarker(
+                                MarkerOptions()
+                                    .position(start)
+                                    .rotation(bearing)
+                                    .anchor(0.5f, 0.5f)
+                                    .flat(true)
+                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_arrow_poli_fall))
+                            )
+
+                            contador = 0
+                        }
+
+                        contador++
+
+                    }
+                }
             }
         }
     }
@@ -198,6 +256,8 @@ class PolylinesPrincipal(private val mapa: Context, private val gmap: GoogleMap)
             val recorte: MutableList<LatLng>
 
             if (sentido == "salida") {
+                //quitar arrows sobre polilineas del mapa (quita all)
+                gmap.clear()
 
                 //se coloca un marcador en la estacion cercana
                 marcador1 = agregarMarcador(
@@ -220,6 +280,7 @@ class PolylinesPrincipal(private val mapa: Context, private val gmap: GoogleMap)
                 puntosCalculada.addAll(recorte)
                 polySalida.remove()
                 polyLlegada.remove()
+
                 polyCalculada = gmap.addPolyline(polylineOptionsC)
                 polyCalculada.points = puntosCalculada
                 polyCalculada.jointType = JointType.ROUND
@@ -246,6 +307,8 @@ class PolylinesPrincipal(private val mapa: Context, private val gmap: GoogleMap)
 
 
             } else {
+                //quitar arrows sobre polilineas del mapa (quita all)
+                gmap.clear()
 
                 //se coloca un marcador en la estacion cercana
                 marcador2 = agregarMarcador(
@@ -305,7 +368,7 @@ class PolylinesPrincipal(private val mapa: Context, private val gmap: GoogleMap)
         polylineOptions.points.clear()
     }
 
-    private fun agregarMarcador(punto: LatLng, icono: Int, titulo:String): Marker? {
+    private fun agregarMarcador(punto: LatLng, icono: Int, titulo: String): Marker? {
         val opcionesMarcador = MarkerOptions()
             .position(punto).icon(BitmapDescriptorFactory.fromResource(icono))
             .title(titulo)
@@ -324,4 +387,21 @@ class PolylinesPrincipal(private val mapa: Context, private val gmap: GoogleMap)
         }
         return color
     }
+
+    fun calculatrDireccionFlechas(from: LatLng, to: LatLng): Float {
+        val lat1 = Math.toRadians(from.latitude)
+        val lon1 = Math.toRadians(from.longitude)
+        val lat2 = Math.toRadians(to.latitude)
+        val lon2 = Math.toRadians(to.longitude)
+
+        val dLon = lon2 - lon1
+
+        val y = Math.sin(dLon) * Math.cos(lat2)
+        val x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon)
+        var bearing = Math.toDegrees(Math.atan2(y, x))
+        bearing = (bearing + 360) % 360
+
+        return bearing.toFloat()
+    }
+
 }
