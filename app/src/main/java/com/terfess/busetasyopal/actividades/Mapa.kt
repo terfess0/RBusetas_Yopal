@@ -698,11 +698,10 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         } else {
             14f
         }
-        val tilt = 45.0f // Grados de inclinación deseada
+
         val cameraPosicion = CameraPosition.Builder()
             .target(LatLng(5.329894555473376, -72.40242298156761))
             .zoom(zoom)
-            .tilt(tilt)
             .build()
         gmap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosicion))
     }
