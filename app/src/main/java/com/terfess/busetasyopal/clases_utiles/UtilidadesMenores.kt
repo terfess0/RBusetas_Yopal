@@ -24,10 +24,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import kotlin.concurrent.thread
 
 
 interface AlertaCallback { //devolucion de llamada para el CrearAlerta
@@ -92,6 +94,32 @@ class UtilidadesMenores {
         dialog.show()
     }
 
+    fun crearAlertaSencilla(
+        contexto: Context,
+        mensaje: String
+    ) {
+
+        //esta alerta sera para anuncios y por ello solo tendra la op de aceptar
+
+        val builder = AlertDialog.Builder(contexto, R.style.AlertDialogTheme)
+        builder.setTitle(contexto.getString(R.string.alert_text_literal))
+        builder.setIcon(R.drawable.ic_app)
+        builder.setMessage(mensaje)
+            .setPositiveButton(contexto.getString(R.string.accept)) { _, _ ->
+
+            }
+
+        val dialog = builder.create()
+        //personalizar alerta
+        // dialog.window?.setBackgroundDrawableResource(android.R.color.transparent) // Fondo transparente
+        dialog.setOnShowListener { //aqui se puede personalizar mas
+            // cambiar el color de los botones
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(Color.BLUE)
+        }
+        dialog.show()
+    }
+
+
     var toast: Toast? = null // variable toast "global" intencion no acumulacion de toast
 
     fun crearToast(contexto: Context?, mensaje: String) {
@@ -155,9 +183,9 @@ class UtilidadesMenores {
 
         //set titulo, descripcion y icono
         builder.setTitle("Reportar novedad")
-        builder.setMessage("Por aquí puedes enviarnos opiniones, hallazgos " +
-                "de información incompleta y/o errónea, así como reportes " +
-                "generales que podrán ser redirigidos a la Secretaría de Tránsito.")
+        builder.setMessage(
+            context.getString(R.string.description_alert_report)
+        )
         builder.setIcon(R.drawable.ic_app)
 
         // Crear un LinearLayout vertical para contener el EditText y el CheckBox
@@ -189,7 +217,7 @@ class UtilidadesMenores {
                 // Obtener el texto ingresado por el usuario
                 val texto = input.text.toString()
                 if (texto.isEmpty() || texto.isBlank()) {
-                    crearToast(context, "Reporte vacío, no se envió")
+                    crearToast(context, context.getString(R.string.empty_eport_error))
                 } else {
                     CoroutineScope(Dispatchers.IO).launch {
 
@@ -213,13 +241,25 @@ class UtilidadesMenores {
                         }
                         //si selecciona enviar ubicacion pero falta obtener ubicacion
                         if (checkBox.isChecked && (ubiUser.latitude == 0.0 && ubiUser.longitude == 0.0)) {
-                            instanciaMapa?.activarLocalizacion()
-                            instanciaMapa?.irPosGps()
-                            while (Mapa.ubiUser.latitude == 0.0 && Mapa.ubiUser.longitude == 0.0) {
-                                delay(1000) // Esperar 1 segundo antes de verificar la ubicación nuevamente
+
+                            withContext(Dispatchers.Main){
+                                instanciaMapa?.activarLocalizacion()
                             }
-                            ubiUser = Mapa.ubiUser
-                            ubicacion = ubiUser.toString()
+
+                            var contador = 0
+                            val tiempoMaximo = 10 // segundos
+                            val intervaloEspera = 1000L // 1 segundo
+
+                            while (contador < tiempoMaximo && (ubiUser.latitude == 0.0 && ubiUser.longitude == 0.0)) {
+                                delay(intervaloEspera)
+                                contador++
+                            }
+
+                            if (ubiUser.latitude == 0.0 && ubiUser.longitude == 0.0) {
+                                ubicacion = "No proporcionada"
+                            } else {
+                                ubicacion = ubiUser.toString()
+                            }
                         }
                         //si no selecciona enviar ubicacion
                         if (!checkBox.isChecked) {

@@ -796,7 +796,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             //el permiso fue negado
 
             contador++ // omitir el primer click del usuario al boton gps
-            if (contador == 4) {
+            if (contador == 2) {
                 contador = 0
                 //mostrar alerta sobre persmiso denegado y dar opcion de activarlo desde ajustes -- se usa devolucion de llamada a onOpcionSeleccionada()
                 UtilidadesMenores().crearAlerta(
