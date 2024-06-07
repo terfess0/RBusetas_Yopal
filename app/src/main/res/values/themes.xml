@@ -7,6 +7,8 @@
         <item name="titleTextColor">#070707</item>
         <item name="colorBackgroundFloating">#E1E8F6</item>
         <item name="colorAccent">@color/enfasis_azul</item>
+        <!-- Overflow menu icon color -->
+        <item name="android:actionMenuTextColor">#000000</item>
     </style>
 
     <style name="AlertDialogTheme" parent="ThemeOverlay.AppCompat.Dialog.Alert">

@@ -3,6 +3,9 @@
     <color name="recorridoIda">#00B6FF</color>
     <color name="recorridoVuelta">#C70039</color>
 
+    <color name="white">#FFFFFF</color>
+    <color name="dark">#000000</color>
+
     <!--<color name="enfasis_azul">#143FAC</color>-->
     <color name="enfasis_azul">#143FAC</color>s
     <color name="anuncioGrave">#B80000</color>
