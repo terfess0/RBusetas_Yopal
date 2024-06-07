@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
@@ -13,6 +14,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -81,8 +83,6 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
         MobileAds.initialize(this) {}//inicializar sdk de anuncios google
         cargarAnuncios()
 
-        //ACTIONBAR
-        //supportActionBar?.title = "Rutas"
 
         //pedir permiso notificacion si es mayor a android 13
         if (VERSION.SDK_INT >= 33) {
@@ -193,6 +193,46 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
         colorTema = UtilidadesMenores().colorTituloTema(this)
 
 
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (filtrando || binding.filtro.requestFocus()) {
+                    val tecladoV =
+                        getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    tecladoV.hideSoftInputFromWindow(binding.root.windowToken, 0)
+                    binding.cajaInfo.requestFocus()
+
+                    binding.filtro.setText("")
+                    binding.filtro.visibility = View.GONE
+
+                    binding.noResultados.visibility = View.GONE
+                    binding.botonesRapidos.visibility = View.VISIBLE
+
+                    binding.separador1.visibility = View.VISIBLE
+
+                    binding.cabezera.visibility = View.VISIBLE
+
+                    binding.cajaInfo.requestFocus()
+                    filtrando = false
+
+                    //cambiar el adaptador del recyclerView
+                    binding.cajaInfo.adapter = adapter
+
+                    adapter.updateLista(ListaRutas.busetaRuta, colorTema)
+                } else {
+                    val builder = AlertDialog.Builder(this@RutasSeccion, R.style.AlertDialogTheme)
+                    builder.setMessage("¿Seguro que quieres salir?")
+                        .setPositiveButton("Sí") { _, _ ->
+                            //cerrar la app
+                            finishAffinity()
+                        }
+                    builder.setNegativeButton("No") { _, _ -> }
+                    val dialog = builder.create()
+                    dialog.show()
+
+                }
+            }
+        })
     }
 
     //menu en el ActionBar
@@ -303,11 +343,13 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
                 } else {
                     AppCompatDelegate.MODE_NIGHT_YES
                 }
+
                 AppCompatDelegate.setDefaultNightMode(newNightMode)
                 recreate()
 
 
-                val sharedPreferences = getSharedPreferences("PreferenciasGuardadas", Context.MODE_PRIVATE)
+                val sharedPreferences =
+                    getSharedPreferences("PreferenciasGuardadas", Context.MODE_PRIVATE)
                 sharedPreferences.edit().putInt("night_mode", newNightMode).apply()
 
             }
@@ -320,42 +362,6 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
         return calendar.get(Calendar.HOUR_OF_DAY)
     }
 
-    override fun onBackPressed() {
-        if (filtrando || binding.filtro.requestFocus()) {
-            val tecladoV = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            tecladoV.hideSoftInputFromWindow(binding.root.windowToken, 0)
-            binding.cajaInfo.requestFocus()
-
-            binding.filtro.setText("")
-            binding.filtro.visibility = View.GONE
-
-            binding.noResultados.visibility = View.GONE
-            binding.botonesRapidos.visibility = View.VISIBLE
-
-            binding.separador1.visibility = View.VISIBLE
-
-            binding.cabezera.visibility = View.VISIBLE
-
-            binding.cajaInfo.requestFocus()
-            filtrando = false
-
-            //cambiar el adaptador del recyclerView
-            binding.cajaInfo.adapter = adapter
-
-            adapter.updateLista(ListaRutas.busetaRuta, colorTema)
-        } else {
-            val builder = AlertDialog.Builder(this, R.style.AlertDialogTheme)
-            builder.setMessage("¿Seguro que quieres salir?")
-                .setPositiveButton("Sí") { _, _ ->
-                    //cerrar la app
-                    finishAffinity()
-                }
-            builder.setNegativeButton("No") { _, _ -> }
-            val dialog = builder.create()
-            dialog.show()
-
-        }
-    }
 
     //PERMISO NOTIFICACIONES--------------------------------------------
 
@@ -405,6 +411,7 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
             }
         }
     }
+
     //---------------------------------------------------------
     private fun cargarAnuncios() {
         //anuncios

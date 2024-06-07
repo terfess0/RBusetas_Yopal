@@ -206,16 +206,23 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             irPosGps()
         }
 
-        supportActionBar?.title = "Mapa con Recorrido de Ruta $idruta"  //titulo actionbar
+        supportActionBar?.subtitle = "Camino de salida y de llegada"
+        supportActionBar?.title = "Recorrido Ruta $idruta"  //titulo actionbar
         if (idruta == 0) {
             supportActionBar?.title =
                 "Calcular Ruta Inicio a Destino"  //titulo opcion calcular ruta
+            supportActionBar?.subtitle = "Elíge un inicio y un destino"
+
         } else if (idruta == 20) {
+            supportActionBar?.subtitle = "Todas las rutas habilitadas"
             supportActionBar?.title =
                 "Ver Mapa con las Rutas"  //titulo opcion ver mapa con ruta
+
         } else if (idruta == 40) {
+            supportActionBar?.subtitle = "Parqueaderos de donde sale la buseta"
             supportActionBar?.title =
                 "Ver Mapa con Parqueaderos"  //titulo opcion mapa con parqueaderos
+
         }
 
         //-------------------------------------------------------------------------------
@@ -787,13 +794,11 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
         when (requestCode) {
             codigoLocalizacion -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                gmap.isMyLocationEnabled = true
+                //el permiso de localizacion fue concedido, activar el gps
                 activarGps()
             } else {
-                gmap.isMyLocationEnabled = false
-                if (contador == 0) {
-                    UtilidadesMenores().crearToast(this, "Permiso de ubicación no concedido.")
-                }
+                //el permiso fue negado
+
                 contador++ // omitir el primer click del usuario al boton gps
                 if (contador == 4) {
                     contador = 0
