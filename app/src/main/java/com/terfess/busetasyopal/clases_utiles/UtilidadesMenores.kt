@@ -152,7 +152,13 @@ class UtilidadesMenores {
     fun reportar(context: Context, instanciaMapa: Mapa? = null, opcion_actual: String) {
         var ubiUser = Mapa.ubiUser ?: LatLng(0.0, 0.0)
         val builder = AlertDialog.Builder(context, R.style.AlertDialogTheme)
+
+        //set titulo, descripcion y icono
         builder.setTitle("Reportar novedad")
+        builder.setMessage("Por aquí puedes enviarnos opiniones, hallazgos " +
+                "de información incompleta y/o errónea, así como reportes " +
+                "generales que podrán ser redirigidos a la Secretaría de Tránsito.")
+        builder.setIcon(R.drawable.ic_app)
 
         // Crear un LinearLayout vertical para contener el EditText y el CheckBox
         val layout = LinearLayout(context)
@@ -160,7 +166,7 @@ class UtilidadesMenores {
 
         // Agregar un EditText para que el usuario ingrese texto
         val input = EditText(context)
-        input.hint = "Escribe tu reporte"
+        input.hint = "Escribe aquí"
         input.maxLines = 5
         input.maxEms = 5
 
@@ -182,7 +188,7 @@ class UtilidadesMenores {
 
                 // Obtener el texto ingresado por el usuario
                 val texto = input.text.toString()
-                if (texto.isEmpty()) {
+                if (texto.isEmpty() || texto.isBlank()) {
                     crearToast(context, "Reporte vacío, no se envió")
                 } else {
                     CoroutineScope(Dispatchers.IO).launch {
