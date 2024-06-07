@@ -3,29 +3,18 @@ package com.terfess.busetasyopal.clases_utiles
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.TypedValue
-import android.view.LayoutInflater
 import android.view.View
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatDelegate
-import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.content.ContextCompat
-import androidx.core.view.marginLeft
-import androidx.core.view.marginStart
-import androidx.core.view.setPadding
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.FirebaseApp
-import com.google.firebase.app
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessaging
@@ -33,15 +22,12 @@ import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.actividades.Mapa
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-import kotlin.coroutines.coroutineContext
 
 
 interface AlertaCallback { //devolucion de llamada para el CrearAlerta
@@ -76,7 +62,7 @@ class UtilidadesMenores {
         op2: String,
         Callback: AlertaCallback
     ) {
-        val builder = AlertDialog.Builder(contexto)
+        val builder = AlertDialog.Builder(contexto, R.style.AlertDialogTheme)
         builder.setTitle("Alerta!")
         builder.setMessage(mensaje)
             .setPositiveButton(op1) { _, _ ->
@@ -146,8 +132,8 @@ class UtilidadesMenores {
         theme.resolveAttribute(androidx.appcompat.R.attr.titleTextColor, typedValue, true)
 
         val typedValue2 = TypedValue()
-        val subTitulo =
-            theme.resolveAttribute(androidx.appcompat.R.attr.subtitleTextColor, typedValue2, true)
+
+        theme.resolveAttribute(androidx.appcompat.R.attr.subtitleTextColor, typedValue2, true)
 
         return String.format("#%06X", typedValue.data and 0xFFFFFF)
     }
@@ -157,8 +143,7 @@ class UtilidadesMenores {
         val theme = contexto.theme
         val typedValue2 = TypedValue()
 
-        val subTitulo =
-            theme.resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue2, true)
+        theme.resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue2, true)
 
         return String.format("#%06X", typedValue2.data and 0xFFFFFF)
     }
@@ -183,7 +168,7 @@ class UtilidadesMenores {
 
         // Agregar un CheckBox para permitir al usuario elegir si desea enviar la ubicación
         val checkBox = CheckBox(context)
-        checkBox.text = "Enviar también ubicación actual"
+        checkBox.text = context.getString(R.string.option_add_ubi_to_report)
 
         if (instanciaMapa != null) { // Verificar si se proporcionó una instancia del mapa
             layout.addView(checkBox)
@@ -291,7 +276,4 @@ class UtilidadesMenores {
         builder.show()
     }
 
-    fun estaEnModoOscuro(): Boolean {
-        return AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES
-    }
 }
