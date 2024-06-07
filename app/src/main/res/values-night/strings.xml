@@ -27,6 +27,7 @@
     <string name="seccion_rutas">RUTAS HABILITADAS</string>
     <string name="seccion_botones">OPCIONES</string>
     <string name="ruta_reportes_db_nube">features/0/reportes</string>
+    <string name="option_add_ubi_to_report">Enviar también ubicación actual</string>
 
 </resources>
 
