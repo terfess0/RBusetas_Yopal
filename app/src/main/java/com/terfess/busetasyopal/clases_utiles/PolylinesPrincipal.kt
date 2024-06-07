@@ -111,7 +111,7 @@ class PolylinesPrincipal(private val mapa: Context, private val gmap: GoogleMap)
                             val end = puntosArrowsSalida[i + 1]
 
                             // Calcula el ángulo de dirección entre el punto actual y el siguiente
-                            val bearing = calculatrDireccionFlechas(start, end)
+                            val bearing = DirectionFlechas(start, end)
 
                             // Crea el marker con la rotación calculada
                             gmap.addMarker(
@@ -167,7 +167,7 @@ class PolylinesPrincipal(private val mapa: Context, private val gmap: GoogleMap)
                             val end = puntosArrowsLlegada[i + 1]
 
                             // Calcula el ángulo de dirección entre el punto actual y el siguiente
-                            val bearing = calculatrDireccionFlechas(start, end)
+                            val bearing = DirectionFlechas(start, end)
 
                             // Crea el marker con la rotación calculada
                             gmap.addMarker(
@@ -270,7 +270,7 @@ class PolylinesPrincipal(private val mapa: Context, private val gmap: GoogleMap)
                 gmap.animateCamera(
                     CameraUpdateFactory.newLatLngZoom(
                         puntos1[masCortaInicio[0]],
-                        17f
+                        16.5f
                     ), 3000, null
                 )
 
@@ -322,7 +322,7 @@ class PolylinesPrincipal(private val mapa: Context, private val gmap: GoogleMap)
                 gmap.animateCamera(
                     CameraUpdateFactory.newLatLngZoom(
                         puntos2[masCortaInicio[0]],
-                        17f
+                        16.5f
                     ), 3000, null
                 )
 
@@ -388,7 +388,7 @@ class PolylinesPrincipal(private val mapa: Context, private val gmap: GoogleMap)
         return color
     }
 
-    fun calculatrDireccionFlechas(from: LatLng, to: LatLng): Float {
+    private fun DirectionFlechas(from: LatLng, to: LatLng): Float {
         val lat1 = Math.toRadians(from.latitude)
         val lon1 = Math.toRadians(from.longitude)
         val lat2 = Math.toRadians(to.latitude)

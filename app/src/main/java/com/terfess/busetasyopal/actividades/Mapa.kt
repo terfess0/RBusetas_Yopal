@@ -20,6 +20,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -177,19 +178,10 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
     override fun onMapReady(mapa: GoogleMap) {
         gmap = mapa
 
-        //establecer nivel de zoom maximo impedir renderizado de cuadros casas
-        val maxZoomLevel = 16.9 // nivel de zoom deseado
-        gmap.setMaxZoomPreference(maxZoomLevel.toFloat())
-
-        //rendimiento
+//      rendimiento
         mapa.mapType =
             GoogleMap.MAP_TYPE_NORMAL//tratar de cargar un mapa simple evitar renderizados congelantes
-        gmap.isBuildingsEnabled = false //para dar mejor rendimiento desactivar edificaciones
-        gmap.isTrafficEnabled = false //para dar mejor rendimiento desactivar trafico
-        gmap.isIndoorEnabled =
-            false //desactivar vista de planos de algunas edificacoiones--rendimiento
-        gmap.uiSettings.isIndoorLevelPickerEnabled =
-            false //desactivar selector de piso o nivel -- rendimiento
+
 
         //definir estado accion del mapa (que esta mostrando)
         tarea_actual = "Mostrando ruta $idruta"
@@ -198,12 +190,10 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
         selector()  //seleccionar que ruta cargar
 
-        gmap.uiSettings.isMyLocationButtonEnabled = false //desactivar el boton default de gps
 
         //pedir/comprobar permiso ubicacion y gps On
         binding.irgps.setOnClickListener {
             activarLocalizacion()
-            irPosGps()
         }
 
         supportActionBar?.subtitle = "Camino de salida y de llegada"
@@ -734,13 +724,11 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 val latLng = LatLng(location.latitude, location.longitude)
                 ubiUser = latLng
                 binding.irgps.setImageResource(R.drawable.ic_gps_find)
-                val tilt = 45.0f // Grados de inclinación deseada
                 val zoomLevel = 16.5f // Nivel de zoom deseado
 
                 val cameraPosition = CameraPosition.Builder()
                     .target(latLng) // Coordenadas del centro del mapa
                     .zoom(zoomLevel) // Nivel de zoom
-                    .tilt(tilt) // Inclinación
                     .build()
 
                 val cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition)
@@ -781,50 +769,47 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
     fun activarLocalizacion() { //pide permiso de localicaion
         val permission = Manifest.permission.ACCESS_FINE_LOCATION
+        if (ContextCompat.checkSelfPermission(
+                this,
+                permission
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            activarGps()
+            gmap.isMyLocationEnabled = true
+        } else {
+            //esta es la solicitud del permiso definido por la variable permission
+            requestLocationPermissionLauncher.launch(permission)
+        }
         ActivityCompat.requestPermissions(this, arrayOf(permission), codigoLocalizacion)
     }
 
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    //esta es la respuesta a la solicitud de permiso
+    private val requestLocationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
 
-        when (requestCode) {
-            codigoLocalizacion -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                //el permiso de localizacion fue concedido, activar el gps
-                activarGps()
-            } else {
-                //el permiso fue negado
 
-                contador++ // omitir el primer click del usuario al boton gps
-                if (contador == 4) {
-                    contador = 0
-                    //mostrar alerta sobre persmiso denegado y dar opcion de activarlo desde ajustes -- se usa devolucion de llamada a onOpcionSeleccionada()
-                    UtilidadesMenores().crearAlerta(
-                        this,
-                        "ubicacion",
-                        "Permiso de localización ha sido denegado.\n\nPermite que Busetas Yopal tenga permiso de ubicación desde ajustes para aprovechar la aplicación al maximo!.",
-                        "Aceptar",
-                        "Ajustes",
-                        this
-                    )
-                }
+        if (isGranted) {//el permiso de localizacion fue concedido, activar el gps
+            activarGps()
+        } else {
+            //el permiso fue negado
+
+            contador++ // omitir el primer click del usuario al boton gps
+            if (contador == 4) {
+                contador = 0
+                //mostrar alerta sobre persmiso denegado y dar opcion de activarlo desde ajustes -- se usa devolucion de llamada a onOpcionSeleccionada()
+                UtilidadesMenores().crearAlerta(
+                    this,
+                    "ubicacion",
+                    "Permiso de localización ha sido denegado.\n\nPermite que Busetas Yopal tenga permiso de ubicación desde ajustes para aprovechar la aplicación al maximo!.",
+                    "Aceptar",
+                    "Ajustes",
+                    this
+                )
             }
-
-            else -> {}
         }
-    }
 
-    //retorno usuario desde el background
-    override fun onResumeFragments() {
-        super.onResumeFragments()
-        if (!::gmap.isInitialized) return
-        if (!permisoUbiCondecido()) {
-            gmap.isMyLocationEnabled = false
-        }
     }
 
 
@@ -889,7 +874,6 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             PolylinesPrincipal(contexto, this.gmap).rutaMasCerca(ubiUser, sentido)
         } else {
             activarLocalizacion()
-            irPosGps()
         }
     }
 
