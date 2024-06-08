@@ -4,8 +4,8 @@
         <item name="colorPrimary">#000000</item>
         <item name="colorPrimaryDark">#CCCCCC</item>
         <item name="titleTextColor">#FFFFFF</item>
-        <item name="colorBackgroundFloating">#1F2633</item>
-        <item name="colorAccent">#1F2633</item>
+        <item name="colorBackgroundFloating">#B4111A4A</item>
+        <item name="colorAccent">#90111A4A</item>
     </style>
 
     <style name="AlertDialogTheme" parent="ThemeOverlay.AppCompat.Dialog.Alert">

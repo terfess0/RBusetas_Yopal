@@ -35,9 +35,9 @@
         android:gravity="center"
         android:minHeight="90dp"
         android:text="Sin Resultados"
-        android:textColor="#9A0000"
+        android:textColor="#ED6565"
         android:textStyle="bold"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout

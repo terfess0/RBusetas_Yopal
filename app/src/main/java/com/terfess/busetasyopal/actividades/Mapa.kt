@@ -46,7 +46,6 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.Circle
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.terfess.busetasyopal.OpMapaAdapterHolder
@@ -72,9 +71,9 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
     private var puntoProvisionalGps: Circle? = null
     private lateinit var marcador: Marker
     private lateinit var mAdView: AdView //anuncios
-    private lateinit var tarea_actual: String //que esta haciendo el mapa?
+    private lateinit var tareaActual: String //que esta haciendo el mapa?
 
-    private lateinit var FragmentoMapa : SupportMapFragment
+    private lateinit var FragmentMap : SupportMapFragment
 
 
     companion object { //accesibles desde cualquier lugar de este archivo/clase y proyectos
@@ -90,8 +89,8 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         setContentView(binding.root)
 
         //mapa
-        FragmentoMapa = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-        FragmentoMapa.getMapAsync(this)
+        FragmentMap = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        FragmentMap.getMapAsync(this)
 
         cargarAnuncios()
 
@@ -186,7 +185,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
 
         //definir estado accion del mapa (que esta mostrando)
-        tarea_actual = "Mostrando ruta $idruta"
+        tareaActual = "Mostrando ruta $idruta"
 
         irYopal() //colocar la camara en la ciudad de yopal
 
@@ -326,7 +325,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             //el numero 0 de id_ruta sera el que cree un mapa para calcular ruta
             0 -> {
                 //identificar estado mapa - tarea
-                tarea_actual = "Calculando ruta"
+                tareaActual = "Calculando ruta"
                 //---------------------------------
 
                 //Cuando se calcule la ruta
@@ -568,7 +567,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             //cuando 20 se vea el mapa con todas las rutas
             20 -> {
                 //identificar estado mapa - tarea
-                tarea_actual = "Mapa con todas las rutas"
+                tareaActual = "Mapa con todas las rutas"
                 //---------------------------------
 
                 supportActionBar?.title = "Ver Mapa con Rutas"
@@ -620,7 +619,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             //cuando 40 se vea el mapa con parqueaderos
             40 -> {
                 //identificar estado mapa - tarea
-                tarea_actual = "Mostrando mapa con parqueaderos"
+                tareaActual = "Mostrando mapa con parqueaderos"
                 //---------------------------------
 
                 supportActionBar?.title = "Ver Mapa con Parqueaderos"
@@ -757,13 +756,13 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 }
 
                 //marcador en ubi de respaldo
-                val accuracyRadius = 12.0  // Cambia esto con la precisión real
+                val accuracyRadius = 12.0
                 val opcionesCirculo = CircleOptions()
                     .center(latLng)
                     .radius(accuracyRadius)
                     .strokeWidth(2f)
                     .strokeColor(R.color.RutaEnServicio)
-                    .fillColor(0x55ff00ff)
+                    .fillColor(0x551cfc03)
                 puntoProvisionalGps = if (puntoProvisionalGps == null) {
                     gmap.addCircle(opcionesCirculo)
                 } else {
@@ -910,7 +909,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         super.onDestroy()
 
         //liberar memoria del mapa
-        FragmentoMapa.onDestroy()
+        FragmentMap.onDestroy()
         println("Fragmento mapa fue liberado-finalizado")
 
         //desregistrar listener de la conexion a internet
@@ -982,12 +981,12 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         //variable para identificar la opcion entorno al reporte
-        val opcion_actual = tarea_actual
+        val opcionActual = tareaActual
 
         //opcion reportar
         when (item.itemId) {
             R.id.reportar -> {
-                UtilidadesMenores().reportar(this, this, opcion_actual)
+                UtilidadesMenores().reportar(this, this, opcionActual)
             }
         }
 
