@@ -372,7 +372,7 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
             // El usuario concedió el permiso
         } else {
             // El usuario denegó el permiso noti
-            UtilidadesMenores().crearToast(this, "El permiso de notificaciones ha sido denegado")
+            UtilidadesMenores().crearAlertaSencilla(this, "El permiso de notificaciones ha sido denegado")
         }
     }
 

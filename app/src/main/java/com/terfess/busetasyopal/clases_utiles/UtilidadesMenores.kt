@@ -217,7 +217,7 @@ class UtilidadesMenores {
                 // Obtener el texto ingresado por el usuario
                 val texto = input.text.toString()
                 if (texto.isEmpty() || texto.isBlank()) {
-                    crearToast(context, context.getString(R.string.empty_eport_error))
+                    crearAlertaSencilla(context, context.getString(R.string.empty_eport_error))
                 } else {
                     CoroutineScope(Dispatchers.IO).launch {
 
@@ -287,27 +287,21 @@ class UtilidadesMenores {
                                     .addOnCompleteListener { subida ->
                                         if (subida.isSuccessful) {
                                             // La subida fue exitosa
-                                            Toast.makeText(
+                                            crearAlertaSencilla(
                                                 context,
-                                                "Reporte enviado exitosamente",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+                                                "Reporte enviado exitosamente")
                                         } else {
                                             // La subida falló
-                                            Toast.makeText(
+                                            crearAlertaSencilla(
                                                 context,
-                                                "Error al enviar el reporte. Inténtalo de nuevo más tarde",
-                                                Toast.LENGTH_SHORT
-                                            ).show()
+                                                "Error al enviar el reporte. Inténtalo de nuevo más tarde")
                                         }
                                     }
                             } else {
                                 // La subida falló
-                                Toast.makeText(
+                                crearAlertaSencilla(
                                     context,
-                                    "Error al enviar el reporte. Inténtalo de nuevo más tarde",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                    "Error al enviar el reporte. Inténtalo de nuevo más tarde")
                             }
                         }
 
@@ -315,7 +309,7 @@ class UtilidadesMenores {
                     }
                 }
             } else {
-                crearToast(context, "No hay conexión, inténtalo de nuevo más tarde")
+                crearAlertaSencilla(context, "No hay conexión, inténtalo de nuevo más tarde")
             }
         }
 
