@@ -73,6 +73,8 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
     private lateinit var mAdView: AdView //anuncios
     private lateinit var tarea_actual: String //que esta haciendo el mapa?
 
+    private lateinit var FragmentoMapa : SupportMapFragment
+
 
     companion object { //accesibles desde cualquier lugar de este archivo/clase y proyectos
         const val codigoLocalizacion = 0
@@ -87,8 +89,8 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         setContentView(binding.root)
 
         //mapa
-        val fragmentoMapa = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-        fragmentoMapa.getMapAsync(this)
+        FragmentoMapa = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        FragmentoMapa.getMapAsync(this)
 
         cargarAnuncios()
 
@@ -891,9 +893,16 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
     override fun onDestroy() {
         super.onDestroy()
+
+        //liberar memoria del mapa
+        FragmentoMapa.onDestroy()
+        println("Fragmento mapa fue liberado-finalizado")
+
+        //desregistrar listener de la conexion a internet
         val connectivityManager =
             getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         connectivityManager.unregisterNetworkCallback(networkCallback)
+        println("Escucha a internet (Pant Mapa) desactivado-finalizado")
     }
 
     override fun onLocationChanged(p0: Location) {
@@ -969,4 +978,5 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
         return true
     }
+
 }
