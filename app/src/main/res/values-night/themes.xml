@@ -5,7 +5,7 @@
         <item name="colorPrimaryDark">#CCCCCC</item>
         <item name="titleTextColor">#FFFFFF</item>
         <item name="colorBackgroundFloating">#B4111A4A</item>
-        <item name="colorAccent">#90111A4A</item>
+        <item name="colorAccent">#B4111A4A</item>
     </style>
 
     <style name="AlertDialogTheme" parent="ThemeOverlay.AppCompat.Dialog.Alert">
@@ -18,7 +18,6 @@
 
     <style name="Theme.splash" parent="Theme.SplashScreen.IconBackground">
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
-        <item name="windowSplashScreenAnimationDuration">500</item>
         <item name="postSplashScreenTheme">@style/Theme.general</item>
     </style>
 

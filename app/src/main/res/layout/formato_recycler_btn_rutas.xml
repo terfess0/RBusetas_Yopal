@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
     android:background="@drawable/bord_suave"
     android:backgroundTint="?attr/colorPrimary"
-    android:padding="4dp">
+    android:paddingHorizontal="8dp"
+    android:paddingVertical="5dp">
 
     <TextView
         android:id="@+id/numRutaOpMapa"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto"
         android:foregroundGravity="center"
-        android:text="TextView"
-        android:textStyle="bold"
+        android:text="@string/textview"
         android:textColor="?attr/titleTextColor"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,11 +26,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
-        android:fontFamily="@font/roboto"
         android:foregroundGravity="center_horizontal"
-        android:text="Salida:"
+        android:text="@string/salida"
         android:textColor="?attr/titleTextColor"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -69,11 +65,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:fontFamily="@font/roboto"
         android:foregroundGravity="center_horizontal"
-        android:text="Llegada:"
+        android:text="@string/llegada"
         android:textColor="?attr/titleTextColor"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/guideline3"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
@@ -85,7 +79,7 @@
         android:backgroundTint="@color/enfasis_azul"
         android:fontFamily="@font/roboto"
         android:foregroundGravity="center_horizontal"
-        android:text="ver ruta"
+        android:text="@string/ver_ruta"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.common.api.ResolvableApiException
@@ -91,6 +92,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         //mapa
         FragmentMap = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         FragmentMap.getMapAsync(this)
+
 
         cargarAnuncios()
 
@@ -179,6 +181,12 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
     override fun onMapReady(mapa: GoogleMap) {
         gmap = mapa
+
+        //progressbar del mapa (ya cargó)
+        gmap.setOnMapLoadedCallback {
+            binding.loadingMapa.visibility = View.GONE
+            println("Mapa ha terminado de cargarse")
+        }
 
         mapa.mapType =
             GoogleMap.MAP_TYPE_NORMAL
@@ -602,6 +610,8 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 }
 
                 // Configurar el LinearLayoutManager y el Adapter
+
+                listaOpMapa.layoutManager = LinearLayoutManager(this)
                 listaOpMapa.adapter = OpMapaAdapterHolder(listaRutasOpMapa, gmap, this)
 
                 binding.listaRutasOpMapa.setOnClickListener {

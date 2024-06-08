@@ -160,7 +160,6 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
 
         //el usuario elige boton calcular la ruta al destino
         binding.calcularRuta.setOnClickListener {
-            UtilidadesMenores().crearToast(this, "Cargando...")
             val intent = Intent(this, Mapa::class.java)
             intent.putExtra("selector", 0)
             startActivity(intent)
@@ -168,7 +167,6 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
 
         //el usuario elige boton ver mapa con rutas
         binding.mapaRutas.setOnClickListener {
-            UtilidadesMenores().crearToast(this, "Cargando...")
             val intent = Intent(this, Mapa::class.java)
             intent.putExtra("selector", 20)
             startActivity(intent)
@@ -176,7 +174,6 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
 
         //el usuario elige boton ver parqueaderos
         binding.mapaParqueaderos.setOnClickListener {
-            UtilidadesMenores().crearToast(this, "Cargando...")
             val intent = Intent(this, Mapa::class.java)
             intent.putExtra("selector", 40)
             startActivity(intent)
