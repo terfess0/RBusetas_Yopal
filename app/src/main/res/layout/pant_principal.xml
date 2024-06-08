@@ -39,13 +39,14 @@
         android:textStyle="bold"
         android:visibility="gone" />
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cabezera"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:background="@drawable/bord_cabecera"
-        android:minHeight="150dp"
+        android:minHeight="100dp"
         app:layout_constraintBottom_toBottomOf="@+id/saludo"
         app:layout_constraintTop_toBottomOf="@+id/saludo">
 
@@ -68,6 +69,63 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="16mm"
+            android:layout_marginTop="1dp"
+            android:backgroundTint="@color/transparente"
+            app:layout_constraintBottom_toTopOf="@+id/textView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/saludo">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/mensaje1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:padding="5dp"
+                        android:text="TextView"
+                        android:textColor="#F3D74E"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/mensaje2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:padding="5dp"
+                        android:text="TextView"
+                        android:textColor="#F3D74E"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/mensaje3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="10dp"
+                        android:padding="5dp"
+                        android:text="TextView"
+                        android:textColor="#F3D74E"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </ScrollView>
+        </FrameLayout>
 
         <TextView
             android:id="@+id/textView"
@@ -102,60 +160,6 @@
             app:layout_constraintTop_toBottomOf="@+id/mensaje3"
             app:layout_constraintVertical_bias="0.971" />
 
-        <TextView
-            android:id="@+id/mensaje1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
-            android:padding="5dp"
-            android:text="TextView"
-            android:textColor="#F3D74E"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.501"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/saludo"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <TextView
-            android:id="@+id/mensaje2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="10dp"
-            android:padding="5dp"
-            android:text="TextView"
-            android:textColor="#F3D74E"
-            android:textStyle="bold"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.501"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mensaje1"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <TextView
-            android:id="@+id/mensaje3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="10dp"
-            android:padding="5dp"
-            android:text="TextView"
-            android:textColor="#F3D74E"
-            android:textStyle="bold"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.501"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mensaje2"
-            app:layout_constraintVertical_bias="0.0" />
-
         <!--androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline3"
             android:layout_width="wrap_content"
@@ -165,7 +169,6 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     <RelativeLayout
         android:id="@+id/botones_rapidos"
@@ -191,7 +194,7 @@
                     android:background="@drawable/bord_boton_relevant"
                     android:backgroundTint="?attr/colorAccent"
                     android:foreground="?android:attr/selectableItemBackground"
-                    android:padding="5dp"
+                    android:paddingHorizontal="5dp"
                     android:text="Ver Mapa con las Rutas"
                     android:textAllCaps="false"
                     android:textColor="@color/quantum_white_100"
@@ -199,7 +202,6 @@
                     android:textStyle="bold" />
 
                 <Button
-                    android:visibility="gone"
                     android:id="@+id/calcularRuta"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -207,12 +209,13 @@
                     android:background="@drawable/bord_boton_relevant"
                     android:backgroundTint="?attr/colorAccent"
                     android:foreground="?android:attr/selectableItemBackground"
-                    android:padding="5dp"
+                    android:paddingHorizontal="5dp"
                     android:text="Calcular Ruta Inicio a Destino"
                     android:textAllCaps="false"
                     android:textColor="@color/quantum_white_100"
                     android:textSize="12sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
                 <Button
                     android:id="@+id/mapaParqueaderos"
@@ -222,8 +225,8 @@
                     android:background="@drawable/bord_boton_relevant"
                     android:backgroundTint="?attr/colorAccent"
                     android:foreground="?android:attr/selectableItemBackground"
-                    android:padding="5dp"
-                    android:text="Ver Mapa con Parqueaderos Ruta"
+                    android:paddingHorizontal="5dp"
+                    android:text="Ver Mapa con Parqueaderos"
                     android:textAllCaps="false"
                     android:textColor="@color/quantum_white_100"
                     android:textSize="12sp"
@@ -248,7 +251,7 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginEnd="4dp"
                 android:text="@string/seccion_rutas"
