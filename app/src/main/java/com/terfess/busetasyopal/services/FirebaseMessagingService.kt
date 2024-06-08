@@ -59,7 +59,7 @@ class FirebaseMessagingService : FirebaseMessagingService() {
 
         with(NotificationManagerCompat.from(this)) {
             if (ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Request the missing permissions if needed
+                // Request the missing permissions if needed
                 return
             }
 

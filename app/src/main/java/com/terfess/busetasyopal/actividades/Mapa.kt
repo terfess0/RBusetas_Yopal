@@ -46,6 +46,7 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.Circle
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.terfess.busetasyopal.OpMapaAdapterHolder
@@ -180,9 +181,8 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
     override fun onMapReady(mapa: GoogleMap) {
         gmap = mapa
 
-//      rendimiento
         mapa.mapType =
-            GoogleMap.MAP_TYPE_NORMAL//tratar de cargar un mapa simple evitar renderizados congelantes
+            GoogleMap.MAP_TYPE_NORMAL
 
 
         //definir estado accion del mapa (que esta mostrando)
@@ -191,6 +191,21 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         irYopal() //colocar la camara en la ciudad de yopal
 
         selector()  //seleccionar que ruta cargar
+
+        var marcadorIndicador: Marker? = null
+        gmap.setOnMapClickListener { it ->
+            if (marcadorIndicador != null) {
+                // Si el marcador ya existe, eliminarlo
+                marcadorIndicador?.remove()
+                marcadorIndicador = null
+            } else {
+                // Si el marcador no existe, agregarlo
+                val optionsMarker = MarkerOptions()
+                    .position(it)
+                    .title("Mi Destino")
+                marcadorIndicador = gmap.addMarker(optionsMarker)
+            }
+        }
 
 
         //pedir/comprobar permiso ubicacion y gps On
