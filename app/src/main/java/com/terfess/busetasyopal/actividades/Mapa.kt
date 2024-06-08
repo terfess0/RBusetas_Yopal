@@ -59,6 +59,11 @@ import com.terfess.busetasyopal.clases_utiles.PolylinesPrincipal
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.PantMapaBinding
 import com.terfess.busetasyopal.modelos_dato.DatoOpMapa
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCallback {
@@ -74,7 +79,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
     private lateinit var mAdView: AdView //anuncios
     private lateinit var tareaActual: String //que esta haciendo el mapa?
 
-    private lateinit var FragmentMap : SupportMapFragment
+    private lateinit var fragmentMap: SupportMapFragment
 
 
     companion object { //accesibles desde cualquier lugar de este archivo/clase y proyectos
@@ -90,8 +95,8 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         setContentView(binding.root)
 
         //mapa
-        FragmentMap = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-        FragmentMap.getMapAsync(this)
+        fragmentMap = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        fragmentMap.getMapAsync(this)
 
 
         cargarAnuncios()
@@ -200,7 +205,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         selector()  //seleccionar que ruta cargar
 
         var marcadorIndicador: Marker? = null
-        gmap.setOnMapClickListener { it ->
+        gmap.setOnMapClickListener {
             if (marcadorIndicador != null) {
                 // Si el marcador ya existe, eliminarlo
                 marcadorIndicador?.remove()
@@ -589,6 +594,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                     "Compara cualquier recorrido de las rutas habilitadas con tu posición en el mapa, presiona el boton gps, elige 'VER RUTA' y aleja el mapa."
 
 
+                //--------------RECICLERVIEW-------------------------------
                 // Obtener la referencia del layout inflado
                 val listaOpMapa = binding.listaOpMapa
                 val listaViewRutas = binding.espacioMapaUtil
@@ -610,7 +616,6 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 }
 
                 // Configurar el LinearLayoutManager y el Adapter
-
                 listaOpMapa.layoutManager = LinearLayoutManager(this)
                 listaOpMapa.adapter = OpMapaAdapterHolder(listaRutasOpMapa, gmap, this)
 
@@ -666,6 +671,8 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 "Permiso de ubicación no permitido--Activalo en ajustes."
             )
             binding.irgps.setImageResource(R.drawable.ic_gps_off)
+            //ocultar progress de localizacion
+            binding.progLocalizando.visibility = View.GONE
         }
         if (!::gmap.isInitialized) return
         if (!UtilidadesMenores().comprobarConexion(this)) {
@@ -673,6 +680,21 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             irPosGps()
         } else {
             if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+
+                // verificar luegod e 10 segundos si se activo el gps
+                CoroutineScope(Dispatchers.Main).launch {
+                    delay(10000) // Esperar 10 segundos
+                    // Realizar verificación de ubi
+                    if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                        println("Al parecer no se acepto activar el gps")
+                        binding.irgps.setImageResource(R.drawable.ic_gps_off)
+                        //ocultar progress de localizacion
+                        binding.progLocalizando.visibility = View.GONE
+                    } else {
+                        println("Al parecer si se acepto activar el gps")
+                    }
+                }
+
                 //pedir activar gps estilo de google
                 val locationRequest =
                     LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5).apply {
@@ -687,27 +709,24 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                     if (e is ResolvableApiException) {
                         try {
                             e.startResolutionForResult(this, 1)
-                            binding.irgps.setImageResource(R.drawable.ic_progress_gps)
+
+                            binding.irgps.setImageResource(R.drawable.ic_gps)
+                            //ocultar progress de localizacion
+                            binding.progLocalizando.visibility = View.VISIBLE
+
                             irPosGps()
                         } catch (sendEx: IntentSender.SendIntentException) {
-                            // Error al intentar abrir la configuración de ubicación
-                            Log.e(
-                                "GPS",
-                                "Error al intentar abrir la configuración de ubicación: ${sendEx.message}"
-                            )
-
-                            // El usuario rechazó la solicitud de activación del GPS
-                            UtilidadesMenores().crearToast(
-                                this,
-                                "Debes activar el GPS para usar esta función."
-                            )
+                            //algun error
                             binding.irgps.setImageResource(R.drawable.ic_gps_off)
+                            //ocultar progress de localizacion
+                            binding.progLocalizando.visibility = View.GONE
                         }
                     }
                 }
                 irPosGps()
             } else { //si ya esta activado el gps entonces ir a la posicion
-                binding.irgps.setImageResource(R.drawable.ic_gps_find)
+
+
                 irPosGps()
             }
         }
@@ -749,7 +768,13 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             if (location != null) {
                 val latLng = LatLng(location.latitude, location.longitude)
                 ubiUser = latLng
+
+                //boton irgps
                 binding.irgps.setImageResource(R.drawable.ic_gps_find)
+                //ocultar progress de localizando
+                binding.progLocalizando.visibility = View.GONE
+
+
                 val zoomLevel = 16.5f // Nivel de zoom deseado
 
                 val cameraPosition = CameraPosition.Builder()
@@ -882,7 +907,9 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             alertDialog.setTitle("Activar GPS sin conexión")
             alertDialog.setMessage("El dispositivo no tiene conexión a internet, ¿Desea activar el gps del dispositivo que funciona sin internet?")
             alertDialog.setPositiveButton("Si") { _, _ ->
-                binding.irgps.setImageResource(R.drawable.ic_progress_gps)
+                //mostrar progress de localizacion
+                binding.progLocalizando.visibility = View.VISIBLE
+
                 val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                 startActivity(intent)
             }
@@ -919,8 +946,8 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         super.onDestroy()
 
         //liberar memoria del mapa
-        FragmentMap.onDestroy()
-        println("Fragmento mapa fue liberado-finalizado")
+//        fragmentMap.onDestroy()
+//        println("Fragmento mapa fue liberado-finalizado")
 
         //desregistrar listener de la conexion a internet
         val connectivityManager =

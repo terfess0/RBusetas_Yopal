@@ -89,4 +89,6 @@
     <!-- Conjunto 14 -->
     <color name="catorceSalida">#9F4427</color>
     <color name="catorceLlegada">#B71C1C</color>
+
+    <color name="verde_positivo">#8069D878</color>
 </resources>
