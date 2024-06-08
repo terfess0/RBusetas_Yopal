@@ -89,14 +89,6 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
             pedirPermisoNotificacionesV33()
         }
 
-        //recibir datos de notis en segundo plano firebase messaging
-        val link = intent.getStringExtra("link")
-        if (link != null) {
-            // Crear un intent para abrir el enlace de notis actualizaciones
-            val openLinkIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
-            openLinkIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(openLinkIntent)
-        }
 
         //mostrar saludo buenos dias
         val saludo: String = when (getHora()) {
@@ -233,7 +225,33 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
                 }
             }
         })
+
+
+        handleIntent(intent)
     }
+
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent?.let { handleIntent(it) }
+    }
+
+    private fun handleIntent(intent: Intent) {
+        intent.getStringExtra("link")?.let { link ->
+            val openLinkIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+            startActivity(openLinkIntent)
+            // Limpiar el intent
+            intent.removeExtra("link")
+        }
+
+        intent.getStringExtra("respuesta")?.let { response ->
+            UtilidadesMenores().crearAlertaSencilla(this, response)
+            // Limpiar el intent
+            intent.removeExtra("respuesta")
+        }
+    }
+
+
 
     //menu en el ActionBar
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -349,7 +367,10 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
 
 
                 val sharedPreferences =
-                    getSharedPreferences("PreferenciasGuardadas", Context.MODE_PRIVATE)
+                    getSharedPreferences(
+                        getString(R.string.nombre_shared_preferences),
+                        Context.MODE_PRIVATE
+                    )
                 sharedPreferences.edit().putInt("night_mode", newNightMode).apply()
 
             }
@@ -372,7 +393,10 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
             // El usuario concedió el permiso
         } else {
             // El usuario denegó el permiso noti
-            UtilidadesMenores().crearAlertaSencilla(this, "El permiso de notificaciones ha sido denegado")
+            UtilidadesMenores().crearAlertaSencilla(
+                this,
+                "El permiso de notificaciones ha sido denegado"
+            )
         }
     }
 

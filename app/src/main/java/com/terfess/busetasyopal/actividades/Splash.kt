@@ -38,16 +38,25 @@ class Splash : AppCompatActivity() {
         //splash
         splashScreen.setKeepOnScreenCondition { true }
 
+        //intent general paso a la siguiente actividad
+        val intentToRutasSeccion = Intent(this, RutasSeccion::class.java)
+
         //crear canales notificaciones
         NotificationChannelHelper(this).crearCanalesNotificaciones()
 
         //recibir datos de notis en segundo plano firebase messaging
-        val link = intent.getStringExtra("link")
-        if (link != null) {
-            // Crear un intent para abrir el enlace de notis actualizaciones
-            val openLinkIntent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
-            openLinkIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            startActivity(openLinkIntent)
+        // Pasar los extras del intent recibido a la actividad principal
+        if (intent.hasExtra("link")) {
+            intentToRutasSeccion.putExtra("link", intent.getStringExtra("link"))
+            // Limpiar el intent
+            intent.removeExtra("link")
+            intent.removeExtra("respuesta")
+        }
+        if (intent.hasExtra("respuesta")) {
+            intentToRutasSeccion.putExtra("respuesta", intent.getStringExtra("respuesta"))
+            // Limpiar el intent
+            intent.removeExtra("link")
+            intent.removeExtra("respuesta")
         }
 
         //----------------------------TIEMPO AGOTADO---------------------------------
@@ -64,7 +73,7 @@ class Splash : AppCompatActivity() {
 //                    findViewById<TextView>(R.id.tiempoAgotado).visibility = View.VISIBLE
                 } else {
                     UtilidadesMenores().crearToast(this, "Tiempo Agotado")
-                    startActivity(Intent(this@Splash, RutasSeccion::class.java))
+                    startActivity(intentToRutasSeccion)
                     finish()
                 }
             }
@@ -110,7 +119,7 @@ class Splash : AppCompatActivity() {
                                 dbHelper.insertarVersionDatos(versionNube)
                             } else {
                                 //si la informacion descargable ya esta guardada entonces iniciar
-                                startActivity(Intent(this@Splash, RutasSeccion::class.java))
+                                startActivity(intentToRutasSeccion)
                                 tiempo.removeCallbacksAndMessages(null)
                                 finish()
                             }
@@ -138,7 +147,7 @@ class Splash : AppCompatActivity() {
 //                findViewById<TextView>(R.id.tiempoAgotado).text = "Sin Conexión"
             } else {
                 UtilidadesMenores().crearToast(this, "Sin conexión a Internet")
-                startActivity(Intent(this@Splash, RutasSeccion::class.java))
+                startActivity(intentToRutasSeccion)
                 finish()
             }
         }
