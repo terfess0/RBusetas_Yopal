@@ -13,8 +13,8 @@ android {
         applicationId = "com.terfess.busetasyopal"
         minSdk = 24
         targetSdk = 34
-        versionCode = 22
-        versionName = "1.1.4"
+        versionCode = 23
+        versionName = "1.1.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -43,14 +43,14 @@ android {
 dependencies {
 
     implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     implementation("com.google.maps.android:android-maps-utils:2.3.0")//maps
     implementation("com.google.android.gms:play-services-maps:18.2.0")//maps
     implementation("com.google.maps.android:maps-utils-ktx:3.4.0") //maps
-    implementation("com.google.android.gms:play-services-location:21.2.0") //ubicacion
+    implementation("com.google.android.gms:play-services-location:21.3.0") //ubicacion
     implementation("androidx.cardview:cardview:1.0.0")
 
     testImplementation("junit:junit:4.13.2")
@@ -58,20 +58,18 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     //firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-database-ktx")
     // firebase cloud messagin
     implementation("com.google.firebase:firebase-messaging:24.0.0")
 
-    //api google places
-    implementation("com.google.android.libraries.places:places:3.4.0")
 
     //coroutinas
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     //anuncios admob
-    implementation("com.google.android.gms:play-services-ads:23.0.0")
+    implementation("com.google.android.gms:play-services-ads:23.1.0")
 
     //splash
     implementation("androidx.core:core-splashscreen:1.0.1")

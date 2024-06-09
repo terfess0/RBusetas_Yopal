@@ -204,21 +204,6 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
         selector()  //seleccionar que ruta cargar
 
-        var marcadorIndicador: Marker? = null
-        gmap.setOnMapClickListener {
-            if (marcadorIndicador != null) {
-                // Si el marcador ya existe, eliminarlo
-                marcadorIndicador?.remove()
-                marcadorIndicador = null
-            } else {
-                // Si el marcador no existe, agregarlo
-                val optionsMarker = MarkerOptions()
-                    .position(it)
-                    .title("Mi Destino")
-                marcadorIndicador = gmap.addMarker(optionsMarker)
-            }
-        }
-
 
         //pedir/comprobar permiso ubicacion y gps On
         binding.irgps.setOnClickListener {

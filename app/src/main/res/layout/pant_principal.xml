@@ -196,7 +196,7 @@
                     android:paddingHorizontal="5dp"
                     android:text="Ver mapa con las rutas"
                     android:textAllCaps="false"
-                    android:textColor="@color/quantum_white_100"
+                    android:textColor="@color/white"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
@@ -211,7 +211,7 @@
                     android:paddingHorizontal="5dp"
                     android:text="Calcular Ruta Inicio a Destino"
                     android:textAllCaps="false"
-                    android:textColor="@color/quantum_white_100"
+                    android:textColor="@color/white"
                     android:textSize="12sp"
                     android:textStyle="bold"
                     android:visibility="gone" />
@@ -227,7 +227,7 @@
                     android:paddingHorizontal="5dp"
                     android:text="Ver mapa con parqueaderos"
                     android:textAllCaps="false"
-                    android:textColor="@color/quantum_white_100"
+                    android:textColor="@color/white"
                     android:textSize="12sp"
                     android:textStyle="bold" />
 
