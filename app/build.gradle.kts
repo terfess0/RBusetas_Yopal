@@ -52,6 +52,7 @@ dependencies {
     implementation("com.google.maps.android:maps-utils-ktx:3.4.0") //maps
     implementation("com.google.android.gms:play-services-location:21.3.0") //ubicacion
     implementation("androidx.cardview:cardview:1.0.0")
+    implementation("androidx.activity:activity:1.8.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
@@ -73,6 +74,10 @@ dependencies {
 
     //splash
     implementation("androidx.core:core-splashscreen:1.0.1")
+
+    //mvvm
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.4")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.4")
 }
 
 
