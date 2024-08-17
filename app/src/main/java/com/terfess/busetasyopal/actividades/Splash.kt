@@ -181,7 +181,7 @@ class Splash : AppCompatActivity() {
 
     private fun applySavedNightMode() {
         val sharedPreferences = getSharedPreferences("PreferenciasGuardadas", Context.MODE_PRIVATE)
-        val savedNightMode = sharedPreferences.getInt("night_mode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        val savedNightMode = sharedPreferences.getInt("night_mode", AppCompatDelegate.MODE_NIGHT_NO)
         AppCompatDelegate.setDefaultNightMode(savedNightMode)
     }
 }
