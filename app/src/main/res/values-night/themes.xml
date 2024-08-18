@@ -1,7 +1,7 @@
 <resources>
     <style name="Theme.general" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="elevation">1dp</item>
-        <item name="colorPrimary">#000000</item>
+        <item name="colorPrimary">#14171A</item>
         <item name="colorPrimaryDark">#CCCCCC</item>
         <item name="titleTextColor">#FFFFFF</item>
         <item name="colorBackgroundFloating">#F7101840</item>
