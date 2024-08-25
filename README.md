@@ -15,25 +15,21 @@ Esta aplicación tiene como objetivo proporcionar información detallada sobre l
 - **Lenguaje de Programación**: Kotlin
 - **IDE**: Android Studio
 - **Base de Datos en Tiempo Real**: Firebase Realtime Database
+- **Base de Datos Local**: Sqlite
 - **Servicios de Ubicación**: Google GPS Service
 - **Mapas**: Google Maps SDK para Android
 - **Diseño de Interfaz de Usuario**: XML
+- **Firebase Messaging**
+- **Recycler View, Listas, Algoritmos de calculo, Algoritmo de descarga y almacenamiento de información, visibilidad de disponibilidad representada por colores, Coroutinas** 
 
-## 🚀 Instalación
-
-1. Clona el repositorio:
-    ```bash
-    git clone https://github.com/terfess0/App_Rutas_Busetas_U.git
-    ```
-2. Abre el proyecto en Android Studio.
-3. Asegúrate de tener configuradas las claves de Firebase y Google Maps en el archivo `google-services.json`.
-4. Compila y ejecuta la aplicación en tu dispositivo o emulador Android.
 
 ## 📖 Uso
 
 1. **Información de Rutas**: En la pantalla principal, puedes ver una lista de rutas disponibles con sus horarios y ubicaciones clave.
 2. **Visualización de Rutas**: Selecciona una ruta para ver su recorrido en el mapa, representado con polilíneas.
 3. **Ubicación en Tiempo Real**: Activa el GPS para ver tu ubicación actual en el mapa y compararla con las rutas de busetas.
+4. **Opciones dinamicas con las rutas**: Explora diversas formas de ver los datos como *ver parqueaderos de las rutas* y *ver todas las rutas en un solo mapa*.
+5. **Reportes**: Pueden hacerse reportes acerca de la información presentada en la aplicación y observaciones al sistema de transporte que seran redirigidas a la autoridad de transito competente.
 
 
 ## 📄 Licencia
@@ -42,5 +38,5 @@ Este proyecto está licenciado bajo la Licencia MIT - ver el archivo [LICENSE](L
 
 ## 📧 Contacto
 
-Si tienes alguna pregunta o sugerencia, no dudes en contactarme a través de santiagofontalvo13@gmail.com
+Si tienes alguna pregunta o sugerencia, no dudes en contactarme a través de [santiagofontalvo13@gmail.com](santiagofontalvo13@gmail.com)
 
