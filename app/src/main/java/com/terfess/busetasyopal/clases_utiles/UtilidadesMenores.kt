@@ -13,6 +13,7 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.database.DatabaseReference
@@ -29,7 +30,6 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-import kotlin.concurrent.thread
 
 
 interface AlertaCallback { //devolucion de llamada para el CrearAlerta
@@ -114,7 +114,7 @@ class UtilidadesMenores {
         // dialog.window?.setBackgroundDrawableResource(android.R.color.transparent) // Fondo transparente
         dialog.setOnShowListener { //aqui se puede personalizar mas
             // cambiar el color de los botones
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(Color.BLUE)
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE)
         }
         dialog.show()
     }
@@ -177,6 +177,15 @@ class UtilidadesMenores {
     }
 
 
+    fun isNightMode(): Boolean {
+        val nightMode = AppCompatDelegate.getDefaultNightMode()
+        var nightModeState = false
+        if (nightMode == AppCompatDelegate.MODE_NIGHT_YES) {
+            nightModeState = true
+        }
+        return nightModeState
+    }
+
     fun reportar(context: Context, instanciaMapa: Mapa? = null, opcion_actual: String) {
         var ubiUser = Mapa.ubiUser ?: LatLng(0.0, 0.0)
         val builder = AlertDialog.Builder(context, R.style.AlertDialogTheme)
@@ -197,6 +206,11 @@ class UtilidadesMenores {
         input.hint = "Escribe aquí"
         input.maxLines = 5
         input.maxEms = 5
+        input.setHintTextColor(Color.GRAY)
+
+        if (isNightMode()){
+            input.setTextColor(Color.WHITE)
+        }
 
         layout.addView(input)
 
@@ -237,12 +251,13 @@ class UtilidadesMenores {
 
                         //if selecciona enviar ubicacion y la ubicacion ya fue obtenida
                         if (checkBox.isChecked && ubiUser.latitude != 0.0 && ubiUser.longitude != 0.0) {
-                            ubicacion = ubiUser.toString()
+                            ubicacion =
+                                ubiUser.latitude.toString() + ", " + ubiUser.longitude.toString()
                         }
                         //si selecciona enviar ubicacion pero falta obtener ubicacion
                         if (checkBox.isChecked && (ubiUser.latitude == 0.0 && ubiUser.longitude == 0.0)) {
 
-                            withContext(Dispatchers.Main){
+                            withContext(Dispatchers.Main) {
                                 instanciaMapa?.activarLocalizacion()
                             }
 
@@ -274,12 +289,12 @@ class UtilidadesMenores {
 
                                 // Crear un nuevo nodo con el ID único, fecha, texto y ubicación del reporte
                                 val nuevoReporte = mapOf<String, Any>(
-                                    "fecha" to fechaFormateada,
-                                    "hora" to horaFormateada,
-                                    "situacion" to texto,
-                                    "ubicacion" to ubicacion,
-                                    "tareaActual" to opcion_actual,
-                                    "origen" to tokenIdApp
+                                    "dateReport" to fechaFormateada,
+                                    "timeReport" to horaFormateada,
+                                    "situationReport" to texto,
+                                    "location" to ubicacion,
+                                    "currentTask" to opcion_actual,
+                                    "origin" to tokenIdApp
                                 )
 
                                 // Subir el nuevo reporte a la base de datos de Firebase
@@ -289,19 +304,22 @@ class UtilidadesMenores {
                                             // La subida fue exitosa
                                             crearAlertaSencilla(
                                                 context,
-                                                "Reporte enviado exitosamente")
+                                                "Reporte enviado exitosamente"
+                                            )
                                         } else {
                                             // La subida falló
                                             crearAlertaSencilla(
                                                 context,
-                                                "Error al enviar el reporte. Inténtalo de nuevo más tarde")
+                                                "Error al enviar el reporte. Inténtalo de nuevo más tarde"
+                                            )
                                         }
                                     }
                             } else {
                                 // La subida falló
                                 crearAlertaSencilla(
                                     context,
-                                    "Error al enviar el reporte. Inténtalo de nuevo más tarde")
+                                    "Error al enviar el reporte. Inténtalo de nuevo más tarde"
+                                )
                             }
                         }
 
@@ -316,4 +334,9 @@ class UtilidadesMenores {
         builder.show()
     }
 
+    fun readSharedPref(context: Context, key: String): Int {
+        val sharedPreferences =
+            context.getSharedPreferences("PreferenciasGuardadas", Context.MODE_PRIVATE)
+        return sharedPreferences.getInt(key, 0)
+    }
 }
