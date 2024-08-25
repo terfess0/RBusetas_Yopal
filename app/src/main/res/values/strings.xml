@@ -19,10 +19,9 @@
     <string name="crearTablaFrecuencia">CREATE TABLE frecuencia(id_ruta INTEGER,frecLunVie TEXT NOT NULL,frecSab TEXT NOT NULL,frecDomFest TEXT NOT NULL,FOREIGN KEY (id_ruta) REFERENCES ruta(id_ruta));</string>
     <string name="seccion_rutas">RUTAS HABILITADAS</string>
     <string name="seccion_botones">OPCIONES</string>
-    <string name="ruta_reportes_db_nube">features/0/reportes</string>
     <string name="option_add_ubi_to_report">Enviar también ubicación actual</string>
     <string name="accept">Aceptar</string>
-    <string name="alert_text_literal">Alerta</string>
+    <string name="alert_text_literal">Info</string>
     <string name="empty_eport_error">Reporte vacío, no se envió</string>
     <string name="description_alert_report">Por aquí puedes enviarnos opiniones, hallazgos de información incompleta y/o errónea, así como reportes generales que podrán ser redirigidos a la Secretaría de Tránsito.</string>
     <string name="nombre_shared_preferences">PreferenciasGuardadas</string>
@@ -31,6 +30,25 @@
     <string name="ruta_y_numero">Ruta %1$s</string>
     <string name="salida">Salida:</string>
     <string name="llegada">Llegada:</string>
+    <string name="text_switch_enable">Activar</string>
+    <string name="admin_edt_hint_price">Ingresa nuevo Precio</string>
+    <string name="cancel">Cancelar</string>
+    <string name="actualizar_precio_pasaje">Actualizar precio pasaje</string>
+    <string name="title_activity_login_admin">LoginAdminActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+
+    <string name="ruta_reportes_db_nube">features/0/reportesNew</string>
+    <string name="ruta_firebase_price_nube">/features/0/precio</string>
+    <string name="ruta_firebase_rutas_nube">features/0/rutas</string>
+    <string name="no_hay_reportes_en_este_momento">No hay reportes en este momento.</string>
+    <string name="confirm">Confirmar</string>
 
 </resources>
 
