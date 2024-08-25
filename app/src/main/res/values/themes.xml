@@ -12,9 +12,9 @@
     </style>
 
     <style name="AlertDialogTheme" parent="ThemeOverlay.AppCompat.Dialog.Alert">
-        <item name="colorPrimary">#FFFFFF</item> <!-- Color de fondo principal -->
         <item name="android:windowBackground">@drawable/bord_alerta</item> <!-- Fondo de la ventana con el borde de alerta -->
-        <item name="buttonTint">@color/transparente</item> <!-- Tinte del botón -->
+        <item name="buttonTint">@color/transparente</item>
+        <item name="hintTextColor">#9F000000</item>
         <item name="android:textColorPrimary">@android:color/black</item> <!-- Color del texto principal -->
         <item name="android:textColorSecondary">@android:color/black</item> <!-- Color del texto secundario -->
     </style>

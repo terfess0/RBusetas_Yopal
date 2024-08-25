@@ -4,16 +4,15 @@
         <item name="colorPrimary">#14171A</item>
         <item name="colorPrimaryDark">#CCCCCC</item>
         <item name="titleTextColor">#FFFFFF</item>
-        <item name="colorBackgroundFloating">#F7101840</item>
-        <item name="colorAccent">#D3151B3E</item>
+        <item name="colorBackgroundFloating">#1E2A38</item>
+        <item name="colorAccent">?attr/colorPrimaryDark</item>
     </style>
 
     <style name="AlertDialogTheme" parent="ThemeOverlay.AppCompat.Dialog.Alert">
-        <item name="colorPrimary">#FFFFFF</item> <!-- Color de fondo principal -->
-        <item name="android:windowBackground">@drawable/bord_alerta</item> <!-- Fondo de la ventana con el borde de alerta -->
-        <item name="buttonTint">@color/transparente</item> <!-- Tinte del botón -->
-        <item name="android:textColorPrimary">@android:color/black</item> <!-- Color del texto principal -->
-        <item name="android:textColorSecondary">@android:color/black</item> <!-- Color del texto secundario -->
+        <item name="android:windowBackground">@drawable/bord_alerta</item>
+        <item name="android:textColorPrimary">?attr/colorPrimaryDark</item>
+        <item name="android:textColorSecondary">?attr/colorPrimaryDark</item>
+        <item name="hintTextColor">?attr/colorPrimaryDark</item>
     </style>
 
     <style name="Theme.splash" parent="Theme.SplashScreen">
