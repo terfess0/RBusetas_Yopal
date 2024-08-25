@@ -10,7 +10,7 @@ class AdapterRoutesAdmin(private var listado: List<DatoRuta>) : RecyclerView.Ada
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HolderRoutesAdmin {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return HolderRoutesAdmin(layoutInflater.inflate(R.layout.format_recycler_admin, parent, false))
+        return HolderRoutesAdmin(layoutInflater.inflate(R.layout.format_recycler_routes_admin, parent, false))
     }
 
     override fun getItemCount(): Int {

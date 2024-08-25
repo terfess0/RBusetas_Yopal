@@ -11,7 +11,7 @@ import com.terfess.busetasyopal.actividades.Mapa
 import com.terfess.busetasyopal.admin.model.DatoRuta
 import com.terfess.busetasyopal.clases_utiles.RangoHorarios
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
-import com.terfess.busetasyopal.databinding.FormatRecyclerAdminBinding
+import com.terfess.busetasyopal.databinding.FormatRecyclerRoutesAdminBinding
 import com.terfess.busetasyopal.modelos_dato.DatoFrecuencia
 import com.terfess.busetasyopal.modelos_dato.DatoHorario
 import kotlinx.coroutines.CoroutineScope
@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class HolderRoutesAdmin(vista: View) : RecyclerView.ViewHolder(vista) {
-    private val binding = FormatRecyclerAdminBinding.bind(vista)
+    private val binding = FormatRecyclerRoutesAdminBinding.bind(vista)
     private val caja = vista.context as Activity
     private var colorSubTituloTema =
         UtilidadesMenores().colorSubTituloTema(vista.context) //color subtitulo tema
