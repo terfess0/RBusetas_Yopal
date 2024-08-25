@@ -7,6 +7,8 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
@@ -15,11 +17,13 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.terfess.busetasyopal.R
+import com.terfess.busetasyopal.admin.view.AdminPanel
+import com.terfess.busetasyopal.admin.view.LoginAdmin
 import java.net.URLEncoder
 
 class AcercaDe : AppCompatActivity() {
 
-    lateinit var mAdView : AdView
+    lateinit var mAdView: AdView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.acerca_de)
@@ -33,7 +37,7 @@ class AcercaDe : AppCompatActivity() {
         val activarHorarios = findViewById<Button>(R.id.verInfoHorarios)
         val infoHorarios = findViewById<LinearLayoutCompat>(R.id.horarios)
         activarHorarios.setOnClickListener {//mostrar/ocultar informacion de horarios
-            if (infoHorarios.visibility == View.GONE){
+            if (infoHorarios.visibility == View.GONE) {
                 infoHorarios.visibility = View.VISIBLE
                 activarHorarios.setCompoundDrawablesWithIntrinsicBounds(
                     0,
@@ -41,7 +45,7 @@ class AcercaDe : AppCompatActivity() {
                     R.drawable.ic_flecha_abajo,
                     0
                 ) // cambiar el icono al final del boton
-            }else{
+            } else {
                 infoHorarios.visibility = View.GONE
                 activarHorarios.setCompoundDrawablesWithIntrinsicBounds(
                     0,
@@ -55,18 +59,19 @@ class AcercaDe : AppCompatActivity() {
         val whatsappConeccion = findViewById<ImageButton>(R.id.contc_wts)
         val mailConection = findViewById<ImageButton>(R.id.contc_mail)
 
-        whatsappConeccion.setOnClickListener{ //contectar a desarrollador por whatsapp
+        whatsappConeccion.setOnClickListener { //contectar a desarrollador por whatsapp
             enviarMensajeWhatsApp(
                 "+573219822620",
                 "Buenas, quiero hacer una felicitación/peticion/queja."
             )
         }
-        mailConection.setOnClickListener{//contectar a desarrollador por mail
+        mailConection.setOnClickListener {//contectar a desarrollador por mail
             abrirAppCorreo("terdevfess@gmail.com")
         }
 
         //_________LINK CLICKABLE____________________
-        val textView: TextView = findViewById(R.id.link_alcaldia) // Asegúrate de cambiar a tu TextView
+        val textView: TextView =
+            findViewById(R.id.link_alcaldia) // Asegúrate de cambiar a tu TextView
 
         val textoConEnlace = getString(R.string.enlace_alcaldia)
 
@@ -81,6 +86,23 @@ class AcercaDe : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_VIEW, uri)
             startActivity(intent)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_about, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.panelAdmin -> {
+                val intent = Intent(this, AdminPanel::class.java)
+                startActivity(intent)
+
+                //TODO: Cambiar el intent para poner el login que se habia omitido por pruebas
+            }
+        }
+        return true
     }
 
     private fun cargarAnuncios() {

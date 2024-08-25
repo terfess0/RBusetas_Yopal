@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
@@ -34,6 +33,8 @@ import com.google.firebase.database.ValueEventListener
 import com.terfess.busetasyopal.FiltroAdapterHolder
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.AdapterPrincipal
+import com.terfess.busetasyopal.admin.view.AdminPanel
+import com.terfess.busetasyopal.admin.view.LoginAdmin
 import com.terfess.busetasyopal.clases_utiles.AlertaCallback
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.PantPrincipalBinding
@@ -96,11 +97,13 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
             in 12..17 -> "Buenas tardes"
             else -> "Buenas noches"
         }
+
+
         //cabezera
         binding.saludo.text = saludo
         binding.precio.text = precio
         //cabezera -- precio
-        FirebaseDatabase.getInstance().getReference("/features/0/precio")
+        FirebaseDatabase.getInstance().getReference(getString(R.string.ruta_firebase_price_nube))
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     precio = snapshot.value.toString()
@@ -228,9 +231,9 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
     }
 
 
-    override fun onNewIntent(intent: Intent?) {
+    override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        intent?.let { handleIntent(it) }
+        handleIntent(intent)
     }
 
     private fun handleIntent(intent: Intent) {
