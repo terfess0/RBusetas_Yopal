@@ -1,4 +1,4 @@
-package com.terfess.busetasyopal.admin.recycler
+package com.terfess.busetasyopal.admin.recycler.reports
 
 import android.view.View
 import androidx.appcompat.app.AlertDialog

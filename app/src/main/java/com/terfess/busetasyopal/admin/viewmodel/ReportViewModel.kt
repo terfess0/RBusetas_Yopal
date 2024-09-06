@@ -6,13 +6,13 @@ import com.terfess.busetasyopal.admin.callback.OnDeleteReport
 import com.terfess.busetasyopal.admin.callback.OnGetReports
 import com.terfess.busetasyopal.admin.model.AdminProvider
 import com.terfess.busetasyopal.admin.model.DatoReport
-import com.terfess.busetasyopal.enums.FirebaseErrors
+import com.terfess.busetasyopal.enums.FirebaseEnums
 
 class ReportViewModel : ViewModel(),
     OnGetReports,
     OnDeleteReport {
     var reports = MutableLiveData<List<DatoReport>>()
-    var errorReports = MutableLiveData<FirebaseErrors>()
+    var errorReports = MutableLiveData<FirebaseEnums>()
     var resultDeleteReport = MutableLiveData<Boolean>()
 
     // start get reports
@@ -25,7 +25,7 @@ class ReportViewModel : ViewModel(),
         reports.postValue(data)
     }
 
-    override fun onErrorGetR(error: FirebaseErrors) {
+    override fun onErrorGetR(error: FirebaseEnums) {
         errorReports.postValue(error)
     }
 
@@ -41,7 +41,7 @@ class ReportViewModel : ViewModel(),
         resultDeleteReport.postValue(true)
     }
 
-    override fun OnErrorDelete(error: FirebaseErrors) {
+    override fun OnErrorDelete(error: FirebaseEnums) {
         resultDeleteReport.postValue(false)
     }
 }

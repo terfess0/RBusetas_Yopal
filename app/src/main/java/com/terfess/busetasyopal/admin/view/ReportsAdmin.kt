@@ -2,17 +2,13 @@ package com.terfess.busetasyopal.admin.view
 
 import android.os.Bundle
 import android.view.View
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.BaseTransientBottomBar
-import com.google.android.material.snackbar.Snackbar
-import com.terfess.busetasyopal.R
-import com.terfess.busetasyopal.admin.recycler.AdapterReportsAdmin
+import com.terfess.busetasyopal.admin.recycler.reports.AdapterReportsAdmin
 import com.terfess.busetasyopal.admin.viewmodel.ReportViewModel
+import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.ActivityReportsAdminBinding
 
 class ReportsAdmin : AppCompatActivity() {
@@ -33,47 +29,27 @@ class ReportsAdmin : AppCompatActivity() {
 
         viewModelInst.reports.observe(this, Observer { reports ->
             val txtReportsEmpty = binding.reportsEmpty
-            if (reports.isNotEmpty()){
+            if (reports.isNotEmpty()) {
                 adapter.notyChange(reports)
                 txtReportsEmpty.visibility = View.GONE
-            }else{
+            } else {
                 txtReportsEmpty.visibility = View.VISIBLE
             }
         })
 
-//        viewModelInst.resultDeleteReport.observe(this, Observer{
-//            println("Borrado")
-//            if (it == true){
-//                val snk = Snackbar.make(
-//                    binding.root,
-//                    "Reporte Eliminado",
-//                    Snackbar.LENGTH_SHORT
-//                )
-//                snk.animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
-//                snk.setBackgroundTint(
-//                    ContextCompat.getColor(
-//                        binding.root.context,
-//                        R.color.verde
-//                    )
-//                )
-//                snk.show()
-//            }else{
-//                val snk = Snackbar.make(
-//                    binding.root,
-//                    "Algo salió mal, no se eliminó.",
-//                    Snackbar.LENGTH_SHORT
-//                )
-//                snk.animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
-//                snk.setBackgroundTint(
-//                    ContextCompat.getColor(
-//                        binding.root.context,
-//                        R.color.catorceSalida
-//                    )
-//                )
-//                snk.show()
-//            }
-//
-//            viewModelInst.requestReports()
-//        })
+        viewModelInst.resultDeleteReport.observe(this, Observer {
+
+            if (it == true) {
+                UtilidadesMenores().crearSnackbar(
+                    "Reporte Eliminado",
+                    binding.root
+                )
+            } else {
+                UtilidadesMenores().crearSnackbar(
+                    "Algo salió mal, no se eliminó el reporte.",
+                    binding.root
+                )
+            }
+        })
     }
 }
