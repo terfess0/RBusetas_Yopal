@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.terfess.busetasyopal.admin.viewmodel.LoginAdminVM
+import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.ActivityLoginAdminBinding
 
 class LoginAdmin : AppCompatActivity() {
@@ -30,16 +31,25 @@ class LoginAdmin : AppCompatActivity() {
             }
         }
 
-        viewModel.loggedSucces.observe(this, Observer{
-            if (it == true){
+        viewModel.loggedSucces.observe(this, Observer {
+
+            val email = binding.edtEmail.text
+            val passwrd = binding.editPass.text
+
+            if (it == true) {
                 val intent = Intent(this, AdminPanel::class.java)
                 startActivity(intent)
-
-                val email = binding.edtEmail.text
-                val passwrd = binding.editPass.text
-                email?.clear()
-                passwrd?.clear()
+                finish()
+            } else {
+                UtilidadesMenores().crearSnackbar(
+                    "Credenciales incorrectas",
+                    binding.root
+                )
             }
+
+            //clear fields
+            email?.clear()
+            passwrd?.clear()
         })
     }
 }
