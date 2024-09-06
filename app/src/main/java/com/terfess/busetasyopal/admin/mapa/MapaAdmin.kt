@@ -311,11 +311,6 @@ class MapaAdmin : AppCompatActivity(),
                     polyline2?.points = puntosLlegada
                     polyline2?.jointType = JointType.ROUND
 
-                    // adjust camera map on center trace llegada
-                    if (puntosLlegada.isNotEmpty() && puntosLlegada.size > 3) {
-                        val mid = puntosLlegada.size / 2
-                        adjustMapCamera(puntosLlegada[mid])
-                    }
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
