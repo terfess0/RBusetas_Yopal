@@ -372,4 +372,11 @@ class UtilidadesMenores {
             else -> FirebaseEnums.ERROR_UNKNOWN
         }
     }
+
+    fun applySavedNightMode(context: Context) {
+        val sharedPreferences =
+            context.getSharedPreferences("PreferenciasGuardadas", Context.MODE_PRIVATE)
+        val savedNightMode = sharedPreferences.getInt("night_mode", AppCompatDelegate.MODE_NIGHT_NO)
+        AppCompatDelegate.setDefaultNightMode(savedNightMode)
+    }
 }
