@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorPrimary">
+
+    <TextView
+        android:id="@+id/titleAddRoute"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/agregando_nueva_ruta"
+        android:textAlignment="center"
+        android:textColor="@color/enfasis_azul"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:background="?attr/colorBackgroundFloating"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleAddRoute">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Número de Ruta -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/n_mero_de_ruta"
+                android:textColor="?attr/colorPrimaryDark"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etNumRuta"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/ingresa_el_n_mero_de_ruta"
+                android:textColor="?attr/colorPrimaryDark"
+                android:inputType="number"
+                android:textColorHint="@color/gris" />
+
+            <!-- Sitios -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/sitios"
+                android:textColor="?attr/colorPrimaryDark"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etSitios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/colorPrimaryDark"
+                android:hint="@string/ingresa_los_sitios"
+                android:inputType="text"
+                android:textColorHint="@color/gris" />
+
+            <!-- Frecuencia Lunes a Viernes -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/frecuencia_lunes_a_viernes"
+                android:textColor="?attr/colorPrimaryDark"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etFrecuenciaLunVie"
+                android:layout_width="match_parent"
+                android:textColor="?attr/colorPrimaryDark"
+                android:layout_height="wrap_content"
+                android:hint="@string/ingresa_la_frecuencia"
+                android:inputType="text"
+                android:textColorHint="@color/gris" />
+
+            <!-- Frecuencia Sábado -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/frecuencia_s_bado"
+                android:textColor="?attr/colorPrimaryDark"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etFrecuenciaSab"
+                android:layout_width="match_parent"
+                android:textColor="?attr/colorPrimaryDark"
+                android:layout_height="wrap_content"
+                android:hint="@string/ingresa_la_frecuencia"
+                android:inputType="text"
+                android:textColorHint="@color/gris" />
+
+            <!-- Frecuencia Domingo y Festivos -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/frecuencia_domingo_y_festivos"
+                android:textColor="?attr/colorPrimaryDark"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etFrecuenciaDomFest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/ingresa_la_frecuencia"
+                android:inputType="text"
+                android:textColor="?attr/colorPrimaryDark"
+                android:textColorHint="@color/gris" />
+
+            <!-- Horario Lunes a Viernes -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/horario_lunes_a_viernes"
+                android:textColor="?attr/colorPrimaryDark"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etHorarioLunVie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="?attr/colorPrimaryDark"
+                android:hint="@string/ingresa_los_horarios_separados_por_coma"
+                android:inputType="text"
+                android:textColorHint="@color/gris" />
+
+            <!-- Horario Sábado -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/horario_s_bado"
+                android:textColor="?attr/colorPrimaryDark"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etHorarioSab"
+                android:layout_width="match_parent"
+                android:textColor="?attr/colorPrimaryDark"
+                android:layout_height="wrap_content"
+                android:hint="@string/ingresa_los_horarios_separados_por_coma"
+                android:inputType="text"
+                android:textColorHint="@color/gris" />
+
+            <!-- Horario Domingo y Festivos -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/horario_domingo_y_festivos"
+                android:textColor="?attr/colorPrimaryDark"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/etHorarioDomFest"
+                android:layout_width="match_parent"
+                android:textColor="?attr/colorPrimaryDark"
+                android:layout_height="wrap_content"
+                android:hint="@string/ingresa_los_horarios_separados_por_coma"
+                android:inputType="text"
+                android:textColorHint="@color/gris" />
+
+            <!-- Habilitado -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/habilitado"
+                android:textColor="?attr/colorPrimaryDark"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/swEnabled"
+                android:layout_width="wrap_content"
+                android:textColor="?attr/colorPrimaryDark"
+                android:layout_height="wrap_content"
+                android:text="@string/activar_esta_ruta" />
+
+            <!-- Botón de Guardar -->
+            <Button
+                android:id="@+id/btnGuardar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="40dp"
+                android:background="@color/enfasis_azul"
+                android:text="@string/guardar"
+                android:textColor="@color/white" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
