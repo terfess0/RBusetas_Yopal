@@ -3,12 +3,12 @@
     <string name="app_name">Busetas Yopal</string>
 
     <string name="textview">TextView</string>
-    <string name="linkBaseDatos">none</string>
+    <string name="linkBaseDatos">https://rutas-busetas-yopal-default-rtdb.firebaseio.com/</string>
     <string name="creditos_texto">Agradecemos a todos los que contribuyeron al desarrollo de esta aplicación:\n\n- Desarrollador: Terfess\n- Diseño Gráfico: Terfess\n- Iconos por elaboración propia y recursos Android Studio.
 \n\n\nQueremos asegurarte que valoramos tu privacidad.\n\n- Esta aplicación no recopila ni almacena ningún dato personal tuyo.\n- No realizamos seguimientos ni compartimos información con terceros.\n- Tu privacidad es nuestra prioridad.\n\n¡Gracias por usar nuestra aplicación!</string>
     <string name="mensaje_contacto">Enviar mensaje por correo al desarrollador</string>
     <string name="mensaje_contacto_wts">Enviar mensaje a whatsapp al desarrollador</string>
-    <string name="fuente_datos">Los datos sobre el sistema de transporte público provienen de la información publicada en los canales de la Alcaldía Municipal de Yopal, de publicaciones realizadas por empresas encargadas y a través de verificación interna e investigación de campo.</string>
+    <string name="fuente_datos">Los datos sobre el sistema de transporte público se obtienen de la información publicada por las empresas responsables y se complementan con verificación interna e investigación de campo.</string>
     <string name="enlace_alcaldia">Sitio Web Alcaldía de Yopal</string>
     <string name="tema_sugerido_sms">Contactanos ante cualquier queja/sugerencia/corrección por nuestros canales de comunicación.</string>
     <string name="crearTablaVersion">CREATE TABLE version(numVersion INTEGER NOT NULL DEFAULT 0);</string>
@@ -30,7 +30,7 @@
     <string name="ruta_y_numero">Ruta %1$s</string>
     <string name="salida">Salida:</string>
     <string name="llegada">Llegada:</string>
-    <string name="text_switch_enable">Activar</string>
+    <string name="text_switch_enable">Activada</string>
     <string name="admin_edt_hint_price">Ingresa nuevo Precio</string>
     <string name="cancel">Cancelar</string>
     <string name="actualizar_precio_pasaje">Actualizar precio pasaje</string>
@@ -49,6 +49,41 @@
     <string name="ruta_firebase_rutas_nube">features/0/rutas</string>
     <string name="no_hay_reportes_en_este_momento">No hay reportes en este momento.</string>
     <string name="confirm">Confirmar</string>
+    <string name="vacio">Vacío</string>
+    <string name="lunes_a_viernes">Lunes a Viernes</string>
+    <string name="sabados">Sabados</string>
+    <string name="domingos_y_festivos">Domingos y Festivos</string>
+    <string name="frecuencia">Frecuencia</string>
+    <string name="editando">Editando</string>
+    <string name="no_hay_registros_en_este_momento">No hay registros que mostrar en este momento.</string>
+    <string name="agregar_punto">Agregar Punto</string>
+    <string name="agregando_nuevo_punto">Agregando nuevo punto</string>
+    <string name="borrar_recorrido_llegada">Recorrido Llegada</string>
+    <string name="borrar_recorrido_salida">Recorrido Salida</string>
+    <string name="n_mero_de_ruta">Número de Ruta</string>
+    <string name="ingresa_el_n_mero_de_ruta">Ingresa el número de ruta</string>
+    <string name="sitios">Sitios</string>
+    <string name="ingresa_los_sitios">Ingresa los sitios</string>
+    <string name="frecuencia_lunes_a_viernes">Frecuencia Lunes a Viernes</string>
+    <string name="ingresa_la_frecuencia">Ingresa la frecuencia</string>
+    <string name="frecuencia_s_bado">Frecuencia Sábado</string>
+    <string name="frecuencia_domingo_y_festivos">Frecuencia Domingo y Festivos</string>
+    <string name="horario_lunes_a_viernes">Horario Lunes a Viernes</string>
+    <string name="ingresa_los_horarios_separados_por_coma">Ingresa los horarios separados por coma</string>
+    <string name="horario_s_bado">Horario Sábado</string>
+    <string name="horario_domingo_y_festivos">Horario Domingo y Festivos</string>
+    <string name="habilitado">Habilitado</string>
+    <string name="activar_esta_ruta">Activar esta ruta</string>
+    <string name="guardar">Guardar</string>
+    <string name="agregando_nueva_ruta">Agregando Nueva Ruta</string>
+    <string name="registros">Registros</string>
+    <string name="reportes">Reportes</string>
+    <string name="precio">Precio</string>
+    <string name="rutas">Rutas</string>
+    <string name="crear_ruta">Crear Ruta</string>
+    <string name="este_campo_no_puede_estar_vacio">Este campo no puede estar vacío.</string>
+    <string name="no_se_encontraron_rutas_en_este_momento">No se encontraron rutas en este momento</string>
+    <string name="reintentar">Reintentar</string>
 
 </resources>
 
