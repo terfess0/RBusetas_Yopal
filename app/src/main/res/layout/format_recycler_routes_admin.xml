@@ -11,6 +11,47 @@
     android:background="@drawable/bordes_cont_admin"
     android:foreground="?android:attr/selectableItemBackground">
 
+    <LinearLayout
+        android:id="@+id/options_admin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/editando"
+            android:textColor="@color/distancia_caminar"
+            android:textStyle="bold" />
+
+        <Switch
+            android:id="@+id/isEnabledAdmin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:trackTint="@color/rojo"
+            android:background="@color/transparente"
+            android:text="@string/text_switch_enable"
+            android:textColor="?attr/titleTextColor"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <ImageButton
+            android:id="@+id/btn_save_changes_route"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@color/transparente"
+            android:src="@drawable/ic_send_24" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/rutaIdAdmin"
         android:layout_width="wrap_content"
@@ -23,12 +64,12 @@
         android:textColor="?attr/titleTextColor"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintBottom_toBottomOf="@+id/sitiosAdmin"
         app:layout_constraintEnd_toStartOf="@+id/sitiosAdmin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/options_admin" />
 
-    <TextView
+    <EditText
         android:id="@+id/sitiosAdmin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -40,97 +81,227 @@
         android:text="@string/textview"
         android:textColor="?attr/titleTextColor"
         android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintBottom_toTopOf="@+id/contenedorHorAdmin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/rutaIdAdmin"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/options_admin" />
 
     <LinearLayout
         android:id="@+id/contenedorHorAdmin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:gravity="center"
         android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sitiosAdmin">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/lunes_a_viernes"
+                android:textColor="?attr/colorPrimaryDark"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/horLVAdminInicio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
+                android:fontFamily="More Fonts..."
+                android:textColor="?attr/colorPrimaryDark"
+                android:textSize="11sp" />
+
+            <EditText
+                android:id="@+id/horLVAdminFin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
+                android:fontFamily="More Fonts..."
+                android:textColor="?attr/colorPrimaryDark"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/sabados"
+                android:textColor="?attr/colorPrimaryDark"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/horSabAdminInicio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
+                android:fontFamily="More Fonts..."
+                android:textColor="?attr/colorPrimaryDark"
+                android:textSize="11sp" />
+
+            <EditText
+                android:id="@+id/horSabAdminFin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
+                android:fontFamily="More Fonts..."
+                android:textColor="?attr/colorPrimaryDark"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/domingos_y_festivos"
+                android:textColor="?attr/colorPrimaryDark"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/horDomAdminInicio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
+                android:fontFamily="More Fonts..."
+                android:textColor="?attr/colorPrimaryDark"
+                android:textSize="11sp" />
+
+            <EditText
+                android:id="@+id/horDomAdminFin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
+                android:fontFamily="More Fonts..."
+                android:textColor="?attr/colorPrimaryDark"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/contenedorFrecAdmin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contenedorHorAdmin">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/frecuencia"
+                android:textColor="?attr/colorPrimaryDark"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/frecLVAdmin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
+                android:fontFamily="More Fonts..."
+                android:textColor="?attr/colorPrimaryDark"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/frecuencia"
+                android:textColor="?attr/colorPrimaryDark"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/frecSabAdmin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
+                android:fontFamily="More Fonts..."
+                android:textColor="?attr/colorPrimaryDark"
+                android:textSize="11sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/frecuencia"
+                android:textColor="?attr/colorPrimaryDark"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/frecDomAdmin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="4dp"
+                android:fontFamily="More Fonts..."
+                android:textColor="?attr/colorPrimaryDark"
+                android:textSize="11sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_edit_in_map"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/enfasis_azul"
+        android:drawableEnd="@drawable/ic_route"
+        android:text="Mapa"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guideline2">
-
-        <TextView
-            android:id="@+id/horarioLVAdmin"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:layout_weight="1"
-            android:fontFamily="More Fonts..."
-            android:gravity="center"
-            android:textColor="#333333"
-            android:textSize="11sp" />
-
-        <TextView
-            android:id="@+id/horarioSAdmin"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:layout_weight="1"
-            android:fontFamily="More Fonts..."
-            android:gravity="center"
-            android:textColor="#333333"
-            android:textSize="11sp" />
-
-        <TextView
-            android:id="@+id/horarioDFAdmin"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:layout_weight="1"
-            android:fontFamily="More Fonts..."
-            android:gravity="center"
-            android:textColor="#333333"
-            android:textSize="11sp" />
-    </LinearLayout>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="79dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/sitiosAdmin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageButton
-            android:id="@+id/edtRoute"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/transparente"
-            android:src="@android:drawable/ic_menu_edit" />
-
-        <Switch
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="?attr/titleTextColor"
-            android:background="@color/transparente"
-            android:text="@string/text_switch_enable"
-            tools:ignore="UseSwitchCompatOrMaterialXml" />
-
-        <ImageButton
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/transparente"
-            android:src="@android:drawable/ic_menu_save" />
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@id/contenedorFrecAdmin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
