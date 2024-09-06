@@ -9,6 +9,7 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.terfess.busetasyopal.R
+import com.terfess.busetasyopal.room.DatosASqliteLocal
 
 class PolylinesOpMapa(private val mapa: GoogleMap, private val contexto: Context) {
     private val opcionesRutaSalida = PolylineOptions().width(9.0f)

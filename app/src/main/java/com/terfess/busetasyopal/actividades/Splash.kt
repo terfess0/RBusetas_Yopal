@@ -1,20 +1,18 @@
 package com.terfess.busetasyopal.actividades
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.terfess.busetasyopal.R
-import com.terfess.busetasyopal.clases_utiles.DatosASqliteLocal
+import com.terfess.busetasyopal.room.DatosASqliteLocal
 import com.terfess.busetasyopal.clases_utiles.DatosDeFirebase
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.clases_utiles.allDatosRutas

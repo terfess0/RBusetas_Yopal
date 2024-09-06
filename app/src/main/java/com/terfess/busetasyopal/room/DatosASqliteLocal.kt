@@ -1,4 +1,4 @@
-package com.terfess.busetasyopal.clases_utiles
+package com.terfess.busetasyopal.room
 
 import android.content.ContentValues
 import android.content.Context

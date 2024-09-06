@@ -15,7 +15,6 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.text.Html
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -52,7 +51,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.terfess.busetasyopal.OpMapaAdapterHolder
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.clases_utiles.AlertaCallback
-import com.terfess.busetasyopal.clases_utiles.DatosASqliteLocal
+import com.terfess.busetasyopal.room.DatosASqliteLocal
 import com.terfess.busetasyopal.clases_utiles.PlanearRutaDestino
 import com.terfess.busetasyopal.clases_utiles.PlanearRutaDestino.Datos
 import com.terfess.busetasyopal.clases_utiles.PolylinesPrincipal
@@ -61,7 +60,6 @@ import com.terfess.busetasyopal.databinding.PantMapaBinding
 import com.terfess.busetasyopal.modelos_dato.DatoOpMapa
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

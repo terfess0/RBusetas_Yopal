@@ -9,6 +9,7 @@ import com.google.firebase.database.ValueEventListener
 import com.terfess.busetasyopal.modelos_dato.DatoFrecuencia
 import com.terfess.busetasyopal.modelos_dato.DatoHorario
 import com.terfess.busetasyopal.modelos_dato.EstructuraDatosBaseDatos
+import com.terfess.busetasyopal.room.DatosASqliteLocal
 
 interface DatosDeFirebaseCallback { //callback para detectar que los datos de una ruta han sido recibidos
     //se divide en tres callbacks para mejor funcionamiento / evitar bucles

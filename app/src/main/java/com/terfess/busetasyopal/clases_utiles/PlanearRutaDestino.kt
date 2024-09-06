@@ -2,7 +2,6 @@ package com.terfess.busetasyopal.clases_utiles
 
 import android.content.Context
 import android.location.Location
-import android.view.View
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -17,6 +16,7 @@ import com.google.android.gms.maps.model.RoundCap
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.actividades.Mapa
 import com.terfess.busetasyopal.modelos_dato.DatoCalcularRuta
+import com.terfess.busetasyopal.room.DatosASqliteLocal
 
 class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap) {
 
