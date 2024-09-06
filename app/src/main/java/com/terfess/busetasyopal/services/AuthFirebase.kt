@@ -42,4 +42,9 @@ class AuthFirebase {
                 }
             }
     }
+
+    fun isUserLoggedIn(): Boolean {
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        return currentUser != null
+    }
 }
