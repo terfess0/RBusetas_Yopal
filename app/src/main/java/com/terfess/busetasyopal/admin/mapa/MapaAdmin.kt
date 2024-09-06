@@ -167,7 +167,7 @@ class MapaAdmin : AppCompatActivity(),
         // Ruta - Primera Parte
         gMap.clear()
 
-        databaseRef.getReference("features/0/rutasLegales/$idruta/salida")
+        databaseRef.getReference("features/0/rutas/$idruta/salida")
             .addValueEventListener(object :
                 ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -244,7 +244,7 @@ class MapaAdmin : AppCompatActivity(),
             })
 
         // Ruta - Segunda Parte
-        databaseRef.getReference("features/0/rutasLegales/$idruta/llegada")
+        databaseRef.getReference("features/0/rutas/$idruta/llegada")
             .addValueEventListener(object :
                 ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -357,7 +357,7 @@ class MapaAdmin : AppCompatActivity(),
 
                 // update data point in data base---------
                 val urlRefPoint =
-                    "features/0/rutasLegales/$rutaId/$sentido/${index?.idMarkerUbi}"
+                    "features/0/rutas/$rutaId/$sentido/${index?.idMarkerUbi}"
 
                 val pointRef =
                     databaseRef.getReference(urlRefPoint)
@@ -420,7 +420,7 @@ class MapaAdmin : AppCompatActivity(),
     private fun removePointFirebase(sentido: String, index: Int) {
         // get reference to point
         val pointRef =
-            databaseRef.getReference("features/0/rutasLegales/$rutaId/$sentido/$index")
+            databaseRef.getReference("features/0/rutas/$rutaId/$sentido/$index")
 
         // delete in data base
         pointRef.removeValue().addOnCompleteListener { task ->
@@ -438,7 +438,7 @@ class MapaAdmin : AppCompatActivity(),
 
     private fun deleteLine(sentido: String) {
         val pointRef =
-            databaseRef.getReference("features/0/rutasLegales/$rutaId/$sentido")
+            databaseRef.getReference("features/0/rutas/$rutaId/$sentido")
 
         // Eliminar el punto correspondiente en la base de datos de Firebase
         pointRef.removeValue().addOnCompleteListener { task ->
@@ -481,7 +481,7 @@ class MapaAdmin : AppCompatActivity(),
                 }
 
                 val pointRef =
-                    databaseRef.getReference("features/0/rutasLegales/$rutaId/$sentido/${countPoint + 1}")
+                    databaseRef.getReference("features/0/rutas/$rutaId/$sentido/${countPoint + 1}")
                 pointRef.setValue(
                     mapOf(
                         "0" to it.position.longitude,
