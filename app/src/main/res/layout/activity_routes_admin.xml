@@ -72,18 +72,6 @@
                 android:textAllCaps="false"
                 android:textSize="30sp"
                 android:textStyle="bold" />
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_reload"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:background="@drawable/bord_suave"
-                android:backgroundTint="@color/enfasis_azul"
-                android:text="@string/reintentar"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

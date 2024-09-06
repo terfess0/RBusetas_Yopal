@@ -31,17 +31,8 @@ class RoutesAdmin : AppCompatActivity() {
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = adapter
 
-        binding.btnReload.setOnClickListener {
-            viewModel.getAllDataAdmin()
-            hideRecyclerOnError(false)
-        }
-
         viewModel.allData.observe(this, Observer {
-            if (it.isNotEmpty()) {
-                adapter.setNewData(it)
-            } else {
-                hideRecyclerOnError(true)
-            }
+            adapter.setNewData(it)
         })
 
         viewModel.onEditResult.observe(this, Observer { result ->
@@ -88,16 +79,6 @@ class RoutesAdmin : AppCompatActivity() {
             delay(500) // 1 second
             //hide
             binding.progressBar.visibility = View.GONE
-        }
-    }
-
-    private fun hideRecyclerOnError(mode: Boolean) {
-        if (mode) {
-            binding.rutasAdminRecycler.visibility = View.GONE
-            binding.emptyDataInfo.visibility = View.VISIBLE
-        } else {
-            binding.rutasAdminRecycler.visibility = View.VISIBLE
-            binding.emptyDataInfo.visibility = View.GONE
         }
     }
 }
