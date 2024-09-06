@@ -14,13 +14,22 @@ import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.FirebaseNetworkException
+import com.google.firebase.auth.FirebaseAuthException
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.database.DatabaseException
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.actividades.Mapa
+import com.terfess.busetasyopal.enums.FirebaseEnums
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -131,7 +140,19 @@ class UtilidadesMenores {
     }
 
     fun crearSnackbar(mensaje: String, rootView: View) {
-        Snackbar.make(rootView, mensaje, Snackbar.LENGTH_SHORT).show()
+        val snk = Snackbar.make(
+            rootView,
+            mensaje,
+            Snackbar.LENGTH_SHORT
+        )
+        snk.animationMode = BaseTransientBottomBar.ANIMATION_MODE_FADE
+        snk.setBackgroundTint(
+            ContextCompat.getColor(
+                rootView.context,
+                R.color.enfasis_azul
+            )
+        )
+        snk.show()
     }
 
     fun reiniciarApp(context: Context, claseObjetivo: Class<*>) {
@@ -208,7 +229,7 @@ class UtilidadesMenores {
         input.maxEms = 5
         input.setHintTextColor(Color.GRAY)
 
-        if (isNightMode()){
+        if (isNightMode()) {
             input.setTextColor(Color.WHITE)
         }
 
@@ -338,5 +359,17 @@ class UtilidadesMenores {
         val sharedPreferences =
             context.getSharedPreferences("PreferenciasGuardadas", Context.MODE_PRIVATE)
         return sharedPreferences.getInt(key, 0)
+    }
+
+    fun handleFirebaseError(exception: Exception): FirebaseEnums {
+        return when (exception) {
+            is FirebaseAuthInvalidCredentialsException -> FirebaseEnums.ERROR_CREDENTIAL
+            is FirebaseAuthInvalidUserException -> FirebaseEnums.ERROR_INVALID_USER
+            is FirebaseAuthUserCollisionException -> FirebaseEnums.ERROR_USER_COLLISION
+            is FirebaseNetworkException -> FirebaseEnums.ERROR_CONNECTION
+            is DatabaseException -> FirebaseEnums.ERROR_DATABASE
+            is FirebaseAuthException -> FirebaseEnums.ERROR_AUTH
+            else -> FirebaseEnums.ERROR_UNKNOWN
+        }
     }
 }
