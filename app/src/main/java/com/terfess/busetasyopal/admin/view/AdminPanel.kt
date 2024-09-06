@@ -8,14 +8,15 @@ import android.widget.EditText
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.admin.viewmodel.AdminViewModel
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.ActivityAdminPanelBinding
 
 class AdminPanel : AppCompatActivity() {
-    private lateinit var binding : ActivityAdminPanelBinding
-    private val viewModel : AdminViewModel by viewModels()
+    private lateinit var binding: ActivityAdminPanelBinding
+    private val viewModel: AdminViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityAdminPanelBinding.inflate(layoutInflater)
@@ -45,6 +46,20 @@ class AdminPanel : AppCompatActivity() {
             val intent = Intent(this, CreateRouteAdmin::class.java)
             startActivity(intent)
         }
+
+        viewModel.onEditPrice.observe(this, Observer { result ->
+            if (result == true) {
+                UtilidadesMenores().crearSnackbar(
+                    "Precio Actualizado",
+                    binding.root
+                )
+            } else {
+                UtilidadesMenores().crearSnackbar(
+                    "Error al actualizar el precio",
+                    binding.root
+                )
+            }
+        })
     }
 
     private fun dialogPriceInput() {
@@ -54,7 +69,7 @@ class AdminPanel : AppCompatActivity() {
         input.maxLines = 1
         input.setHintTextColor(Color.GRAY)
 
-        if (UtilidadesMenores().isNightMode()){
+        if (UtilidadesMenores().isNightMode()) {
             input.setTextColor(Color.WHITE)
         }
 
@@ -64,8 +79,10 @@ class AdminPanel : AppCompatActivity() {
             .setView(input)
             .setPositiveButton(getString(R.string.accept)) { _, _ ->
                 val userInput = input.text.toString()
-                if (userInput.isNotBlank()){
+                if (userInput.isNotBlank()) {
                     viewModel.updatePrice(userInput)
+                } else {
+                    UtilidadesMenores().crearSnackbar("Campo Vacío", binding.root)
                 }
             }
             .setNegativeButton(getString(R.string.cancel), null)
@@ -79,5 +96,5 @@ class AdminPanel : AppCompatActivity() {
         menuInflater.inflate(R.menu.menu_admin, menu)
         return true
     }
-    
+
 }
