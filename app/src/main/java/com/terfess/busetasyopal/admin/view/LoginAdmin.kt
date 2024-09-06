@@ -19,6 +19,10 @@ class LoginAdmin : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        //save mode night/light
+        UtilidadesMenores().applySavedNightMode(this)
+
+
         binding.signIn.setOnClickListener {
             val email = binding.edtEmail.text
             val passwrd = binding.editPass.text

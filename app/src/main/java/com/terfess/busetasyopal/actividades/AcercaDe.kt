@@ -19,6 +19,7 @@ import com.google.android.gms.ads.AdView
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.admin.view.AdminPanel
 import com.terfess.busetasyopal.admin.view.LoginAdmin
+import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import java.net.URLEncoder
 
 class AcercaDe : AppCompatActivity() {
@@ -29,6 +30,9 @@ class AcercaDe : AppCompatActivity() {
         setContentView(R.layout.acerca_de)
 
         cargarAnuncios()
+
+        //save mode night/light
+        UtilidadesMenores().applySavedNightMode(this)
 
         //actionbar transparente
         //supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))

@@ -2,7 +2,6 @@ package com.terfess.busetasyopal.actividades
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -30,7 +29,9 @@ class Splash : AppCompatActivity() {
     var contador = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         //recuperar el tema guardado en shared preferences
-        applySavedNightMode()
+        UtilidadesMenores().applySavedNightMode(this)
+
+
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.pant_splash)
@@ -101,7 +102,7 @@ class Splash : AppCompatActivity() {
 
             //obtener la version externa y comparar
             CoroutineScope(Dispatchers.IO).launch {
-                FirebaseDatabase.getInstance().getReference("/features/0/version")
+                FirebaseDatabase.getInstance().getReference("/features/0/versionPruebas")
                     .addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
 
@@ -176,12 +177,5 @@ class Splash : AppCompatActivity() {
                 }
             })
         }
-    }
-
-
-    private fun applySavedNightMode() {
-        val sharedPreferences = getSharedPreferences("PreferenciasGuardadas", Context.MODE_PRIVATE)
-        val savedNightMode = sharedPreferences.getInt("night_mode", AppCompatDelegate.MODE_NIGHT_NO)
-        AppCompatDelegate.setDefaultNightMode(savedNightMode)
     }
 }

@@ -21,6 +21,9 @@ class CreateRouteAdmin : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        //save mode night/light
+        UtilidadesMenores().applySavedNightMode(this)
+
         binding.btnGuardar.setOnClickListener {
             collectData()
         }

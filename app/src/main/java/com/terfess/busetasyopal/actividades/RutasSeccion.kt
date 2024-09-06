@@ -84,6 +84,8 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
         MobileAds.initialize(this) {}//inicializar sdk de anuncios google
         cargarAnuncios()
 
+        //save mode night/light
+        UtilidadesMenores().applySavedNightMode(this)
 
         //pedir permiso notificacion si es mayor a android 13
         if (VERSION.SDK_INT >= 33) {

@@ -23,6 +23,9 @@ class AdminPanel : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+        //save mode night/light
+        UtilidadesMenores().applySavedNightMode(this)
+
         binding.btnRouteAdmin.setOnClickListener {
             val intent = Intent(this, RoutesAdmin::class.java)
             startActivity(intent)
