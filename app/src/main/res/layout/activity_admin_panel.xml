@@ -26,7 +26,7 @@
             android:drawableEnd="@drawable/ic_route"
             android:paddingVertical="25dp"
             android:shadowColor="@color/amarillo"
-            android:text="Rutas"
+            android:text="@string/rutas"
             android:textAlignment="textStart"
             android:textColor="@color/white" />
 
@@ -39,12 +39,13 @@
             android:drawableEnd="@drawable/ic_price"
             android:paddingVertical="25dp"
             android:shadowColor="@color/amarillo"
-            android:text="Precio"
+            android:text="@string/precio"
             android:textAlignment="textStart"
             android:textColor="@color/white" />
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/contain2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -61,7 +62,43 @@
             android:drawableEnd="@drawable/ic_list_reports"
             android:paddingVertical="25dp"
             android:shadowColor="@color/black"
-            android:text="Reportes"
+            android:text="@string/reportes"
+            android:textAlignment="textStart"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/btnRecordsAdmin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#DAD19706"
+            android:drawableEnd="@drawable/ic_list_reports"
+            android:paddingVertical="25dp"
+            android:shadowColor="@color/black"
+            android:text="@string/registros"
+            android:textAlignment="textStart"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/contain3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contain2">
+
+        <Button
+            android:id="@+id/btnAddRouteAdmin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#DA600578"
+            android:drawableEnd="@drawable/ic_list_reports"
+            android:paddingVertical="25dp"
+            android:shadowColor="@color/black"
+            android:text="@string/crear_ruta"
             android:textAlignment="textStart"
             android:textColor="@color/white" />
     </LinearLayout>

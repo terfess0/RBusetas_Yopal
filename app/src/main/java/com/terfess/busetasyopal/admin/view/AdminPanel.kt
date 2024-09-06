@@ -5,11 +5,9 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.widget.EditText
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.marginStart
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.admin.viewmodel.AdminViewModel
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
@@ -37,6 +35,16 @@ class AdminPanel : AppCompatActivity() {
             val intent = Intent(this, ReportsAdmin::class.java)
             startActivity(intent)
         }
+
+        binding.btnRecordsAdmin.setOnClickListener {
+            val intent = Intent(this, RecordsAdmin::class.java)
+            startActivity(intent)
+        }
+
+        binding.btnAddRouteAdmin.setOnClickListener {
+            val intent = Intent(this, CreateRouteAdmin::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun dialogPriceInput() {
@@ -56,7 +64,7 @@ class AdminPanel : AppCompatActivity() {
             .setView(input)
             .setPositiveButton(getString(R.string.accept)) { _, _ ->
                 val userInput = input.text.toString()
-                if (!userInput.isNullOrBlank()){
+                if (userInput.isNotBlank()){
                     viewModel.updatePrice(userInput)
                 }
             }
