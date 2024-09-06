@@ -20,6 +20,7 @@ import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.admin.view.AdminPanel
 import com.terfess.busetasyopal.admin.view.LoginAdmin
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
+import com.terfess.busetasyopal.services.AuthFirebase
 import java.net.URLEncoder
 
 class AcercaDe : AppCompatActivity() {
@@ -83,10 +84,17 @@ class AcercaDe : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.panelAdmin -> {
-                val intent = Intent(this, AdminPanel::class.java)
-                startActivity(intent)
 
-                //TODO: Cambiar el intent para poner el login que se habia omitido por pruebas
+                val isLogged = AuthFirebase().isUserLoggedIn()
+
+                //check if user admin is logged
+                if (isLogged) {
+                    val intent = Intent(this, AdminPanel::class.java)
+                    startActivity(intent)
+                } else {
+                    val intent = Intent(this, LoginAdmin::class.java)
+                    startActivity(intent)
+                }
             }
         }
         return true
