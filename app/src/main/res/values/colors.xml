@@ -26,6 +26,7 @@
     <color name="verde">#C42BD176</color>
     <color name="amarillo">#C4CCD12B</color>
     <color name="transparente">#00000000</color>
+    <color name="gris">#878585</color>
 
     <color name="salida_parcial">#8636E4BB</color>
     <color name="llegada_parcial">#86FF5900</color>

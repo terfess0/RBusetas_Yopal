@@ -8,8 +8,7 @@ data class DatoRuta(
     val frecuenciaLunVie: String = "",
     val frecuenciaSab: String = "",
     val frecuenciaDomFest: String = "",
-    val salida: List<List<Double>> = listOf(),
-    val llegada: List<List<Double>> = listOf(),
     val horarioSab: List<String> = emptyList(),
-    val horarioDomFest: List<String> = emptyList()
+    val horarioDomFest: List<String> = emptyList(),
+    val enabled: Boolean = false
 )
