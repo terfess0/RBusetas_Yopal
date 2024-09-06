@@ -65,27 +65,10 @@ class AcercaDe : AppCompatActivity() {
                 "Buenas, quiero hacer una felicitación/peticion/queja."
             )
         }
-        mailConection.setOnClickListener {//contectar a desarrollador por mail
+        mailConection.setOnClickListener {//contctar a desarrollador por mail
             abrirAppCorreo("terdevfess@gmail.com")
         }
 
-        //_________LINK CLICKABLE____________________
-        val textView: TextView =
-            findViewById(R.id.link_alcaldia) // Asegúrate de cambiar a tu TextView
-
-        val textoConEnlace = getString(R.string.enlace_alcaldia)
-
-        // Configura el TextView para que sea clickable y muestre el enlace
-        textView.movementMethod = LinkMovementMethod.getInstance()
-        textView.text = textoConEnlace
-
-        //cuando el usuario toca el textView se ejecuta un intent hacia la url de la alcaldia de Yopal
-        textView.setOnClickListener {
-            // Abre el enlace directamente al hacer clic en el TextView
-            val uri = Uri.parse("https://www.yopal-casanare.gov.co/")
-            val intent = Intent(Intent.ACTION_VIEW, uri)
-            startActivity(intent)
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
