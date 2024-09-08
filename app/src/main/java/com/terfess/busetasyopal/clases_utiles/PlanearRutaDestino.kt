@@ -3,6 +3,7 @@ package com.terfess.busetasyopal.clases_utiles
 import android.content.Context
 import android.location.Location
 import androidx.core.content.ContextCompat
+import androidx.room.Room
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -15,8 +16,10 @@ import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.gms.maps.model.RoundCap
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.actividades.Mapa
+import com.terfess.busetasyopal.enums.RoomTypePath
 import com.terfess.busetasyopal.modelos_dato.DatoCalcularRuta
-import com.terfess.busetasyopal.room.DatosASqliteLocal
+import com.terfess.busetasyopal.room.AppDatabase
+import com.terfess.busetasyopal.room.model.Coordinate
 
 class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap) {
 
@@ -32,11 +35,11 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
         ubicacionDestino: LatLng,
         instanciaMapa: Mapa
     ) {
-        val dbhelper = DatosASqliteLocal(mapa)
-        val rutaIds = intArrayOf(2, 3, 6, 7, 8, 9, 10, 13)//indices para recuperar las rutas
-        var puntosRutaSalida: List<DatoCalcularRuta>
-        var puntosRutaLlegada: List<DatoCalcularRuta>
-        println("---------------------------------------")
+        val dbhelper = AppDatabase.getDatabase(mapa)
+
+
+        var dataDeparture: List<Coordinate>
+        var dataReturn: List<Coordinate>
 
         //preparar ubicacion inicial para comparar distancia
         val ubiInicial = Location("Ubicacion Inicial")
@@ -51,14 +54,43 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
         //preparar ubicacion de estaciones cercanas para comparar distancia
         val ubiEstacion = Location("punto_comparar")
 
-        for (i in 0..rutaIds.size - 1) {
-            val iterador = rutaIds[i]
-            //recuperar las coordenadas de las almacenadas localmente desde firebase
-            puntosRutaSalida = dbhelper.obtenerCoordenadasCalcularRuta(iterador, "coordenadas1")
-            puntosRutaLlegada =
-                dbhelper.obtenerCoordenadasCalcularRuta(iterador, "coordenadas2")
-            val idRuta = puntosRutaSalida[0].idRuta
-            val datosCompletos = puntosRutaSalida[0].coordenadas + puntosRutaLlegada[0].coordenadas
+
+        //GET COORDINATES
+        dataDeparture = dbhelper.coordinateDao()
+            .getAllCoordinates(
+                RoomTypePath.DEPARTURE.toString()
+            )
+
+        dataReturn = dbhelper.coordinateDao()
+            .getAllCoordinates(
+                RoomTypePath.RETURN.toString()
+            )
+
+        //..
+
+        val listIdRoutes = dbhelper.routeDao().getAllIdsRoute()
+
+        for (ruta in listIdRoutes) {
+
+            val idRuta = dataDeparture[0].id_route
+
+
+            val puntosDeparture =
+                UtilidadesMenores().extractCoordToLatLng(
+                    dataDeparture,
+                    RoomTypePath.DEPARTURE.toString(),
+                    idRuta
+                )
+
+            val puntosReturn =
+                UtilidadesMenores().extractCoordToLatLng(
+                    dataReturn,
+                    RoomTypePath.RETURN.toString(),
+                    idRuta
+                )
+
+
+            val datosCompletos = puntosDeparture + puntosReturn
             //-------------------------------------------------------------
 
             //compara las distancias entre el usuario y cada estacion
@@ -77,15 +109,20 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
                 idRuta
             )
         }
+
         println("--IDRuta:${Datos.mejorPuntoaInicio[2]}  PuntoCorte1: ${Datos.mejorPuntoaInicio[0]}")
         println("IDRuta:${Datos.mejorPuntoaDestino[2]}  PuntoCorte2: ${Datos.mejorPuntoaDestino[0]}")
         //-------------------------------------------------------------
         //MODIFICAR/PREPARAR LOS PUNTOS DE LAS POLYLINEAS
 
         val idMejorRuta = Datos.mejorPuntoaInicio[2] //da lo mismo el de inicio o destino
-        val puntosRutaSalida1 = dbhelper.obtenerCoordenadasCalcularRuta(idMejorRuta, "coordenadas1")
+
+        val puntosRutaSalida1 = dbhelper.coordinateDao()
+            .getCoordRoutePath(idMejorRuta, RoomTypePath.DEPARTURE.toString())
+
         val puntosRutaLlegada1 =
-            dbhelper.obtenerCoordenadasCalcularRuta(idMejorRuta, "coordenadas2")
+            dbhelper.coordinateDao()
+                .getCoordRoutePath(idMejorRuta, RoomTypePath.RETURN.toString())
 
         //-----------------------------------------------------------------------------------------
         //en caso de que el puntocorte2 sea mayor a los puntos de llegada de la ruta
@@ -94,14 +131,29 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
 
         if (Datos.mejorPuntoaInicio[2] != Datos.mejorPuntoaDestino[2]) {
             Datos.mejorPuntoaDestino[1] = Int.MAX_VALUE
-            val puntosSalida =
-                dbhelper.obtenerCoordenadasCalcularRuta(idMejorRuta, "coordenadas1")
-            val puntosLlegada =
-                dbhelper.obtenerCoordenadasCalcularRuta(idMejorRuta, "coordenadas2")
 
-            val puntosReparadores = puntosSalida + puntosLlegada
+            val puntosSalida = dbhelper.coordinateDao()
+                .getCoordRoutePath(idMejorRuta, RoomTypePath.DEPARTURE.toString())
+
+            val puntosLlegada =
+                dbhelper.coordinateDao()
+                    .getCoordRoutePath(idMejorRuta, RoomTypePath.RETURN.toString())
+
+            val pts1 = UtilidadesMenores().extractCoordToLatLng(
+                puntosSalida,
+                RoomTypePath.DEPARTURE.toString(),
+                idMejorRuta
+            )
+
+            val pts2 = UtilidadesMenores().extractCoordToLatLng(
+                puntosLlegada,
+                RoomTypePath.RETURN.toString(),
+                idMejorRuta
+            )
+            val puntosReparadores = pts1 + pts2
+
             Distancia().compararDistanciasConDestino(
-                puntosReparadores[0].coordenadas.toMutableList(),
+                puntosReparadores,
                 ubiDestino,
                 ubiEstacion,
                 false,
@@ -115,8 +167,17 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
         //-----------------------------------------------------------------------------------------
 
         //------AGREGAR POLYLINEAS TENUES DE LA RUTA ORIGINAL-----
-        val puntosSalida = puntosRutaSalida1[0].coordenadas.toMutableList()
-        val puntosLlegada = puntosRutaLlegada1[0].coordenadas.toMutableList()
+        val puntosSalida = UtilidadesMenores().extractCoordToLatLng(
+            puntosRutaSalida1,
+            RoomTypePath.DEPARTURE.toString(),
+            idMejorRuta
+        )
+        val puntosLlegada = UtilidadesMenores().extractCoordToLatLng(
+            puntosRutaLlegada1,
+            RoomTypePath.DEPARTURE.toString(),
+            idMejorRuta
+        )
+
         if (puntosSalida.isNotEmpty() && puntosLlegada.isNotEmpty()) {
             val opcionesPolylineaSubida = PolylineOptions()
             val opcionesPolylineaBajada = PolylineOptions()
@@ -191,7 +252,8 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
                 instanciaMapa.mostrarIndicacionesCalculadas(true)
                 println("Caso If negacion numero 1 salida")
             } else if (puntoCorte1 < totalSubida1 && puntoCorte2 > totalSubida1 && puntoCorte1 < puntoCorte2) {
-                puntosFinal1 = puntosSalida.subList(puntoCorte1, totalSubida1)
+                val newpts = puntosSalida.toMutableList()
+                puntosFinal1 = newpts.subList(puntoCorte1, totalSubida1)
                 println("Caso If 2 salida")
             } else if (puntoCorte1 < totalSubida1 && puntoCorte2 > totalSubida1 && puntoCorte1 > puntoCorte2) {
                 //no se pudo generar camino
@@ -302,7 +364,8 @@ class PlanearRutaDestino(private val mapa: Context, private val gmap: GoogleMap)
                 println("Caso If negacion numero 1 llegada")
             } else if (puntoCorte1 < totalSubida1 && puntoCorte2 > totalSubida1 && puntoCorte1 < puntoCorte2) {
                 val topeLlegada = puntoCorte2 - totalSubida1
-                puntosFinal = puntosLlegada.subList(0, topeLlegada)
+                val newpts = puntosLlegada.toMutableList()
+                puntosFinal = newpts.subList(0, topeLlegada)
                 println("Caso If 2 llegada")
             } else if (puntoCorte1 < totalSubida1 && puntoCorte2 > totalSubida1 && puntoCorte1 > puntoCorte2) {
                 //no se pudo generar camino

@@ -30,6 +30,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.actividades.Mapa
 import com.terfess.busetasyopal.enums.FirebaseEnums
+import com.terfess.busetasyopal.room.model.Coordinate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -188,14 +189,16 @@ class UtilidadesMenores {
     }
 
     fun colorSubTituloTema(contexto: Context): String {
-
         val theme = contexto.theme
-        val typedValue2 = TypedValue()
+        val typedValue = TypedValue()
 
-        theme.resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue2, true)
+        // Resolvemos el atributo colorPrimaryDark del tema
+        theme.resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, typedValue, true)
 
-        return String.format("#%06X", typedValue2.data and 0xFFFFFF)
+        // Devolvemos el color en formato hexadecimal
+        return String.format("#%06X", typedValue.data and 0xFFFFFF)
     }
+
 
 
     fun isNightMode(): Boolean {
@@ -378,5 +381,31 @@ class UtilidadesMenores {
             context.getSharedPreferences("PreferenciasGuardadas", Context.MODE_PRIVATE)
         val savedNightMode = sharedPreferences.getInt("night_mode", AppCompatDelegate.MODE_NIGHT_NO)
         AppCompatDelegate.setDefaultNightMode(savedNightMode)
+    }
+
+    fun extractCoordToLatLng(
+        data: List<Coordinate>,
+        path: String,
+        idRuta: Int
+    ): List<LatLng> {
+        val listPoint = mutableListOf<LatLng>()
+
+        for (i in data.indices) {
+            if (
+                data[i].type_path == path
+                &&
+                data[i].id_route == idRuta
+            ) {
+                val lng = data[i].longitude
+                val lat = data[i].latitude
+
+                val coord = LatLng(lat, lng)
+                listPoint.add(coord)
+                println("Punto Extraido")
+            } else {
+                println("No es compatible point")
+            }
+        }
+        return listPoint
     }
 }

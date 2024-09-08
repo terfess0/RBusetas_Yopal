@@ -75,9 +75,9 @@ class HolderRoutesAdmin(vista: View) : RecyclerView.ViewHolder(vista) {
                 )
 
                 // Mostrar las frecuencias
-                setFrecuencia(frecuenciaRuta.frecLunVie, binding.frecLVAdmin, contextoHolder)
-                setFrecuencia(frecuenciaRuta.frecSab, binding.frecSabAdmin, contextoHolder)
-                setFrecuencia(frecuenciaRuta.frecDomFest, binding.frecDomAdmin, contextoHolder)
+                setFrecuencia(frecuenciaRuta.frec_mon_fri, binding.frecLVAdmin, contextoHolder)
+                setFrecuencia(frecuenciaRuta.frec_sat, binding.frecSabAdmin, contextoHolder)
+                setFrecuencia(frecuenciaRuta.frec_sun_holi, binding.frecDomAdmin, contextoHolder)
 
                 // Actualizar otros elementos de la UI
                 binding.rutaIdAdmin.text = ruta

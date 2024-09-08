@@ -51,13 +51,14 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.terfess.busetasyopal.OpMapaAdapterHolder
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.clases_utiles.AlertaCallback
-import com.terfess.busetasyopal.room.DatosASqliteLocal
 import com.terfess.busetasyopal.clases_utiles.PlanearRutaDestino
 import com.terfess.busetasyopal.clases_utiles.PlanearRutaDestino.Datos
 import com.terfess.busetasyopal.clases_utiles.PolylinesPrincipal
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.PantMapaBinding
+import com.terfess.busetasyopal.enums.RoomTypePath
 import com.terfess.busetasyopal.modelos_dato.DatoOpMapa
+import com.terfess.busetasyopal.room.AppDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -585,17 +586,25 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 listaViewRutas.visibility = View.VISIBLE
 
                 listaOpMapa.visibility = View.VISIBLE
-                val listaRutas = intArrayOf(2, 3, 6, 7, 8, 9, 10, 13)
+
+                val dbHelper = AppDatabase.getDatabase(this)
+
                 val listaRutasOpMapa = mutableListOf<DatoOpMapa>()
-                for (i in 0..listaRutas.size - 1) {
-                    listaRutasOpMapa.add(
-                        DatoOpMapa(
-                            listaRutas[i],
-                            0,
-                            R.color.ida_venida_op_mapa,
-                            R.color.ida_venida_op_mapa
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    val listaRutas = dbHelper.routeDao().getAllIdsRoute()
+
+
+                    for (i in 0..listaRutas.size - 1) {
+                        listaRutasOpMapa.add(
+                            DatoOpMapa(
+                                listaRutas[i],
+                                0,
+                                R.color.ida_venida_op_mapa,
+                                R.color.ida_venida_op_mapa
+                            )
                         )
-                    )
+                    }
                 }
 
                 // Configurar el LinearLayoutManager y el Adapter
@@ -627,22 +636,38 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 binding.indicaciones.visibility = View.VISIBLE
                 binding.indicaciones.text =
                     "Los puntos rojos son parqueaderos, toca cualquiera de ellos para saber a que ruta pertenecen."
-                val listaRutas = intArrayOf(2, 3, 6, 7, 8, 9, 10, 13)
-                for (i in 0..listaRutas.size - 1) {
-                    val iterator = listaRutas[i]
-                    val dbHelper = DatosASqliteLocal(this)
-                    val datosSeleccionRuta = dbHelper.obtenerCoordenadas(iterator, "coordenadas2")
-                    agregarMarcador(
-                        datosSeleccionRuta[datosSeleccionRuta.size - 1],
-                        R.drawable.ic_parqueadero,
-                        "Parqueadero Ruta $iterator"
-                    )
+
+                val dbHelper = AppDatabase.getDatabase(this)
+
+                //--------------PARQUEADEROS-------------------------------
+                var listaRutas: List<Int>
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    listaRutas = dbHelper.routeDao().getAllIdsRoute()
+
+                    for (i in 0..listaRutas.size - 1) {
+                        val iterator = listaRutas[i]
+
+
+                        val datosSeleccionRuta = dbHelper.coordinateDao()
+                            .getCoordRoutePath(iterator, RoomTypePath.RETURN.toString())
+
+                        val lat = datosSeleccionRuta[datosSeleccionRuta.size - 1].latitude
+                        val lng = datosSeleccionRuta[datosSeleccionRuta.size - 1].longitude
+
+                        agregarMarcador(
+                            LatLng(lat, lng),
+                            R.drawable.ic_parqueadero,
+                            "Parqueadero Ruta $iterator"
+                        )
+                    }
                 }
             }
 
-            //crear las rutas normales dependiendo de la elegida por el usuario
-            //se identifica por un id_ruta que se envia desde la pantalla principal por medio del holder y usando intent.extras
-            in listOf(2, 3, 6, 7, 8, 9, 10, 13) -> buildRuta.crearRuta(idruta)
+            //Trazar rutas normalmente
+            else -> {
+                buildRuta.crearRuta(idruta)
+            }
         }
     }
 
