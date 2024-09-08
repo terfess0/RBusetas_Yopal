@@ -13,30 +13,32 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.terfess.busetasyopal.actividades.Mapa
 import com.terfess.busetasyopal.databinding.FormatoRecyclerPrincBinding
-import com.terfess.busetasyopal.modelos_dato.DatosListaFiltro
+import com.terfess.busetasyopal.modelos_dato.DatosPrimariosRuta
 
 class FiltroAdapterHolder(var textoFiltro: String) :
     RecyclerView.Adapter<FiltroAdapterHolder.FiltroViewHolder>() {
 
-    private var listaFiltro: List<DatosListaFiltro> = emptyList()
+    private var listaFiltro: List<DatosPrimariosRuta> = emptyList()
 
 
     inner class FiltroViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val binding: FormatoRecyclerPrincBinding = FormatoRecyclerPrincBinding.bind(itemView)
+        private val binding: FormatoRecyclerPrincBinding =
+            FormatoRecyclerPrincBinding.bind(itemView)
 
-        fun bind(item: DatosListaFiltro) {
+        fun bind(item: DatosPrimariosRuta) {
+            val idRuta = item.id_route
             //acomodar margenes y objetos
             binding.tocaParaVer.visibility = View.GONE
             binding.contenedorHor.visibility = View.GONE
             binding.guideline2.setGuidelinePercent(1.0f)//se establece porcentage de 100% para que se adapte bien al contenido
 
-            val spannableString = getSpannableString(item.Sitios, textoFiltro)
-            binding.numRuta.text = "Ruta\n ${item.idRuta}"
+            val spannableString = getSpannableString(item.sites_extended, textoFiltro)
+            binding.numRuta.text = "Ruta\n$idRuta"
             binding.sitios.text = spannableString
 
             //el usuario selecciona una de las rutas
             binding.contenedor.setOnClickListener {
-                val selector = item.idRuta
+                val selector = idRuta
                 val intent = Intent(binding.contenedor.context, Mapa::class.java)
                 intent.putExtra("selector", selector)
                 binding.root.context.startActivity(intent)
@@ -89,7 +91,7 @@ class FiltroAdapterHolder(var textoFiltro: String) :
         return listaFiltro.size
     }
 
-    fun actualizarLista(listaFiltro: List<DatosListaFiltro>, textoFiltro: String) {
+    fun actualizarLista(listaFiltro: List<DatosPrimariosRuta>, textoFiltro: String) {
         this.listaFiltro = listaFiltro
         this.textoFiltro = textoFiltro
         notifyDataSetChanged()

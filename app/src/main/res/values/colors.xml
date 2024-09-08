@@ -36,6 +36,10 @@
     <color name="distancia_caminar_destino">#DF362A26</color>
 
     <!-- Conjunto 1 -->
+    <color name="defaultSalida">#A01E67</color>
+    <color name="defaultLlegada">#2C55CF</color>
+
+    <!-- Conjunto 1 -->
     <color name="unoSalida">#8E24AA</color>
     <color name="unoLlegada">#AD2CCF</color>
 

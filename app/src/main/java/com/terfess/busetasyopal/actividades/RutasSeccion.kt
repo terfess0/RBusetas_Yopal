@@ -33,13 +33,11 @@ import com.google.firebase.database.ValueEventListener
 import com.terfess.busetasyopal.FiltroAdapterHolder
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.AdapterPrincipal
-import com.terfess.busetasyopal.admin.view.AdminPanel
-import com.terfess.busetasyopal.admin.view.LoginAdmin
 import com.terfess.busetasyopal.clases_utiles.AlertaCallback
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.PantPrincipalBinding
-import com.terfess.busetasyopal.modelos_dato.DatosListaFiltro
-import com.terfess.busetasyopal.listas_datos.ListaRutas
+import com.terfess.busetasyopal.modelos_dato.DatosPrimariosRuta
+import com.terfess.busetasyopal.room.AppDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -55,8 +53,10 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
     private lateinit var adapter: AdapterPrincipal
     private var adapterFiltro = FiltroAdapterHolder("")
     private lateinit var colorTema: String
-    private var opcion_actual = "Viendo Menu Principal"
+    private var currentTask = "Viendo Menu Principal"
     private lateinit var mAdView: AdView //anuncios
+    private var listaRutas = emptyList<Int>()
+    private var listaFilter = emptyList<DatosPrimariosRuta>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,13 +69,22 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
             FirebaseDatabase.getInstance(getString(R.string.linkBaseDatos)).reference
         FirebaseApp.initializeApp(this)
 
+        //Local Database Instance
+        val dbRoom = AppDatabase.getDatabase(this)
+
+        CoroutineScope(Dispatchers.Default).launch {
+            listaRutas = dbRoom.routeDao().getAllIdsRoute()
+            adapter.updateLista(listaRutas, UtilidadesMenores().colorTituloTema(this@RutasSeccion))
+
+            listaFilter = dbRoom.routeDao().getAllSitesExtended()
+        }
         //recycler
         val cajaInfo = binding.cajaInfo
 
         adapter =
             AdapterPrincipal(
-                ListaRutas.busetaRuta.toList(),
-                UtilidadesMenores().colorTituloTema(this)
+                listaRutas,
+                UtilidadesMenores().colorTituloTema(this@RutasSeccion)
             )
         cajaInfo.layoutManager = LinearLayoutManager(this)
         cajaInfo.adapter = adapter
@@ -187,43 +196,22 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
         colorTema = UtilidadesMenores().colorTituloTema(this)
 
 
-
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if (filtrando || binding.filtro.requestFocus()) {
-                    val tecladoV =
-                        getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    tecladoV.hideSoftInputFromWindow(binding.root.windowToken, 0)
-                    binding.cajaInfo.requestFocus()
 
-                    binding.filtro.setText("")
-                    binding.filtro.visibility = View.GONE
+                    filterPreparing(false)
 
-                    binding.noResultados.visibility = View.GONE
-                    binding.botonesRapidos.visibility = View.VISIBLE
-
-                    binding.separador1.visibility = View.VISIBLE
-
-                    binding.cabezera.visibility = View.VISIBLE
+                    showElementsHead(true)
 
                     binding.cajaInfo.requestFocus()
-                    filtrando = false
 
                     //cambiar el adaptador del recyclerView
                     binding.cajaInfo.adapter = adapter
 
-                    adapter.updateLista(ListaRutas.busetaRuta, colorTema)
+                    adapter.updateLista(listaRutas, colorTema)
                 } else {
-                    val builder = AlertDialog.Builder(this@RutasSeccion, R.style.AlertDialogTheme)
-                    builder.setMessage("¿Seguro que quieres salir?")
-                        .setPositiveButton("Sí") { _, _ ->
-                            //cerrar la app
-                            finishAffinity()
-                        }
-                    builder.setNegativeButton("No") { _, _ -> }
-                    val dialog = builder.create()
-                    dialog.show()
-
+                    wantOut()
                 }
             }
         })
@@ -232,6 +220,17 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
         handleIntent(intent)
     }
 
+    private fun wantOut() {
+        val builder = AlertDialog.Builder(this@RutasSeccion, R.style.AlertDialogTheme)
+        builder.setMessage("¿Seguro que quieres salir?")
+            .setPositiveButton("Sí") { _, _ ->
+                // Finish on confirm
+                finishAffinity()
+            }
+        builder.setNegativeButton("No") { _, _ -> }
+        val dialog = builder.create()
+        dialog.show()
+    }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
@@ -254,7 +253,6 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
     }
 
 
-
     //menu en el ActionBar
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_rutas, menu)
@@ -263,81 +261,56 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
 
     //controlar las opciones del menu en ActionBar
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val tecladoV = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         val filtro = binding.filtro
+
         when (item.itemId) {
             R.id.buscar -> {
                 if (filtro.visibility == View.GONE) {
-                    //ocultar elementos
-                    binding.cabezera.visibility = View.GONE
-                    binding.botonesRapidos.visibility = View.GONE
-                    binding.separador1.visibility = View.GONE
+                    //Hide elements
+                    showElementsHead(false)
 
-                    filtro.setText("")
-                    filtro.visibility = View.VISIBLE //mostrar el campo del filtro
-                    filtro.requestFocus()// Establece el foco en el EditText de filtro
-                    tecladoV.showSoftInput(
-                        filtro,
-                        InputMethodManager.SHOW_IMPLICIT
-                    )//para controlar el teclado virtual
-                    adapter.updateLista(ListaRutas.busetaSitios, "#2196F3")
-                    //detectar lo que se va escribiendo en el filtro
-                    CoroutineScope(Dispatchers.Default).launch {
-                        filtro.addTextChangedListener { claveFilter ->
-                            filtrando = true
-                            val textFiltro = claveFilter?.toString() ?: ""
-                            if (textFiltro.isEmpty()) {
-                                adapter.updateLista(ListaRutas.busetaSitios, "#2196F3")
-                            } else {
+                    //Show filter field
+                    filterPreparing(true)
 
-                                val sitiosFiltrados = ListaRutas.busetaSitios.filter { busqueda ->
-                                    busqueda.sitios.lowercase().contains(textFiltro.lowercase())
-                                }
+                    adapter.updateLista(listaRutas, "#2196F3")
 
-                                //val numRutasFiltradas = ListaRutas.busetaSitios.filter { busqueda ->
-                                //    busqueda.numRuta.toString().contains(textFiltro)
-                                //}
-                                val listaf = mutableListOf<DatosListaFiltro>()
+                    //Listener on filter textchanged
+                    filtro.addTextChangedListener { claveFilter ->
+                        filtrando = true
 
-                                sitiosFiltrados.forEach { busqueda ->
-                                    val p = busqueda.numRuta
-                                    val s = busqueda.sitios
+                        val textFiltro = claveFilter?.toString()?.lowercase().orEmpty()
 
+                        if (textFiltro.isBlank()) {
+                            adapter.updateLista(listaRutas, "#2196F3")
+                        } else {
+                            val sitiosFiltrados = listaFilter.filter { busqueda ->
 
-                                    listaf.add(DatosListaFiltro(p, s))
-                                }
+                                busqueda.sites_extended.lowercase().contains(textFiltro)
+                                        ||
+                                        busqueda.id_route.toString().contains(textFiltro)
 
-                                if (sitiosFiltrados.isEmpty()) {
-                                    binding.noResultados.visibility = View.VISIBLE
-                                } else {
-                                    binding.noResultados.visibility = View.GONE
-                                }
-
-
-                                adapterFiltro.actualizarLista(listaf, textFiltro)
-
-
-                                //cambiar el adaptador del recyclerView
-                                binding.cajaInfo.adapter = adapterFiltro
+                            }.map { busqueda ->
+                                DatosPrimariosRuta(busqueda.id_route, busqueda.sites_extended)
                             }
+
+                            // Hide/show message if there are no results
+                            binding.noResultados.visibility =
+                                if (sitiosFiltrados.isEmpty()) View.VISIBLE else View.GONE
+
+                            // Notify update of adapter
+                            adapterFiltro.actualizarLista(sitiosFiltrados, textFiltro)
+                            binding.cajaInfo.adapter = adapterFiltro
                         }
                     }
+
                 } else {
-                    filtro.visibility = View.GONE
-                    filtrando = false
-                    binding.noResultados.visibility = View.GONE
-                    tecladoV.hideSoftInputFromWindow(
-                        binding.root.windowToken,
-                        0
-                    ) //ocultar teclado virtual en esa ventana
+                    filterPreparing(false)
 
-                    //cambiar el adaptador del recyclerView
+                    // Change adapter
                     binding.cajaInfo.adapter = adapter
-                    adapter.updateLista(ListaRutas.busetaRuta, colorTema)
+                    adapter.updateLista(listaRutas, colorTema)
 
-                    binding.cabezera.visibility = View.VISIBLE
-                    binding.botonesRapidos.visibility = View.VISIBLE
-                    binding.separador1.visibility = View.VISIBLE
+                    showElementsHead(true)
                 }
             }
 
@@ -348,12 +321,12 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
 
             R.id.reportar -> {
                 if (filtro.visibility == View.VISIBLE) {
-                    opcion_actual = "En filtro de sitios"
+                    currentTask = "En filtro de sitios"
                 }
                 if (filtrando) {
-                    opcion_actual = "Filtrando - buscando sitios"
+                    currentTask = "Filtrando - buscando sitios"
                 }
-                UtilidadesMenores().reportar(this, null, opcion_actual)
+                UtilidadesMenores().reportar(this, null, currentTask)
             }
 
             R.id.modoTema -> {
@@ -380,6 +353,39 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
         return true
     }
 
+    private fun filterPreparing(mode: Boolean) {
+        val tecladoV = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val filtro = binding.filtro
+
+        if (mode) {
+            filtro.text.clear()
+
+            filtro.visibility = View.VISIBLE // Show Filter Field
+            filtro.requestFocus()// Focus on filter field
+            tecladoV.showSoftInput(
+                filtro,
+                InputMethodManager.SHOW_IMPLICIT
+            )// Show keyboard
+        } else {
+            filtro.visibility = View.GONE
+            filtrando = false
+            binding.noResultados.visibility = View.GONE
+            tecladoV.hideSoftInputFromWindow(
+                binding.root.windowToken,
+                0
+            ) // Hide keyboard
+        }
+    }
+
+    private fun showElementsHead(mode: Boolean) {
+        // Hide/show elements
+        val visibility = if (mode) View.VISIBLE else View.GONE
+
+        binding.cabezera.visibility = visibility
+        binding.botonesRapidos.visibility = visibility
+        binding.separador1.visibility = visibility
+    }
+
     private fun getHora(): Int {
         val calendar = Calendar.getInstance()
         return calendar.get(Calendar.HOUR_OF_DAY)
@@ -387,7 +393,6 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
 
 
     //PERMISO NOTIFICACIONES--------------------------------------------
-
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted: Boolean ->
@@ -428,10 +433,10 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
         }
     }
 
-    override fun onOpcionSeleccionada(opcion: Int, tipo_de_solicitud: String) {
+    override fun onOpcionSeleccionada(opcion: Int, tiypeSoli: String) {
         //devolucion de llamada de la opcion seleccionada en UtilidadesMenores.CrearAlerta()
         //si acepta en la alerta de iniciara el pedido de permiso noti
-        if (tipo_de_solicitud == "permiso_notificacion" && opcion == 1) {
+        if (tiypeSoli == "permiso_notificacion" && opcion == 1) {
             if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }

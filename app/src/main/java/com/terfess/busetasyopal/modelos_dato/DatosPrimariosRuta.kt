@@ -1,7 +1,7 @@
 package com.terfess.busetasyopal.modelos_dato
 
 data class DatosPrimariosRuta(
-    val numRuta: Int,
-    val sitios: String
+    val id_route: Int,
+    val sites_extended: String
 )
 
