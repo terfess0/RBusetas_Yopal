@@ -2,6 +2,7 @@ package com.terfess.busetasyopal
 
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.text.Html
 import android.text.Html.FROM_HTML_MODE_LEGACY
@@ -42,7 +43,10 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
         var sitios = "asd"
         var sites = ""
 
+        binding.messageDirectionRoute.visibility = View.GONE
+
         //se usa coroutinas para evitar congelamientos de la ui (xd es obvio)
+
         CoroutineScope(Dispatchers.Default).launch {//hilo default optimizado para operaciones cpu
             //get sites
             if (colorDia == "#2196F3") {
@@ -94,6 +98,8 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
                 when (resultado1) {
                     0 -> {
                         contextoHolder.rutaEnServicioLV = "#c4120c" //rojo intenso
+
+                        directionalText(horaFinalLV, colorDia, contextoHolder.binding.root.context)
                     }
 
                     1 -> {
@@ -106,6 +112,8 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
                 when (resultado2) {
                     0 -> {
                         contextoHolder.rutaEnServicioSab = "#c4120c" //rojo intenso
+
+                        directionalText(horaFinalSab, colorDia, contextoHolder.binding.root.context)
                     }
 
                     1 -> {
@@ -118,6 +126,8 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
                 when (resultado3) {
                     0 -> {
                         contextoHolder.rutaEnServicioDom = "#c4120c" //rojo intenso
+
+                        directionalText(horaFinalDom, colorDia, contextoHolder.binding.root.context)
                     }
 
                     1 -> {
@@ -172,11 +182,11 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
                     binding.horarioDF.text = Html.fromHtml(horDom, FROM_HTML_MODE_LEGACY)
                 }
 
-                sitios = "<font color='$colorDia' style='text-align:center'><b>Lugares Relevantes</b></font> <br> <font color='$colorSubTituloTema' >${sites}</font>"
+                sitios =
+                    "<font color='$colorDia' style='text-align:center'><b>Lugares Relevantes</b></font> <br> <font color='$colorSubTituloTema' >${sites}</font>"
                 binding.sitios.text = Html.fromHtml(sitios, FROM_HTML_MODE_LEGACY)
             }
         }
-
 
 
         //demas acciones recyclerview
@@ -203,6 +213,25 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
 
             //mensaje "cargando mapa" importante en primera vez usando la aplicacion
             UtilidadesMenores().crearToast(binding.contenedor.context, "Cargando Mapa")
+        }
+    }
+
+    fun directionalText(hora: String, colorDia: String, context: Context) {
+        if (colorDia != "#2196F3") {
+            val textDirectional = if (hora != "00:00") {
+                context.getString(R.string.ultima_ruta_salio, hora)
+            } else {
+                context.getString(R.string.sin_servicio_hoy)
+            }
+
+            binding.messageDirectionRoute.apply {
+                text = textDirectional
+                visibility = View.VISIBLE
+            }
+            binding.messageDirectionRoute.isSelected = true
+
+        } else {
+            binding.messageDirectionRoute.visibility = View.GONE
         }
     }
 

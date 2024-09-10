@@ -30,6 +30,7 @@ class FiltroAdapterHolder(var textoFiltro: String) :
             //acomodar margenes y objetos
             binding.tocaParaVer.visibility = View.GONE
             binding.contenedorHor.visibility = View.GONE
+            binding.messageDirectionRoute.visibility = View.GONE
             binding.guideline2.setGuidelinePercent(1.0f)//se establece porcentage de 100% para que se adapte bien al contenido
 
             val spannableString = getSpannableString(item.sites_extended, textoFiltro)

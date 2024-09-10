@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:foreground="?android:attr/selectableItemBackground"
     android:id="@+id/contenedor"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="10dp"
     android:layout_marginTop="15dp"
     android:layout_marginEnd="10dp"
-    android:background="@drawable/bordes_contenedores">
+    android:background="@drawable/bordes_contenedores"
+    android:foreground="?android:attr/selectableItemBackground">
 
     <TextView
         android:id="@+id/numRuta"
@@ -20,13 +19,13 @@
         android:layout_marginEnd="8dp"
         android:fontFamily="More Fonts..."
         android:gravity="center"
-        android:textColor = "?attr/titleTextColor"
+        android:textColor="?attr/titleTextColor"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toStartOf="@+id/sitios"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/sitios"
@@ -41,10 +40,10 @@
         android:text="@string/textview"
         android:textColor="?attr/titleTextColor"
         android:textSize="14sp"
-        app:layout_constraintStart_toEndOf="@+id/numRuta"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2" />
+        app:layout_constraintStart_toEndOf="@+id/numRuta"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/contenedorHor"
@@ -52,9 +51,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/message_direction_route"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/guideline2">
@@ -98,23 +96,44 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5645161" />
+        app:layout_constraintGuide_percent="0.42168674" />
 
     <TextView
         android:id="@+id/tocaParaVer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/bord_suave"
-        android:backgroundTint="@color/enfasis_azul"
-        android:text=" Toca para ver  "
-        android:padding="1dp"
         android:layout_marginTop="-3dp"
         android:layout_marginEnd="-3dp"
+        android:background="@drawable/bord_suave"
+        android:backgroundTint="@color/enfasis_azul"
+        android:padding="1dp"
+        android:text=" Toca para ver  "
         android:textAlignment="viewEnd"
         android:textColor="#D8FFFFFF"
         android:textSize="10sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/message_direction_route"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:fontFamily="@font/alegreya_sc"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="asdasdasdasdasdasdasdasd"
+        android:textAlignment="center"
+        android:textAllCaps="true"
+        android:textColor="@color/enfasis_azul"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
