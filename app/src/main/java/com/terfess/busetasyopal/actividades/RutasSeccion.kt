@@ -15,15 +15,18 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -44,7 +47,8 @@ import kotlinx.coroutines.launch
 import java.util.Calendar
 
 
-class RutasSeccion : AppCompatActivity(), AlertaCallback {
+class RutasSeccion : AppCompatActivity(), AlertaCallback,
+    NavigationView.OnNavigationItemSelectedListener {
     //CLASE DE LAYOUT PANTALLA PRINCIPAL
     private lateinit var binding: PantPrincipalBinding
     var filtrando = false
@@ -69,15 +73,6 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
             FirebaseDatabase.getInstance(getString(R.string.linkBaseDatos)).reference
         FirebaseApp.initializeApp(this)
 
-        //Local Database Instance
-        val dbRoom = AppDatabase.getDatabase(this)
-
-        CoroutineScope(Dispatchers.Default).launch {
-            listaRutas = dbRoom.routeDao().getAllIdsRoute()
-            adapter.updateLista(listaRutas, UtilidadesMenores().colorTituloTema(this@RutasSeccion))
-
-            listaFilter = dbRoom.routeDao().getAllSitesExtended()
-        }
         //recycler
         val cajaInfo = binding.cajaInfo
 
@@ -88,6 +83,43 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
             )
         cajaInfo.layoutManager = LinearLayoutManager(this)
         cajaInfo.adapter = adapter
+
+
+        //Local Database Instance
+        val dbRoom = AppDatabase.getDatabase(this)
+
+        CoroutineScope(Dispatchers.Default).launch {
+            listaRutas = dbRoom.routeDao().getAllIdsRoute()
+            adapter.updateLista(listaRutas, UtilidadesMenores().colorTituloTema(this@RutasSeccion))
+
+            listaFilter = dbRoom.routeDao().getAllSitesExtended()
+        }
+
+        // Menu view
+        val navigationView = binding.navView
+        val toolbar = binding.toolbar
+
+        navigationView.bringToFront()
+        setSupportActionBar(toolbar)
+        supportActionBar?.apply {
+            title = "Busetas Yopal"
+        }
+
+
+        val drawer = binding.draweLayoutPrinc
+
+        val actionToggle =
+            ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close)
+
+        val themeColor = UtilidadesMenores().getColorHambugerIcon()
+        actionToggle.drawerArrowDrawable.color = ContextCompat.getColor(this, themeColor)
+
+        drawer.addDrawerListener(actionToggle)
+        actionToggle.syncState()
+
+
+        navigationView.setNavigationItemSelectedListener(this)
+        //..
 
         //ads
         MobileAds.initialize(this) {}//inicializar sdk de anuncios google
@@ -193,32 +225,42 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
             startActivity(intent)
         }
 
+        binding.buscarOpt.setOnClickListener {
+            searchFilter()
+        }
+
         colorTema = UtilidadesMenores().colorTituloTema(this)
 
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (filtrando || binding.filtro.requestFocus()) {
-
-                    filterPreparing(false)
-
-                    showElementsHead(true)
-
-                    binding.cajaInfo.requestFocus()
-
-                    //cambiar el adaptador del recyclerView
-                    binding.cajaInfo.adapter = adapter
-
-                    adapter.updateLista(listaRutas, colorTema)
+                val drawerLayout = binding.draweLayoutPrinc
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START)
                 } else {
-                    wantOut()
+
+                    if (filtrando || binding.filtro.requestFocus()) {
+
+                        filterPreparing(false)
+
+                        showElementsHead(true)
+
+                        binding.cajaInfo.requestFocus()
+
+                        //cambiar el adaptador del recyclerView
+                        binding.cajaInfo.adapter = adapter
+
+                        adapter.updateLista(listaRutas, colorTema)
+                    } else {
+                        wantOut()
+                    }
                 }
             }
         })
 
-
         handleIntent(intent)
     }
+
 
     private fun wantOut() {
         val builder = AlertDialog.Builder(this@RutasSeccion, R.style.AlertDialogTheme)
@@ -250,107 +292,6 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
             // Limpiar el intent
             intent.removeExtra("respuesta")
         }
-    }
-
-
-    //menu en el ActionBar
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_rutas, menu)
-        return true
-    }
-
-    //controlar las opciones del menu en ActionBar
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val filtro = binding.filtro
-
-        when (item.itemId) {
-            R.id.buscar -> {
-                if (filtro.visibility == View.GONE) {
-                    //Hide elements
-                    showElementsHead(false)
-
-                    //Show filter field
-                    filterPreparing(true)
-
-                    adapter.updateLista(listaRutas, "#2196F3")
-
-                    //Listener on filter textchanged
-                    filtro.addTextChangedListener { claveFilter ->
-                        filtrando = true
-
-                        val textFiltro = claveFilter?.toString()?.lowercase().orEmpty()
-
-                        if (textFiltro.isBlank()) {
-                            adapter.updateLista(listaRutas, "#2196F3")
-                        } else {
-                            val sitiosFiltrados = listaFilter.filter { busqueda ->
-
-                                busqueda.sites_extended.lowercase().contains(textFiltro)
-                                        ||
-                                        busqueda.id_route.toString().contains(textFiltro)
-
-                            }.map { busqueda ->
-                                DatosPrimariosRuta(busqueda.id_route, busqueda.sites_extended)
-                            }
-
-                            // Hide/show message if there are no results
-                            binding.noResultados.visibility =
-                                if (sitiosFiltrados.isEmpty()) View.VISIBLE else View.GONE
-
-                            // Notify update of adapter
-                            adapterFiltro.actualizarLista(sitiosFiltrados, textFiltro)
-                            binding.cajaInfo.adapter = adapterFiltro
-                        }
-                    }
-
-                } else {
-                    filterPreparing(false)
-
-                    // Change adapter
-                    binding.cajaInfo.adapter = adapter
-                    adapter.updateLista(listaRutas, colorTema)
-
-                    showElementsHead(true)
-                }
-            }
-
-            R.id.acercade -> {
-                val intent = Intent(this, AcercaDe::class.java)
-                startActivity(intent)
-            }
-
-            R.id.reportar -> {
-                if (filtro.visibility == View.VISIBLE) {
-                    currentTask = "En filtro de sitios"
-                }
-                if (filtrando) {
-                    currentTask = "Filtrando - buscando sitios"
-                }
-                UtilidadesMenores().reportar(this, null, currentTask)
-            }
-
-            R.id.modoTema -> {
-                val nightMode = AppCompatDelegate.getDefaultNightMode()
-                val newNightMode = if (nightMode == AppCompatDelegate.MODE_NIGHT_YES) {
-                    AppCompatDelegate.MODE_NIGHT_NO
-                } else {
-                    AppCompatDelegate.MODE_NIGHT_YES
-                }
-
-                AppCompatDelegate.setDefaultNightMode(newNightMode)
-                recreate()
-
-
-                val sharedPreferences =
-                    getSharedPreferences(
-                        getString(R.string.nombre_shared_preferences),
-                        Context.MODE_PRIVATE
-                    )
-                sharedPreferences.edit().putInt("night_mode", newNightMode).apply()
-
-            }
-        }
-        return true
     }
 
     private fun filterPreparing(mode: Boolean) {
@@ -433,6 +374,58 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
         }
     }
 
+    private fun searchFilter() {
+        val filtro = binding.filtro
+
+        if (filtro.visibility == View.GONE) {
+            //Hide elements
+            showElementsHead(false)
+
+            //Show filter field
+            filterPreparing(true)
+
+            adapter.updateLista(listaRutas, "#2196F3")
+
+            //Listener on filter textchanged
+            filtro.addTextChangedListener { claveFilter ->
+                filtrando = true
+
+                val textFiltro = claveFilter?.toString()?.lowercase().orEmpty()
+
+                if (textFiltro.isBlank()) {
+                    adapter.updateLista(listaRutas, "#2196F3")
+                } else {
+                    val sitiosFiltrados = listaFilter.filter { busqueda ->
+
+                        busqueda.sites_extended.lowercase().contains(textFiltro)
+                                ||
+                                busqueda.id_route.toString().contains(textFiltro)
+
+                    }.map { busqueda ->
+                        DatosPrimariosRuta(busqueda.id_route, busqueda.sites_extended)
+                    }
+
+                    // Hide/show message if there are no results
+                    binding.noResultados.visibility =
+                        if (sitiosFiltrados.isEmpty()) View.VISIBLE else View.GONE
+
+                    // Notify update of adapter
+                    adapterFiltro.actualizarLista(sitiosFiltrados, textFiltro)
+                    binding.cajaInfo.adapter = adapterFiltro
+                }
+            }
+
+        } else {
+            filterPreparing(false)
+
+            // Change adapter
+            binding.cajaInfo.adapter = adapter
+            adapter.updateLista(listaRutas, colorTema)
+
+            showElementsHead(true)
+        }
+    }
+
     override fun onOpcionSeleccionada(opcion: Int, tiypeSoli: String) {
         //devolucion de llamada de la opcion seleccionada en UtilidadesMenores.CrearAlerta()
         //si acepta en la alerta de iniciara el pedido de permiso noti
@@ -449,6 +442,54 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback {
         mAdView = findViewById(R.id.adView)
         val adRequest = AdRequest.Builder().build()
         mAdView.loadAd(adRequest)
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        val filtro = binding.filtro
+        val drawer = binding.draweLayoutPrinc
+
+        when (item.itemId) {
+
+            R.id.acercade -> {
+                val intent = Intent(this, AcercaDe::class.java)
+                startActivity(intent)
+            }
+
+            R.id.reportar -> {
+                if (filtro.visibility == View.VISIBLE) {
+                    currentTask = "En filtro de sitios"
+                }
+                if (filtrando) {
+                    currentTask = "Filtrando - buscando sitios"
+                }
+                UtilidadesMenores().reportar(this, null, currentTask)
+            }
+
+            R.id.modoTema -> {
+
+
+                val nightMode = AppCompatDelegate.getDefaultNightMode()
+                val newNightMode = if (nightMode == AppCompatDelegate.MODE_NIGHT_YES) {
+                    AppCompatDelegate.MODE_NIGHT_NO
+                } else {
+                    AppCompatDelegate.MODE_NIGHT_YES
+                }
+
+                AppCompatDelegate.setDefaultNightMode(newNightMode)
+                recreate()
+
+
+                val sharedPreferences =
+                    getSharedPreferences(
+                        getString(R.string.nombre_shared_preferences),
+                        Context.MODE_PRIVATE
+                    )
+                sharedPreferences.edit().putInt("night_mode", newNightMode).apply()
+
+            }
+        }
+        drawer.closeDrawer(GravityCompat.START)
+        return true
     }
 
 }

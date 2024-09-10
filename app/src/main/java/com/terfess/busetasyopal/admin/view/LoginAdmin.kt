@@ -2,10 +2,15 @@ package com.terfess.busetasyopal.admin.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.admin.viewmodel.LoginAdminVM
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.ActivityLoginAdminBinding
@@ -22,6 +27,18 @@ class LoginAdmin : AppCompatActivity() {
         //save mode night/light
         UtilidadesMenores().applySavedNightMode(this)
 
+        //actionbar
+        val toolbar = findViewById<Toolbar>(R.id.toolbarAdminLogin)
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.apply {
+            title = getString(R.string.inicia_sesio_n_como_administrador)
+            setDisplayHomeAsUpEnabled(true)
+        }
+
+        val themeColor = UtilidadesMenores().getColorHambugerIcon()
+        toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, themeColor))
+        //..
 
         binding.signIn.setOnClickListener {
             val email = binding.edtEmail.text
@@ -55,5 +72,20 @@ class LoginAdmin : AppCompatActivity() {
             email?.clear()
             passwrd?.clear()
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        //inflate menu resource
+        menuInflater.inflate(R.menu.menu_admin, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+        return true
     }
 }

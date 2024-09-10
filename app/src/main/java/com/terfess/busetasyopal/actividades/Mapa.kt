@@ -22,6 +22,7 @@ import android.widget.AdapterView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -99,6 +100,18 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
 
         cargarAnuncios()
+
+        //actionbar
+        val toolbar = findViewById<Toolbar>(R.id.toolbarMap)
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+        }
+
+        val themeColor = UtilidadesMenores().getColorHambugerIcon()
+        toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, themeColor))
+        //..
 
         /*//lugares/places api   //HAY QUE PAGAR EN CLOUD POR ESO SE DESACTIVARA PLACES
         if (!Places.isInitialized()) {
@@ -954,8 +967,8 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         super.onDestroy()
 
         //liberar memoria del mapa
-//        fragmentMap.onDestroy()
-//        println("Fragmento mapa fue liberado-finalizado")
+        fragmentMap.onDestroy()
+        println("Fragmento mapa fue liberado-finalizado")
 
         //desregistrar listener de la conexion a internet
         val connectivityManager =
@@ -1032,6 +1045,9 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         when (item.itemId) {
             R.id.reportar -> {
                 UtilidadesMenores().reportar(this, this, opcionActual)
+            }
+            android.R.id.home -> {
+                onBackPressed()
             }
         }
 

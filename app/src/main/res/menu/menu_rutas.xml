@@ -2,28 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/reportar"
-        android:icon="@drawable/ic_reportar"
-        android:title="Reportar Novedad"
-        app:showAsAction="ifRoom" />
+    <group
+        android:checkableBehavior="single">
 
-    <item
-        android:id="@+id/buscar"
-        android:icon="@drawable/ic_buscar"
-        android:title="Buscar Sitios"
-        app:showAsAction="ifRoom" />
+        <item
+            android:id="@+id/reportar"
+            android:icon="@drawable/ic_reportar"
+            android:title="@string/reportar_novedad" />
 
-    <item
-        android:id="@+id/modoTema"
-        android:icon="@drawable/ic_tema"
-        android:title="Cambiar Tema"
-        app:showAsAction="ifRoom" />
+        <item
+            android:id="@+id/modoTema"
+            android:icon="@drawable/ic_tema"
+            android:title="@string/cambiar_tema" />
 
-    <item
-        android:id="@+id/acercade"
-        android:icon="@drawable/ic_acerca_de"
-        android:title="Acerca de la App"
-        app:showAsAction="ifRoom" />
+        <item
+            android:id="@+id/acercade"
+            android:icon="@drawable/ic_acerca_de"
+            android:title="@string/acerca_de_la_app" />
+    </group>
 
 </menu>

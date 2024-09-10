@@ -1,11 +1,16 @@
 package com.terfess.busetasyopal.admin.view
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.admin.recycler.routes.AdapterRoutesAdmin
 import com.terfess.busetasyopal.admin.viewmodel.RoutesViewModel
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
@@ -30,6 +35,19 @@ class RoutesAdmin : AppCompatActivity() {
         val recycler = binding.rutasAdminRecycler
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = adapter
+
+        //actionbar
+        val toolbar = findViewById<Toolbar>(R.id.toolbarAdminRoutes)
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.apply {
+            title = getString(R.string.rutas_editables_en_vivo)
+            setDisplayHomeAsUpEnabled(true)
+        }
+
+        val themeColor = UtilidadesMenores().getColorHambugerIcon()
+        toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, themeColor))
+        //..
 
         viewModel.allData.observe(this, Observer {
             adapter.setNewData(it)
@@ -80,5 +98,20 @@ class RoutesAdmin : AppCompatActivity() {
             //hide
             binding.progressBar.visibility = View.GONE
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        //inflate menu resource
+        menuInflater.inflate(R.menu.menu_admin, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+        return true
     }
 }

@@ -4,10 +4,13 @@ import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.EditText
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.admin.viewmodel.AdminViewModel
@@ -63,6 +66,19 @@ class AdminPanel : AppCompatActivity() {
                 )
             }
         })
+
+        //actionbar
+        val toolbar = findViewById<Toolbar>(R.id.toolbarAdminPanel)
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.apply {
+            title = "Administrador"
+            setDisplayHomeAsUpEnabled(true)
+        }
+
+        val themeColor = UtilidadesMenores().getColorHambugerIcon()
+        toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, themeColor))
+        //..
     }
 
     private fun dialogPriceInput() {
@@ -100,4 +116,12 @@ class AdminPanel : AppCompatActivity() {
         return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+        return true
+    }
 }

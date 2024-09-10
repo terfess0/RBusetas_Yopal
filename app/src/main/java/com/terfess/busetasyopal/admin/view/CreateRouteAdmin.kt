@@ -2,9 +2,13 @@ package com.terfess.busetasyopal.admin.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.admin.model.DatoRuta
@@ -27,6 +31,19 @@ class CreateRouteAdmin : AppCompatActivity() {
         binding.btnGuardar.setOnClickListener {
             collectData()
         }
+
+        //actionbar
+        val toolbar = findViewById<Toolbar>(R.id.toolbarAdminCreateRoute)
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.apply {
+            title = getString(R.string.an_adir_ruta)
+            setDisplayHomeAsUpEnabled(true)
+        }
+
+        val themeColor = UtilidadesMenores().getColorHambugerIcon()
+        toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, themeColor))
+        //..
 
         instVM.resultAdd.observe(this, Observer { result ->
             if (result == true){
@@ -129,4 +146,18 @@ class CreateRouteAdmin : AppCompatActivity() {
         dialog.show()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        //inflate menu resource
+        menuInflater.inflate(R.menu.menu_admin, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+        return true
+    }
 }

@@ -408,4 +408,14 @@ class UtilidadesMenores {
         }
         return listPoint
     }
+
+    fun getColorHambugerIcon(): Int {
+        val d = UtilidadesMenores().isNightMode()
+        val themeColor = if (d) {
+            R.color.white
+        } else {
+            R.color.black
+        }
+        return themeColor
+    }
 }

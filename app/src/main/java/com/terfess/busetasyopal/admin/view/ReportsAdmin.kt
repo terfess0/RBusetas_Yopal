@@ -1,11 +1,16 @@
 package com.terfess.busetasyopal.admin.view
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.admin.recycler.reports.AdapterReportsAdmin
 import com.terfess.busetasyopal.admin.viewmodel.ReportViewModel
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
@@ -24,6 +29,19 @@ class ReportsAdmin : AppCompatActivity() {
         val recicler = binding.reportsAdminRecycler
         recicler.layoutManager = LinearLayoutManager(this)
         recicler.adapter = adapter
+
+        //actionbar
+        val toolbar = findViewById<Toolbar>(R.id.toolbarAdminReports)
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.apply {
+            title = getString(R.string.reportes_de_usuarios)
+            setDisplayHomeAsUpEnabled(true)
+        }
+
+        val themeColor = UtilidadesMenores().getColorHambugerIcon()
+        toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, themeColor))
+        //..
 
         viewModelInst.requestReports()
 
@@ -51,5 +69,20 @@ class ReportsAdmin : AppCompatActivity() {
                 )
             }
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        //inflate menu resource
+        menuInflater.inflate(R.menu.menu_admin, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+        return true
     }
 }

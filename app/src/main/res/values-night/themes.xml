@@ -1,11 +1,13 @@
 <resources>
-    <style name="Theme.general" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.general" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="elevation">1dp</item>
         <item name="colorPrimary">#14171A</item>
         <item name="colorPrimaryDark">#CCCCCC</item>
         <item name="titleTextColor">#FFFFFF</item>
         <item name="colorBackgroundFloating">#1E2A38</item>
         <item name="colorAccent">?attr/colorPrimaryDark</item>
+        <!-- lateral menu icon color -->
+        <item name="android:actionMenuTextColor">@color/white</item>
     </style>
 
     <style name="AlertDialogTheme" parent="ThemeOverlay.AppCompat.Dialog.Alert">

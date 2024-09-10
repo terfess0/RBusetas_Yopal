@@ -1,14 +1,14 @@
 <resources>
 
-    <style name="Theme.general" parent="Theme.AppCompat.Light">
+    <style name="Theme.general" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="elevation">1dp</item>
         <item name="colorPrimary">#F4F4F4</item>
         <item name="colorPrimaryDark">#040A0E</item>
         <item name="titleTextColor">#070707</item>
         <item name="colorBackgroundFloating">#E1E8F6</item>
         <item name="colorAccent">@color/enfasis_azul</item>
-        <!-- Overflow menu icon color -->
-        <item name="android:actionMenuTextColor">#000000</item>
+        <!-- lateral menu icon color -->
+        <item name="android:actionMenuTextColor">@color/black</item>
     </style>
 
     <style name="AlertDialogTheme" parent="ThemeOverlay.AppCompat.Dialog.Alert">

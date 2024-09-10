@@ -13,7 +13,11 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.terfess.busetasyopal.R
@@ -35,8 +39,18 @@ class AcercaDe : AppCompatActivity() {
         //save mode night/light
         UtilidadesMenores().applySavedNightMode(this)
 
-        //actionbar transparente
-        //supportActionBar?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        //actionbar
+        val toolbar = findViewById<Toolbar>(R.id.toolbarAcercade)
+        setSupportActionBar(toolbar)
+
+        supportActionBar?.apply {
+            title = "Sobre la App"
+            setDisplayHomeAsUpEnabled(true)
+        }
+
+        val themeColor = UtilidadesMenores().getColorHambugerIcon()
+        toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, themeColor))
+        //..
 
         //---------------------------------------------------------------------------
         val activarHorarios = findViewById<Button>(R.id.verInfoHorarios)
@@ -96,9 +110,14 @@ class AcercaDe : AppCompatActivity() {
                     startActivity(intent)
                 }
             }
+
+            android.R.id.home -> {
+                onBackPressed()
+            }
         }
         return true
     }
+
 
     private fun cargarAnuncios() {
         //anuncios

@@ -8,17 +8,29 @@
     android:background="?attr/colorPrimary"
     tools:context=".admin.view.AdminPanel">
 
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarAdminRoutes"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="start"
-        android:text="RUTAS"
+        android:text="@string/rutas"
         android:textColor="?attr/titleTextColor"
         android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbarAdminRoutes" />
 
     <ProgressBar
         android:id="@+id/progressBar"

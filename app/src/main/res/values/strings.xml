@@ -83,6 +83,21 @@
     <string name="este_campo_no_puede_estar_vacio">Este campo no puede estar vacío.</string>
     <string name="no_se_encontraron_rutas_en_este_momento">No se encontraron rutas en este momento</string>
     <string name="reintentar">Reintentar</string>
+    <string name="busetas_yopal">Busetas Yopal</string>
+    <string name="open">Abrir</string>
+    <string name="close">Cerrar</string>
+    <string name="reportar_novedad">Reportar Novedad</string>
+    <string name="buscar_sitios">Buscar Sitios</string>
+    <string name="cambiar_tema">Cambiar Tema</string>
+    <string name="acerca_de_la_app">Acerca de la App</string>
+    <string name="ir_a_pantalla_administrador">Ir a pantalla administrador</string>
+    <string name="ultima_ruta_salio">La última buseta de esta ruta salió a las %1$s pm aproximadamente.</string>
+    <string name="sin_servicio_hoy">Sin servicio hoy</string>
+    <string name="inicia_sesio_n_como_administrador">Inicia sesión como administrador</string>
+    <string name="registros_de_acciones_administrador">Registros de acciones administrador</string>
+    <string name="reportes_de_usuarios">Reportes de usuarios</string>
+    <string name="rutas_editables_en_vivo">Rutas Editables en Vivo</string>
+    <string name="an_adir_ruta">Añadir Ruta</string>
 
 </resources>
 
