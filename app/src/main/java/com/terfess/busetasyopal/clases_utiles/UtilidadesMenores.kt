@@ -200,7 +200,6 @@ class UtilidadesMenores {
     }
 
 
-
     fun isNightMode(): Boolean {
         val nightMode = AppCompatDelegate.getDefaultNightMode()
         var nightModeState = false
@@ -418,4 +417,25 @@ class UtilidadesMenores {
         }
         return themeColor
     }
+
+    fun buildDialogConfirmAction(
+        context: Context,
+        message: String,
+        onConfirm: (Boolean) -> Unit
+    ) {
+        //create dialog
+        val dialog = AlertDialog.Builder(context, R.style.AlertDialogTheme)
+            .setTitle(context.getString(R.string.alert_text_literal))
+            .setMessage(message)
+            .setPositiveButton(context.getString(R.string.accept)) { _, _ ->
+                onConfirm(true)  // Callback if confirm
+            }
+            .setNegativeButton(context.getString(R.string.cancel)) { _, _ ->
+                onConfirm(false)  // Callback if cancel
+            }
+            .create()
+
+        dialog.show()
+    }
+
 }

@@ -13,6 +13,7 @@ import com.terfess.busetasyopal.admin.callback.OnDeleteReport
 import com.terfess.busetasyopal.admin.callback.OnGetAllData
 import com.terfess.busetasyopal.admin.callback.OnGetReports
 import com.terfess.busetasyopal.admin.callback.UpdatePrice
+import com.terfess.busetasyopal.admin.callback.updateInfo.UpVersionInfo
 import com.terfess.busetasyopal.admin.callback.updateRoute.ChangeStatusEnabled
 import com.terfess.busetasyopal.admin.callback.updateRoute.UpdateFrequency
 import com.terfess.busetasyopal.admin.callback.updateRoute.UpdateSchedule
@@ -378,6 +379,41 @@ class AdminProvider : ViewModel() {
 
                 Log.e("Firebase", "Error al actualizar $field ruta $idRuta.", e)
             }
+    }
+
+    fun updateVersionData(callback: UpVersionInfo) {
+        val pointRef = dataBaseFirebase.getReference("features/0/version")
+
+        // get the actual num version
+        pointRef.get().addOnSuccessListener { dataSnapshot ->
+
+            val currentVersion = dataSnapshot.getValue(Int::class.java) ?: 1
+            val newVersion = currentVersion + 1
+
+            pointRef.setValue(newVersion)
+                .addOnSuccessListener {
+                    // Succes on update
+                    callback.onSuccessUp()
+                    val txtAction =
+                        "Actualizó la versión de los datos de Version Old = [$currentVersion] a New Version = [$newVersion] :: AdminProvider"
+                    saveActionRegist(txtAction)
+
+                }
+                .addOnFailureListener { error ->
+                    // error
+                    val errorType = UtilidadesMenores().handleFirebaseError(error)
+                    callback.onErrorUp(errorType)
+
+                    Log.e("FirebaseError", "Error al guardar los datos", error)
+                }
+
+        }.addOnFailureListener { error ->
+            // Manejo de error en la consulta
+            val errorType = UtilidadesMenores().handleFirebaseError(error)
+            callback.onErrorUp(errorType)
+
+            Log.e("FirebaseError", "Error al verificar la existencia de la ruta", error)
+        }
     }
     //END UPDATES
 

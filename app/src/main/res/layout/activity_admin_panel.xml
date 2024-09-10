@@ -113,4 +113,27 @@
             android:textAlignment="textStart"
             android:textColor="@color/white" />
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/contain4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contain3">
+
+        <Button
+            android:id="@+id/btnUpdateVersionInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#DAB6041F"
+            android:drawableEnd="@drawable/ic_update_cloud"
+            android:paddingVertical="25dp"
+            android:shadowColor="@color/black"
+            android:text="@string/actualizar_version_de_la_informacion"
+            android:textAlignment="textStart"
+            android:textColor="@color/white" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

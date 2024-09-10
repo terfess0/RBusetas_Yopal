@@ -29,6 +29,8 @@ class AdminPanel : AppCompatActivity() {
         //save mode night/light
         UtilidadesMenores().applySavedNightMode(this)
 
+        setToolbar()
+
         binding.btnRouteAdmin.setOnClickListener {
             val intent = Intent(this, RoutesAdmin::class.java)
             startActivity(intent)
@@ -53,6 +55,18 @@ class AdminPanel : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.btnUpdateVersionInfo.setOnClickListener {
+            val text = "¿Seguro que quieres actualizar la versión de los datos?"
+            UtilidadesMenores().buildDialogConfirmAction(
+                this,
+                text
+            ) { response ->
+                if (response){
+                    viewModel.reqUpdateVersionInfo()
+                }
+            }
+        }
+
         viewModel.onEditPrice.observe(this, Observer { result ->
             if (result == true) {
                 UtilidadesMenores().crearSnackbar(
@@ -67,6 +81,23 @@ class AdminPanel : AppCompatActivity() {
             }
         })
 
+        viewModel.onUpVersion.observe(this, Observer { result ->
+            if (result == true) {
+                UtilidadesMenores().crearSnackbar(
+                    "Versión de los datos Actualizada",
+                    binding.root
+                )
+            } else {
+                UtilidadesMenores().crearSnackbar(
+                    "Error al actualizar la versión.",
+                    binding.root
+                )
+            }
+        })
+
+    }
+
+    private fun setToolbar() {
         //actionbar
         val toolbar = findViewById<Toolbar>(R.id.toolbarAdminPanel)
         setSupportActionBar(toolbar)
@@ -124,4 +155,5 @@ class AdminPanel : AppCompatActivity() {
         }
         return true
     }
+
 }
