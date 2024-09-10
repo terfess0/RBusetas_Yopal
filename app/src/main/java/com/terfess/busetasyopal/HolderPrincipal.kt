@@ -217,7 +217,10 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
     }
 
     fun directionalText(hora: String, colorDia: String, context: Context) {
-        if (colorDia != "#2196F3") {
+        val isAfterStart = RangoHorarios().afterStartHour(hora)
+
+        if (isAfterStart && colorDia != "#2196F3") { //if the bus is after start hour and not if filtering
+
             val textDirectional = if (hora != "00:00") {
                 context.getString(R.string.ultima_ruta_salio, hora)
             } else {
