@@ -47,4 +47,12 @@ class AuthFirebase {
         val currentUser = FirebaseAuth.getInstance().currentUser
         return currentUser != null
     }
+
+    fun logOutSessionUser(){
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            auth.signOut()
+            println("Session cerrada")
+        }
+    }
 }

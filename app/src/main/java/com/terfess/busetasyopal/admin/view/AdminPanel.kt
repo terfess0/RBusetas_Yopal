@@ -16,6 +16,7 @@ import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.admin.viewmodel.AdminViewModel
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.ActivityAdminPanelBinding
+import com.terfess.busetasyopal.services.AuthFirebase
 
 class AdminPanel : AppCompatActivity() {
     private lateinit var binding: ActivityAdminPanelBinding
@@ -156,4 +157,8 @@ class AdminPanel : AppCompatActivity() {
         return true
     }
 
+    override fun onDestroy() {
+        AuthFirebase().logOutSessionUser()
+        super.onDestroy()
+    }
 }
