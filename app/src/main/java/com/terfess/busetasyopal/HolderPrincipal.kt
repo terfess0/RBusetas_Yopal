@@ -27,8 +27,11 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
     private var rutaEnServicioLV = colorSubTituloTema //color subtitulo tema
     private var rutaEnServicioSab = colorSubTituloTema //color subtitulo tema
     private var rutaEnServicioDom = colorSubTituloTema //color subtitulo tema
-    private var rutaEnDia = "#002fa7"
+    private var rutaEnDia = "#0a42cf"
     private val baseData = AppDatabase.getDatabase(binding.root.context)
+
+    private var colorRojo = "#d60000"
+    private var colorVerde = "#10b028"
 
 
     fun mostrar(dato: Int, colorDia: String) {
@@ -97,13 +100,18 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
             fun darColorDisponibilidadLunVie() {
                 when (resultado1) {
                     0 -> {
-                        contextoHolder.rutaEnServicioLV = "#c4120c" //rojo intenso
+                        contextoHolder.rutaEnServicioLV = colorRojo //rojo intenso
 
-                        directionalText(horaFinalLV, colorDia, contextoHolder.binding.root.context)
+                        directionalText(
+                            this@HolderPrincipal.binding,
+                            horaFinalLV,
+                            colorDia,
+                            contextoHolder.binding.root.context
+                        )
                     }
 
                     1 -> {
-                        contextoHolder.rutaEnServicioLV = "#10b028" //verde intenso
+                        contextoHolder.rutaEnServicioLV = colorVerde //verde intenso
                     }
                 }
             }
@@ -111,13 +119,18 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
             fun darColorDisponibilidadSab() {
                 when (resultado2) {
                     0 -> {
-                        contextoHolder.rutaEnServicioSab = "#c4120c" //rojo intenso
+                        contextoHolder.rutaEnServicioSab = colorRojo //rojo intenso
 
-                        directionalText(horaFinalSab, colorDia, contextoHolder.binding.root.context)
+                        directionalText(
+                            this@HolderPrincipal.binding,
+                            horaFinalSab,
+                            colorDia,
+                            contextoHolder.binding.root.context
+                        )
                     }
 
                     1 -> {
-                        contextoHolder.rutaEnServicioSab = "#10b028" //verde intenso
+                        contextoHolder.rutaEnServicioSab = colorVerde //verde intenso
                     }
                 }
             }
@@ -125,13 +138,18 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
             fun darColorDisponibilidadDom() {
                 when (resultado3) {
                     0 -> {
-                        contextoHolder.rutaEnServicioDom = "#c4120c" //rojo intenso
+                        contextoHolder.rutaEnServicioDom = colorRojo //rojo intenso
 
-                        directionalText(horaFinalDom, colorDia, contextoHolder.binding.root.context)
+                        directionalText(
+                            this@HolderPrincipal.binding,
+                            horaFinalDom,
+                            colorDia,
+                            contextoHolder.binding.root.context
+                        )
                     }
 
                     1 -> {
-                        contextoHolder.rutaEnServicioDom = "#10b028" //verde intenso
+                        contextoHolder.rutaEnServicioDom = colorVerde //verde intenso
                     }
                 }
             }
@@ -216,25 +234,32 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
         }
     }
 
-    fun directionalText(hora: String, colorDia: String, context: Context) {
+    fun directionalText(
+        binding: FormatoRecyclerPrincBinding,
+        hora: String,
+        colorDia: String,
+        context: Context
+    ) {
         val isAfterStart = RangoHorarios().afterStartHour(hora)
 
-        if (isAfterStart && colorDia != "#2196F3") { //if the bus is after start hour and not if filtering
+        CoroutineScope(Dispatchers.Main).launch {
+            if (isAfterStart && colorDia != "#2196F3") { //if the bus is after start hour and not if filtering
 
-            val textDirectional = if (hora != "00:00") {
-                context.getString(R.string.ultima_ruta_salio, hora)
+                val textDirectional = if (hora != "00:00") {
+                    context.getString(R.string.ultima_ruta_salio, hora)
+                } else {
+                    context.getString(R.string.sin_servicio_hoy)
+                }
+
+                binding.messageDirectionRoute.apply {
+                    text = textDirectional
+                    visibility = View.VISIBLE
+                }
+                binding.messageDirectionRoute.isSelected = true
+
             } else {
-                context.getString(R.string.sin_servicio_hoy)
+                binding.messageDirectionRoute.visibility = View.GONE
             }
-
-            binding.messageDirectionRoute.apply {
-                text = textDirectional
-                visibility = View.VISIBLE
-            }
-            binding.messageDirectionRoute.isSelected = true
-
-        } else {
-            binding.messageDirectionRoute.visibility = View.GONE
         }
     }
 

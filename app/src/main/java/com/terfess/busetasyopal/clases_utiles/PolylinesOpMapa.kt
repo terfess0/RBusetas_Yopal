@@ -12,95 +12,141 @@ import com.google.android.gms.maps.model.PolylineOptions
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.enums.RoomTypePath
 import com.terfess.busetasyopal.room.AppDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PolylinesOpMapa(private val mapa: GoogleMap, private val contexto: Context) {
     private val opcionesRutaSalida = PolylineOptions().width(9.0f)
     private val opcionesRutaLlegada = PolylineOptions().width(9.0f)
 
+    private val sqlRoom = AppDatabase.getDatabase(contexto)
+
     // Listas dinámicas para las polylines
-    private val polyRutasSalida = mutableListOf<Polyline>()
-    private val polyRutasLlegada = mutableListOf<Polyline>()
+    private val polyRutasSalida = mutableListOf<Pair<Polyline, Int>>()
+    private val polyRutasLlegada = mutableListOf<Pair<Polyline, Int>>()
 
     // Map para asociar cada ruta con sus colores
     private val rutaColoresSalida = mapOf(
         1 to R.color.unoSalida,
         2 to R.color.dosSalida,
         3 to R.color.tresSalida,
-        // Agregar más colores según las rutas
+        4 to R.color.cuatroSalida,
+        5 to R.color.cincoSalida,
+        6 to R.color.seisSalida,
+        7 to R.color.sieteSalida,
+        8 to R.color.ochoSalida,
+        9 to R.color.nueveSalida,
+        10 to R.color.diezSalida,
+        11 to R.color.onceSalida,
+        12 to R.color.doceSalida,
+        13 to R.color.treceSalida,
+        14 to R.color.catorceSalida
+        // Add more entries as needed
     )
 
     private val rutaColoresLlegada = mapOf(
         1 to R.color.unoLlegada,
         2 to R.color.dosLlegada,
         3 to R.color.tresLlegada,
-        // Agregar más colores según las rutas
+        4 to R.color.cuatroLlegada,
+        5 to R.color.cincoLlegada,
+        6 to R.color.seisLlegada,
+        7 to R.color.sieteLlegada,
+        8 to R.color.ochoLlegada,
+        9 to R.color.nueveLlegada,
+        10 to R.color.diezLlegada,
+        11 to R.color.onceLlegada,
+        12 to R.color.doceLlegada,
+        13 to R.color.treceLlegada,
+        14 to R.color.catorceLlegada
+        // Add more entries as needed
     )
 
     init {
-        // Inicializa las polylines para tantas rutas como sea necesario
-        for (i in 1..14) {  // Por ejemplo, 14 rutas
-            polyRutasSalida.add(mapa.addPolyline(opcionesRutaSalida))
-            polyRutasLlegada.add(mapa.addPolyline(opcionesRutaLlegada))
+        // Initialize the polylines
+        CoroutineScope(Dispatchers.IO).launch {
+            val idsRutas = sqlRoom.routeDao().getAllIdsRoute()
+
+            withContext(Dispatchers.Main) {
+                for (i in 1..idsRutas.size) {
+                    val it = idsRutas[i - 1]
+
+                    polyRutasSalida.add(Pair(mapa.addPolyline(opcionesRutaSalida), it))
+                    polyRutasLlegada.add(Pair(mapa.addPolyline(opcionesRutaLlegada), it))
+                }
+            }
         }
+
     }
 
     fun trazarRuta(idRuta: Int) {
-        val sqlRoom = AppDatabase.getDatabase(contexto)
-        val obj1 = sqlRoom.coordinateDao().getCoordRoutePath(
-            idRuta,
-            RoomTypePath.DEPARTURE.toString()
-        ).toMutableList()
+       CoroutineScope(Dispatchers.IO).launch{
+           val obj1 = sqlRoom.coordinateDao().getCoordRoutePath(
+               idRuta,
+               RoomTypePath.DEPARTURE.toString()
+           ).toMutableList()
 
-        val puntosSalida = UtilidadesMenores().extractCoordToLatLng(
-            obj1,
-            RoomTypePath.DEPARTURE.toString(),
-            idRuta
-        )
+           val obj2 = sqlRoom.coordinateDao().getCoordRoutePath(
+               idRuta,
+               RoomTypePath.RETURN.toString()
+           ).toMutableList()
 
-        val obj2 = sqlRoom.coordinateDao().getCoordRoutePath(
-            idRuta,
-            RoomTypePath.RETURN.toString()
-        ).toMutableList()
+           val puntosSalida = UtilidadesMenores().extractCoordToLatLng(
+               obj1,
+               RoomTypePath.DEPARTURE.toString(),
+               idRuta
+           )
 
-        val puntosLlegada = UtilidadesMenores().extractCoordToLatLng(
-            obj2,
-            RoomTypePath.RETURN.toString(),
-            idRuta
-        )
+           val puntosLlegada = UtilidadesMenores().extractCoordToLatLng(
+               obj2,
+               RoomTypePath.RETURN.toString(),
+               idRuta
+           )
 
 
-        // Cambiar el color dinámicamente según la ruta
-        opcionesRutaSalida.color(
-            ContextCompat.getColor(
-                contexto,
-                rutaColoresSalida[idRuta] ?: R.color.defaultSalida
-            )
-        )
-        opcionesRutaLlegada.color(
-            ContextCompat.getColor(
-                contexto,
-                rutaColoresLlegada[idRuta] ?: R.color.defaultLlegada
-            )
-        )
+           withContext(Dispatchers.Main){
+               // Cambiar el color dinámicamente según la ruta
+               opcionesRutaSalida.color(
+                   ContextCompat.getColor(
+                       contexto,
+                       rutaColoresSalida[idRuta] ?: R.color.defaultSalida
+                   )
+               )
+               opcionesRutaLlegada.color(
+                   ContextCompat.getColor(
+                       contexto,
+                       rutaColoresLlegada[idRuta] ?: R.color.defaultLlegada
+                   )
+               )
+           }
 
-        val polySalida = polyRutasSalida[idRuta - 1]
-        val polyLlegada = polyRutasLlegada[idRuta - 1]
+           val polySalida = polyRutasSalida.find { it.second == idRuta }
+           val polyLlegada = polyRutasLlegada.find { it.second == idRuta }
 
-        // Elimina las rutas si ya tienen suficientes puntos
-        if (polySalida.points.size > 5) {
-            polySalida.remove()
-            polyLlegada.remove()
-        } else {
-            agregarMarcador(
-                puntosLlegada.last(),
-                R.drawable.ic_parqueadero,
-                "Parqueadero Ruta $idRuta"
-            )
-        }
+           withContext(Dispatchers.Main){
+               // Elimina las rutas si ya tienen suficientes puntos
+               val ptsLine = polySalida?.first?.points
+               val line = polySalida?.first
+               val lineReturn = polyLlegada?.first
 
-        // Añade los puntos a las polylines
-        polySalida.points = puntosSalida
-        polyLlegada.points = puntosLlegada
+               if (ptsLine!!.size > 5) {
+                   line?.remove()
+                   lineReturn?.remove()
+               } else {
+                   agregarMarcador(
+                       puntosLlegada.last(),
+                       R.drawable.ic_parqueadero,
+                       "Parqueadero Ruta $idRuta"
+                   )
+               }
+
+               // Añade los puntos a las polylines
+               line?.points = puntosSalida
+               lineReturn?.points = puntosLlegada
+           }
+       }
     }
 
 

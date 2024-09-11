@@ -10,10 +10,10 @@
             android:icon="@drawable/ic_reportar"
             android:title="@string/reportar_novedad" />
 
-        <item
-            android:id="@+id/modoTema"
-            android:icon="@drawable/ic_tema"
-            android:title="@string/cambiar_tema" />
+<!--        <item-->
+<!--            android:id="@+id/modoTema"-->
+<!--            android:icon="@drawable/ic_tema"-->
+<!--            android:title="@string/cambiar_tema" />-->
 
         <item
             android:id="@+id/acercade"

@@ -8,17 +8,17 @@ import android.net.Uri
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.widget.addTextChangedListener
@@ -43,6 +43,7 @@ import com.terfess.busetasyopal.modelos_dato.DatosPrimariosRuta
 import com.terfess.busetasyopal.room.AppDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
@@ -226,7 +227,17 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback,
         }
 
         binding.buscarOpt.setOnClickListener {
+            val menuItem = findViewById<ImageView>(R.id.buscar_opt)
+            val rotation = AnimationUtils.loadAnimation(this, R.anim.rotate)
+            menuItem.startAnimation(rotation)
+
             searchFilter()
+        }
+
+        binding.toggleTheme.setOnClickListener {
+            CoroutineScope(Dispatchers.Main).launch {
+                toggleNightModeWithAnim()
+            }
         }
 
         colorTema = UtilidadesMenores().colorTituloTema(this)
@@ -465,33 +476,29 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback,
                 UtilidadesMenores().reportar(this, null, currentTask)
             }
 
-            R.id.modoTema -> {
-
-
-                val nightMode = AppCompatDelegate.getDefaultNightMode()
-                val newNightMode = if (nightMode == AppCompatDelegate.MODE_NIGHT_YES) {
-                    AppCompatDelegate.MODE_NIGHT_NO
-                } else {
-                    AppCompatDelegate.MODE_NIGHT_YES
-                }
-
-                AppCompatDelegate.setDefaultNightMode(newNightMode)
-                recreate()
-
-
-                val sharedPreferences =
-                    getSharedPreferences(
-                        getString(R.string.nombre_shared_preferences),
-                        Context.MODE_PRIVATE
-                    )
-                sharedPreferences.edit().putInt("night_mode", newNightMode).apply()
-
-            }
         }
         drawer.closeDrawer(GravityCompat.START)
         return true
     }
 
+
+    private suspend fun toggleNightModeWithAnim(){
+
+        val menuItem = binding.toggleTheme
+        val rotation = AnimationUtils.loadAnimation(this, R.anim.rotate)
+        menuItem.startAnimation(rotation)
+
+        val rootLayout = binding.fondox
+        val slideAnimation = AnimationUtils.loadAnimation(this, R.anim.fade_in_out)
+        rootLayout.startAnimation(slideAnimation)
+
+        delay(rotation.duration)
+
+        UtilidadesMenores().toggleNightMode(
+            this
+        )
+
+    }
 }
 
 

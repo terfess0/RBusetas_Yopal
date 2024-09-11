@@ -7,13 +7,17 @@ import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.TypedValue
+import android.view.MenuItem
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.ActivityCompat.recreate
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.BaseTransientBottomBar
@@ -436,6 +440,30 @@ class UtilidadesMenores {
             .create()
 
         dialog.show()
+    }
+
+    fun toggleNightMode(context: Context){
+        val sharedPreferences =
+            context.getSharedPreferences(
+                context.getString(R.string.nombre_shared_preferences),
+                Context.MODE_PRIVATE
+            )
+
+        val nightMode = AppCompatDelegate.getDefaultNightMode()
+
+        val editor = sharedPreferences.edit()
+
+        if (nightMode == AppCompatDelegate.MODE_NIGHT_YES) {
+            val newNightMode = AppCompatDelegate.MODE_NIGHT_NO
+            AppCompatDelegate.setDefaultNightMode(newNightMode)
+            editor.putInt("night_mode", newNightMode)
+        } else {
+            val newNightMode = AppCompatDelegate.MODE_NIGHT_YES
+            AppCompatDelegate.setDefaultNightMode(newNightMode)
+            editor.putInt("night_mode", newNightMode)
+        }
+
+        editor.apply()
     }
 
 }
