@@ -963,20 +963,6 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
-        //liberar memoria del mapa
-        fragmentMap.onDestroy()
-        println("Fragmento mapa fue liberado-finalizado")
-
-        //desregistrar listener de la conexion a internet
-        val connectivityManager =
-            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        connectivityManager.unregisterNetworkCallback(networkCallback)
-        println("Escucha a internet (Pant Mapa) desactivado-finalizado")
-    }
-
     override fun onLocationChanged(p0: Location) {
         val ubiGps = LatLng(p0.latitude, p0.longitude)
         gmap.animateCamera(CameraUpdateFactory.newLatLngZoom(ubiGps, 20f), 3000, null)
@@ -1054,4 +1040,33 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         return true
     }
 
+    override fun onResume() {
+        super.onResume()
+        fragmentMap.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        fragmentMap.onPause()
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        fragmentMap.onLowMemory()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        //liberar memoria del mapa
+        fragmentMap.onDestroy()
+
+        println("Fragmento mapa fue liberado-finalizado")
+
+        //desregistrar listener de la conexion a internet
+        val connectivityManager =
+            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        connectivityManager.unregisterNetworkCallback(networkCallback)
+        println("Escucha a internet (Pant Mapa) desactivado-finalizado")
+    }
 }

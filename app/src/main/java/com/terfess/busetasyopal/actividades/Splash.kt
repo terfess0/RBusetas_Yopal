@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -27,98 +28,57 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class Splash : AppCompatActivity() {
+
     private var tiempo = Handler(Looper.getMainLooper()) //variable para temporizadores
-    var contador = 0
-    var rootView: View? = null
+    private var contador = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         //recuperar el tema guardado en shared preferences
         UtilidadesMenores().applySavedNightMode(this)
-
-        val roomDB = AppDatabase.getDatabase(this)
+        val roomDB by lazy { AppDatabase.getDatabase(this) }
 
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.pant_splash)
-        rootView = findViewById<View>(android.R.id.content)
 
+        val intentToRutasSeccion by lazy { Intent(this, RutasSeccion::class.java) }
         //splash
         splashScreen.setKeepOnScreenCondition { true }
-
-        //intent general paso a la siguiente actividad
-        val intentToRutasSeccion = Intent(this, RutasSeccion::class.java)
 
         //crear canales notificaciones
         NotificationChannelHelper(this).crearCanalesNotificaciones()
 
-        //recibir datos de notis en segundo plano firebase messaging
-        // Pasar los extras del intent recibido a la actividad principal
-        if (intent.hasExtra("link")) {
-            intentToRutasSeccion.putExtra("link", intent.getStringExtra("link"))
-            // Limpiar el intent
-            intent.removeExtra("link")
-            intent.removeExtra("respuesta")
-        }
-        if (intent.hasExtra("respuesta")) {
-            intentToRutasSeccion.putExtra("respuesta", intent.getStringExtra("respuesta"))
-            // Limpiar el intent
-            intent.removeExtra("link")
-            intent.removeExtra("respuesta")
+        // Procesar intent recibido
+        intent?.let {
+            it.getStringExtra("link")?.let { link ->
+                intentToRutasSeccion.putExtra("link", link)
+                it.removeExtra("link")
+            }
+            it.getStringExtra("respuesta")?.let { respuesta ->
+                intentToRutasSeccion.putExtra("respuesta", respuesta)
+                it.removeExtra("respuesta")
+            }
         }
 
         //----------------------------TIEMPO AGOTADO---------------------------------
 
-        val tiempoAgotado = Runnable {
-            // Si no pudo conectarse correctamente tras 15 segundos (mala conexion)
-            if (contador != 1) {
-                CoroutineScope(Dispatchers.Default).launch {
-                    val dato = roomDB.scheduleDao()
-                        .getSchedule(2, RoomPeriod.LUN_VIE.toString()).sche_start
-
-                    runOnUiThread {
-                        if (dato.isBlank()) {
-                            Toast.makeText(
-                                this@Splash,
-                                "Se necesita conexión a Internet",
-                                Toast.LENGTH_LONG
-                            )
-                                .show()
-                            finish()
-//                    findViewById<TextView>(R.id.tiempoAgotado).visibility = View.VISIBLE
-                        } else {
-                            UtilidadesMenores().crearToast(this@Splash, "Tiempo Agotado")
-                            startActivity(intentToRutasSeccion)
-                            finish()
-                        }
-                    }
-                }
-
-
-            }
-        }
-        tiempo.postDelayed(tiempoAgotado, 15000)
+        timeVerifyConextion(roomDB, intentToRutasSeccion)
 
         //---------------DESCARGAR INFORMACION SI ES NECESARIO--------------------------
 
         if (UtilidadesMenores().comprobarConexion(this)) {
-            //si hay conexion a internet entonces
-
-            //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>
-            //DESCARGAR LOS DATOS DE COORDENADAS DE CADA RUTA DESDE FIREBASE Y GUARDARLOS EN SQLITE LOCAL
-
             //obtener la version externa y comparar
             CoroutineScope(Dispatchers.IO).launch {
 
-                // Buscar la versión local en el hilo de fondo
-                var versionLocal = roomDB.versionDao().getVersion()
+                val versionLocal = roomDB.versionDao().getVersion()
 
                 FirebaseDatabase.getInstance().getReference("/features/0/versionPruebas")
-                    .addValueEventListener(object : ValueEventListener {
+                    .addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             val versionNube = snapshot.value.toString().toInt()
 
                             // Trabajar con la base de datos en el hilo de fondo
                             CoroutineScope(Dispatchers.IO).launch {
-                                if (versionLocal == null) versionLocal = 0
+                                versionLocal ?: 0
                                 if (versionLocal != versionNube) {
                                     println("Version nube es diferente a local")
                                     roomDB.routeDao().deleteRoutesTable()
@@ -128,12 +88,6 @@ class Splash : AppCompatActivity() {
                                     roomDB.versionDao()
                                         .insertVersion(Version(num_version = versionNube))
 
-                                    // Cambiar al hilo principal para actualizar la UI
-                                    withContext(Dispatchers.Main) {
-                                        startActivity(intentToRutasSeccion)
-                                        tiempo.removeCallbacksAndMessages(null)
-                                        finish()
-                                    }
                                 } else {
                                     // Cambiar al hilo principal para iniciar la actividad si no hay descarga
                                     withContext(Dispatchers.Main) {
@@ -183,6 +137,36 @@ class Splash : AppCompatActivity() {
         }
     }
 
+    private fun timeVerifyConextion(roomDB: AppDatabase, intentToRutasSeccion: Intent) {
+        val tiempoAgotado = Runnable {
+            // Si no pudo conectarse correctamente tras 15 segundos (mala conexion)
+            if (contador != 1) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    val dato = roomDB.scheduleDao()
+                        .getSchedule(2, RoomPeriod.LUN_VIE.toString()).sche_start
+
+                    runOnUiThread {
+                        if (dato.isBlank()) {
+                            Toast.makeText(
+                                this@Splash,
+                                "Se necesita conexión a Internet",
+                                Toast.LENGTH_LONG
+                            )
+                                .show()
+                            finish()
+//                    findViewById<TextView>(R.id.tiempoAgotado).visibility = View.VISIBLE
+                        } else {
+                            UtilidadesMenores().crearToast(this@Splash, "Tiempo Agotado")
+                            startActivity(intentToRutasSeccion)
+                            finish()
+                        }
+                    }
+                }
+            }
+        }
+        tiempo.postDelayed(tiempoAgotado, 15000)
+    }
+
 
     private fun descargarDatos() {
         val contexto = this
@@ -190,11 +174,19 @@ class Splash : AppCompatActivity() {
 
         DatosDeFirebase().descargarInformacion(contexto, object : allDatosRutas {
             override fun todosDatosRecibidos() {
-                UtilidadesMenores().crearSnackbar("Información De Rutas Descargada", rootView!!)
+                UtilidadesMenores().crearToast(this@Splash, "Información De Rutas Descargada")
 
-                UtilidadesMenores().reiniciarApp(this@Splash, Splash::class.java)
+                FirebaseDatabase.getInstance().goOffline()
+                FirebaseDatabase.getInstance().goOnline()
+
                 tiempo.removeCallbacksAndMessages(null)
+                UtilidadesMenores().reiniciarApp(this@Splash, Splash::class.java)
             }
         })
+    }
+
+    override fun onDestroy() {
+        Log.i("Actividades", "Splash se destruyó")
+        super.onDestroy()
     }
 }

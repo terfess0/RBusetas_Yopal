@@ -37,10 +37,10 @@ interface allDatosRutas { //callback para detectar que los datos de todas las ru
 class DatosDeFirebase {
     private var baseDatosFirebaseDatabase = FirebaseDatabase.getInstance()
 
-    private fun recibirCoordenadasRuta(callback: DatosDeFirebaseCallback) {
+    private fun recibirCoordenadasRuta(callAll: allDatosRutas, callback: DatosDeFirebaseCallback) {
         // Recoge todas las rutas
         baseDatosFirebaseDatabase.getReference("features/0/rutas/")
-            .addValueEventListener(object : ValueEventListener {
+            .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     for (rutaSnapshot in dataSnapshot.children) {
                         val idruta = rutaSnapshot.key?.toInt()
@@ -119,7 +119,9 @@ class DatosDeFirebase {
                             listaCoorPrimParte,
                             listaCoorSegParte
                         )
+                        println("+1 vuelta")
                     }
+                    callAll.todosDatosRecibidos()
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
@@ -132,12 +134,12 @@ class DatosDeFirebase {
 
     fun descargarInformacion(
         contexto: Context,
-        callback: allDatosRutas,
+        callback: allDatosRutas
     ) {
 
         val roomdb = AppDatabase.getDatabase(contexto)
 
-        recibirCoordenadasRuta(object : DatosDeFirebaseCallback {
+        recibirCoordenadasRuta(callback, object : DatosDeFirebaseCallback {
 
             override fun onRouteReceived(
                 route: Route,
@@ -209,10 +211,6 @@ class DatosDeFirebase {
                             )
                         }
 
-
-                        withContext(Dispatchers.Main) {
-                            callback.todosDatosRecibidos() // Callback con la lista de todas las rutas
-                        }
                     } catch (e: Exception) {
                         // Manejar excepciones
                         e.printStackTrace()

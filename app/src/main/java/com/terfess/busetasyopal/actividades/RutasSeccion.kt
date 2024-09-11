@@ -62,6 +62,7 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback,
     private lateinit var mAdView: AdView //anuncios
     private var listaRutas = emptyList<Int>()
     private var listaFilter = emptyList<DatosPrimariosRuta>()
+    private var firebaseInstance = FirebaseDatabase.getInstance()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -135,23 +136,23 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback,
         }
 
 
-        //mostrar saludo buenos dias
-        val saludo: String = when (getHora()) {
-            in 0..11 -> "Buenos días"
-            in 12..17 -> "Buenas tardes"
-            else -> "Buenas noches"
-        }
+        val saludo = getGratingHead()
 
 
         //cabezera
         binding.saludo.text = saludo
         binding.precio.text = precio
+
         //cabezera -- precio
-        FirebaseDatabase.getInstance().getReference(getString(R.string.ruta_firebase_price_nube))
-            .addValueEventListener(object : ValueEventListener {
+        val ref0 = firebaseInstance.getReference(getString(R.string.ruta_firebase_price_nube))
+
+            ref0.addListenerForSingleValueEvent (object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     precio = snapshot.value.toString()
                     binding.precio.text = precio
+
+                    ref0.removeEventListener(this)
+                    println("removido")
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -171,8 +172,9 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback,
         val msj3 = binding.mensaje3
         msj1.text = ""
         //contenido mensajes ->
-        FirebaseDatabase.getInstance().getReference("/features/0/mensajes")
-            .addValueEventListener(object : ValueEventListener {
+        val ref = firebaseInstance.getReference("/features/0/mensajes")
+
+            ref.addListenerForSingleValueEvent (object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     // Obtener los valores de la base de datos
                     val mensaje1 = snapshot.child("mensaje1").value?.toString()
@@ -192,6 +194,8 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback,
                     msj3.visibility =
                         if (mensaje3 != "" && mensaje3 != null) View.VISIBLE else View.GONE
 
+                    ref.removeEventListener(this)
+                    println("removido")
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -270,6 +274,16 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback,
         })
 
         handleIntent(intent)
+    }
+
+    private fun getGratingHead(): String {
+        //mostrar saludo buenos dias
+        val saludo: String = when (getHora()) {
+            in 0..11 -> "Buenos días"
+            in 12..17 -> "Buenas tardes"
+            else -> "Buenas noches"
+        }
+        return saludo
     }
 
 
