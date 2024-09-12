@@ -99,7 +99,7 @@ interface CoordinateDao {
 interface VersionDao {
 
     @Query("SELECT num_version FROM version WHERE id_version = 1")
-    fun getVersion(): Int
+    fun getVersion(): Int?
 
     @Update
     fun updateVersion(version: Version)

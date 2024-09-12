@@ -404,9 +404,6 @@ class UtilidadesMenores {
 
                 val coord = LatLng(lat, lng)
                 listPoint.add(coord)
-                println("Punto Extraido")
-            } else {
-                println("No es compatible point")
             }
         }
         return listPoint

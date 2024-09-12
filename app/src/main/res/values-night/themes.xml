@@ -21,6 +21,7 @@
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_round</item>
         <item name="windowSplashScreenBackground">@color/black</item>
         <item name="postSplashScreenTheme">@style/Theme.general</item>
+        <item name="duration">10</item>
     </style>
 
     <style name="Theme.BotonSheet" parent="Theme.Design.BottomSheetDialog">

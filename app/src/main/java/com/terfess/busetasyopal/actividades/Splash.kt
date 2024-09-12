@@ -28,9 +28,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class Splash : AppCompatActivity() {
-
     private var tiempo = Handler(Looper.getMainLooper()) //variable para temporizadores
     private var contador = 0
+    private var firebaseInstance = FirebaseDatabase.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         //recuperar el tema guardado en shared preferences
         UtilidadesMenores().applySavedNightMode(this)
@@ -40,9 +41,10 @@ class Splash : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.pant_splash)
 
-        val intentToRutasSeccion by lazy { Intent(this, RutasSeccion::class.java) }
         //splash
-        splashScreen.setKeepOnScreenCondition { true }
+        splashScreen.setKeepOnScreenCondition{ false }
+
+        val intentToRutasSeccion = Intent(this, RutasSeccion::class.java)
 
         //crear canales notificaciones
         NotificationChannelHelper(this).crearCanalesNotificaciones()
@@ -67,46 +69,7 @@ class Splash : AppCompatActivity() {
 
         if (UtilidadesMenores().comprobarConexion(this)) {
             //obtener la version externa y comparar
-            CoroutineScope(Dispatchers.IO).launch {
-
-                val versionLocal = roomDB.versionDao().getVersion()
-
-                FirebaseDatabase.getInstance().getReference("/features/0/versionPruebas")
-                    .addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            val versionNube = snapshot.value.toString().toInt()
-
-                            // Trabajar con la base de datos en el hilo de fondo
-                            CoroutineScope(Dispatchers.IO).launch {
-                                versionLocal ?: 0
-                                if (versionLocal != versionNube) {
-                                    println("Version nube es diferente a local")
-                                    roomDB.routeDao().deleteRoutesTable()
-
-                                    descargarDatos()
-
-                                    roomDB.versionDao()
-                                        .insertVersion(Version(num_version = versionNube))
-
-                                } else {
-                                    // Cambiar al hilo principal para iniciar la actividad si no hay descarga
-                                    withContext(Dispatchers.Main) {
-                                        startActivity(intentToRutasSeccion)
-                                        tiempo.removeCallbacksAndMessages(null)
-                                        finish()
-                                    }
-                                }
-                            }
-                        }
-
-                        override fun onCancelled(error: DatabaseError) {
-                            UtilidadesMenores().crearToast(
-                                this@Splash,
-                                "La versión no se pudo recibir desde internet"
-                            )
-                        }
-                    })
-            }
+            checkDataVersion(roomDB, intentToRutasSeccion)
 
             //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         } else {
@@ -114,19 +77,18 @@ class Splash : AppCompatActivity() {
             tiempo.removeCallbacksAndMessages(null)
             CoroutineScope(Dispatchers.Default).launch {
                 val dato =
-                    roomDB.scheduleDao().getSchedule(2, RoomPeriod.LUN_VIE.toString()).sche_start
+                    roomDB.versionDao().getVersion()
 
                 runOnUiThread {
-                    if (dato.isBlank()) {
-                        Toast.makeText(
-                            this@Splash,
-                            "Se necesita conexión a Internet",
-                            Toast.LENGTH_LONG
-                        )
-                            .show()
-                        finish()
-                        findViewById<TextView>(R.id.tiempoAgotado).visibility = View.VISIBLE
-                        findViewById<TextView>(R.id.tiempoAgotado).text = "Sin Conexión"
+                    if (dato == null) {
+
+                        val txtConection = findViewById<TextView>(R.id.tiempoAgotado)
+                        txtConection.visibility = View.VISIBLE
+                        txtConection.text =
+                            getString(R.string.es_necesario_tener_acceso_a_internet_revisa_tu_conexi_n)
+
+                        checkDataVersion(roomDB, intentToRutasSeccion)
+
                     } else {
                         UtilidadesMenores().crearToast(this@Splash, "Sin conexión a Internet")
                         startActivity(intentToRutasSeccion)
@@ -137,26 +99,67 @@ class Splash : AppCompatActivity() {
         }
     }
 
+    private fun checkDataVersion(roomDB: AppDatabase, intent: Intent) {
+        CoroutineScope(Dispatchers.IO).launch {
+
+            val versionLocal = roomDB.versionDao().getVersion()
+
+            firebaseInstance.getReference("/features/0/versionPruebas")
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val versionNube = snapshot.value.toString().toInt()
+
+                        // Trabajar con la base de datos en el hilo de fondo
+                        CoroutineScope(Dispatchers.IO).launch {
+                            versionLocal ?: 0
+                            if (versionLocal != versionNube) {
+
+                                roomDB.routeDao().deleteRoutesTable()
+
+                                descargarDatos(intentToRutasSeccion = intent)
+
+                                roomDB.versionDao()
+                                    .insertVersion(Version(num_version = versionNube))
+
+                            } else {
+                                // Cambiar al hilo principal para iniciar la actividad si no hay descarga
+                                withContext(Dispatchers.Main) {
+                                    tiempo.removeCallbacksAndMessages(null)
+                                    startActivity(intent)
+                                    finish()
+                                }
+                            }
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        UtilidadesMenores().crearToast(
+                            this@Splash,
+                            "La versión no se pudo recibir desde internet"
+                        )
+                    }
+                })
+        }
+    }
+
     private fun timeVerifyConextion(roomDB: AppDatabase, intentToRutasSeccion: Intent) {
         val tiempoAgotado = Runnable {
             // Si no pudo conectarse correctamente tras 15 segundos (mala conexion)
             if (contador != 1) {
                 CoroutineScope(Dispatchers.IO).launch {
-                    val dato = roomDB.scheduleDao()
-                        .getSchedule(2, RoomPeriod.LUN_VIE.toString()).sche_start
+                    val dato =
+                        roomDB.versionDao().getVersion()
 
                     runOnUiThread {
-                        if (dato.isBlank()) {
-                            Toast.makeText(
-                                this@Splash,
-                                "Se necesita conexión a Internet",
-                                Toast.LENGTH_LONG
-                            )
-                                .show()
-                            finish()
-//                    findViewById<TextView>(R.id.tiempoAgotado).visibility = View.VISIBLE
+                        if (dato == null) {
+                            findViewById<TextView>(R.id.tiempoAgotado).visibility = View.VISIBLE
+                            checkDataVersion(roomDB, intentToRutasSeccion)
+
                         } else {
-                            UtilidadesMenores().crearToast(this@Splash, "Tiempo Agotado")
+                            UtilidadesMenores().crearToast(
+                                this@Splash,
+                                getString(R.string.tiempo_agotado)
+                            )
                             startActivity(intentToRutasSeccion)
                             finish()
                         }
@@ -168,7 +171,7 @@ class Splash : AppCompatActivity() {
     }
 
 
-    private fun descargarDatos() {
+    private fun descargarDatos(intentToRutasSeccion: Intent) {
         val contexto = this
 
 
@@ -180,7 +183,9 @@ class Splash : AppCompatActivity() {
                 FirebaseDatabase.getInstance().goOnline()
 
                 tiempo.removeCallbacksAndMessages(null)
-                UtilidadesMenores().reiniciarApp(this@Splash, Splash::class.java)
+
+                startActivity(intentToRutasSeccion)
+                finish()
             }
         })
     }

@@ -8,5 +8,5 @@ import androidx.room.PrimaryKey
 )
 data class Version(
     @PrimaryKey val id_version: Int = 1,
-    val num_version: Int
+    val num_version: Int?
 )
