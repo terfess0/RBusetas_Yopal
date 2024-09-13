@@ -13,6 +13,7 @@
         android:id="@+id/numRutaOpMapa"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         android:foregroundGravity="center"
         android:text="@string/textview"
         android:textColor="?attr/titleTextColor"
@@ -26,6 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
+
         android:foregroundGravity="center_horizontal"
         android:text="@string/salida"
         android:textColor="?attr/titleTextColor"
@@ -65,6 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+
         android:foregroundGravity="center_horizontal"
         android:text="@string/llegada"
         android:textColor="?attr/titleTextColor"
@@ -77,7 +80,7 @@
         android:layout_height="0dp"
         android:background="@drawable/bord_suave"
         android:backgroundTint="@color/enfasis_azul"
-        android:fontFamily="@font/roboto"
+
         android:foregroundGravity="center_horizontal"
         android:text="@string/ver_ruta"
         android:textColor="#FFFFFF"

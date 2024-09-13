@@ -48,7 +48,7 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:subtitleTextColor="@color/gris" />
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
@@ -95,7 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/transparente"
-            android:contentDescription="Tog lista de rutas"
+            android:contentDescription="@string/tog_lista_de_rutas"
             android:foreground="?android:attr/selectableItemBackground"
             android:padding="12dp"
             android:theme="@style/Theme.general"
@@ -120,8 +120,9 @@
             android:id="@+id/ajustes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             android:backgroundTint="@color/transparente"
-            android:contentDescription="Ajustar el mapa"
+            android:contentDescription="@string/ajustar_el_mapa"
             android:foreground="?android:attr/selectableItemBackground"
             android:padding="12dp"
             android:theme="@style/Theme.general"
@@ -153,7 +154,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/transparente"
-                android:contentDescription="Para ver mi posicion GPS"
+                android:contentDescription="@string/para_ver_mi_posicion_gps"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:padding="12dp"
                 android:theme="@style/Theme.general"
@@ -169,10 +170,11 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Mi GPS"
+
+            android:text="@string/mi_gps"
             android:textAlignment="center"
             android:textColor="@color/enfasis_azul"
-            android:textSize="8sp" />
+            android:textSize="11sp" />
     </LinearLayout>
 
 
@@ -183,8 +185,8 @@
         android:layout_marginBottom="268dp"
         android:background="@drawable/borde_leyenda"
         android:backgroundTint="@color/fondoLeyenda"
+
         android:gravity="center"
-        android:hint="Leyenda"
         android:padding="4dp"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -201,6 +203,7 @@
         android:background="@drawable/borde_leyenda"
         android:backgroundTint="@color/fondoLeyenda"
         android:elevation="20dp"
+
         android:gravity="center"
         android:padding="5dp"
         android:textStyle="bold"
@@ -217,7 +220,7 @@
         android:layout_height="wrap_content"
         android:background="#DAFFFFFF"
         android:backgroundTint="#4D5161"
-        android:hint="Indicaciones"
+
         android:padding="3dp"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
@@ -263,15 +266,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="30dp"
+
                 android:gravity="start"
-                android:hint="Cambiar la configuración inicial del mapa"
+                android:hint="@string/cambiar_la_configuraci_n_inicial_del_mapa"
                 android:textColor="@color/enfasis_azul"
                 android:textSize="16sp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Tipo de Mapa:"
+
+                android:text="@string/tipo_de_mapa"
                 android:textAlignment="viewStart"
                 android:textColor="@color/enfasis_azul"
                 android:textStyle="bold" />
@@ -282,6 +287,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginBottom="10dp"
                 android:entries="@array/opciones_array"
+
                 android:spinnerMode="dropdown" />
 
             <Button
@@ -292,8 +298,9 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/bord_suave"
                 android:backgroundTint="#4D5161"
+
                 android:paddingHorizontal="5dp"
-                android:text="Aceptar"
+                android:text="@string/accept"
                 android:textColor="#ffffff" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -326,6 +333,7 @@
 
 
         <LinearLayout
+            style="?android:attr/buttonBarStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginVertical="4dp"
@@ -334,44 +342,50 @@
 
             <Button
                 android:id="@+id/sentidoSubida"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/bord_suave"
                 android:backgroundTint="@color/black"
+
                 android:foreground="?android:attr/selectableItemBackground"
                 android:padding="3dp"
-                android:text="Ver en Subida"
+                android:text="@string/ver_en_subida"
                 android:textAllCaps="false"
                 android:textColor="#ffffff"
                 android:visibility="gone" />
 
             <Button
                 android:id="@+id/sentidoLlegada"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="1dp"
+                android:layout_marginStart="1dp"
                 android:layout_weight="1"
                 android:background="@drawable/bord_suave"
                 android:backgroundTint="@color/black"
+
                 android:foreground="?android:attr/selectableItemBackground"
                 android:padding="3dp"
-                android:text="Ver en bajada"
+                android:text="@string/ver_en_bajada"
                 android:textAllCaps="false"
                 android:textColor="#ffffff"
                 android:visibility="gone" />
 
             <Button
                 android:id="@+id/verDistancia"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="1dp"
+                android:layout_marginStart="1dp"
                 android:layout_weight="1"
                 android:background="@drawable/bord_suave"
                 android:backgroundTint="@color/enfasis_azul"
+
                 android:foreground="?android:attr/selectableItemBackground"
                 android:padding="3dp"
-                android:text="Ver Distancia al recorrido"
+                android:text="@string/ver_distancia_al_recorrido"
                 android:textAllCaps="false"
                 android:textColor="#ffffff"
                 android:visibility="gone" />
@@ -399,63 +413,73 @@
 
 
                 <LinearLayout
+                    style="?android:attr/buttonBarStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <Button
                         android:id="@+id/posInicio"
+                        style="?android:attr/buttonBarButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:backgroundTint="@color/enfasis_azul"
                         android:drawableEnd="@drawable/ic_gps"
-                        android:gravity="left|center"
+
+                        android:gravity="start|center"
                         android:padding="10dp"
-                        android:text="Seleccionar lugar de partida   "
+                        android:text="@string/seleccionar_lugar_de_partida"
                         android:textColor="#ffffff"
                         android:visibility="gone" />
 
                     <Button
                         android:id="@+id/posDestino"
+                        style="?android:attr/buttonBarButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:backgroundTint="@color/enfasis_azul"
                         android:drawableEnd="@drawable/ic_gps"
-                        android:gravity="left|center"
+
+                        android:gravity="start|center"
                         android:padding="10dp"
-                        android:text="Seleccionar lugar de destino   "
+                        android:text="@string/seleccionar_lugar_de_destino"
                         android:textColor="#ffffff"
                         android:visibility="gone" />
 
                 </LinearLayout>
 
                 <LinearLayout
+                    style="?android:attr/buttonBarStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <Button
                         android:id="@+id/setUbicacion"
+                        style="?android:attr/buttonBarButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:backgroundTint="?attr/colorBackgroundFloating"
-                        android:text="Guardar Posición"
+
+                        android:text="@string/guardar_posici_n"
                         android:textAllCaps="false"
                         android:textColor="?attr/titleTextColor"
                         android:visibility="gone" />
 
                     <Button
                         android:id="@+id/setUbiGps"
+                        style="?android:attr/buttonBarButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:backgroundTint="?attr/colorBackgroundFloating"
-                        android:text="Usar mi Posición GPS"
+
+                        android:text="@string/usar_mi_posici_n_gps"
                         android:textAllCaps="false"
                         android:textColor="?attr/titleTextColor"
                         android:visibility="gone" />
@@ -476,7 +500,7 @@
                         android:layout_weight="1"
                         android:drawableStart="@drawable/ic_peque_fin"
                         android:drawableEnd="@drawable/ic_peque_salida"
-                        android:hint="Indicacion 1"
+
                         android:padding="3dp"
                         android:text=""
                         android:textColor="?attr/titleTextColor"
@@ -489,7 +513,7 @@
                         android:layout_weight="1"
                         android:drawableStart="@drawable/ic_peque_salida"
                         android:drawableEnd="@drawable/ic_peque_destino"
-                        android:hint="Indicacion 1"
+
                         android:padding="3dp"
                         android:text=""
                         android:textColor="?attr/titleTextColor"
@@ -502,7 +526,7 @@
                         android:layout_weight="1"
                         android:drawableStart="@drawable/ic_peque_caminar"
                         android:drawableEnd="@drawable/ic_peque_inicio"
-                        android:hint="Indicacion 1"
+
                         android:padding="3dp"
                         android:text=""
                         android:textColor="?attr/titleTextColor"
@@ -520,7 +544,8 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Info: No se pudo generar el recorrido."
+
+                        android:text="@string/info_no_se_pudo_generar_el_recorrido"
                         android:textAlignment="center"
                         android:textColor="?attr/titleTextColor"
                         android:textStyle="bold" />
@@ -528,7 +553,8 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="\nPosibles razones: \n- No hay rutas cerca de partida (menos 200 metros)."
+
+                        android:text="@string/nposibles_razones_n_no_hay_rutas_cerca_de_partida_menos_200_metros"
                         android:textColor="?attr/titleTextColor"
                         android:textStyle="bold" />
 
@@ -536,6 +562,7 @@
                         android:id="@+id/opciones_no_calculada"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+
                         android:textColor="?attr/titleTextColor"
                         android:textStyle="bold|italic" />
                 </LinearLayout>

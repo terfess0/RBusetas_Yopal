@@ -35,6 +35,7 @@
                 android:id="@+id/textVie"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:text="@string/fuente_datos"
                 android:textColor="?attr/titleTextColor"
                 android:textSize="20sp" />
@@ -54,6 +55,7 @@
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:text="@string/tema_sugerido_sms"
                 android:textColor="?attr/titleTextColor"
                 android:textSize="20sp" />
@@ -97,7 +99,8 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="#ffffff"
                 android:drawableEnd="@drawable/ic_flecha_aderecha"
-                android:text="Información de Horarios"
+
+                android:text="@string/informaci_n_de_horarios"
                 android:textAlignment="textStart" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -110,7 +113,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="\nHorarios"
+
+                    android:text="@string/nhorarios"
                     android:textColor="?attr/titleTextColor"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -118,14 +122,16 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="\nLos horarios muestran la hora en que sale la primera buseta y la hora en que sale la última buseta de la ruta correspondiente (aproximadamente).\n\nHorarios: Lunes a Viernes, Sábados y Domingos-Festivos. \n\nAbajo del horario está la frecuencia, es el tiempo que hay entre la salida de cada buseta; es decir, cada cierto tiempo sale del parqueadero la buseta.\n"
+
+                    android:text="@string/explicacion_horarios"
                     android:textColor="?attr/titleTextColor"
                     android:textSize="20sp" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="De acuerdo al día de la semana, el horario adquirirá un color que indica la disponibilidad del servicio.\n* Cuando la buseta está funcionando/en servicio:"
+
+                    android:text="@string/explicacion_horarios_dia"
                     android:textColor="?attr/titleTextColor"
                     android:textSize="20sp" />
 
@@ -138,7 +144,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="\n* Cuando la buseta no está funcionando/fuera de servicio:"
+
+                    android:text="@string/explicacion_horarios_buseta_en_rojo"
                     android:textColor="?attr/titleTextColor"
                     android:textSize="20sp" />
 
@@ -146,7 +153,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:layout_marginBottom="10dp"
-                    android:contentDescription="TODO"
+                    android:contentDescription="@string/explicacion_horario_buseta_en_rojo"
+
                     android:src="@drawable/img_info_horario_off" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 

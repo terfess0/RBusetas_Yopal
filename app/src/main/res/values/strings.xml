@@ -101,13 +101,39 @@
     <string name="actualizar_version_de_la_informacion">Actualizar Versión Información</string>
     <string name="cambiar_tema_visual_de_la_app">Cambiar tema visual de la app</string>
     <string name="buscar_sitios_o_rutas">Buscar Sitios o Rutas</string>
-    <string name="busca_sitios">Busca sitios</string>
+    <string name="busca_sitios">Buscar sitios y rutas</string>
     <string name="sin_resultados">Sin Resultados</string>
     <string name="buenos_dias">Buenos dias</string>
     <string name="tiempo_agotado_ncon_ctate_a_internet">Tiempo Agotado\nConéctate a internet.</string>
     <string name="es_necesario_tener_acceso_a_internet_revisa_tu_conexi_n">Es necesario tener acceso a internet, revisa tu conexión.</string>
     <string name="tiempo_agotado">Tiempo Agotado</string>
     <string name="toca_para_ver">Toca para ver</string>
+    <string name="informaci_n_de_horarios">Información de Horarios</string>
+    <string name="nhorarios">\nHorarios</string>
+    <string name="explicacion_horarios">\nLos horarios muestran la hora en que sale la primera buseta y la hora en que sale la última buseta de la ruta correspondiente (aproximadamente).\n\nHorarios: Lunes a Viernes, Sábados y Domingos-Festivos. \n\nAbajo del horario está la frecuencia, es el tiempo que hay entre la salida de cada buseta; es decir, cada cierto tiempo sale del parqueadero la buseta.\n</string>
+    <string name="explicacion_horarios_dia">De acuerdo al día de la semana, el horario adquirirá un color que indica la disponibilidad del servicio.\n* Cuando la buseta está funcionando/en servicio:</string>
+    <string name="horario_en_verde_cuando_esta_en_servicio">Horario en verde cuando esta en servicio.</string>
+    <string name="explicacion_horarios_buseta_en_rojo">\n* Cuando la buseta no está funcionando/fuera de servicio:</string>
+    <string name="explicacion_horario_buseta_en_rojo">Horario en rojo cuando la buseta terminó su horario con última salida</string>
+    <string name="mi_gps">Mi GPS</string>
+    <string name="cambiar_la_configuraci_n_inicial_del_mapa">Cambiar la configuración inicial del mapa</string>
+    <string name="tipo_de_mapa">Tipo de Mapa:</string>
+    <string name="precio_pasaje">Precio Pasaje:</string>
+    <string name="ver_mapa_con_las_rutas">Ver mapa con las rutas</string>
+    <string name="calcular_ruta_inicio_a_destino">Calcular Ruta Inicio a Destino</string>
+    <string name="ver_mapa_con_parqueaderos">Ver mapa con parqueaderos</string>
+    <string name="ver_en_subida">Ver en Subida</string>
+    <string name="ver_en_bajada">Ver en bajada</string>
+    <string name="ver_distancia_al_recorrido">Ver Distancia al recorrido</string>
+    <string name="seleccionar_lugar_de_partida">Seleccionar lugar de partida</string>
+    <string name="seleccionar_lugar_de_destino">Seleccionar lugar de destino</string>
+    <string name="guardar_posici_n">Guardar Posición</string>
+    <string name="usar_mi_posici_n_gps">Usar mi Posición GPS</string>
+    <string name="info_no_se_pudo_generar_el_recorrido">Info: No se pudo generar el recorrido.</string>
+    <string name="nposibles_razones_n_no_hay_rutas_cerca_de_partida_menos_200_metros">\nPosibles razones: \n- No hay rutas cerca de partida (menos 200 metros).</string>
+    <string name="para_ver_mi_posicion_gps">Para ver mi posicion GPS</string>
+    <string name="ajustar_el_mapa">Ajustar el mapa</string>
+    <string name="tog_lista_de_rutas">Tog lista de rutas</string>
 
 </resources>
 

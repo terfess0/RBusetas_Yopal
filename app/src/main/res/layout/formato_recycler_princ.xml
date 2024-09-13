@@ -17,7 +17,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:fontFamily="More Fonts..."
+
         android:gravity="center"
         android:textColor="?attr/titleTextColor"
         android:textSize="16sp"
@@ -36,7 +36,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:background="#00FFFFFF"
-        android:fontFamily="More Fonts..."
+
         android:text="@string/textview"
         android:textColor="?attr/titleTextColor"
         android:textSize="14sp"
@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:layout_weight="1"
-            android:fontFamily="More Fonts..."
+
             android:gravity="center"
             android:textColor="#333333"
             android:textSize="11sp" />
@@ -74,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:layout_weight="1"
-            android:fontFamily="More Fonts..."
+
             android:gravity="center"
             android:textColor="#333333"
             android:textSize="11sp" />
@@ -85,7 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:layout_weight="1"
-            android:fontFamily="More Fonts..."
+
             android:gravity="center"
             android:textColor="#333333"
             android:textSize="11sp" />
@@ -112,6 +112,7 @@
         android:textColor="#D8FFFFFF"
         android:textSize="11sp"
         android:textStyle="bold"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -122,7 +123,7 @@
         android:ellipsize="marquee"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:fontFamily="@font/roboto"
+
         android:marqueeRepeatLimit="marquee_forever"
         android:scrollHorizontally="true"
         android:singleLine="true"

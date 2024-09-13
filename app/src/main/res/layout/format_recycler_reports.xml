@@ -78,7 +78,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAlignment="textStart"
-                        android:fontFamily="@font/roboto"
                         android:textColor="?attr/colorPrimaryDark"
                         android:textIsSelectable="true"
                         android:textSize="18sp" />

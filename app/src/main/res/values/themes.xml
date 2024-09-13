@@ -7,6 +7,7 @@
         <item name="titleTextColor">#070707</item>
         <item name="colorBackgroundFloating">#E1E8F6</item>
         <item name="colorAccent">@color/enfasis_azul</item>
+        <item name="fontFamily">sans-serif-condensed</item>
         <!-- lateral menu icon color -->
         <item name="android:actionMenuTextColor">@color/black</item>
     </style>
@@ -15,6 +16,7 @@
         <item name="android:windowBackground">@drawable/bord_alerta</item> <!-- Fondo de la ventana con el borde de alerta -->
         <item name="buttonTint">@color/transparente</item>
         <item name="hintTextColor">#9F000000</item>
+        <item name="fontFamily">sans-serif-condensed</item>
         <item name="android:textColorPrimary">@android:color/black</item> <!-- Color del texto principal -->
         <item name="android:textColorSecondary">@android:color/black</item> <!-- Color del texto secundario -->
     </style>
@@ -23,7 +25,6 @@
     <style name="Theme.splash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_round</item>
         <item name="windowSplashScreenBackground">@color/white</item>
-        <item name="postSplashScreenTheme">@style/Theme.general</item>
         <item name="duration">10</item>
     </style>
 
@@ -31,8 +32,10 @@
         <item name="elevation">2dp</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackground">@android:color/transparent</item>
+        <item name="fontFamily">sans-serif-condensed</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:backgroundDimAmount">0.0</item> <!-- Ajusta según sea necesario -->
     </style>
+
 </resources>

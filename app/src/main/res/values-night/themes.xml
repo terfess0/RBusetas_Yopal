@@ -6,6 +6,7 @@
         <item name="titleTextColor">#FFFFFF</item>
         <item name="colorBackgroundFloating">#1E2A38</item>
         <item name="colorAccent">?attr/colorPrimaryDark</item>
+        <item name="fontFamily">sans-serif-condensed</item>
         <!-- lateral menu icon color -->
         <item name="android:actionMenuTextColor">@color/white</item>
     </style>
@@ -14,6 +15,7 @@
         <item name="android:windowBackground">@drawable/bord_alerta</item>
         <item name="android:textColorPrimary">?attr/colorPrimaryDark</item>
         <item name="android:textColorSecondary">?attr/colorPrimaryDark</item>
+        <item name="fontFamily">sans-serif-condensed</item>
         <item name="hintTextColor">?attr/colorPrimaryDark</item>
     </style>
 
@@ -29,6 +31,7 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackground">@android:color/transparent</item>
         <item name="android:windowIsFloating">true</item>
+        <item name="fontFamily">sans-serif-condensed</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:backgroundDimAmount">0.0</item> <!-- Ajusta según sea necesario -->
     </style>
