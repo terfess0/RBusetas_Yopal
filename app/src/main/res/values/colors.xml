@@ -37,10 +37,6 @@
     <color name="distancia_caminar_destino">#DF362A26</color>
 
     <!-- Conjunto 1 -->
-    <color name="defaultSalida">#A01E67</color>
-    <color name="defaultLlegada">#2C55CF</color>
-
-    <!-- Conjunto 1 -->
     <color name="unoSalida">#8E24AA</color>
     <color name="unoLlegada">#AD2CCF</color>
 
@@ -81,20 +77,91 @@
     <color name="diezLlegada">#656A21</color>
 
     <!-- Conjunto 11 -->
-    <color name="onceSalida">#58713B</color>
-    <color name="onceLlegada">#1F3A20</color>
+    <color name="onceSalida">#D32F2F</color>
+    <color name="onceLlegada">#FF5252</color>
 
     <!-- Conjunto 12 -->
-    <color name="doceSalida">#FDEF6D</color>
-    <color name="doceLlegada">#B59935</color>
+    <color name="doceSalida">#0097A7</color>
+    <color name="doceLlegada">#33C9DC</color>
 
     <!-- Conjunto 13 -->
-    <color name="treceSalida">#73999A</color>
-    <color name="treceLlegada">#03A16A</color>
+    <color name="treceSalida">#F57C00</color>
+    <color name="treceLlegada">#FFB74D</color>
 
     <!-- Conjunto 14 -->
-    <color name="catorceSalida">#9F4427</color>
-    <color name="catorceLlegada">#B71C1C</color>
+    <color name="catorceSalida">#00796B</color>
+    <color name="catorceLlegada">#48A999</color>
+
+    <!-- Conjunto 15 -->
+    <color name="quinceSalida">#5D4037</color>
+    <color name="quinceLlegada">#8D6E63</color>
+
+    <!-- Conjunto 16 -->
+    <color name="dieciseisSalida">#0288D1</color>
+    <color name="dieciseisLlegada">#81D4FA</color>
+
+    <!-- Conjunto 17 -->
+    <color name="diecisieteSalida">#C2185B</color>
+    <color name="diecisieteLlegada">#F48FB1</color>
+
+    <!-- Conjunto 18 -->
+    <color name="dieciochoSalida">#7E57C2</color>
+    <color name="dieciochoLlegada">#B39DDB</color>
+
+    <!-- Conjunto 19 -->
+    <color name="diecinueveSalida">#455A64</color>
+    <color name="diecinueveLlegada">#78909C</color>
+
+    <!-- Conjunto 20 -->
+    <color name="veinteSalida">#689F38</color>
+    <color name="veinteLlegada">#9CCC65</color>
+
+    <!-- Conjunto 21 -->
+    <color name="veintiunoSalida">#8E44AD</color>
+    <color name="veintiunoLlegada">#BB8FCE</color>
+
+    <!-- Conjunto 22 -->
+    <color name="veintidosSalida">#C0392B</color>
+    <color name="veintidosLlegada">#E74C3C</color>
+
+    <!-- Conjunto 23 -->
+    <color name="veintitresSalida">#16A085</color>
+    <color name="veintitresLlegada">#1ABC9C</color>
+
+    <!-- Conjunto 24 -->
+    <color name="veinticuatroSalida">#2980B9</color>
+    <color name="veinticuatroLlegada">#3498DB</color>
+
+    <!-- Conjunto 25 -->
+    <color name="veinticincoSalida">#D35400</color>
+    <color name="veinticincoLlegada">#E67E22</color>
+
+    <!-- Conjunto 26 -->
+    <color name="veintiseisSalida">#2C3E50</color>
+    <color name="veintiseisLlegada">#34495E</color>
+
+    <!-- Conjunto 27 -->
+    <color name="veintisieteSalida">#27AE60</color>
+    <color name="veintisieteLlegada">#2ECC71</color>
+
+    <!-- Conjunto 28 -->
+    <color name="veintiochoSalida">#7F8C8D</color>
+    <color name="veintiochoLlegada">#95A5A6</color>
+
+    <!-- Conjunto 29 -->
+    <color name="veintinueveSalida">#9B59B6</color>
+    <color name="veintinueveLlegada">#BE90D4</color>
+
+    <!-- Conjunto 30 -->
+    <color name="treintaSalida">#F39C12</color>
+    <color name="treintaLlegada">#F5B041</color>
+
+
+
+
+
+
+
 
     <color name="verde_positivo">#8069D878</color>
 </resources>

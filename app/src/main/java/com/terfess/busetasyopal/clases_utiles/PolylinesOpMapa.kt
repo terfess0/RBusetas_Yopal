@@ -42,7 +42,23 @@ class PolylinesOpMapa(private val mapa: GoogleMap, private val contexto: Context
         11 to R.color.onceSalida,
         12 to R.color.doceSalida,
         13 to R.color.treceSalida,
-        14 to R.color.catorceSalida
+        14 to R.color.catorceSalida,
+        15 to R.color.quinceSalida,
+        16 to R.color.dieciseisSalida,
+        17 to R.color.diecisieteSalida,
+        18 to R.color.dieciochoSalida,
+        19 to R.color.diecinueveSalida,
+        20 to R.color.veinteSalida,
+        21 to R.color.veintiunoSalida,
+        22 to R.color.veintidosSalida,
+        23 to R.color.veintitresSalida,
+        24 to R.color.veinticuatroSalida,
+        25 to R.color.veinticincoSalida,
+        26 to R.color.veintiseisSalida,
+        27 to R.color.veintisieteSalida,
+        28 to R.color.veintiochoSalida,
+        29 to R.color.veintinueveSalida,
+        30 to R.color.treintaSalida
         // Add more entries as needed
     )
 
@@ -60,7 +76,23 @@ class PolylinesOpMapa(private val mapa: GoogleMap, private val contexto: Context
         11 to R.color.onceLlegada,
         12 to R.color.doceLlegada,
         13 to R.color.treceLlegada,
-        14 to R.color.catorceLlegada
+        14 to R.color.catorceLlegada,
+        15 to R.color.quinceLlegada,
+        16 to R.color.dieciseisLlegada,
+        17 to R.color.diecisieteLlegada,
+        18 to R.color.dieciochoLlegada,
+        19 to R.color.diecinueveLlegada,
+        20 to R.color.veinteLlegada,
+        21 to R.color.veintiunoLlegada,
+        22 to R.color.veintidosLlegada,
+        23 to R.color.veintitresLlegada,
+        24 to R.color.veinticuatroLlegada,
+        25 to R.color.veinticincoLlegada,
+        26 to R.color.veintiseisLlegada,
+        27 to R.color.veintisieteLlegada,
+        28 to R.color.veintiochoLlegada,
+        29 to R.color.veintinueveLlegada,
+        30 to R.color.treintaLlegada
         // Add more entries as needed
     )
 
@@ -76,13 +108,13 @@ class PolylinesOpMapa(private val mapa: GoogleMap, private val contexto: Context
                     opcionesRutaSalida.color(
                         ContextCompat.getColor(
                             contexto,
-                            rutaColoresSalida[it] ?: R.color.defaultSalida
+                            rutaColoresSalida[it] ?: R.color.catorceSalida
                         )
                     )
                     opcionesRutaLlegada.color(
                         ContextCompat.getColor(
                             contexto,
-                            rutaColoresLlegada[it] ?: R.color.defaultLlegada
+                            rutaColoresLlegada[it] ?: R.color.dosLlegada
                         )
                     )
 
@@ -124,24 +156,27 @@ class PolylinesOpMapa(private val mapa: GoogleMap, private val contexto: Context
             withContext(Dispatchers.Main) {
 
                 // Elimina las rutas si ya tienen suficientes puntos
-                val ptsLine = polySalida?.first?.points
                 val line = polySalida?.first
                 val lineReturn = polyLlegada?.first
 
-                if (ptsLine!!.size > 5) {
-                    line?.remove()
-                    lineReturn?.remove()
+                if (line?.isVisible == true && line.points.size > 10) {
+                    line.isVisible = false
+                    lineReturn?.isVisible = false
                 } else {
+                    line?.isVisible = true
+                    lineReturn?.isVisible = true
+
+                    // Añade los puntos a las polylines
+                    line?.points = puntosSalida
+                    lineReturn?.points = puntosLlegada
+
                     agregarMarcador(
                         puntosLlegada.last(),
                         R.drawable.ic_parqueadero,
                         "Parqueadero Ruta $idRuta"
                     )
+                    println("Marker?")
                 }
-
-                // Añade los puntos a las polylines
-                line?.points = puntosSalida
-                lineReturn?.points = puntosLlegada
             }
         }
     }
