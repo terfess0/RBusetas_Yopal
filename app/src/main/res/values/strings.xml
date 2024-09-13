@@ -107,6 +107,7 @@
     <string name="tiempo_agotado_ncon_ctate_a_internet">Tiempo Agotado\nConéctate a internet.</string>
     <string name="es_necesario_tener_acceso_a_internet_revisa_tu_conexi_n">Es necesario tener acceso a internet, revisa tu conexión.</string>
     <string name="tiempo_agotado">Tiempo Agotado</string>
+    <string name="toca_para_ver">Toca para ver</string>
 
 </resources>
 
