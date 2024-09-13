@@ -73,6 +73,19 @@ class PolylinesOpMapa(private val mapa: GoogleMap, private val contexto: Context
                 for (i in 1..idsRutas.size) {
                     val it = idsRutas[i - 1]
 
+                    opcionesRutaSalida.color(
+                        ContextCompat.getColor(
+                            contexto,
+                            rutaColoresSalida[it] ?: R.color.defaultSalida
+                        )
+                    )
+                    opcionesRutaLlegada.color(
+                        ContextCompat.getColor(
+                            contexto,
+                            rutaColoresLlegada[it] ?: R.color.defaultLlegada
+                        )
+                    )
+
                     polyRutasSalida.add(Pair(mapa.addPolyline(opcionesRutaSalida), it))
                     polyRutasLlegada.add(Pair(mapa.addPolyline(opcionesRutaLlegada), it))
                 }
@@ -82,71 +95,55 @@ class PolylinesOpMapa(private val mapa: GoogleMap, private val contexto: Context
     }
 
     fun trazarRuta(idRuta: Int) {
-       CoroutineScope(Dispatchers.IO).launch{
-           val obj1 = sqlRoom.coordinateDao().getCoordRoutePath(
-               idRuta,
-               RoomTypePath.DEPARTURE.toString()
-           ).toMutableList()
+        CoroutineScope(Dispatchers.IO).launch {
+            val obj1 = sqlRoom.coordinateDao().getCoordRoutePath(
+                idRuta,
+                RoomTypePath.DEPARTURE.toString()
+            ).toMutableList()
 
-           val obj2 = sqlRoom.coordinateDao().getCoordRoutePath(
-               idRuta,
-               RoomTypePath.RETURN.toString()
-           ).toMutableList()
+            val obj2 = sqlRoom.coordinateDao().getCoordRoutePath(
+                idRuta,
+                RoomTypePath.RETURN.toString()
+            ).toMutableList()
 
-           val puntosSalida = UtilidadesMenores().extractCoordToLatLng(
-               obj1,
-               RoomTypePath.DEPARTURE.toString(),
-               idRuta
-           )
+            val puntosSalida = UtilidadesMenores().extractCoordToLatLng(
+                obj1,
+                RoomTypePath.DEPARTURE.toString(),
+                idRuta
+            )
 
-           val puntosLlegada = UtilidadesMenores().extractCoordToLatLng(
-               obj2,
-               RoomTypePath.RETURN.toString(),
-               idRuta
-           )
+            val puntosLlegada = UtilidadesMenores().extractCoordToLatLng(
+                obj2,
+                RoomTypePath.RETURN.toString(),
+                idRuta
+            )
 
+            val polySalida = polyRutasSalida.find { it.second == idRuta }
+            val polyLlegada = polyRutasLlegada.find { it.second == idRuta }
 
-           withContext(Dispatchers.Main){
-               // Cambiar el color dinámicamente según la ruta
-               opcionesRutaSalida.color(
-                   ContextCompat.getColor(
-                       contexto,
-                       rutaColoresSalida[idRuta] ?: R.color.defaultSalida
-                   )
-               )
-               opcionesRutaLlegada.color(
-                   ContextCompat.getColor(
-                       contexto,
-                       rutaColoresLlegada[idRuta] ?: R.color.defaultLlegada
-                   )
-               )
-           }
+            withContext(Dispatchers.Main) {
 
-           val polySalida = polyRutasSalida.find { it.second == idRuta }
-           val polyLlegada = polyRutasLlegada.find { it.second == idRuta }
+                // Elimina las rutas si ya tienen suficientes puntos
+                val ptsLine = polySalida?.first?.points
+                val line = polySalida?.first
+                val lineReturn = polyLlegada?.first
 
-           withContext(Dispatchers.Main){
-               // Elimina las rutas si ya tienen suficientes puntos
-               val ptsLine = polySalida?.first?.points
-               val line = polySalida?.first
-               val lineReturn = polyLlegada?.first
+                if (ptsLine!!.size > 5) {
+                    line?.remove()
+                    lineReturn?.remove()
+                } else {
+                    agregarMarcador(
+                        puntosLlegada.last(),
+                        R.drawable.ic_parqueadero,
+                        "Parqueadero Ruta $idRuta"
+                    )
+                }
 
-               if (ptsLine!!.size > 5) {
-                   line?.remove()
-                   lineReturn?.remove()
-               } else {
-                   agregarMarcador(
-                       puntosLlegada.last(),
-                       R.drawable.ic_parqueadero,
-                       "Parqueadero Ruta $idRuta"
-                   )
-               }
-
-               // Añade los puntos a las polylines
-               line?.points = puntosSalida
-               lineReturn?.points = puntosLlegada
-           }
-       }
+                // Añade los puntos a las polylines
+                line?.points = puntosSalida
+                lineReturn?.points = puntosLlegada
+            }
+        }
     }
 
 
