@@ -223,25 +223,6 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             activarLocalizacion()
         }
 
-        supportActionBar?.subtitle = "Camino de salida y de llegada"
-        supportActionBar?.title = "Recorrido Ruta $idruta"  //titulo actionbar
-        if (idruta == 0) {
-            supportActionBar?.title =
-                "Calcular Ruta Inicio a Destino"  //titulo opcion calcular ruta
-            supportActionBar?.subtitle = "Elíge un inicio y un destino"
-
-        } else if (idruta == 20) {
-            supportActionBar?.subtitle = "Todas las rutas habilitadas"
-            supportActionBar?.title =
-                "Ver Mapa con las Rutas"  //titulo opcion ver mapa con ruta
-
-        } else if (idruta == 40) {
-            supportActionBar?.subtitle = "Parqueaderos de donde sale la buseta"
-            supportActionBar?.title =
-                "Ver Mapa con Parqueaderos"  //titulo opcion mapa con parqueaderos
-
-        }
-
         //-------------------------------------------------------------------------------
 
         //botones verdistancia y calcular punto cercano
@@ -332,6 +313,10 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
             MapRouteOption.SIMPLE_ROUTE -> {
                 val buildRuta = PolylinesPrincipal(this, gmap)
+
+                supportActionBar?.subtitle = "Camino de salida y de llegada"
+                supportActionBar?.title = "Recorrido Ruta $idruta"
+
                 buildRuta.crearRuta(idruta)
             }
 
@@ -339,11 +324,14 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 //identificar estado mapa - tarea
                 tareaActual = UserTask.USER_IS_IN_OPTION_CALCULATE_ROUTE_MAP.messageValue
                 //---------------------------------
+                supportActionBar?.title =
+                    getString(R.string.calcular_viaje_inicio_destino)
+                supportActionBar?.subtitle = "Elíge un inicio y un destino"
 
-                //Cuando se calcule la ruta
+                // Show/Hide elements
                 binding.infoColor.visibility = View.GONE
                 binding.textPruebas.visibility = View.VISIBLE
-                supportActionBar?.title = "Calcular viaje Inicio - Destino"  //titulo actionbar
+
 
                 var ubiInicio = LatLng(0.0, 0.0)
                 var ubiDestino = LatLng(0.0, 0.0)
@@ -579,7 +567,9 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 tareaActual = UserTask.USER_IS_IN_OPTION_ALL_ROUTES_MAP.messageValue
                 //---------------------------------
 
-                supportActionBar?.title = "Ver Mapa con Rutas"
+                supportActionBar?.subtitle = "Todas las rutas habilitadas"
+                supportActionBar?.title = getString(R.string.ver_mapa_con_las_rutas)
+
                 binding.infoColor.visibility = View.GONE
                 binding.listaRutasOpMapa.visibility = View.VISIBLE
 
@@ -587,7 +577,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 //mostrar info relacionada
                 binding.indicaciones.visibility = View.VISIBLE
                 binding.indicaciones.text =
-                    "Compara cualquier recorrido de las rutas habilitadas con tu posición en el mapa, presiona el boton gps, elige 'VER RUTA' y aleja el mapa."
+                    getString(R.string.compara_cualquier_recorrido_de_las_rutas_habilitadas_con_tu_posici_n_en_el_mapa_presiona_el_boton_gps_elige_ver_ruta_y_aleja_el_mapa)
 
 
                 //--------------RECICLERVIEW-------------------------------
@@ -638,7 +628,10 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 tareaActual = UserTask.USER_IS_IN_OPTION_PARKINGS_ROUTES_MAP.messageValue
 
                 // Hide/Show option elements
-                supportActionBar?.title = getString(R.string.ver_mapa_con_parqueaderos)
+                supportActionBar?.subtitle = "Parqueaderos de donde sale la buseta"
+                supportActionBar?.title =
+                    getString(R.string.ver_mapa_con_parqueaderos)
+
                 binding.infoColor.visibility = View.GONE
 
                 binding.indicaciones.visibility = View.VISIBLE
