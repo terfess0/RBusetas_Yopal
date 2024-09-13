@@ -39,6 +39,7 @@ import com.terfess.busetasyopal.AdapterPrincipal
 import com.terfess.busetasyopal.clases_utiles.AlertaCallback
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.PantPrincipalBinding
+import com.terfess.busetasyopal.enums.MapRouteOption
 import com.terfess.busetasyopal.modelos_dato.DatosPrimariosRuta
 import com.terfess.busetasyopal.room.AppDatabase
 import kotlinx.coroutines.CoroutineScope
@@ -50,7 +51,7 @@ import java.util.Calendar
 
 class RutasSeccion : AppCompatActivity(), AlertaCallback,
     NavigationView.OnNavigationItemSelectedListener {
-    //CLASE DE LAYOUT PANTALLA PRINCIPAL
+
     private lateinit var binding: PantPrincipalBinding
     var filtrando = false
     private lateinit var db: DatabaseReference
@@ -152,7 +153,6 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback,
                     binding.precio.text = precio
 
                     ref0.removeEventListener(this)
-                    println("removido")
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -195,7 +195,6 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback,
                         if (mensaje3 != "" && mensaje3 != null) View.VISIBLE else View.GONE
 
                     ref.removeEventListener(this)
-                    println("removido")
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -212,21 +211,28 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback,
         //el usuario elige boton calcular la ruta al destino
         binding.calcularRuta.setOnClickListener {
             val intent = Intent(this, Mapa::class.java)
-            intent.putExtra("selector", 0)
+            val typeMapOption = MapRouteOption.CALCULATE_ROUTE_USER.toString()
+
+            intent.putExtra("type_option", typeMapOption)
+
             startActivity(intent)
         }
 
         //el usuario elige boton ver mapa con rutas
         binding.mapaRutas.setOnClickListener {
             val intent = Intent(this, Mapa::class.java)
-            intent.putExtra("selector", 20)
+            val typeMapOption = MapRouteOption.ALL_ROUTES.toString()
+
+            intent.putExtra("type_option", typeMapOption)
             startActivity(intent)
         }
 
         //el usuario elige boton ver parqueaderos
         binding.mapaParqueaderos.setOnClickListener {
             val intent = Intent(this, Mapa::class.java)
-            intent.putExtra("selector", 40)
+            val typeMapOption = MapRouteOption.PARKING_ROUTES.toString()
+
+            intent.putExtra("type_option", typeMapOption)
             startActivity(intent)
         }
 

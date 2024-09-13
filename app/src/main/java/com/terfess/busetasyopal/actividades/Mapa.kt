@@ -52,12 +52,15 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.terfess.busetasyopal.OpMapaAdapterHolder
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.clases_utiles.AlertaCallback
+import com.terfess.busetasyopal.clases_utiles.MapFunctionOptions
 import com.terfess.busetasyopal.clases_utiles.PlanearRutaDestino
 import com.terfess.busetasyopal.clases_utiles.PlanearRutaDestino.Datos
 import com.terfess.busetasyopal.clases_utiles.PolylinesPrincipal
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.PantMapaBinding
-import com.terfess.busetasyopal.enums.RoomTypePath
+import com.terfess.busetasyopal.enums.MapRouteOption
+import com.terfess.busetasyopal.enums.UserTask
+import com.terfess.busetasyopal.enums.getRouteOnTask
 import com.terfess.busetasyopal.modelos_dato.DatoOpMapa
 import com.terfess.busetasyopal.room.AppDatabase
 import kotlinx.coroutines.CoroutineScope
@@ -69,11 +72,11 @@ import kotlinx.coroutines.launch
 class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCallback {
     private lateinit var binding: PantMapaBinding
     private lateinit var gmap: GoogleMap
-    private var contexto = this
+
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var idruta: Int = 0
-    private var networkCallback = ConnectivityManager.NetworkCallback()
-    private val tiempos = Handler(Looper.getMainLooper())
+    private lateinit var typeOptMap: MapRouteOption
+
     private var puntoProvisionalGps: Circle? = null
     private lateinit var marcador: Marker
     private lateinit var mAdView: AdView //anuncios
@@ -98,19 +101,11 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         fragmentMap = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         fragmentMap.getMapAsync(this)
 
-
         cargarAnuncios()
 
-        //actionbar
-        val toolbar = findViewById<Toolbar>(R.id.toolbarMap)
-        setSupportActionBar(toolbar)
+        setActionBar()
 
-        supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true)
-        }
 
-        val themeColor = UtilidadesMenores().getColorHambugerIcon()
-        toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, themeColor))
         //..
 
         /*//lugares/places api   //HAY QUE PAGAR EN CLOUD POR ESO SE DESACTIVARA PLACES
@@ -150,10 +145,17 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
 
         //seleccion ruta
-        val recibirTent = intent.extras
-        if (recibirTent != null) {
-            idruta = recibirTent.getInt("selector")
+        intent.extras.let {
+            idruta = it!!.getInt("num_route")
+
+            val typeOptionString = it.getString("type_option")
+            typeOptMap = if (typeOptionString != null) {
+                enumValueOf<MapRouteOption>(typeOptionString)  // Convert from String a enum
+            } else {
+                MapRouteOption.SIMPLE_ROUTE
+            }
         }
+
 
         //ubicacion del gps
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -174,7 +176,8 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         // Registrar un NetworkCallback para recibir actualizaciones de conectividad
         val connectivityManager =
             getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        networkCallback = object : ConnectivityManager.NetworkCallback() {
+
+        val networkCallback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
                 super.onAvailable(network)
                 runOnUiThread {
@@ -185,11 +188,11 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         connectivityManager.registerDefaultNetworkCallback(networkCallback)
 
         //inicializar arrays que se usaran para calcular rutas
-        Datos.mejorPuntoaInicio[0] = -1 // inicializa el índice de la estación más cercana en -1
-        Datos.mejorPuntoaInicio[1] = Int.MAX_VALUE // inicializa la distancia con un valor alto
-
-        Datos.mejorPuntoaDestino[0] = -1
-        Datos.mejorPuntoaDestino[1] = Int.MAX_VALUE
+//        Datos.mejorPuntoaInicio[0] = -1 // inicializa el índice de la estación más cercana en -1
+//        Datos.mejorPuntoaInicio[1] = Int.MAX_VALUE // inicializa la distancia con un valor alto
+//
+//        Datos.mejorPuntoaDestino[0] = -1
+//        Datos.mejorPuntoaDestino[1] = Int.MAX_VALUE
         //-----------------------------------------------------
 
 
@@ -199,18 +202,16 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
     override fun onMapReady(mapa: GoogleMap) {
         gmap = mapa
 
-        //progressbar del mapa (ya cargó)
+        // Progressbar while map loading
         gmap.setOnMapLoadedCallback {
             binding.loadingMapa.visibility = View.GONE
-            println("Mapa ha terminado de cargarse")
         }
 
         mapa.mapType =
             GoogleMap.MAP_TYPE_NORMAL
 
-
-        //definir estado accion del mapa (que esta mostrando)
-        tareaActual = "Mostrando ruta $idruta"
+        // Initialize current task
+        tareaActual = getRouteOnTask(idruta)
 
         irYopal() //colocar la camara en la ciudad de yopal
 
@@ -325,17 +326,18 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
     }
 
-    private fun selector() { // decide que ruta creara o que tipo de mapa creara
-        val buildRuta = PolylinesPrincipal(contexto, gmap)
-        when (idruta) {
+    private fun selector() {
 
-            //--------------------------------------------------------------------------------------
-            //---------------------------OPCIONES BOTONES----------------------------------------------
-            //--------------------------------------------------------------------------------------
-            //el numero 0 de id_ruta sera el que cree un mapa para calcular ruta
-            0 -> {
+        when (typeOptMap) {
+
+            MapRouteOption.SIMPLE_ROUTE -> {
+                val buildRuta = PolylinesPrincipal(this, gmap)
+                buildRuta.crearRuta(idruta)
+            }
+
+            MapRouteOption.CALCULATE_ROUTE_USER -> {
                 //identificar estado mapa - tarea
-                tareaActual = "Calculando ruta"
+                tareaActual = UserTask.USER_IS_IN_OPTION_CALCULATE_ROUTE_MAP.messageValue
                 //---------------------------------
 
                 //Cuando se calcule la ruta
@@ -572,12 +574,9 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 }
             }
 
-            //--------------------------------------------------------------------------------------
-            //--------------------------------------------------------------------------------------
-            //cuando 20 se vea el mapa con todas las rutas
-            20 -> {
+            MapRouteOption.ALL_ROUTES -> {
                 //identificar estado mapa - tarea
-                tareaActual = "Mapa con todas las rutas"
+                tareaActual = UserTask.USER_IS_IN_OPTION_ALL_ROUTES_MAP.messageValue
                 //---------------------------------
 
                 supportActionBar?.title = "Ver Mapa con Rutas"
@@ -634,55 +633,24 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
             }
 
-            //--------------------------------------------------------------------------------------
-            //--------------------------------------------------------------------------------------
-            //cuando 40 se vea el mapa con parqueaderos
-            40 -> {
-                //identificar estado mapa - tarea
-                tareaActual = "Mostrando mapa con parqueaderos"
-                //---------------------------------
+            MapRouteOption.PARKING_ROUTES -> {
+                // Set info current task option
+                tareaActual = UserTask.USER_IS_IN_OPTION_PARKINGS_ROUTES_MAP.messageValue
 
-                supportActionBar?.title = "Ver Mapa con Parqueaderos"
+                // Hide/Show option elements
+                supportActionBar?.title = getString(R.string.ver_mapa_con_parqueaderos)
                 binding.infoColor.visibility = View.GONE
 
-                //mostrar info relacionada
                 binding.indicaciones.visibility = View.VISIBLE
                 binding.indicaciones.text =
-                    "Los puntos rojos son parqueaderos, toca cualquiera de ellos para saber a que ruta pertenecen."
+                    getString(R.string.los_puntos_rojos_son_parqueaderos_toca_cualquiera_de_ellos_para_saber_a_que_ruta_pertenecen)
 
-                val dbHelper = AppDatabase.getDatabase(this)
-
-                //--------------PARQUEADEROS-------------------------------
-                var listaRutas: List<Int>
-
-                CoroutineScope(Dispatchers.IO).launch {
-                    listaRutas = dbHelper.routeDao().getAllIdsRoute()
-
-                    for (i in 0..listaRutas.size - 1) {
-                        val iterator = listaRutas[i]
-
-
-                        val datosSeleccionRuta = dbHelper.coordinateDao()
-                            .getCoordRoutePath(iterator, RoomTypePath.RETURN.toString())
-
-                        val lat = datosSeleccionRuta[datosSeleccionRuta.size - 1].latitude
-                        val lng = datosSeleccionRuta[datosSeleccionRuta.size - 1].longitude
-
-                        agregarMarcador(
-                            LatLng(lat, lng),
-                            R.drawable.ic_parqueadero,
-                            "Parqueadero Ruta $iterator"
-                        )
-                    }
-                }
-            }
-
-            //Trazar rutas normalmente
-            else -> {
-                buildRuta.crearRuta(idruta)
+                // Add Markers as route parking points
+                MapFunctionOptions().addParkingPoints(gmap, this)
             }
         }
     }
+
 
     private fun activarGps() {
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -899,6 +867,8 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                     Html.FROM_HTML_MODE_LEGACY
                 )
             }
+
+            val tiempos = Handler(Looper.getMainLooper())
             tiempos.postDelayed({ // terminar o ejecutar tareas despues de cierto tiempo
                 if (PolylinesPrincipal.CreatRuta.rutasCreadas) {
                     binding.failConection.visibility = View.GONE
@@ -945,7 +915,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
     private fun calcularDistancia(sentido: String) {
         val defecto = LatLng(0.0, 0.0)
         if (ubiUser != defecto) {
-            PolylinesPrincipal(contexto, this.gmap).rutaMasCerca(ubiUser, sentido)
+            PolylinesPrincipal(this, this.gmap).rutaMasCerca(ubiUser, sentido)
         } else {
             activarLocalizacion()
         }
@@ -981,14 +951,6 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         }
     }
 
-    private fun agregarMarcador(punto: LatLng, icono: Int, titulo: String): Marker? {
-        //FUNCION AÑADIR MARCADOR AL MAPA
-        val opcionesMarcador = MarkerOptions()
-            .position(punto).icon(BitmapDescriptorFactory.fromResource(icono))
-            .title(titulo)
-
-        return gmap.addMarker(opcionesMarcador)
-    }
 
     fun mostrarIndicacionesCalculadas(hayImpedimento: Boolean) {
         val numeroRuta = Datos.mejorPuntoaInicio[2]
@@ -1032,12 +994,26 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             R.id.reportar -> {
                 UtilidadesMenores().reportar(this, this, opcionActual)
             }
+
             android.R.id.home -> {
                 onBackPressed()
             }
         }
 
         return true
+    }
+
+    private fun setActionBar() {
+        //actionbar
+        setSupportActionBar(binding.toolbarMap)
+
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+        }
+
+        val themeColor = UtilidadesMenores().getColorHambugerIcon()
+        binding.toolbarMap.navigationIcon?.setTint(ContextCompat.getColor(this, themeColor))
+
     }
 
     override fun onResume() {
@@ -1057,16 +1033,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
     override fun onDestroy() {
         super.onDestroy()
-
-        //liberar memoria del mapa
         fragmentMap.onDestroy()
-
         println("Fragmento mapa fue liberado-finalizado")
-
-        //desregistrar listener de la conexion a internet
-        val connectivityManager =
-            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        connectivityManager.unregisterNetworkCallback(networkCallback)
-        println("Escucha a internet (Pant Mapa) desactivado-finalizado")
     }
 }

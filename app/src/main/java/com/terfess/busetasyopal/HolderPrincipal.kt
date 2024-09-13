@@ -9,9 +9,11 @@ import android.text.Html.FROM_HTML_MODE_LEGACY
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.terfess.busetasyopal.actividades.Mapa
+import com.terfess.busetasyopal.clases_utiles.MapFunctionOptions
 import com.terfess.busetasyopal.clases_utiles.RangoHorarios
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.FormatoRecyclerPrincBinding
+import com.terfess.busetasyopal.enums.MapRouteOption
 import com.terfess.busetasyopal.enums.RoomPeriod
 import com.terfess.busetasyopal.room.AppDatabase
 import kotlinx.coroutines.CoroutineScope
@@ -203,16 +205,17 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
         binding.numRuta.text = ruta
 
 
-        //el usuario selecciona una de las rutas
+        // On user selected a item route
         binding.contenedor.setOnClickListener {
             CoroutineScope(Dispatchers.Default).launch {
                 val intent = Intent(binding.contenedor.context, Mapa::class.java)
-                intent.putExtra("selector", dato)
+                val typeMapOption = MapRouteOption.SIMPLE_ROUTE.toString()
+
+                intent.putExtra("type_option", typeMapOption)
+                intent.putExtra("num_route", dato)
+
                 caja.startActivity(intent)
             }
-
-            //mensaje "cargando mapa" importante en primera vez usando la aplicacion
-            UtilidadesMenores().crearToast(binding.contenedor.context, "Cargando Mapa")
         }
     }
 

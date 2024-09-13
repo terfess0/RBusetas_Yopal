@@ -33,13 +33,13 @@ class Splash : AppCompatActivity() {
     private var firebaseInstance = FirebaseDatabase.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        //recuperar el tema guardado en shared preferences
-        UtilidadesMenores().applySavedNightMode(this)
-        val roomDB by lazy { AppDatabase.getDatabase(this) }
-
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.pant_splash)
+
+        //recuperar el tema guardado en shared preferences
+        UtilidadesMenores().applySavedNightMode(this)
+        val roomDB by lazy { AppDatabase.getDatabase(this) }
 
         //splash
         splashScreen.setKeepOnScreenCondition{ false }
