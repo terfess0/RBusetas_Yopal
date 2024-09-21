@@ -64,7 +64,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 
     //firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.2.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.3.0"))
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-database-ktx")
     implementation("com.google.firebase:firebase-auth:23.0.0")
@@ -82,8 +82,8 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.1")
 
     //mvvm
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.5")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.5")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.6")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.6")
 
     implementation("com.google.android.material:material:1.12.0") //alert
 

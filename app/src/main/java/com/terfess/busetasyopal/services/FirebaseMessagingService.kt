@@ -11,7 +11,6 @@ import androidx.core.app.NotificationManagerCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.terfess.busetasyopal.R
-import com.terfess.busetasyopal.actividades.RutasSeccion
 import com.terfess.busetasyopal.actividades.Splash
 import java.util.UUID
 

@@ -178,11 +178,9 @@ class Splash : AppCompatActivity() {
         DatosDeFirebase().descargarInformacion(contexto, object : allDatosRutas {
             override fun todosDatosRecibidos() {
                 UtilidadesMenores().crearToast(this@Splash, "Información De Rutas Descargada")
+                tiempo.removeCallbacksAndMessages(null)
 
                 FirebaseDatabase.getInstance().goOffline()
-                FirebaseDatabase.getInstance().goOnline()
-
-                tiempo.removeCallbacksAndMessages(null)
 
                 startActivity(intentToRutasSeccion)
                 finish()

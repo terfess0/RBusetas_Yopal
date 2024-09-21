@@ -8,8 +8,7 @@ import android.text.Html
 import android.text.Html.FROM_HTML_MODE_LEGACY
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.terfess.busetasyopal.actividades.Mapa
-import com.terfess.busetasyopal.clases_utiles.MapFunctionOptions
+import com.terfess.busetasyopal.actividades.mapa.view.Mapa
 import com.terfess.busetasyopal.clases_utiles.RangoHorarios
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.FormatoRecyclerPrincBinding

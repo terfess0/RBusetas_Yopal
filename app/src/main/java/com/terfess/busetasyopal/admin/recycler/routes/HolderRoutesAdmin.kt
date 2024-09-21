@@ -41,9 +41,9 @@ class HolderRoutesAdmin(vista: View) : RecyclerView.ViewHolder(vista) {
 
             val frecuenciaRuta = DatoFrecuencia(
                 dato.numRuta[0],
-                dato.frecuenciaLunVie ?: defaultValue,
-                dato.frecuenciaSab ?: defaultValue,
-                dato.frecuenciaDomFest ?: defaultValue
+                dato.frecuenciaLunVie,
+                dato.frecuenciaSab,
+                dato.frecuenciaDomFest
             )
 
 

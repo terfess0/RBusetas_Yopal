@@ -36,6 +36,7 @@ import com.google.firebase.database.ValueEventListener
 import com.terfess.busetasyopal.FiltroAdapterHolder
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.AdapterPrincipal
+import com.terfess.busetasyopal.actividades.mapa.view.Mapa
 import com.terfess.busetasyopal.clases_utiles.AlertaCallback
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.PantPrincipalBinding
@@ -70,6 +71,8 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback,
         super.onCreate(savedInstanceState)
         binding = PantPrincipalBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        FirebaseDatabase.getInstance().goOnline()
 
         //firebase
         db =
@@ -147,22 +150,22 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback,
         //cabezera -- precio
         val ref0 = firebaseInstance.getReference(getString(R.string.ruta_firebase_price_nube))
 
-            ref0.addListenerForSingleValueEvent (object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    precio = snapshot.value.toString()
-                    binding.precio.text = precio
+        ref0.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                precio = snapshot.value.toString()
+                binding.precio.text = precio
 
-                    ref0.removeEventListener(this)
-                }
+                ref0.removeEventListener(this)
+            }
 
-                override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(
-                        binding.root.context,
-                        "El precio no se pudo recibir desde internet",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(
+                    binding.root.context,
+                    "El precio no se pudo recibir desde internet",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
 
 
         //mensajes controlados en vivo base datos
@@ -174,37 +177,37 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback,
         //contenido mensajes ->
         val ref = firebaseInstance.getReference("/features/0/mensajes")
 
-            ref.addListenerForSingleValueEvent (object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    // Obtener los valores de la base de datos
-                    val mensaje1 = snapshot.child("mensaje1").value?.toString()
-                    val mensaje2 = snapshot.child("mensaje2").value?.toString()
-                    val mensaje3 = snapshot.child("mensaje3").value?.toString()
+        ref.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                // Obtener los valores de la base de datos
+                val mensaje1 = snapshot.child("mensaje1").value?.toString()
+                val mensaje2 = snapshot.child("mensaje2").value?.toString()
+                val mensaje3 = snapshot.child("mensaje3").value?.toString()
 
-                    // Establecer el texto de los elementos
-                    msj1.text = mensaje1
-                    msj2.text = mensaje2
-                    msj3.text = mensaje3
+                // Establecer el texto de los elementos
+                msj1.text = mensaje1
+                msj2.text = mensaje2
+                msj3.text = mensaje3
 
-                    // Mostrar u ocultar los elementos según los valores obtenidos
-                    msj1.visibility =
-                        if (mensaje1 != "" && mensaje1 != null) View.VISIBLE else View.GONE
-                    msj2.visibility =
-                        if (mensaje2 != "" && mensaje2 != null) View.VISIBLE else View.GONE
-                    msj3.visibility =
-                        if (mensaje3 != "" && mensaje3 != null) View.VISIBLE else View.GONE
+                // Mostrar u ocultar los elementos según los valores obtenidos
+                msj1.visibility =
+                    if (mensaje1 != "" && mensaje1 != null) View.VISIBLE else View.GONE
+                msj2.visibility =
+                    if (mensaje2 != "" && mensaje2 != null) View.VISIBLE else View.GONE
+                msj3.visibility =
+                    if (mensaje3 != "" && mensaje3 != null) View.VISIBLE else View.GONE
 
-                    ref.removeEventListener(this)
-                }
+                ref.removeEventListener(this)
+            }
 
-                override fun onCancelled(error: DatabaseError) {
-                    Toast.makeText(
-                        binding.root.context,
-                        "Mensajes en vivo no se pudo recibir desde internet",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            })
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(
+                    binding.root.context,
+                    "Mensajes en vivo no se pudo recibir desde internet",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        })
 
         //termina mensajes en vivo-------------------------------------------------
 
@@ -502,7 +505,7 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback,
     }
 
 
-    private suspend fun toggleNightModeWithAnim(){
+    private suspend fun toggleNightModeWithAnim() {
 
         val menuItem = binding.toggleTheme
         val rotation = AnimationUtils.loadAnimation(this, R.anim.rotate)

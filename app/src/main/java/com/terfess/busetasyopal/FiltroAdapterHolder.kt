@@ -11,8 +11,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.terfess.busetasyopal.actividades.Mapa
+import com.terfess.busetasyopal.actividades.mapa.view.Mapa
 import com.terfess.busetasyopal.databinding.FormatoRecyclerPrincBinding
+import com.terfess.busetasyopal.enums.MapRouteOption
 import com.terfess.busetasyopal.modelos_dato.DatosPrimariosRuta
 
 class FiltroAdapterHolder(var textoFiltro: String) :
@@ -39,9 +40,12 @@ class FiltroAdapterHolder(var textoFiltro: String) :
 
             //el usuario selecciona una de las rutas
             binding.contenedor.setOnClickListener {
-                val selector = idRuta
+                val idr = idRuta
                 val intent = Intent(binding.contenedor.context, Mapa::class.java)
-                intent.putExtra("selector", selector)
+                val typeMapOption = MapRouteOption.SIMPLE_ROUTE.toString()
+
+                intent.putExtra("type_option", typeMapOption)
+                intent.putExtra("num_route", idr)
                 binding.root.context.startActivity(intent)
             }
         }

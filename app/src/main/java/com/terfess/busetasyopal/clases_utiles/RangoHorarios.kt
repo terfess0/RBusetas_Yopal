@@ -67,7 +67,6 @@ class RangoHorarios {
         val horaFinalTipoLT = LocalTime.parse(horaInicio)
         val horaComp = horaFinalTipoLT.plusHours(12)
 
-        println("$horaComp en funcion afterEndHour")
         //comprueba si la hora actual está dentro del rango
         // LT es LocalTime
         return horaActual.isAfter(horaComp)
