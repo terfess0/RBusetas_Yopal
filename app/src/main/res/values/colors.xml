@@ -7,8 +7,8 @@
     <color name="black">#000000</color>
 
     <!--<color name="enfasis_azul">#143FAC</color>-->
-    <color name="enfasis_azul">#E107488E</color>
-    <color name="enfasis_complement">#143FAC</color>
+    <color name="enfasis_azul">#143FAC</color>
+    <color name="enfasis_complement">#F5188BC1</color>
     <color name="anuncioGrave">#B80000</color>
     <color name="anuncioLeve">#5A4F27</color>
 
@@ -17,7 +17,7 @@
     <color name="RutaEnServicio">#D54CEA09</color>
     <color name="RutaFueraServicio">#2C2E2B</color>
 
-    <color name="RutaCalculada">#903E92</color>
+    <color name="RutaCalculada">#CBD17019</color>
 
     <color name="btn_op_mapa">#B97E9ACA</color>
     <color name="ida_venida_op_mapa">#7C776E6E</color>
