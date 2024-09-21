@@ -7,17 +7,13 @@ import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.TypedValue
-import android.view.MenuItem
 import android.view.View
-import android.view.animation.AnimationUtils
 import android.widget.CheckBox
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.app.ActivityCompat.recreate
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.BaseTransientBottomBar
@@ -32,7 +28,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.terfess.busetasyopal.R
-import com.terfess.busetasyopal.actividades.Mapa
+import com.terfess.busetasyopal.actividades.mapa.view.Mapa
 import com.terfess.busetasyopal.enums.FirebaseEnums
 import com.terfess.busetasyopal.room.model.Coordinate
 import kotlinx.coroutines.CoroutineScope
@@ -214,7 +210,7 @@ class UtilidadesMenores {
     }
 
     fun reportar(context: Context, instanciaMapa: Mapa? = null, opcion_actual: String) {
-        var ubiUser = Mapa.ubiUser ?: LatLng(0.0, 0.0)
+        var ubiUser = Mapa.ubiUser //ubicacion del usuario
         val builder = AlertDialog.Builder(context, R.style.AlertDialogTheme)
 
         //set titulo, descripcion y icono
@@ -235,15 +231,17 @@ class UtilidadesMenores {
         input.maxEms = 5
         input.setHintTextColor(Color.GRAY)
 
+        // Agregar un CheckBox para permitir al usuario elegir si desea enviar la ubicación
+        val checkBox = CheckBox(context)
+        checkBox.setTextColor(Color.GRAY)
+        checkBox.text = context.getString(R.string.option_add_ubi_to_report)
+
         if (isNightMode()) {
             input.setTextColor(Color.WHITE)
+            checkBox.setTextColor(Color.WHITE)
         }
 
         layout.addView(input)
-
-        // Agregar un CheckBox para permitir al usuario elegir si desea enviar la ubicación
-        val checkBox = CheckBox(context)
-        checkBox.text = context.getString(R.string.option_add_ubi_to_report)
 
         if (instanciaMapa != null) { // Verificar si se proporcionó una instancia del mapa
             layout.addView(checkBox)
@@ -285,7 +283,7 @@ class UtilidadesMenores {
                         if (checkBox.isChecked && (ubiUser.latitude == 0.0 && ubiUser.longitude == 0.0)) {
 
                             withContext(Dispatchers.Main) {
-                                instanciaMapa?.activarLocalizacion()
+                                instanciaMapa?.requestLocationPermission()
                             }
 
                             var contador = 0
@@ -439,7 +437,7 @@ class UtilidadesMenores {
         dialog.show()
     }
 
-    fun toggleNightMode(context: Context){
+    fun toggleNightMode(context: Context) {
         val sharedPreferences =
             context.getSharedPreferences(
                 context.getString(R.string.nombre_shared_preferences),
@@ -463,4 +461,27 @@ class UtilidadesMenores {
         editor.apply()
     }
 
+    fun colorRandom(): Int {
+        val numero = (0..3).random()
+        var color = 0
+        when (numero) {
+            0 -> color = R.color.rojo
+            1 -> color = R.color.verde
+            2 -> color = R.color.azul
+            3 -> color = R.color.amarillo
+        }
+        return color
+    }
+
+    fun getScreenPercentDp(
+        context: Context,
+        percent: Double
+    ): Int {
+        // Get screen height
+        val displayMetrics = context.resources.displayMetrics
+        val screenHeight = displayMetrics.heightPixels
+
+        // Calculate percent height
+        return (screenHeight * percent).toInt()
+    }
 }
