@@ -20,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
+            android:baselineAligned="false"
             android:orientation="horizontal">
 
             <LinearLayout
@@ -95,6 +96,7 @@
                     android:id="@+id/btn_delete_report"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:contentDescription="@string/borrar_reporte_admin"
                     android:layout_gravity="center_vertical"
                     android:background="@color/transparente"
                     android:src="@android:drawable/ic_menu_delete" />

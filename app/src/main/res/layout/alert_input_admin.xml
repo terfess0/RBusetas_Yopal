@@ -40,8 +40,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_alert"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="adsasd"/>
+                    android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -51,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
                 android:backgroundTint="?attr/colorPrimary"
-                android:text="aceptar"
+                android:text="@string/accept"
                 android:textColor="?attr/titleTextColor"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

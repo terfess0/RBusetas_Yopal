@@ -36,10 +36,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:trackTint="@color/rojo"
             android:background="@color/transparente"
             android:text="@string/text_switch_enable"
             android:textColor="?attr/titleTextColor"
+            android:trackTint="@color/rojo"
             tools:ignore="UseSwitchCompatOrMaterialXml" />
 
         <ImageButton
@@ -49,6 +49,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="@color/transparente"
+            android:contentDescription="@string/guardar_cambios_en_la_ruta"
             android:src="@drawable/ic_send_24" />
     </LinearLayout>
 
@@ -59,7 +60,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-
         android:gravity="center"
         android:textColor="?attr/titleTextColor"
         android:textSize="16sp"
@@ -77,7 +77,8 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:background="#00FFFFFF"
-
+        android:hint="@string/sitios_simples_de_la_ruta"
+        android:inputType="text"
         android:text="@string/textview"
         android:textColor="?attr/titleTextColor"
         android:textSize="14sp"
@@ -118,7 +119,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="4dp"
-
+                android:hint="00:00"
                 android:textColor="?attr/colorPrimaryDark"
                 android:textSize="11sp" />
 
@@ -127,7 +128,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="4dp"
-
+                android:hint="00:00"
                 android:textColor="?attr/colorPrimaryDark"
                 android:textSize="11sp" />
 
@@ -153,7 +154,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="4dp"
-
+                android:hint="00:00"
                 android:textColor="?attr/colorPrimaryDark"
                 android:textSize="11sp" />
 
@@ -162,7 +163,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="4dp"
-
+                android:hint="00:00"
                 android:textColor="?attr/colorPrimaryDark"
                 android:textSize="11sp" />
 
@@ -188,7 +189,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="4dp"
-
+                android:hint="00:00"
                 android:textColor="?attr/colorPrimaryDark"
                 android:textSize="11sp" />
 
@@ -197,7 +198,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="4dp"
-
+                android:hint="00:00"
                 android:textColor="?attr/colorPrimaryDark"
                 android:textSize="11sp" />
 
@@ -235,7 +236,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="4dp"
-
+                android:hint="@string/frecuencia"
                 android:textColor="?attr/colorPrimaryDark"
                 android:textSize="11sp" />
         </LinearLayout>
@@ -260,7 +261,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="4dp"
-
+                android:hint="@string/frecuencia"
                 android:textColor="?attr/colorPrimaryDark"
                 android:textSize="11sp" />
         </LinearLayout>
@@ -285,7 +286,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="4dp"
-
+                android:hint="@string/frecuencia"
                 android:textColor="?attr/colorPrimaryDark"
                 android:textSize="11sp" />
         </LinearLayout>
@@ -297,7 +298,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/enfasis_azul"
         android:drawableEnd="@drawable/ic_route"
-        android:text="Mapa"
+        android:text="@string/mapa"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

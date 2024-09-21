@@ -21,7 +21,7 @@
 #-renamesourcefileattribute SourceFile
 
 -keep class com.terfess.busetasyopal.modelos_dato.*
--keep class com.terfess.busetasyopal.room.DatosASqliteLocal
+-keep class com.terfess.busetasyopal.room.AppDatabase
 
 -dontwarn io.grpc.internal.DnsNameResolverProvider
 -dontwarn io.grpc.internal.PickFirstLoadBalancerProvider

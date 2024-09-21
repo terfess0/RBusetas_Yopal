@@ -52,7 +52,7 @@
         app:layout_constraintTop_toBottomOf="@id/firstBarrier">
 
 
-        <fragment
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/mapAdm"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
@@ -87,7 +87,7 @@
                     android:layout_weight="2"
                     android:backgroundTint="@color/enfasis_azul"
                     android:padding="5dp"
-                    android:text="Eliminar"
+                    android:text="@string/eliminar"
                     android:textColor="@color/white" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -99,7 +99,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
         android:layout_marginBottom="15dp"
-        android:orientation="horizontal"
+        android:baselineAligned="false" android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">

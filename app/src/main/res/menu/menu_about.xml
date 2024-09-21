@@ -4,6 +4,6 @@
     <item
         android:id="@+id/panelAdmin"
         android:icon="@drawable/ic_panel_admin"
-        android:title="Panel de administrador"
+        android:title="@string/panel_de_administrador"
         app:showAsAction="ifRoom" />
 </menu>

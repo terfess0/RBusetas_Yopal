@@ -129,13 +129,37 @@
     <string name="guardar_posici_n">Guardar Posición</string>
     <string name="usar_mi_posici_n_gps">Usar mi Posición GPS</string>
     <string name="info_no_se_pudo_generar_el_recorrido">Info: No se pudo generar el recorrido.</string>
-    <string name="nposibles_razones_n_no_hay_rutas_cerca_de_partida_menos_200_metros">\nPosibles razones: \n- No hay rutas cerca de partida (menos 200 metros).</string>
+    <string name="no_hay_rutas_cerca">\nPosibles razones: \n- No hay rutas cerca del punto de partida (menos de 500 metros).</string>
     <string name="para_ver_mi_posicion_gps">Para ver mi posicion GPS</string>
     <string name="ajustar_el_mapa">Ajustar el mapa</string>
     <string name="tog_lista_de_rutas">Tog lista de rutas</string>
     <string name="los_puntos_rojos_son_parqueaderos_toca_cualquiera_de_ellos_para_saber_a_que_ruta_pertenecen">Los puntos rojos son parqueaderos, toca cualquiera de ellos para saber a que ruta pertenecen.</string>
     <string name="calcular_viaje_inicio_destino">Calcular viaje Inicio - Destino</string>
     <string name="compara_cualquier_recorrido_de_las_rutas_habilitadas_con_tu_posici_n_en_el_mapa_presiona_el_boton_gps_elige_ver_ruta_y_aleja_el_mapa">Compara cualquier recorrido de las rutas habilitadas con tu posición en el mapa, presiona el boton gps, elige \'VER RUTA\' y aleja el mapa.</string>
+    <string name="calculando">Calculando</string>
+    <string name="paso_1">Paso 1</string>
+    <string name="paso_3">Paso 3</string>
+    <string name="paso_2">Paso 2</string>
+    <string name="paso_5">Paso 5</string>
+    <string name="paso_4">Paso 4</string>
+    <string name="paso_6">Paso 6</string>
+    <string name="rutas_calculadas">RUTAS CALCULADAS</string>
+    <string name="ver_o_ocultar_lista_rutas_calculadas">Ver o ocultar lista rutas calculadas</string>
+    <string name="borrar_reporte_admin">Borrar reporte admin</string>
+    <string name="guardar_cambios_en_la_ruta">Guardar cambios en la ruta</string>
+    <string name="icono_baja_de_la_ruta">Icono baja de la ruta</string>
+    <string name="icono_toma_la_ruta">Icono toma la ruta</string>
+    <string name="punto_destino">Punto destino</string>
+    <string name="camina_al_destino">Camina al destino</string>
+    <string name="sitios_simples_de_la_ruta">Sitios simples de la ruta</string>
+    <string name="administrador">ADMINISTRADOR</string>
+    <string name="email">Email</string>
+    <string name="contrase_a">Contraseña</string>
+    <string name="sign_in">Sign in</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="mapa">Mapa</string>
+    <string name="panel_de_administrador">Panel de administrador</string>
+    <string name="decorative_icon">Decorative Icon</string>
 
 </resources>
 

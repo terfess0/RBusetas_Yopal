@@ -5,6 +5,6 @@
         android:id="@+id/reportar"
         android:icon="@drawable/ic_reportar"
         app:showAsAction="ifRoom"
-        android:title="Reportar Novedad" />
+        android:title="@string/reportar_novedad" />
 
 </menu>

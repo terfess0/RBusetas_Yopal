@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
     android:background="@drawable/bord_suave"
-    android:backgroundTint="?attr/colorPrimary"
+    android:backgroundTint="?attr/colorBackgroundFloating"
     android:paddingHorizontal="8dp"
     android:paddingVertical="5dp">
 
