@@ -3,7 +3,7 @@
         <item name="elevation">1dp</item>
         <item name="colorPrimary">#14171A</item>
         <item name="colorPrimaryDark">#CCCCCC</item>
-        <item name="titleTextColor">#FFFFFF</item>
+        <item name="titleTextColor">#CCCCCC</item>
         <item name="colorBackgroundFloating">#1E2A38</item>
         <item name="colorAccent">?attr/colorPrimaryDark</item>
         <item name="fontFamily">sans-serif-condensed</item>
@@ -26,13 +26,13 @@
         <item name="duration">10</item>
     </style>
 
-    <style name="Theme.BotonSheet" parent="Theme.Design.BottomSheetDialog">
+    <style name="Theme.BottomSheetTheme" parent="Theme.Design.BottomSheetDialog">
         <item name="elevation">2dp</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackground">@android:color/transparent</item>
-        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
         <item name="fontFamily">sans-serif-condensed</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:backgroundDimAmount">0.0</item> <!-- Ajusta según sea necesario -->
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item> <!-- Ajusta según sea necesario -->
     </style>
 </resources>
