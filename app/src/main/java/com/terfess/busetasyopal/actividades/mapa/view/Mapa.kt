@@ -1,6 +1,7 @@
-package com.terfess.busetasyopal.actividades
+package com.terfess.busetasyopal.actividades.mapa.view
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
@@ -18,55 +19,61 @@ import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Granularity
+import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationListener
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.location.Priority
 import com.google.android.gms.location.SettingsClient
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.Circle
-import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.terfess.busetasyopal.OpMapaAdapterHolder
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.clases_utiles.AlertaCallback
-import com.terfess.busetasyopal.clases_utiles.MapFunctionOptions
-import com.terfess.busetasyopal.clases_utiles.PlanearRutaDestino
-import com.terfess.busetasyopal.clases_utiles.PlanearRutaDestino.Datos
+import com.terfess.busetasyopal.actividades.mapa.functions.MapFunctionOptions
+import com.terfess.busetasyopal.actividades.mapa.functions.calculate_route.CalculateRoute
+import com.terfess.busetasyopal.actividades.mapa.functions.calculate_route.adapterholder.AdapterHolderCalculates
+import com.terfess.busetasyopal.actividades.mapa.viewmodel.ViewModelMapa
 import com.terfess.busetasyopal.clases_utiles.PolylinesPrincipal
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.PantMapaBinding
 import com.terfess.busetasyopal.enums.MapRouteOption
+import com.terfess.busetasyopal.enums.RoomTypePath
 import com.terfess.busetasyopal.enums.UserTask
 import com.terfess.busetasyopal.enums.getRouteOnTask
 import com.terfess.busetasyopal.modelos_dato.DatoOpMapa
 import com.terfess.busetasyopal.room.AppDatabase
+import com.terfess.busetasyopal.room.model.Coordinate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCallback {
@@ -77,19 +84,24 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
     private var idruta: Int = 0
     private lateinit var typeOptMap: MapRouteOption
 
-    private var puntoProvisionalGps: Circle? = null
+    private var walkData: CalculateRoute.WalkRoute? = null
+
     private lateinit var marcador: Marker
     private lateinit var mAdView: AdView //anuncios
     private lateinit var tareaActual: String //que esta haciendo el mapa?
 
     private lateinit var fragmentMap: SupportMapFragment
+    private var functionsInstance = MapFunctionOptions()
 
+    private var contador = 0
+    private val viewModel: ViewModelMapa by viewModels()
+
+    private var hayConexion = true
 
     companion object { //accesibles desde cualquier lugar de este archivo/clase y proyectos
         const val codigoLocalizacion = 0
         var ubiUser = LatLng(0.0, 0.0)
-        var hayConexion = true
-        var contador = 0
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,52 +109,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         binding = PantMapaBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        //mapa
-        fragmentMap = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-        fragmentMap.getMapAsync(this)
-
-        cargarAnuncios()
-
         setActionBar()
-
-
-        //..
-
-        /*//lugares/places api   //HAY QUE PAGAR EN CLOUD POR ESO SE DESACTIVARA PLACES
-        if (!Places.isInitialized()) {
-            Places.initialize(applicationContext, getString(R.string.key_mapa))
-
-        }
-        val clienteLugares = Places.createClient(this)
-        val autocompleteFragment =
-            supportFragmentManager.findFragmentById(R.id.autocomplete) as AutocompleteSupportFragment
-        autocompleteFragment.setCountries("CO")
-        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME))//especificar tipo de los datos a recibir
-        autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
-            override fun onPlaceSelected(place: Place) {
-                Log.i(TAG, "Place: ${place.name}, ${place.id}")
-            }
-            override fun onError(status: Status) {
-                Log.i(TAG, "An error occurred: $status")
-            }
-        })*/
-
-//        //api autocomplete openstreetmap
-//        val autoCompleteTextView = findViewById<AutoCompleteTextView>(R.id.autocompleteTextView)
-//        val addressAutocomplete = AddressAutocomplete(autoCompleteTextView, this)
-//
-//        // Configurar el TextWatcher para activar la búsqueda de sugerencias de direcciones cuando el texto cambia
-//        autoCompleteTextView.addTextChangedListener(object : TextWatcher {
-//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-//
-//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-//
-//            override fun afterTextChanged(s: Editable?) {
-//                // Iniciar la búsqueda de sugerencias de direcciones cuando el texto cambia
-//                addressAutocomplete.start()
-//            }
-//        })
-
 
         //seleccion ruta
         intent.extras.let {
@@ -156,9 +123,6 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             }
         }
 
-
-        //ubicacion del gps
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         //colores en leyenda informativa
         val infoSalida = "<font color='${getColor(R.color.recorridoIda)}' >Azul</font>"
@@ -186,25 +150,30 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             }
         }
         connectivityManager.registerDefaultNetworkCallback(networkCallback)
+    }
 
-        //inicializar arrays que se usaran para calcular rutas
-//        Datos.mejorPuntoaInicio[0] = -1 // inicializa el índice de la estación más cercana en -1
-//        Datos.mejorPuntoaInicio[1] = Int.MAX_VALUE // inicializa la distancia con un valor alto
-//
-//        Datos.mejorPuntoaDestino[0] = -1
-//        Datos.mejorPuntoaDestino[1] = Int.MAX_VALUE
-        //-----------------------------------------------------
+    override fun onStart() {
+        super.onStart()
+        //mapa
+        fragmentMap = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        fragmentMap.getMapAsync(this)
 
+        cargarAnuncios()
 
+        //ubicacion del gps
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
 
     override fun onMapReady(mapa: GoogleMap) {
         gmap = mapa
 
+        gmap.uiSettings.setAllGesturesEnabled(false)
+
         // Progressbar while map loading
         gmap.setOnMapLoadedCallback {
             binding.loadingMapa.visibility = View.GONE
+            gmap.uiSettings.setAllGesturesEnabled(true)
         }
 
         mapa.mapType =
@@ -217,10 +186,9 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
         selector()  //seleccionar que ruta cargar
 
-
         //pedir/comprobar permiso ubicacion y gps On
         binding.irgps.setOnClickListener {
-            activarLocalizacion()
+            requestLocationPermission()
         }
 
         //-------------------------------------------------------------------------------
@@ -235,22 +203,46 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             PolylinesPrincipal.CreatRuta.estamarcado1 = false //evitar dobles marcadores de estacion
             PolylinesPrincipal.CreatRuta.estamarcado2 = false //evitar dobles marcadores de estacion
         }
+
         binding.sentidoSubida.setOnClickListener {
             if (binding.infoColor.isVisible) {
                 binding.infoColor.visibility = View.GONE //ocultar leyenda al ver distancia
             }
             if (PolylinesPrincipal.CreatRuta.estamarcado1 == false) {
-                calcularDistancia("salida")
-                mostrarIndicaciones()
+
+                val dbRoom = AppDatabase.getDatabase(this)
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    val ptsSentido = dbRoom.coordinateDao()
+                        .getCoordRoutePath(
+                            idruta,
+                            RoomTypePath.DEPARTURE.toString()
+                        )
+
+                    withContext(Dispatchers.Main) {
+                        calcularDistancia(RoomTypePath.DEPARTURE, ptsSentido)
+                    }
+                }
             }
         }
+
         binding.sentidoLlegada.setOnClickListener {
             if (binding.infoColor.isVisible) {
                 binding.infoColor.visibility = View.GONE //ocultar leyenda al ver distancia
             }
             if (PolylinesPrincipal.CreatRuta.estamarcado2 == false) {
-                calcularDistancia("llegada")
-                mostrarIndicaciones()
+                val dbRoom = AppDatabase.getDatabase(this)
+                CoroutineScope(Dispatchers.IO).launch {
+                    val ptsSentido = dbRoom.coordinateDao()
+                        .getCoordRoutePath(
+                            idruta,
+                            RoomTypePath.RETURN.toString()
+                        )
+
+                    withContext(Dispatchers.Main) {
+                        calcularDistancia(RoomTypePath.RETURN, ptsSentido)
+                    }
+                }
             }
         }
 
@@ -263,8 +255,10 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 binding.ajustes.visibility = View.GONE
                 binding.irgps.visibility = View.GONE
                 binding.listaRutasOpMapa.visibility = View.GONE
+                binding.containBtnCalculates.visibility = View.GONE
             }
         }
+
         binding.opcionesTipoMapa.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -296,13 +290,17 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                     gmap.mapType =
                         GoogleMap.MAP_TYPE_HYBRID //en caso de no haber seleccion se dejara el por defecto (hibrido)
                 }
-
             }
+
         binding.guardarAjustes.setOnClickListener {//cerrar ventana de ajustes
             binding.configuraciones.visibility = View.GONE
             binding.ajustes.visibility = View.VISIBLE
-            if (idruta == 20) binding.listaRutasOpMapa.visibility = View.VISIBLE
-            if (idruta != 0) binding.irgps.visibility = View.VISIBLE
+
+            if (typeOptMap == MapRouteOption.ALL_ROUTES) binding.listaRutasOpMapa.visibility = View.VISIBLE
+
+            if (typeOptMap == MapRouteOption.CALCULATE_ROUTE_USER) binding.containBtnCalculates.visibility = View.VISIBLE
+
+            binding.irgps.visibility = View.VISIBLE
         }
 
     }
@@ -330,7 +328,6 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
                 // Show/Hide elements
                 binding.infoColor.visibility = View.GONE
-                binding.textPruebas.visibility = View.VISIBLE
 
 
                 var ubiInicio = LatLng(0.0, 0.0)
@@ -340,34 +337,30 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 binding.posDestino.visibility = View.VISIBLE
 
                 //ocultar boton gps y leyenda
-                binding.irgps.visibility = View.GONE
                 binding.infoColor.visibility = View.GONE
 
+                alertDialogCalculate()
 
                 binding.posInicio.setOnClickListener {
                     UtilidadesMenores().crearToast(this, "Arrastra la pantalla")
                     binding.posInicio.isClickable =
                         false //despues de seleccionado se desactiva el boton
 
-                    Datos.mejorPuntoaInicio[0] =
-                        -1 // inicializa el índice de la estación más cercana en -1
-                    Datos.mejorPuntoaInicio[1] =
-                        Int.MAX_VALUE // inicializa la distancia con un valor alto
-                    Datos.mejorPuntoaInicio[2] = -1
-
                     //marcador en el centro de la pantalla - apuntador para definir ubicacion---------------------
-                    val centerMarker = MarkerOptions()
-                    centerMarker.position(
+                    val centerMarker = functionsInstance.getOptionsMarker(
                         LatLng(
                             5.329894555473376,
                             -72.40242298156761
-                        )
-                    ) //misma ubicacion inicial de la camara
+                        ),
+                        null,
+                        "Seleccionar Inicio"
+                    )
                     marcador = gmap.addMarker(centerMarker)!!
 
                     //mostrar botones setubi y setubigps
                     binding.setUbicacion.visibility = View.VISIBLE
                     binding.setUbiGps.visibility = View.VISIBLE
+
                     gmap.setOnCameraMoveListener { //listener que permite que el marcador se mueva de acuerdo al movimiento de la camara del mapa
                         marcador.position = gmap.cameraPosition.target
                     }
@@ -377,16 +370,15 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                         binding.setUbicacion.visibility = View.GONE
                         binding.setUbiGps.visibility = View.GONE
 
-                        ubiInicio = LatLng(
-                            marcador.position.latitude,
-                            marcador.position.longitude
-                        ) //guardar ubicacion
+                        ubiInicio = marcador.position
 
-                        gmap.addMarker(
-                            MarkerOptions().position(ubiInicio).title("Punto de Partida").icon(
-                                BitmapDescriptorFactory.fromResource(R.drawable.ic_salida)
-                            )
-                        ) //representar la ubicacion guardada con un marcador con icono personalizado
+                        val ptoMarker = functionsInstance.getOptionsMarker(
+                            ubiInicio,
+                            R.drawable.ic_salida,
+                            "Punto de Partida"
+                        )
+
+                        gmap.addMarker(ptoMarker) //representar la ubicacion guardada con un marcador con icono personalizado
 
                         binding.posInicio.setCompoundDrawablesWithIntrinsicBounds(
                             0,
@@ -400,15 +392,19 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
                         // si las dos ubicaciones han sido obtenidas (inicio - destino) comenzara a calcularse la ruta
                         if (ubiInicio != LatLng(0.0, 0.0) && ubiDestino != LatLng(0.0, 0.0)) {
-                            PlanearRutaDestino(this, gmap).rutaToDestino(
-                                ubiInicio,
-                                ubiDestino,
-                                this
-                            )
-                            binding.infoColor.visibility = View.VISIBLE
+                            CoroutineScope(Dispatchers.IO).launch {
+                                viewModel.calculateRoute(
+                                    ubiInicio,
+                                    ubiDestino,
+                                    context = this@Mapa
+                                )
+                            }
+
+                            binding.progressCalculando.visibility = View.VISIBLE
+                            binding.infoColor.visibility = View.GONE
 
                             //si la distancia hasta el punto salida es menor a 200 m mostrar indicaciones calculadas
-                            mostrarIndicacionesCalculadas(false)
+//                            mostrarIndicacionesCalculadas(false)
 
                             //cambiar iconos de ubicacion inicio y fin en boton por checks verdes
                             binding.posInicio.setCompoundDrawablesWithIntrinsicBounds(
@@ -431,8 +427,8 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                         binding.setUbiGps.visibility = View.GONE
                         UtilidadesMenores().crearToast(this, "Localizando...")
 
-                        activarLocalizacion()
-                        irPosGps()
+                        requestLocationPermission()
+                        getPosGps()
 
                         ubiInicio = ubiUser//guardar ubicacion gps
 
@@ -456,15 +452,18 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
                         // si las dos ubicaciones han sido obtenidas (inicio - destino) comenzara a calcularse la ruta
                         if (ubiInicio != LatLng(0.0, 0.0) && ubiDestino != LatLng(0.0, 0.0)) {
-                            PlanearRutaDestino(this, gmap).rutaToDestino(
-                                ubiInicio,
-                                ubiDestino,
-                                this
-                            )
-                            binding.infoColor.visibility = View.VISIBLE
+                            CoroutineScope(Dispatchers.IO).launch {
+                                viewModel.calculateRoute(
+                                    ubiInicio,
+                                    ubiDestino,
+                                    context = this@Mapa
+                                )
+                            }
+                            binding.progressCalculando.visibility = View.VISIBLE
+                            binding.infoColor.visibility = View.GONE
 
                             //si la distancia hasta el punto salida es menor a 200 m mostrar indicaciones calculadas
-                            mostrarIndicacionesCalculadas(false)
+//                            mostrarIndicacionesCalculadas(false)
 
                             //cambiar iconos de ubicacion inicio y fin en boton por checks verdes
                             binding.posInicio.setCompoundDrawablesWithIntrinsicBounds(
@@ -489,11 +488,6 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                     UtilidadesMenores().crearToast(this, "Arrastra la pantalla")
                     binding.posDestino.isClickable =
                         false //despues de oprimido no se puede presionar de nuevo
-
-                    Datos.mejorPuntoaDestino[0] = -1 //inicializa variable "global" en -1
-                    Datos.mejorPuntoaDestino[1] =
-                        Int.MAX_VALUE // inicializa la distancia con un valor alto
-                    Datos.mejorPuntoaDestino[2] = -1
 
                     //agregar marcador al centro de la pantalla - apuntador para seleccionar ubicacion--------
                     val centerMarker = MarkerOptions()
@@ -532,16 +526,21 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
                         //si las dos ubicaciones (inicio - destino) fueron obtenidas entonces calcule la ruta
                         if (ubiInicio != LatLng(0.0, 0.0) && ubiDestino != LatLng(0.0, 0.0)) {
-                            PlanearRutaDestino(this, gmap).rutaToDestino(
-                                ubiInicio,
-                                ubiDestino,
-                                this
-                            )
+
+                            binding.progressCalculando.visibility = View.VISIBLE
+                            CoroutineScope(Dispatchers.IO).launch {
+                                viewModel.calculateRoute(
+                                    ubiInicio,
+                                    ubiDestino,
+                                    context = this@Mapa
+                                )
+                            }
+
                             binding.infoColor.visibility = View.VISIBLE
 
                             //si la distancia hasta el punto salida es menor a 300 m mostrar indicaciones calculadas
 
-                            mostrarIndicacionesCalculadas(false)
+//                            mostrarIndicacionesCalculadas(false)
 
 
                             //cambiar iconos de ubicacion inicio y fin en boton por checks verdes
@@ -581,13 +580,26 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
 
                 //--------------RECICLERVIEW-------------------------------
-                // Obtener la referencia del layout inflado
-                val listaOpMapa = binding.listaOpMapa
-                val listaViewRutas = binding.espacioMapaUtil
+                // Obtener la referencia del layout bottomsheet inflado
 
-                listaViewRutas.visibility = View.VISIBLE
+                // Crear y configurar el BottomSheetDialog
+                val btnSheetDialog = BottomSheetDialog(this, R.style.Theme_BottomSheetTheme)
+                val btnSheetLayout =
+                    layoutInflater.inflate(R.layout.btn_sheet_list_traces_routes, null, false)
+                btnSheetDialog.setContentView(btnSheetLayout)
 
-                listaOpMapa.visibility = View.VISIBLE
+                // Obtener la vista del BottomSheet
+                val bottomSheet =
+                    btnSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+
+                BottomSheetBehavior.from(bottomSheet!!)
+
+                val height = UtilidadesMenores().getScreenPercentDp(this, 0.30)
+
+                bottomSheet.layoutParams.height = height
+                bottomSheet.requestLayout()
+
+                val listaOpMapa = btnSheetLayout.findViewById<RecyclerView>(R.id.listaOpMapa)
 
                 val dbHelper = AppDatabase.getDatabase(this)
 
@@ -613,12 +625,11 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 listaOpMapa.layoutManager = LinearLayoutManager(this)
                 listaOpMapa.adapter = OpMapaAdapterHolder(listaRutasOpMapa, gmap, this)
 
+                btnSheetDialog.show()
+
+
                 binding.listaRutasOpMapa.setOnClickListener {
-                    if (!listaViewRutas.isVisible) {
-                        listaViewRutas.visibility = View.VISIBLE
-                    } else {
-                        listaViewRutas.visibility = View.GONE
-                    }
+                    toggleBottomSheetVisibility(btnSheetDialog)
                 }
 
             }
@@ -644,6 +655,84 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         }
     }
 
+    private fun alertDialogCalculate() {
+        // Crear el BottomSheetDialog
+        val btnSheetDia = BottomSheetDialog(this, R.style.Theme_BottomSheetTheme)
+        val btnSheetLayout = layoutInflater.inflate(R.layout.btn_sheet_calculate_route, null)
+        btnSheetDia.setContentView(btnSheetLayout)
+
+        // Configurar el BottomSheet
+        setupBottomSheet(btnSheetDia)
+
+        // Configurar el RecyclerView
+        val recy = setupRecyclerView(btnSheetLayout)
+
+        // Observar los resultados de cálculo
+        observeCalculateResults(btnSheetDia, recy)
+
+        // Mostrar/Ocultar el BottomSheet al hacer clic en el botón
+        binding.hideShowRutasCalculadas.setOnClickListener {
+            toggleBottomSheetVisibility(btnSheetDia)
+        }
+    }
+
+    // Configura el BottomSheet y establece su altura
+    private fun setupBottomSheet(btnSheetDia: BottomSheetDialog) {
+        val bottomSheet =
+            btnSheetDia.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+        bottomSheet?.let {
+            it.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            it.requestLayout()
+
+            // Establecer altura máxima como 40% de la pantalla
+            val height = UtilidadesMenores().getScreenPercentDp(this, 0.40)
+            BottomSheetBehavior.from(it).maxHeight = height
+        }
+    }
+
+    // RecyclerView del BottomSheet Calculate route
+    private fun setupRecyclerView(btnSheetLayout: View): RecyclerView? {
+        val recycler = btnSheetLayout.findViewById<RecyclerView>(R.id.recyclerCalculates)
+        val listaRoutes = mutableListOf<CalculateRoute.RouteCalculate>()
+
+        val adapter = AdapterHolderCalculates(listaRoutes, this, gmap, functionsInstance)
+
+        recycler.layoutManager = LinearLayoutManager(this)
+        recycler.adapter = adapter
+
+        return recycler
+    }
+
+    // Observa los resultados del cálculo de rutas
+    private fun observeCalculateResults(btnSheetDia: BottomSheetDialog, recycler: RecyclerView?) {
+        viewModel.resultCalculate.observe(this, Observer {
+            // Ocultar el progreso cuando hay resultados
+            binding.progressCalculando.visibility = View.GONE
+
+            if (it.resultInfo) {
+                // Actualizar la lista en el adapter y mostrar el BottomSheet
+                (recycler?.adapter as AdapterHolderCalculates).notyList(it.dataResult)
+                btnSheetDia.show()
+
+                // Mostrar/ocultar los botones correspondientes
+                binding.containBtnCalculates.visibility = View.VISIBLE
+                binding.containBtnsPos.visibility = View.GONE
+            } else {
+                // Aquí podrías mostrar un mensaje de "no se encontró ruta"
+                // binding.msjNoSeEncontroRuta.visibility = View.VISIBLE
+            }
+        })
+    }
+
+
+    private fun toggleBottomSheetVisibility(btnSheetDia: BottomSheetDialog) {
+        if (!btnSheetDia.isShowing) {
+            btnSheetDia.show()
+        } else {
+            btnSheetDia.hide()
+        }
+    }
+
 
     private fun activarGps() {
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -659,23 +748,9 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         if (!::gmap.isInitialized) return
         if (!UtilidadesMenores().comprobarConexion(this)) {
             activarGpsTelefono()
-            irPosGps()
+            getPosGps()
         } else {
             if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-
-                // verificar luegod e 10 segundos si se activo el gps
-                CoroutineScope(Dispatchers.Main).launch {
-                    delay(10000) // Esperar 10 segundos
-                    // Realizar verificación de ubi
-                    if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                        println("Al parecer no se acepto activar el gps")
-                        binding.irgps.setImageResource(R.drawable.ic_gps_off)
-                        //ocultar progress de localizacion
-                        binding.progLocalizando.visibility = View.GONE
-                    } else {
-                        println("Al parecer si se acepto activar el gps")
-                    }
-                }
 
                 //pedir activar gps estilo de google
                 val locationRequest =
@@ -684,6 +759,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                         setGranularity(Granularity.GRANULARITY_FINE)
                         setWaitForAccurateLocation(true)
                     }.build()
+
                 val client: SettingsClient = LocationServices.getSettingsClient(this)
                 val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
                 val task = client.checkLocationSettings(builder.build())
@@ -696,7 +772,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                             //ocultar progress de localizacion
                             binding.progLocalizando.visibility = View.VISIBLE
 
-                            irPosGps()
+                            getPosGps()
                         } catch (sendEx: IntentSender.SendIntentException) {
                             //algun error
                             binding.irgps.setImageResource(R.drawable.ic_gps_off)
@@ -705,32 +781,37 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                         }
                     }
                 }
-                irPosGps()
+                getPosGps()
             } else { //si ya esta activado el gps entonces ir a la posicion
+                getPosGps()
+            }
 
-
-                irPosGps()
+            // verificar luegod e 10 segundos si se activo el gps
+            CoroutineScope(Dispatchers.Main).launch {
+                delay(10000) // Esperar 10 segundos
+                // Realizar verificación de ubi
+                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    println("Al parecer no se acepto activar el gps")
+                    binding.irgps.setImageResource(R.drawable.ic_gps_off)
+                    //ocultar progress de localizacion
+                    binding.progLocalizando.visibility = View.GONE
+                } else {
+                    println("Al parecer si se acepto activar el gps")
+                }
             }
         }
 
     }
 
     private fun irYopal() {
-        //mayor zoom si se ve parqueaderos (opcion)
-        val zoom = if (idruta == 40) {
-            12f
-        } else {
-            14f
-        }
-
-        val cameraPosicion = CameraPosition.Builder()
-            .target(LatLng(5.329894555473376, -72.40242298156761))
-            .zoom(zoom)
-            .build()
-        gmap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosicion))
+        functionsInstance.animateCameraMap(
+            14f,
+            gmap,
+            LatLng(5.329894555473376, -72.40242298156761)
+        )
     }
 
-    fun irPosGps() {
+    fun getPosGps() {
         //este if verifica que no tiene permiso ni de FINE ni de COURSE LoCATION
         if (ActivityCompat.checkSelfPermission(
                 this,
@@ -756,38 +837,24 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 //ocultar progress de localizando
                 binding.progLocalizando.visibility = View.GONE
 
-
                 val zoomLevel = 16.5f // Nivel de zoom deseado
 
-                val cameraPosition = CameraPosition.Builder()
-                    .target(latLng) // Coordenadas del centro del mapa
-                    .zoom(zoomLevel) // Nivel de zoom
-                    .build()
+                functionsInstance.animateCameraMap(
+                    zoomLevel,
+                    gmap,
+                    latLng
+                )
 
-                val cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition)
-
-                gmap.animateCamera(cameraUpdate, 2000, null)
-
-                if (binding.sentidoSubida.visibility != View.VISIBLE && idruta != 20 && idruta != 40 && idruta != 0) { //diferente de 0, 20 y 40 para evitar la activacion del distancia a recorrido en opcion mostrar mapa con rutas, calcular ruta y parqueaderos
+                // show btn for see distance to if the option is simple route
+                if (binding.sentidoSubida.visibility != View.VISIBLE &&
+                    typeOptMap == MapRouteOption.SIMPLE_ROUTE
+                ) {
                     binding.verDistancia.visibility = View.VISIBLE
                 }
 
-                //marcador en ubi de respaldo
-                val accuracyRadius = 12.0
-                val opcionesCirculo = CircleOptions()
-                    .center(latLng)
-                    .radius(accuracyRadius)
-                    .strokeWidth(2f)
-                    .strokeColor(R.color.RutaEnServicio)
-                    .fillColor(0x551cfc03)
-                puntoProvisionalGps = if (puntoProvisionalGps == null) {
-                    gmap.addCircle(opcionesCirculo)
-                } else {
-                    puntoProvisionalGps?.remove()
-                    gmap.addCircle(opcionesCirculo)
-                }
+                gmap.isMyLocationEnabled = true
             } else {
-                irPosGps()
+                getPosGps()
             }
         }
     }
@@ -800,7 +867,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
 
-    fun activarLocalizacion() { //pide permiso de localicaion
+    fun requestLocationPermission() { //pide permiso de localicaion
         val permission = Manifest.permission.ACCESS_FINE_LOCATION
         if (ContextCompat.checkSelfPermission(
                 this,
@@ -810,28 +877,29 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             activarGps()
             gmap.isMyLocationEnabled = true
         } else {
-            //esta es la solicitud del permiso definido por la variable permission
+            // If it are not granted then do request
             requestLocationPermissionLauncher.launch(permission)
         }
         ActivityCompat.requestPermissions(this, arrayOf(permission), codigoLocalizacion)
     }
 
 
-    //esta es la respuesta a la solicitud de permiso
+    @SuppressLint("MissingPermission")
     private val requestLocationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
-
-
-        if (isGranted) {//el permiso de localizacion fue concedido, activar el gps
+        if (isGranted) { // Location permission is granted
             activarGps()
+            gmap.isMyLocationEnabled = true
         } else {
             //el permiso fue negado
-
             contador++ // omitir el primer click del usuario al boton gps
+
             if (contador == 2) {
+
                 contador = 0
                 //mostrar alerta sobre persmiso denegado y dar opcion de activarlo desde ajustes -- se usa devolucion de llamada a onOpcionSeleccionada()
+
                 UtilidadesMenores().crearAlerta(
                     this,
                     "ubicacion",
@@ -842,7 +910,6 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 )
             }
         }
-
     }
 
 
@@ -901,68 +968,90 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 dialog.cancel()
             }
             alertDialog.show()
-            irPosGps()
+            getPosGps()
         }
     }
 
-    private fun calcularDistancia(sentido: String) {
+    private fun calcularDistancia(sentido: RoomTypePath, ptsSentido: List<Coordinate>) {
         val defecto = LatLng(0.0, 0.0)
+
         if (ubiUser != defecto) {
-            PolylinesPrincipal(this, this.gmap).rutaMasCerca(ubiUser, sentido)
+            val pts = UtilidadesMenores().extractCoordToLatLng(
+                ptsSentido,
+                sentido.toString(),
+                idruta
+            )
+
+            val dato = functionsInstance
+                .rutaMasCerca(ubiUser, pts)
+
+            // clean lasts
+            if (walkData != null) {
+                walkData?.lineWalk?.remove()
+                walkData?.marker?.remove()
+            }
+
+            if (dato.idPunto in pts.indices) {
+                pts[dato.idPunto].let { punto ->
+                    CoroutineScope(Dispatchers.Main).launch {
+                        walkData = functionsInstance.traceWalkRoute(
+                            ubiUser,
+                            punto,
+                            gmap,
+                            this@Mapa,
+                            true,
+                            addMarker = true
+                        )
+                    }
+
+                    functionsInstance.animateCameraMap(
+                        17f,
+                        gmap,
+                        punto
+                    )
+                }
+            }
+
+
+            mostrarIndicaciones(dato.distancia)
         } else {
-            activarLocalizacion()
+            requestLocationPermission()
         }
     }
 
 
-    private fun mostrarIndicaciones() {
-        //indicaciones para tomar la buseta en las rutas individuales
-        val metros = PolylinesPrincipal.CreatRuta.masCortaInicio[1]
-        //val punto = PolylinesPrincipal.CreatRuta.masCortaInicio[0]
+    private fun mostrarIndicaciones(
+        distance: Int
+    ) {
         binding.indicaciones.visibility = View.VISIBLE
-        "Camina $metros m hasta el icono y toma la buseta (ruta $idruta).".also {
+        "Camina $distance m hasta el icono y toma la buseta (ruta $idruta).".also {
             binding.indicaciones.text = it
         }
 
     }
 
     override fun onLocationChanged(p0: Location) {
+
         val ubiGps = LatLng(p0.latitude, p0.longitude)
-        gmap.animateCamera(CameraUpdateFactory.newLatLngZoom(ubiGps, 20f), 3000, null)
-        irPosGps()
+        functionsInstance.animateCameraMap(
+            12f,
+            gmap,
+            ubiGps
+        )
+        println("Ubicacion esta cambiando - $ubiGps")
+        getPosGps()
     }
 
     override fun onOpcionSeleccionada(
         opcion: Int,
-        tipo_de_solicitud: String
+        tipeSoli: String
     ) { //devolucion de llamada de la opcion seleccionada en UtilidadesMenores.CrearAlerta()
-        if (tipo_de_solicitud == "permiso_ubicacion" && opcion == 1) {
+        if (tipeSoli == "permiso_ubicacion" && opcion == 1) {
             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
             val uri = Uri.fromParts("package", packageName, null)
             intent.data = uri
             startActivity(intent)
         }
-    }
-
-
-    fun mostrarIndicacionesCalculadas(hayImpedimento: Boolean) {
-        val numeroRuta = Datos.mejorPuntoaInicio[2]
-        //si la distancia hasta el punto salida es menor a 300 m mostrar indicaciones calculadas
-        if (Datos.mejorPuntoaInicio[1] > 200 || hayImpedimento) {
-            println("Distancia: ${Datos.mejorPuntoaInicio[1]}")
-            //mostrar mensaje "no se pudo generar recorrido"
-            binding.msjNoSeEncontroRuta.visibility = View.VISIBLE
-            binding.opcionesNoCalculada.text = "\n-Se esta mostrando la ruta: $numeroRuta"
-        } else {
-            //mostrar indicaciones
-            binding.indicacionesCalcular.visibility = View.VISIBLE
-            binding.indicacion1.text =
-                " Camina desde tu posicion hasta tomar la ruta $numeroRuta."
-            binding.indicacion2.text =
-                " Haz el recorrido para bajarte en el punto marcado."
-            binding.indicacion3.text = " Camina hasta el punto de destino."
-        }
-
     }
 
     private fun cargarAnuncios() {
@@ -1027,6 +1116,6 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
     override fun onDestroy() {
         super.onDestroy()
         fragmentMap.onDestroy()
-        println("Fragmento mapa fue liberado-finalizado")
+        finish()
     }
 }
