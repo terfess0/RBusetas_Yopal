@@ -21,10 +21,12 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.LinearLayout
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -36,7 +38,6 @@ import com.google.android.gms.ads.AdView
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Granularity
-import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationListener
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
@@ -296,9 +297,11 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             binding.configuraciones.visibility = View.GONE
             binding.ajustes.visibility = View.VISIBLE
 
-            if (typeOptMap == MapRouteOption.ALL_ROUTES) binding.listaRutasOpMapa.visibility = View.VISIBLE
+            if (typeOptMap == MapRouteOption.ALL_ROUTES) binding.listaRutasOpMapa.visibility =
+                View.VISIBLE
 
-            if (typeOptMap == MapRouteOption.CALCULATE_ROUTE_USER) binding.containBtnCalculates.visibility = View.VISIBLE
+            if (typeOptMap == MapRouteOption.CALCULATE_ROUTE_USER) binding.containBtnCalculates.visibility =
+                View.VISIBLE
 
             binding.irgps.visibility = View.VISIBLE
         }
@@ -668,7 +671,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         val recy = setupRecyclerView(btnSheetLayout)
 
         // Observar los resultados de cálculo
-        observeCalculateResults(btnSheetDia, recy)
+        observeCalculateResults(btnSheetDia, recy, btnSheetLayout)
 
         // Mostrar/Ocultar el BottomSheet al hacer clic en el botón
         binding.hideShowRutasCalculadas.setOnClickListener {
@@ -704,23 +707,35 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
     }
 
     // Observa los resultados del cálculo de rutas
-    private fun observeCalculateResults(btnSheetDia: BottomSheetDialog, recycler: RecyclerView?) {
+    private fun observeCalculateResults(
+        btnSheetDia: BottomSheetDialog, recycler: RecyclerView?,
+        layoutSheet: View
+    ) {
         viewModel.resultCalculate.observe(this, Observer {
             // Ocultar el progreso cuando hay resultados
             binding.progressCalculando.visibility = View.GONE
+
+            val containmessage =
+                layoutSheet.findViewById<LinearLayout>(R.id.messageNotCalculates)
 
             if (it.resultInfo) {
                 // Actualizar la lista en el adapter y mostrar el BottomSheet
                 (recycler?.adapter as AdapterHolderCalculates).notyList(it.dataResult)
                 btnSheetDia.show()
 
-                // Mostrar/ocultar los botones correspondientes
-                binding.containBtnCalculates.visibility = View.VISIBLE
-                binding.containBtnsPos.visibility = View.GONE
+                recycler.visibility = View.VISIBLE
+                containmessage.visibility = View.GONE
             } else {
-                // Aquí podrías mostrar un mensaje de "no se encontró ruta"
-                // binding.msjNoSeEncontroRuta.visibility = View.VISIBLE
+                recycler?.visibility = View.GONE
+
+                containmessage.visibility = View.VISIBLE
+
+                btnSheetDia.show()
             }
+
+            // Mostrar/ocultar los botones correspondientes
+            binding.containBtnCalculates.visibility = View.VISIBLE
+            binding.containBtnsPos.visibility = View.GONE
         })
     }
 
