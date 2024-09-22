@@ -91,7 +91,7 @@ class AdapterHolderCalculates(
 
                 traceRoute(item.points, item.cutPoint1Ruta.idPunto, item.cutPoint2Ruta.idPunto)
 
-                binding.title.text = "Ruta Calculada #"
+                binding.title.text = "Ruta Calculada #0"
 
                 binding.descriptStep1.text =
                     "Toma la buseta #${item.idruta} a ${item.cutPoint1Ruta.distancia} metros marcada con: "
