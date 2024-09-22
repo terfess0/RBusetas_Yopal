@@ -129,7 +129,7 @@
     <string name="guardar_posici_n">Guardar Posición</string>
     <string name="usar_mi_posici_n_gps">Usar mi Posición GPS</string>
     <string name="info_no_se_pudo_generar_el_recorrido">Info: No se pudo generar el recorrido.</string>
-    <string name="no_hay_rutas_cerca">\nPosibles razones: \n- No hay rutas cerca del punto de partida (menos de 500 metros).</string>
+    <string name="no_hay_rutas_cerca">\nPosibles razones: \n- No hay rutas cerca del punto de partida o destino (menos de 500 metros).</string>
     <string name="para_ver_mi_posicion_gps">Para ver mi posicion GPS</string>
     <string name="ajustar_el_mapa">Ajustar el mapa</string>
     <string name="tog_lista_de_rutas">Tog lista de rutas</string>
