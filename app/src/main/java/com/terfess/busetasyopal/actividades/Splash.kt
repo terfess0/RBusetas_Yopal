@@ -32,6 +32,11 @@ class Splash : AppCompatActivity() {
     private var contador = 0
     private var firebaseInstance = FirebaseDatabase.getInstance()
 
+
+    companion object {
+        var downloading: Boolean = false
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
@@ -40,9 +45,6 @@ class Splash : AppCompatActivity() {
         //recuperar el tema guardado en shared preferences
         UtilidadesMenores().applySavedNightMode(this)
         val roomDB by lazy { AppDatabase.getDatabase(this) }
-
-        //splash
-        splashScreen.setKeepOnScreenCondition{ false }
 
         val intentToRutasSeccion = Intent(this, RutasSeccion::class.java)
 
@@ -61,15 +63,16 @@ class Splash : AppCompatActivity() {
             }
         }
 
-        //----------------------------TIEMPO AGOTADO---------------------------------
-
-        timeVerifyConextion(roomDB, intentToRutasSeccion)
-
         //---------------DESCARGAR INFORMACION SI ES NECESARIO--------------------------
 
-        if (UtilidadesMenores().comprobarConexion(this)) {
+        val hayConexion = UtilidadesMenores().comprobarConexion(this)
+        println("Hay conexion en splash = $hayConexion")
+        if (hayConexion) {
             //obtener la version externa y comparar
-            checkDataVersion(roomDB, intentToRutasSeccion)
+            if (!downloading) {
+                checkDataVersion(roomDB, intentToRutasSeccion)
+                println("mandoa a descarga 3")
+            }
 
             //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
         } else {
@@ -87,7 +90,10 @@ class Splash : AppCompatActivity() {
                         txtConection.text =
                             getString(R.string.es_necesario_tener_acceso_a_internet_revisa_tu_conexi_n)
 
-                        checkDataVersion(roomDB, intentToRutasSeccion)
+                        if (!downloading) {
+                            checkDataVersion(roomDB, intentToRutasSeccion)
+                            println("mandoa a descarga 2")
+                        }
 
                     } else {
                         UtilidadesMenores().crearToast(this@Splash, "Sin conexión a Internet")
@@ -100,46 +106,44 @@ class Splash : AppCompatActivity() {
     }
 
     private fun checkDataVersion(roomDB: AppDatabase, intent: Intent) {
-        CoroutineScope(Dispatchers.IO).launch {
 
-            val versionLocal = roomDB.versionDao().getVersion()
+        firebaseInstance.getReference("/features/0/version")
+            .get().addOnSuccessListener { snapshot ->
+                if (snapshot.value != null) {
+                    val versionNube = snapshot.value.toString().toInt()
 
-            firebaseInstance.getReference("/features/0/versionPruebas")
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        val versionNube = snapshot.value.toString().toInt()
-
-                        // Trabajar con la base de datos en el hilo de fondo
-                        CoroutineScope(Dispatchers.IO).launch {
-                            versionLocal ?: 0
-                            if (versionLocal != versionNube) {
+                    // Trabajar con la base de datos en el hilo de fondo
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val versionLocal = roomDB.versionDao().getVersion()
+                        versionLocal ?: 0
+                        if (versionLocal != versionNube) {
+                            try {
+                                roomDB.versionDao()
+                                    .insertVersion(Version(num_version = versionNube))
 
                                 roomDB.routeDao().deleteRoutesTable()
 
                                 descargarDatos(intentToRutasSeccion = intent)
-
-                                roomDB.versionDao()
-                                    .insertVersion(Version(num_version = versionNube))
-
-                            } else {
-                                // Cambiar al hilo principal para iniciar la actividad si no hay descarga
-                                withContext(Dispatchers.Main) {
-                                    tiempo.removeCallbacksAndMessages(null)
-                                    startActivity(intent)
-                                    finish()
-                                }
+                            } catch (exp: Exception) {
+                                println("error")
+                            }
+                        } else {
+                            // Cambiar al hilo principal para iniciar la actividad si no hay descarga
+                            withContext(Dispatchers.Main) {
+                                tiempo.removeCallbacksAndMessages(null)
+                                startActivity(intent)
+                                finish()
                             }
                         }
                     }
+                }
+            }.addOnFailureListener {
+                UtilidadesMenores().crearToast(
+                    this@Splash,
+                    "La versión no se pudo recibir desde internet"
+                )
+            }
 
-                    override fun onCancelled(error: DatabaseError) {
-                        UtilidadesMenores().crearToast(
-                            this@Splash,
-                            "La versión no se pudo recibir desde internet"
-                        )
-                    }
-                })
-        }
     }
 
     private fun timeVerifyConextion(roomDB: AppDatabase, intentToRutasSeccion: Intent) {
@@ -153,8 +157,11 @@ class Splash : AppCompatActivity() {
                     runOnUiThread {
                         if (dato == null) {
                             findViewById<TextView>(R.id.tiempoAgotado).visibility = View.VISIBLE
-                            checkDataVersion(roomDB, intentToRutasSeccion)
 
+                            if (!downloading) {
+                                checkDataVersion(roomDB, intentToRutasSeccion)
+                                println("mandoa a descarga 1")
+                            }
                         } else {
                             UtilidadesMenores().crearToast(
                                 this@Splash,
@@ -174,13 +181,14 @@ class Splash : AppCompatActivity() {
     private fun descargarDatos(intentToRutasSeccion: Intent) {
         val contexto = this
 
-
-        DatosDeFirebase().descargarInformacion(contexto, object : allDatosRutas {
+        println("Descargando información")
+        DatosDeFirebase().descargarInformacion(contexto, firebaseInstance, object : allDatosRutas {
             override fun todosDatosRecibidos() {
                 UtilidadesMenores().crearToast(this@Splash, "Información De Rutas Descargada")
-                tiempo.removeCallbacksAndMessages(null)
 
                 FirebaseDatabase.getInstance().goOffline()
+
+                tiempo.removeCallbacksAndMessages(null)
 
                 startActivity(intentToRutasSeccion)
                 finish()
@@ -189,6 +197,7 @@ class Splash : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        tiempo.removeCallbacksAndMessages(null)
         Log.i("Actividades", "Splash se destruyó")
         super.onDestroy()
     }

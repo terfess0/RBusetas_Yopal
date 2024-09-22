@@ -6,6 +6,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.terfess.busetasyopal.actividades.Splash
 import com.terfess.busetasyopal.enums.RoomPeriod
 import com.terfess.busetasyopal.enums.RoomTypePath
 import com.terfess.busetasyopal.modelos_dato.DatoFrecuencia
@@ -35,13 +36,19 @@ interface allDatosRutas { //callback para detectar que los datos de todas las ru
 }
 
 class DatosDeFirebase {
-    private var baseDatosFirebaseDatabase = FirebaseDatabase.getInstance()
 
-    private fun recibirCoordenadasRuta(callAll: allDatosRutas, callback: DatosDeFirebaseCallback) {
-        // Recoge todas las rutas
-        baseDatosFirebaseDatabase.getReference("features/0/rutas/")
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
+    private fun recibirCoordenadasRuta(
+        baseDatosFirebaseDatabase: FirebaseDatabase,
+        callAll: allDatosRutas,
+        callback: DatosDeFirebaseCallback
+    ) {
+        if (!Splash.downloading){
+            Splash.downloading = true
+
+            // Recoge todas las rutas
+            baseDatosFirebaseDatabase.getReference("features/0/rutas/")
+                .get().addOnSuccessListener { dataSnapshot ->
+
                     for (rutaSnapshot in dataSnapshot.children) {
                         val idruta = rutaSnapshot.key?.toInt()
                             ?: continue // Asegúrate de que el ID sea un entero
@@ -122,24 +129,23 @@ class DatosDeFirebase {
                         println("+1 vuelta")
                     }
                     callAll.todosDatosRecibidos()
-                }
 
-                override fun onCancelled(databaseError: DatabaseError) {
-                    // Manejar errores si los hay
+                }.addOnFailureListener {
                     println("Algo salió mal en la recepción de datos de rutas.")
                 }
-            })
+        }
     }
 
 
     fun descargarInformacion(
         contexto: Context,
+        fireInstance: FirebaseDatabase,
         callback: allDatosRutas
     ) {
 
         val roomdb = AppDatabase.getDatabase(contexto)
 
-        recibirCoordenadasRuta(callback, object : DatosDeFirebaseCallback {
+        recibirCoordenadasRuta(fireInstance, callback, object : DatosDeFirebaseCallback {
 
             override fun onRouteReceived(
                 route: Route,

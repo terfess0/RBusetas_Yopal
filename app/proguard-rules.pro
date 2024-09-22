@@ -20,8 +20,14 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep class com.terfess.busetasyopal.modelos_dato.*
--keep class com.terfess.busetasyopal.room.AppDatabase
+-keep class com.terfess.busetasyopal.modelos_dato* { *; }
+-keep class com.terfess.busetasyopal.admin** { *; }
+-keep class com.terfess.busetasyopal.room** { *; }
+-keep class com.terfess.busetasyopal.clases_utiles.UtilidadesMenores* { *; }
+-keep class com.terfess.busetasyopal.actividades.Splash** { *; }
+
+-keep class android.app.servertransaction.** { *; }
+-keep class android.os.** { *; }
 
 -dontwarn io.grpc.internal.DnsNameResolverProvider
 -dontwarn io.grpc.internal.PickFirstLoadBalancerProvider
