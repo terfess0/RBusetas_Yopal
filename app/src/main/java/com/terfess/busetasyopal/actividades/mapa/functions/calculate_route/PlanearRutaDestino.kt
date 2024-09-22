@@ -69,6 +69,12 @@ class PlanearRutaDestino(private val mapa: Context) {
             }
 
             // CHECK OBTAIN ROUTES
+            if (listPossibles1.isEmpty() || listPossibles2.isEmpty()) {
+                println("No hay rutas o en el inicio o en el destino")
+                callback.onResult(false, emptyList())
+                return@withContext
+            }
+
             val routeResult = verifyRouteResult(
                 listPossibles1,
                 listPossibles2
