@@ -99,13 +99,17 @@ class AcercaDe : AppCompatActivity() {
         when (item.itemId) {
             R.id.panelAdmin -> {
 
-                val isLogged = AuthFirebase().isUserLoggedIn()
+                val authInstance = AuthFirebase()
+                val isLogged = authInstance.isUserLoggedIn()
+                val isAnonymous = authInstance.sessionIsAnonymously()
 
-                //check if user admin is logged
-                if (isLogged) {
+                //check if user admin is logged not anonymous
+                if (isLogged && !isAnonymous) {
                     val intent = Intent(this, AdminPanel::class.java)
                     startActivity(intent)
                 } else {
+                    //close session and go to login
+                    authInstance.logOutSessionUser()
                     val intent = Intent(this, LoginAdmin::class.java)
                     startActivity(intent)
                 }

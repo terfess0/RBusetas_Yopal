@@ -62,6 +62,15 @@ class AuthFirebase {
         return currentUser != null
     }
 
+    fun sessionIsAnonymously(): Boolean {
+        val currentUser = auth.currentUser
+        return if (currentUser != null && currentUser.isAnonymous) {
+            true
+        } else {
+            false
+        }
+    }
+
     fun logOutSessionUser() {
         val currentUser = auth.currentUser
         if (currentUser != null) {

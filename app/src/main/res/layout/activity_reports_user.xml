@@ -34,7 +34,7 @@
         android:id="@+id/report_user_empty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/no_hay_reportes_en_este_momento"
+        android:text="@string/usted_no_ha_realizado_reportes"
         android:textAlignment="center"
         android:textAllCaps="false"
         android:textColor="@color/enfasis_azul"
