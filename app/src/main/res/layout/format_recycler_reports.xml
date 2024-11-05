@@ -79,7 +79,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAlignment="textStart"
-                        android:textColor="?attr/colorPrimaryDark"
+                        android:textColor="@color/gris"
                         android:textIsSelectable="true"
                         android:textSize="18sp" />
                 </ScrollView>

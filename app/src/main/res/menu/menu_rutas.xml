@@ -2,23 +2,60 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <group
-        android:checkableBehavior="single">
-
+    <group android:checkableBehavior="single">
         <item
-            android:id="@+id/reportar"
-            android:icon="@drawable/ic_reportar"
-            android:title="@string/reportar_novedad" />
+            android:id="@+id/titleCategory1"
+            android:title="@string/novedades">
+            <menu>
+                <item
+                    android:id="@+id/reportar"
+                    android:icon="@drawable/ic_reportar"
+                    android:title="@string/reportar_novedad" />
 
-<!--        <item-->
-<!--            android:id="@+id/modoTema"-->
-<!--            android:icon="@drawable/ic_tema"-->
-<!--            android:title="@string/cambiar_tema" />-->
-
-        <item
-            android:id="@+id/acercade"
-            android:icon="@drawable/ic_acerca_de"
-            android:title="@string/acerca_de_la_app" />
+                <item
+                    android:id="@+id/misReportes"
+                    android:icon="@drawable/ic_reportar"
+                    android:title="@string/mis_reportes" />
+            </menu>
+        </item>
     </group>
 
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/titleCategory2"
+            android:title="@string/funciones">
+
+            <menu>
+
+                <item
+                    android:id="@+id/todasLasRutas"
+                    android:icon="@drawable/ic_calculates_btn"
+                    android:title="@string/ver_mapa_con_las_rutas" />
+
+                <item
+                    android:id="@+id/calcularViaje"
+                    android:icon="@drawable/ic_calculates_btn"
+                    android:title="@string/calcular_viaje" />
+
+                <item
+                    android:id="@+id/verParqueaderos"
+                    android:icon="@drawable/ic_calculates_btn"
+                    android:title="@string/ver_mapa_con_parqueaderos" />
+            </menu>
+        </item>
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/titleCategory3"
+            android:title="Nosotros">
+
+            <menu>
+                <item
+                    android:id="@+id/acercade"
+                    android:icon="@drawable/ic_acerca_de"
+                    android:title="@string/acerca_de_la_app" />
+            </menu>
+        </item>
+    </group>
 </menu>

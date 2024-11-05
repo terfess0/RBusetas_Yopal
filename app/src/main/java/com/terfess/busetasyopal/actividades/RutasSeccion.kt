@@ -37,6 +37,7 @@ import com.terfess.busetasyopal.FiltroAdapterHolder
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.AdapterPrincipal
 import com.terfess.busetasyopal.actividades.mapa.view.Mapa
+import com.terfess.busetasyopal.actividades.reports.view.ReportsUser
 import com.terfess.busetasyopal.clases_utiles.AlertaCallback
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.PantPrincipalBinding
@@ -211,34 +212,6 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback,
 
         //termina mensajes en vivo-------------------------------------------------
 
-        //el usuario elige boton calcular la ruta al destino
-        binding.calcularRuta.setOnClickListener {
-            val intent = Intent(this, Mapa::class.java)
-            val typeMapOption = MapRouteOption.CALCULATE_ROUTE_USER.toString()
-
-            intent.putExtra("type_option", typeMapOption)
-
-            startActivity(intent)
-        }
-
-        //el usuario elige boton ver mapa con rutas
-        binding.mapaRutas.setOnClickListener {
-            val intent = Intent(this, Mapa::class.java)
-            val typeMapOption = MapRouteOption.ALL_ROUTES.toString()
-
-            intent.putExtra("type_option", typeMapOption)
-            startActivity(intent)
-        }
-
-        //el usuario elige boton ver parqueaderos
-        binding.mapaParqueaderos.setOnClickListener {
-            val intent = Intent(this, Mapa::class.java)
-            val typeMapOption = MapRouteOption.PARKING_ROUTES.toString()
-
-            intent.putExtra("type_option", typeMapOption)
-            startActivity(intent)
-        }
-
         binding.buscarOpt.setOnClickListener {
             val menuItem = findViewById<ImageView>(R.id.buscar_opt)
             val rotation = AnimationUtils.loadAnimation(this, R.anim.rotate)
@@ -357,8 +330,6 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback,
         val visibility = if (mode) View.VISIBLE else View.GONE
 
         binding.cabezera.visibility = visibility
-        binding.botonesRapidos.visibility = visibility
-        binding.separador1.visibility = visibility
     }
 
     private fun getHora(): Int {
@@ -499,6 +470,35 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback,
                 UtilidadesMenores().reportar(this, null, currentTask)
             }
 
+            R.id.misReportes -> {
+                val intent = Intent(this, ReportsUser::class.java)
+                startActivity(intent)
+            }
+
+            R.id.todasLasRutas -> {
+                val intent = Intent(this, Mapa::class.java)
+                val typeMapOption = MapRouteOption.ALL_ROUTES.toString()
+
+                intent.putExtra("type_option", typeMapOption)
+                startActivity(intent)
+            }
+
+            R.id.calcularViaje -> {
+                val intent = Intent(this, Mapa::class.java)
+                val typeMapOption = MapRouteOption.CALCULATE_ROUTE_USER.toString()
+
+                intent.putExtra("type_option", typeMapOption)
+
+                startActivity(intent)
+            }
+
+            R.id.verParqueaderos -> {
+                val intent = Intent(this, Mapa::class.java)
+                val typeMapOption = MapRouteOption.PARKING_ROUTES.toString()
+
+                intent.putExtra("type_option", typeMapOption)
+                startActivity(intent)
+            }
         }
         drawer.closeDrawer(GravityCompat.START)
         return true

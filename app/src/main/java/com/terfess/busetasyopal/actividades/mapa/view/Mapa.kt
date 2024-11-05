@@ -326,7 +326,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 tareaActual = UserTask.USER_IS_IN_OPTION_CALCULATE_ROUTE_MAP.messageValue
                 //---------------------------------
                 supportActionBar?.title =
-                    getString(R.string.calcular_viaje_inicio_destino)
+                    getString(R.string.calcular_viaje)
                 supportActionBar?.subtitle = "Elíge un inicio y un destino"
 
                 // Show/Hide elements

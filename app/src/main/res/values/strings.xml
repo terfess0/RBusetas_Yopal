@@ -120,7 +120,7 @@
     <string name="tipo_de_mapa">Tipo de Mapa:</string>
     <string name="precio_pasaje">Precio Pasaje:</string>
     <string name="ver_mapa_con_las_rutas">Ver mapa con las rutas</string>
-    <string name="ver_mapa_con_parqueaderos">Ver mapa con parqueaderos</string>
+    <string name="ver_mapa_con_parqueaderos">Ver parqueaderos</string>
     <string name="ver_en_subida">Ver en Subida</string>
     <string name="ver_en_bajada">Ver en bajada</string>
     <string name="ver_distancia_al_recorrido">Ver Distancia al recorrido</string>
@@ -134,7 +134,7 @@
     <string name="ajustar_el_mapa">Ajustar el mapa</string>
     <string name="tog_lista_de_rutas">Tog lista de rutas</string>
     <string name="los_puntos_rojos_son_parqueaderos_toca_cualquiera_de_ellos_para_saber_a_que_ruta_pertenecen">Los puntos rojos son parqueaderos, toca cualquiera de ellos para saber a que ruta pertenecen.</string>
-    <string name="calcular_viaje_inicio_destino">Calcular viaje Inicio - Destino</string>
+    <string name="calcular_viaje">Calcular viaje</string>
     <string name="compara_cualquier_recorrido_de_las_rutas_habilitadas_con_tu_posici_n_en_el_mapa_presiona_el_boton_gps_elige_ver_ruta_y_aleja_el_mapa">Compara cualquier recorrido de las rutas habilitadas con tu posición en el mapa, presiona el boton gps, elige \'VER RUTA\' y aleja el mapa.</string>
     <string name="calculando">Calculando</string>
     <string name="paso_1">Paso 1</string>
@@ -160,6 +160,9 @@
     <string name="mapa">Mapa</string>
     <string name="panel_de_administrador">Panel de administrador</string>
     <string name="decorative_icon">Decorative Icon</string>
+    <string name="funciones">Funciones</string>
+    <string name="novedades">Novedades</string>
+    <string name="mis_reportes">Mis reportes</string>
 
 </resources>
 

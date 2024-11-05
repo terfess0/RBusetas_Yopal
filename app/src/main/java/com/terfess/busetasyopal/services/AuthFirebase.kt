@@ -11,6 +11,7 @@ import com.terfess.busetasyopal.enums.FirebaseEnums
 
 class AuthFirebase {
     private var auth: FirebaseAuth = Firebase.auth
+
     fun loginEmailPassword(callback: OnLoginFirebase, email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
@@ -43,16 +44,29 @@ class AuthFirebase {
             }
     }
 
+    fun loginAnonymously() {
+        auth.signInAnonymously()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // Sign in success anonymously
+                    Log.d("OnLoginFirebase", "signInAnonymously:success")
+                } else {
+                    // If sign in fails, display a message to the user.
+                    Log.w("OnLoginFirebase", "signInAnonymously:failure", task.exception)
+                }
+            }
+    }
+
     fun isUserLoggedIn(): Boolean {
         val currentUser = FirebaseAuth.getInstance().currentUser
         return currentUser != null
     }
 
-    fun logOutSessionUser(){
+    fun logOutSessionUser() {
         val currentUser = auth.currentUser
         if (currentUser != null) {
             auth.signOut()
-            println("Session cerrada")
+            Log.d("OnLoginFirebase", "closeCurrentSession:success")
         }
     }
 }
