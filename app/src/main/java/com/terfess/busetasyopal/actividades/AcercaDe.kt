@@ -25,6 +25,10 @@ import com.terfess.busetasyopal.admin.view.AdminPanel
 import com.terfess.busetasyopal.admin.view.LoginAdmin
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.services.AuthFirebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.net.URLEncoder
 
 class AcercaDe : AppCompatActivity() {
@@ -124,10 +128,15 @@ class AcercaDe : AppCompatActivity() {
 
 
     private fun cargarAnuncios() {
-        //anuncios
-        mAdView = findViewById(R.id.adView)
-        val adRequest = AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
+        CoroutineScope(Dispatchers.IO).launch {
+            // Ad request
+            val adRequest = AdRequest.Builder().build()
+
+            withContext(Dispatchers.Main) {
+                mAdView = findViewById(R.id.adViewAcerca)
+                mAdView.loadAd(adRequest)
+            }
+        }
     }
 
     //enviar whatsapp

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".actividades.Mapa">
+    tools:context=".actividades.mapa.view.Mapa">
 
     <!--<fragment
         android:id="@+id/autocomplete"
@@ -74,6 +74,48 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarMap"
         app:layout_constraintVertical_bias="0.0" />
+
+    <LinearLayout
+        android:id="@+id/contain_btn_calculates"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="5dp"
+        android:elevation="3dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.885"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarMap"
+        app:layout_constraintVertical_bias="1.0">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="360dp">
+
+            <ImageButton
+                android:id="@+id/hideShowRutasCalculadas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/transparente"
+                android:contentDescription="@string/ver_o_ocultar_lista_rutas_calculadas"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:padding="12dp"
+                android:theme="@style/Theme.general"
+                app:srcCompat="@drawable/ic_calculates_btn" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/rutas_calculadas"
+            android:textAlignment="center"
+            android:textColor="@color/enfasis_azul"
+            android:textSize="11sp" />
+    </LinearLayout>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView3"
@@ -170,7 +212,6 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:text="@string/mi_gps"
             android:textAlignment="center"
             android:textColor="@color/enfasis_azul"
@@ -185,7 +226,6 @@
         android:layout_marginBottom="268dp"
         android:background="@drawable/borde_leyenda"
         android:backgroundTint="@color/fondoLeyenda"
-
         android:gravity="center"
         android:padding="4dp"
         android:textSize="16sp"
@@ -193,7 +233,7 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/adView"
+        app:layout_constraintTop_toBottomOf="@+id/adViewMap"
         app:layout_constraintVertical_bias="0.031" />
 
     <TextView
@@ -230,7 +270,7 @@
         app:layout_constraintEnd_toEndOf="@+id/map"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/adView"
+        app:layout_constraintTop_toBottomOf="@+id/adViewMap"
         app:layout_constraintVertical_bias="0.0" />
 
     <androidx.constraintlayout.widget.Guideline
@@ -329,7 +369,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/bord_suave"
-            android:backgroundTint="#718DAA" />
+            android:backgroundTint="#436990" />
 
 
         <LinearLayout
@@ -348,7 +388,6 @@
                 android:layout_weight="1"
                 android:background="@drawable/bord_suave"
                 android:backgroundTint="@color/black"
-
                 android:foreground="?android:attr/selectableItemBackground"
                 android:padding="3dp"
                 android:text="@string/ver_en_subida"
@@ -365,7 +404,6 @@
                 android:layout_weight="1"
                 android:background="@drawable/bord_suave"
                 android:backgroundTint="@color/black"
-
                 android:foreground="?android:attr/selectableItemBackground"
                 android:padding="3dp"
                 android:text="@string/ver_en_bajada"
@@ -382,14 +420,12 @@
                 android:layout_weight="1"
                 android:background="@drawable/bord_suave"
                 android:backgroundTint="@color/enfasis_azul"
-
                 android:foreground="?android:attr/selectableItemBackground"
                 android:padding="3dp"
                 android:text="@string/ver_distancia_al_recorrido"
                 android:textAllCaps="false"
                 android:textColor="#ffffff"
                 android:visibility="gone" />
-
         </LinearLayout>
 
         <RelativeLayout
@@ -402,17 +438,29 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/listaOpMapa"
+                <LinearLayout
+                    android:id="@+id/progress_calculando"
                     android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/bord_suave"
-                    android:backgroundTint="?attr/colorPrimary"
-                    android:visibility="gone" />
+                    android:layout_height="30dp"
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
+                        android:text="@string/calculando"
+                        android:textColor="?attr/titleTextColor" />
+
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:indeterminate="true"
+                        android:indeterminateTint="@color/RutaCalculada" />
+                </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/contain_btns_pos"
                     style="?android:attr/buttonBarStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -424,13 +472,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:backgroundTint="@color/enfasis_azul"
+                        android:background="?attr/colorPrimary"
                         android:drawableEnd="@drawable/ic_gps"
-
                         android:gravity="start|center"
                         android:padding="10dp"
                         android:text="@string/seleccionar_lugar_de_partida"
-                        android:textColor="#ffffff"
+                        android:textColor="?attr/titleTextColor"
                         android:visibility="gone" />
 
                     <Button
@@ -439,13 +486,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:backgroundTint="@color/enfasis_azul"
+                        android:background="?attr/colorPrimary"
                         android:drawableEnd="@drawable/ic_gps"
-
                         android:gravity="start|center"
                         android:padding="10dp"
                         android:text="@string/seleccionar_lugar_de_destino"
-                        android:textColor="#ffffff"
+                        android:textColor="?attr/titleTextColor"
                         android:visibility="gone" />
 
                 </LinearLayout>
@@ -463,8 +509,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1"
-                        android:backgroundTint="?attr/colorBackgroundFloating"
-
+                        android:background="?attr/colorPrimary"
                         android:text="@string/guardar_posici_n"
                         android:textAllCaps="false"
                         android:textColor="?attr/titleTextColor"
@@ -477,8 +522,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1"
-                        android:backgroundTint="?attr/colorBackgroundFloating"
-
+                        android:backgroundTint="?attr/colorAccent"
                         android:text="@string/usar_mi_posici_n_gps"
                         android:textAllCaps="false"
                         android:textColor="?attr/titleTextColor"
@@ -486,117 +530,24 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/indicacionesCalcular"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:id="@+id/indicacion1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:drawableStart="@drawable/ic_peque_fin"
-                        android:drawableEnd="@drawable/ic_peque_salida"
-
-                        android:padding="3dp"
-                        android:text=""
-                        android:textColor="?attr/titleTextColor"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/indicacion2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:drawableStart="@drawable/ic_peque_salida"
-                        android:drawableEnd="@drawable/ic_peque_destino"
-
-                        android:padding="3dp"
-                        android:text=""
-                        android:textColor="?attr/titleTextColor"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/indicacion3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:drawableStart="@drawable/ic_peque_caminar"
-                        android:drawableEnd="@drawable/ic_peque_inicio"
-
-                        android:padding="3dp"
-                        android:text=""
-                        android:textColor="?attr/titleTextColor"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/msjNoSeEncontroRuta"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        android:text="@string/info_no_se_pudo_generar_el_recorrido"
-                        android:textAlignment="center"
-                        android:textColor="?attr/titleTextColor"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        android:text="@string/nposibles_razones_n_no_hay_rutas_cerca_de_partida_menos_200_metros"
-                        android:textColor="?attr/titleTextColor"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/opciones_no_calculada"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-
-                        android:textColor="?attr/titleTextColor"
-                        android:textStyle="bold|italic" />
-                </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
 
 
     </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/textPruebas"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ESTA OPCIÓN ESTÁ EN PRUEBAS FINALES"
-        android:textColor="#EA2121"
-        android:textSize="8sp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/espacio_mapa_util"
-        app:layout_constraintEnd_toEndOf="parent" />
-
     <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
+        android:id="@+id/adViewMap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:backgroundTint="#1abc9c"
-        android:visibility="gone"
         app:adSize="BANNER"
         app:adUnitId="ca-app-pub-3940256099942544/6300978111"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarMap" />
     <!-- id de ejemplo admob = ca-app-pub-3940256099942544/6300978111 -->
-    <!-- id de admob mapa =  -->
+    <!-- id de admob mapa = ca-app-pub-8000181315504515/1390003052 -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

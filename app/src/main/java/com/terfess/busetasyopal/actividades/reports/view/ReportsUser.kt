@@ -56,7 +56,6 @@ class ReportsUser : AppCompatActivity() {
         setRecycler()
 
         vmReports.myReports.observe(this, Observer { reps ->
-            println("REportes mios: ${reps.size}")
             val haveReports = reps.isNotEmpty()
             if (haveReports) {
                 adapterRep.notyChange(reps)

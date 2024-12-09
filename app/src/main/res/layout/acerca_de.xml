@@ -5,20 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
-    tools:context=".actividades.AcercaDe" >
+    tools:context=".actividades.AcercaDe">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarAcercade"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="10dp"
+        android:layout_height="0dp"
         android:paddingStart="10dp"
+        android:paddingTop="10dp"
         android:paddingEnd="10dp"
         android:paddingBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/toolbarAcercade">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,8 +37,8 @@
             android:background="@drawable/bord_suave"
             android:backgroundTint="?attr/colorBackgroundFloating"
             android:orientation="vertical"
-            android:paddingTop="10dp"
             android:paddingStart="10dp"
+            android:paddingTop="10dp"
             android:paddingEnd="10dp"
             android:paddingBottom="20dp">
 
@@ -39,17 +50,6 @@
                 android:text="@string/fuente_datos"
                 android:textColor="?attr/titleTextColor"
                 android:textSize="20sp" />
-
-            <TextView
-                android:id="@+id/link_alcaldia"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:textAlignment="center"
-                android:textColor="@color/enfasis_azul"
-                android:textSize="20sp"
-                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textView2"
@@ -84,15 +84,6 @@
                     android:src="@drawable/ic_mail" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Iconos de Freepik"
-                android:textColor="?attr/titleTextColor"
-                android:textSize="8sp"
-                tools:ignore="SmallSp" />
-
             <Button
                 android:id="@+id/verInfoHorarios"
                 android:layout_width="match_parent"
@@ -108,7 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone" >
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -138,7 +129,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
-                    android:contentDescription="TODO"
+                    android:contentDescription="@string/horario_en_verde_cuando_esta_en_servicio"
                     android:src="@drawable/img_info_horario_on" />
 
                 <TextView
@@ -163,7 +154,7 @@
     </ScrollView>
 
     <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
+        android:id="@+id/adViewAcerca"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#1abc9c"
@@ -173,5 +164,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
     <!-- id de ejemplo admob = ca-app-pub-3940256099942544/6300978111 -->
-    <!-- id de admob acercade =  -->
+    <!-- id de admob acercade = ca-app-pub-8000181315504515/2866219338 -->
 </androidx.constraintlayout.widget.ConstraintLayout>

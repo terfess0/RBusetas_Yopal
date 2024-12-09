@@ -48,6 +48,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Calendar
 
 
@@ -130,7 +131,7 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback,
 
         //ads
         MobileAds.initialize(this) {}//inicializar sdk de anuncios google
-        cargarAnuncios()
+        loadAds()
 
         //save mode night/light
         UtilidadesMenores().applySavedNightMode(this)
@@ -442,11 +443,16 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback,
     }
 
     //---------------------------------------------------------
-    private fun cargarAnuncios() {
-        //anuncios
-        mAdView = findViewById(R.id.adView)
-        val adRequest = AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
+    private fun loadAds() {
+        CoroutineScope(Dispatchers.IO).launch {
+            // Ad request
+            val adRequest = AdRequest.Builder().build()
+
+            withContext(Dispatchers.Main) {
+                mAdView = findViewById(R.id.adView)
+                mAdView.loadAd(adRequest)
+            }
+        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -483,14 +489,14 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback,
                 startActivity(intent)
             }
 
-            R.id.calcularViaje -> {
-                val intent = Intent(this, Mapa::class.java)
-                val typeMapOption = MapRouteOption.CALCULATE_ROUTE_USER.toString()
-
-                intent.putExtra("type_option", typeMapOption)
-
-                startActivity(intent)
-            }
+//            R.id.calcularViaje -> {
+//                val intent = Intent(this, Mapa::class.java)
+//                val typeMapOption = MapRouteOption.CALCULATE_ROUTE_USER.toString()
+//
+//                intent.putExtra("type_option", typeMapOption)
+//
+//                startActivity(intent)
+//            }
 
             R.id.verParqueaderos -> {
                 val intent = Intent(this, Mapa::class.java)

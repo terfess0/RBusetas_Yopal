@@ -1070,10 +1070,15 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
     }
 
     private fun cargarAnuncios() {
-        //anuncios
-        mAdView = findViewById(R.id.adView)
-        val adRequest = AdRequest.Builder().build()
-        mAdView.loadAd(adRequest)
+        CoroutineScope(Dispatchers.IO).launch {
+            // Ad request
+            val adRequest = AdRequest.Builder().build()
+
+            withContext(Dispatchers.Main) {
+                mAdView = findViewById(R.id.adViewMap)
+                mAdView.loadAd(adRequest)
+            }
+        }
     }
 
     //inflar menu mapa opciones actionbar
