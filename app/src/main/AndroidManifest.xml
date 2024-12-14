@@ -15,9 +15,40 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.general"
-        tools:targetApi="31">
-
+        android:theme="@style/Theme.general">
+        <activity
+            android:name=".actividades.Configurations"
+            android:exported="false"
+            android:theme="@style/Theme.general"/>
+        <activity
+            android:name=".actividades.reports.view.ReportsUser"
+            android:exported="false"
+            android:theme="@style/Theme.general" />
+        <activity
+            android:name=".admin.view.CreateRouteAdmin"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".admin.mapa.MapaAdmin"
+            android:exported="false"
+            android:theme="@style/Theme.general" />
+        <activity
+            android:name=".admin.view.RecordsAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".admin.view.ReportsAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".admin.view.LoginAdmin"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".admin.view.RoutesAdmin"
+            android:exported="false" />
+        <activity
+            android:name=".admin.view.AdminPanel"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".actividades.Splash"
             android:exported="true"
@@ -51,15 +82,11 @@
             android:value="@string/key_mapa" />
         <meta-data
             android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
-        <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
-        <!-- id de admob =  -->
+            android:resource="@array/preloaded_fonts" /> <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
+        <!-- id de admob = ca-app-pub-8000181315504515~7188607722 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713" />
-
-
-        <!-- predeterminado notis firebase messagin -->
+            android:value="ca-app-pub-3940256099942544~3347511713" /> <!-- admob -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_noti" />

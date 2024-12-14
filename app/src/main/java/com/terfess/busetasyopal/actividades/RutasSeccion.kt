@@ -505,6 +505,12 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback,
                 intent.putExtra("type_option", typeMapOption)
                 startActivity(intent)
             }
+
+            R.id.ajustes -> {
+                val intent = Intent(this, Configurations::class.java)
+
+                startActivity(intent)
+            }
         }
         drawer.closeDrawer(GravityCompat.START)
         return true

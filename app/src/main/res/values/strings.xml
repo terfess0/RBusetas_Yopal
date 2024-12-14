@@ -152,6 +152,9 @@
     <string name="novedades">Novedades</string>
     <string name="mis_reportes">Mis reportes</string>
     <string name="usted_no_ha_realizado_reportes">Usted no ha realizado reportes</string>
+    <string name="configuracion">Configuración</string>
+    <string name="preferencias">Preferencias</string>
+    <string name="select_language">Lenguaje Seleccionado</string>
 
 </resources>
 

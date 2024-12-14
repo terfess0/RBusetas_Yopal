@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <array name="opciones_array">
         <item>Mapa Normal</item>
         <item>Mapa Hybrido</item>
         <item>Mapa Satelital</item>
         <item>Mapa Relieve</item>
     </array>
+
+
+    <string-array name="languages">
+        <item>Español</item>
+        <item>English</item>
+    </string-array>
+
 
 </resources>
