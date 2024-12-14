@@ -10,6 +10,17 @@
     android:orientation="vertical"
     tools:context=".actividades.Configurations">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarConfig"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
     <LinearLayout
         android:id="@+id/languaje_config_btn"
         android:layout_width="match_parent"
@@ -26,18 +37,19 @@
             android:autoSizeTextType="uniform"
             android:text="@string/select_language"
             android:textAlignment="viewStart"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="16sp" />
+            android:textColor="?attr/titleTextColor"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
         <Spinner
-            android:id="@+id/language_spinner"
+            android:id="@+id/mapTypeSpinner"
+            style="@style/CustomSpinnerText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:spinnerMode="dropdown"
-            android:entries="@array/languages"
+            android:entries="@array/opciones_array"
             android:paddingHorizontal="8dp"
-            android:backgroundTint="@color/azul" />
+            android:spinnerMode="dropdown"
+            android:theme="@style/CustomSpinnerText" />
     </LinearLayout>
 
 

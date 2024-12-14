@@ -15,6 +15,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getString
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -483,5 +485,39 @@ class UtilidadesMenores {
 
         // Calculate percent height
         return (screenHeight * percent).toInt()
+    }
+
+    fun getIndexTypeMap(context: Context): Int {
+        val nameShared = getString(context, R.string.nombre_shared_preferences)
+        val sharedPreferences = context.getSharedPreferences(nameShared, Context.MODE_PRIVATE)
+
+        val savedTypeCode = sharedPreferences.getInt(
+            "type_map_user",
+            GoogleMap.MAP_TYPE_NORMAL // Valor por defecto
+        )
+
+        val refs = mapOf(
+            "Mapa Normal" to GoogleMap.MAP_TYPE_NORMAL,
+            "Mapa Hybrido" to GoogleMap.MAP_TYPE_HYBRID,
+            "Mapa Satelital" to GoogleMap.MAP_TYPE_SATELLITE,
+            "Mapa Relieve" to GoogleMap.MAP_TYPE_TERRAIN
+        )
+
+        val mapTypeList = refs.keys.toList()
+
+        val currentSelection = refs.entries.find { it.value == savedTypeCode }?.key
+        return mapTypeList.indexOf(currentSelection)
+    }
+
+    fun getSavedTypeMap(context: Context): Int {
+        val nameShared = getString(context, R.string.nombre_shared_preferences)
+        val sharedPreferences = context.getSharedPreferences(nameShared, Context.MODE_PRIVATE)
+
+        val savedTypeCode = sharedPreferences.getInt(
+            "type_map_user",
+            GoogleMap.MAP_TYPE_NORMAL // Valor por defecto
+        )
+
+        return savedTypeCode
     }
 }

@@ -154,7 +154,7 @@
     <string name="usted_no_ha_realizado_reportes">You have not made any reports</string>
     <string name="configuracion">Configuration</string>
     <string name="preferencias">Preferences</string>
-    <string name="select_language">Select Language</string>
+    <string name="select_language">Map Type</string>
 </resources>
 
 

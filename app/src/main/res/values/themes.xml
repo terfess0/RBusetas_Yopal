@@ -48,4 +48,9 @@
     <style name="Theme.general.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="Theme.general.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="CustomSpinnerText" parent="Theme.AppCompat.Light">
+        <item name="android:textColor">@color/gris</item>
+        <item name="android:popupBackground">@color/white</item>
+    </style>
+
 </resources>

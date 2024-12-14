@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
@@ -165,6 +166,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
+    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onMapReady(mapa: GoogleMap) {
         gmap = mapa
@@ -177,8 +179,10 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             gmap.uiSettings.setAllGesturesEnabled(true)
         }
 
-        mapa.mapType =
-            GoogleMap.MAP_TYPE_NORMAL
+        // Type map
+        val saveTypeMap = UtilidadesMenores().getSavedTypeMap(this)
+        gmap.mapType = saveTypeMap
+        //..
 
         // Initialize current task
         tareaActual = getRouteOnTask(idruta)
@@ -260,6 +264,18 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             }
         }
 
+        //..
+        val nameShared = getString(R.string.nombre_shared_preferences)
+        val sharedPreferences = getSharedPreferences(nameShared, Context.MODE_PRIVATE)
+
+        val mapTypeSpinner = binding.opcionesTipoMapa
+
+        val selectedIndex = UtilidadesMenores().getIndexTypeMap(this)
+
+        if (selectedIndex >= 0) {
+            mapTypeSpinner.setSelection(selectedIndex)
+        }
+
         binding.opcionesTipoMapa.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
@@ -268,21 +284,42 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                     position: Int,
                     id: Long
                 ) {
+
                     when (parent?.getItemAtPosition(position).toString()) {
                         "Mapa Normal" -> {
-                            gmap.mapType = GoogleMap.MAP_TYPE_NORMAL //set tipo de mapa normal
+                            val typeCode = GoogleMap.MAP_TYPE_NORMAL
+                            with(sharedPreferences.edit()) {
+                                putInt("type_map_user", typeCode)
+                                apply()
+                            }
+                            gmap.mapType = typeCode //set tipo de mapa normal
                         }
 
                         "Mapa Hybrido" -> {
-                            gmap.mapType = GoogleMap.MAP_TYPE_HYBRID //set tipo de mapa hybrido
+                            val typeCode = GoogleMap.MAP_TYPE_HYBRID
+                            with(sharedPreferences.edit()) {
+                                putInt("type_map_user", typeCode)
+                                apply()
+                            }
+                            gmap.mapType = typeCode //set tipo de mapa hybrido
                         }
 
                         "Mapa Satelital" -> {
-                            gmap.mapType = GoogleMap.MAP_TYPE_SATELLITE //set tipo de mapa satelital
+                            val typeCode = GoogleMap.MAP_TYPE_SATELLITE
+                            with(sharedPreferences.edit()) {
+                                putInt("type_map_user", typeCode)
+                                apply()
+                            }
+                            gmap.mapType = typeCode //set tipo de mapa satelital
                         }
 
                         "Mapa Relieve" -> {
-                            gmap.mapType = GoogleMap.MAP_TYPE_TERRAIN //set tipo de mapa relieve
+                            val typeCode = GoogleMap.MAP_TYPE_TERRAIN
+                            with(sharedPreferences.edit()) {
+                                putInt("type_map_user", typeCode)
+                                apply()
+                            }
+                            gmap.mapType = typeCode //set tipo de mapa relieve
                         }
                     }
                 }
