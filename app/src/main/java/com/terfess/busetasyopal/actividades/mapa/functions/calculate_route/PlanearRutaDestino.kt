@@ -36,6 +36,8 @@ class PlanearRutaDestino(private val mapa: Context) {
                 ubicacionDestino
             )
 
+            println("El sentido es: $sense1")
+
             // FIRST STEP: GET POSSIBLE ROUTES
             for (i in 0..listIdRoutes.size - 1) {
                 val idRuta = listIdRoutes[i]
@@ -126,6 +128,7 @@ class PlanearRutaDestino(private val mapa: Context) {
 
                     ptsRoutee.addAll(ptsPrepare + ptsPrepare2)
                 }
+
                 withContext(Dispatchers.Main) {
                     val result = traceCalculate(
                         mapFunctionsIns,
@@ -362,6 +365,7 @@ class PlanearRutaDestino(private val mapa: Context) {
         ptsSecondBackRoute: List<LatLng>
     ): CalculateRoute.RouteCalculate {
         val result: CalculateRoute.RouteCalculate
+
         withContext(Dispatchers.Default) {
             val cutProcess = mapFunctionsIns.rutaMasCerca(
                 pointConectThisRoute,

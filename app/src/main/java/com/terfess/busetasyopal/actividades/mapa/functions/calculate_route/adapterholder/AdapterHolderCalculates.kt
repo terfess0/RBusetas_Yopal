@@ -55,13 +55,15 @@ class AdapterHolderCalculates(
                 traceRoute(
                     item.points,
                     item.cutPoint1Ruta.idPunto,
-                    item.cutPoint2Ruta.idPunto
+                    item.cutPoint2Ruta.idPunto,
+                    R.color.diecisieteSalida
                 )
 
                 traceRoute(
                     item.pointsAnteriorRoute!!,
                     item.cutPoint1RutaAnterior!!.idPunto,
-                    item.cutPoint2RutaAnterior!!.idPunto
+                    item.cutPoint2RutaAnterior!!.idPunto,
+                    R.color.RutaCalculada
                 )
 
                 binding.title.text = "Ruta Calculada #0"
@@ -89,7 +91,7 @@ class AdapterHolderCalculates(
             } else {
                 traceWalkRoutes(item)
 
-                traceRoute(item.points, item.cutPoint1Ruta.idPunto, item.cutPoint2Ruta.idPunto)
+                traceRoute(item.points, item.cutPoint1Ruta.idPunto, item.cutPoint2Ruta.idPunto, R.color.RutaCalculada)
 
                 binding.title.text = "Ruta Calculada #0"
 
@@ -164,14 +166,16 @@ class AdapterHolderCalculates(
         private fun traceRoute(
             puntos: List<LatLng>,
             ptCut1: Int,
-            ptCut2: Int
+            ptCut2: Int,
+            colorRuta: Int
         ) {
             instFunctions.traceSectionRoute(
                 puntos,
                 ptCut1,
                 ptCut2,
                 contextMap,
-                mapInstance
+                mapInstance,
+                colorRuta
             )
         }
     }

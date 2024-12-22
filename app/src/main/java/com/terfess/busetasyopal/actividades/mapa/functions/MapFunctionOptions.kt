@@ -177,7 +177,8 @@ class MapFunctionOptions {
         pointCutStart: Int,
         pointCutEnd: Int,
         context: Context,
-        mapa: GoogleMap
+        mapa: GoogleMap,
+        colorRuta: Int
     ) {
 
         val polylineOptionsC = PolylineOptions()
@@ -187,7 +188,7 @@ class MapFunctionOptions {
         polylineOptionsC.width(7f).color(
             ContextCompat.getColor(
                 context,
-                R.color.RutaCalculada
+                colorRuta
             )
         )
 
@@ -205,32 +206,20 @@ class MapFunctionOptions {
 
 
         if (pointCutStart > pointCutEnd) {
-            recorte = puntosRoute.subList(pointCutStart, puntosRoute.size).toMutableList()
+            val s = puntosRoute.subList(pointCutStart, puntosRoute.size).toMutableList()
+            val d = puntosRoute.subList(0, pointCutEnd + 1).toMutableList()
+            recorte = (s + d).toMutableList()
             println("Corte especial solo el final")
+
         } else {
             recorte = puntosRoute.subList(pointCutStart, pointCutEnd + 1).toMutableList()
             println("Caso corte 1")
         }
 
-
-        val mrkOpt1 = getOptionsMarker(
-            recorte[0],
-            R.drawable.ic_estacion_inicio_ruta,
-            "Tome la buseta"
-        )
-        mapa.addMarker(mrkOpt1)
-
-        val mrkOpt2 = getOptionsMarker(
-            recorte.last(),
-            R.drawable.ic_estacion_fin_ruta,
-            "Baja de la buseta"
-        )
-        mapa.addMarker(mrkOpt2)
-
         ptsCalculate.addAll(recorte)
 
         val polyCalculada = mapa.addPolyline(polylineOptionsC)
-        polyCalculada.points = ptsCalculate
+        polyCalculada.points = recorte
         polyCalculada.jointType = JointType.ROUND
         polyCalculada.endCap = RoundCap()
         polyCalculada.startCap = RoundCap()
@@ -248,7 +237,6 @@ class MapFunctionOptions {
     ): CalculateRoute.WalkRoute {
         var marker: Marker? = null
 
-
         val ptsCaminata = ArrayList<LatLng>(2)
 
         ptsCaminata.add(ubiInicial)
@@ -256,6 +244,7 @@ class MapFunctionOptions {
 
         val iconoIf: Int
         val titleMarkerIf: String
+
         if (isStart) {
             iconoIf = R.drawable.ic_estacion_inicio_ruta
             titleMarkerIf = "Tome la buseta"
@@ -270,7 +259,9 @@ class MapFunctionOptions {
             titleMarkerIf
         )
 
-        if (addMarker) marker = mapa.addMarker(markerOptions)
+        if (addMarker) {
+            marker = mapa.addMarker(markerOptions)
+        }
 
         val polylineOptionsCaminar = PolylineOptions()
         polylineOptionsCaminar.color(
