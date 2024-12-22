@@ -305,6 +305,19 @@ class MapFunctionOptions {
 
     }
 
+    fun moveCameraMap(
+        zoom: Float,
+        gmap: GoogleMap,
+        coordinates: LatLng
+    ) {
+        val cameraPosicion = CameraPosition.Builder()
+            .target(coordinates)
+            .zoom(zoom)
+            .build()
+
+        gmap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosicion))
+    }
+
     fun getDegreeCoordinates(
         coor1: LatLng,
         coor2: LatLng

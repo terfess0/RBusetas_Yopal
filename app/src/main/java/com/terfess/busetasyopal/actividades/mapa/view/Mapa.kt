@@ -856,7 +856,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
     }
 
     private fun irYopal() {
-        functionsInstance.animateCameraMap(
+        functionsInstance.moveCameraMap(
             14f,
             gmap,
             LatLng(5.329894555473376, -72.40242298156761)

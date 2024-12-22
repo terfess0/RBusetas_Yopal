@@ -72,7 +72,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.general" />
         <activity
-            android:name=".actividades.RutasSeccion"
+            android:name=".actividades.PantallaPrincipal"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.general" />

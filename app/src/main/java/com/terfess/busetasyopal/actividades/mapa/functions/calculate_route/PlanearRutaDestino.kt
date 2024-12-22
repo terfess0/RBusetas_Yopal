@@ -13,7 +13,6 @@ import kotlinx.coroutines.withContext
 
 class PlanearRutaDestino(private val mapa: Context) {
 
-
     suspend fun rutaToDestino(
         ubicacionUsuario: LatLng,
         ubicacionDestino: LatLng,

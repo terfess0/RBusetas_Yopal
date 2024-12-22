@@ -32,10 +32,10 @@
                     android:icon="@drawable/ic_calculates_btn"
                     android:title="@string/ver_mapa_con_las_rutas" />
 
-                <!--                <item-->
-                <!--                    android:id="@+id/calcularViaje"-->
-                <!--                    android:icon="@drawable/ic_calculates_btn"-->
-                <!--                    android:title="@string/calcular_viaje" />-->
+                <item
+                    android:id="@+id/calcularViaje"
+                    android:icon="@drawable/ic_calculates_btn"
+                    android:title="@string/calcular_viaje" />
 
                 <item
                     android:id="@+id/verParqueaderos"

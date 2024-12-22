@@ -52,7 +52,7 @@ import kotlinx.coroutines.withContext
 import java.util.Calendar
 
 
-class RutasSeccion : AppCompatActivity(), AlertaCallback,
+class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
     NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var binding: PantPrincipalBinding
@@ -87,7 +87,7 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback,
         adapter =
             AdapterPrincipal(
                 listaRutas,
-                UtilidadesMenores().colorTituloTema(this@RutasSeccion)
+                UtilidadesMenores().colorTituloTema(this@PantallaPrincipal)
             )
         cajaInfo.layoutManager = LinearLayoutManager(this)
         cajaInfo.adapter = adapter
@@ -98,7 +98,7 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback,
 
         CoroutineScope(Dispatchers.Default).launch {
             listaRutas = dbRoom.routeDao().getAllIdsRoute()
-            adapter.updateLista(listaRutas, UtilidadesMenores().colorTituloTema(this@RutasSeccion))
+            adapter.updateLista(listaRutas, UtilidadesMenores().colorTituloTema(this@PantallaPrincipal))
 
             listaFilter = dbRoom.routeDao().getAllSitesExtended()
         }
@@ -271,7 +271,7 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback,
 
 
     private fun wantOut() {
-        val builder = AlertDialog.Builder(this@RutasSeccion, R.style.AlertDialogTheme)
+        val builder = AlertDialog.Builder(this@PantallaPrincipal, R.style.AlertDialogTheme)
         builder.setMessage("¿Seguro que quieres salir?")
             .setPositiveButton("Sí") { _, _ ->
                 // Finish on confirm
@@ -489,14 +489,14 @@ class RutasSeccion : AppCompatActivity(), AlertaCallback,
                 startActivity(intent)
             }
 
-//            R.id.calcularViaje -> {
-//                val intent = Intent(this, Mapa::class.java)
-//                val typeMapOption = MapRouteOption.CALCULATE_ROUTE_USER.toString()
-//
-//                intent.putExtra("type_option", typeMapOption)
-//
-//                startActivity(intent)
-//            }
+            R.id.calcularViaje -> {
+                val intent = Intent(this, Mapa::class.java)
+                val typeMapOption = MapRouteOption.CALCULATE_ROUTE_USER.toString()
+
+                intent.putExtra("type_option", typeMapOption)
+
+                startActivity(intent)
+            }
 
             R.id.verParqueaderos -> {
                 val intent = Intent(this, Mapa::class.java)

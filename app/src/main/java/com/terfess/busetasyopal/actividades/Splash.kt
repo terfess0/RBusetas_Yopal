@@ -8,16 +8,11 @@ import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.room.DatosDeFirebase
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
-import com.terfess.busetasyopal.enums.RoomPeriod
 import com.terfess.busetasyopal.room.allDatosRutas
 import com.terfess.busetasyopal.room.AppDatabase
 import com.terfess.busetasyopal.room.model.Version
@@ -46,7 +41,7 @@ class Splash : AppCompatActivity() {
         UtilidadesMenores().applySavedNightMode(this)
         val roomDB by lazy { AppDatabase.getDatabase(this) }
 
-        val intentToRutasSeccion = Intent(this, RutasSeccion::class.java)
+        val intentToRutasSeccion = Intent(this, PantallaPrincipal::class.java)
 
         //crear canales notificaciones
         NotificationChannelHelper(this).crearCanalesNotificaciones()
