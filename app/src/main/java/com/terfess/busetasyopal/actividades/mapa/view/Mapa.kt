@@ -17,6 +17,7 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.text.Html
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -27,15 +28,18 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.FullScreenContentCallback
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.Granularity
@@ -71,6 +75,7 @@ import com.terfess.busetasyopal.enums.getRouteOnTask
 import com.terfess.busetasyopal.modelos_dato.DatoOpMapa
 import com.terfess.busetasyopal.room.AppDatabase
 import com.terfess.busetasyopal.room.model.Coordinate
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -99,6 +104,9 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
     private val viewModel: ViewModelMapa by viewModels()
 
     private var hayConexion = true
+
+    private var mInterstitialAd: InterstitialAd? = null
+    private final val TAG = "MainActivity"
 
     companion object { //accesibles desde cualquier lugar de este archivo/clase y proyectos
         const val codigoLocalizacion = 0
@@ -359,6 +367,9 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             }
 
             MapRouteOption.CALCULATE_ROUTE_USER -> {
+
+                intersticialAdRequest()
+
                 //identificar estado mapa - tarea
                 tareaActual = UserTask.USER_IS_IN_OPTION_CALCULATE_ROUTE_MAP.messageValue
                 //---------------------------------
@@ -693,6 +704,55 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 MapFunctionOptions().addParkingPoints(gmap, this)
             }
         }
+    }
+
+    private fun intersticialAdRequest() {
+        val adRequest = AdRequest.Builder().build()
+        //TODO: cambiar antes de subir actualizacion
+        val keyAd = getString(R.string.fake_ad_key_for_screens)
+
+        InterstitialAd.load(this, keyAd, adRequest, object : InterstitialAdLoadCallback() {
+            override fun onAdFailedToLoad(adError: LoadAdError) {
+                Log.d(TAG, adError.toString())
+                mInterstitialAd = null
+            }
+
+            override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                Log.d(TAG, "Ad was loaded.")
+                mInterstitialAd = interstitialAd
+                mInterstitialAd?.show(this@Mapa)
+            }
+        })
+
+        mInterstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
+            override fun onAdClicked() {
+                // Called when a click is recorded for an ad.
+                Log.d(TAG, "Ad was clicked.")
+            }
+
+            override fun onAdDismissedFullScreenContent() {
+                // Called when ad is dismissed.
+                Log.d(TAG, "Ad dismissed fullscreen content.")
+                mInterstitialAd = null
+            }
+
+            override fun onAdFailedToShowFullScreenContent(p0: AdError) {
+                // Called when ad fails to show.
+                Log.e(TAG, "Ad failed to show fullscreen content.")
+                mInterstitialAd = null
+            }
+
+            override fun onAdImpression() {
+                // Called when an impression is recorded for an ad.
+                Log.d(TAG, "Ad recorded an impression.")
+            }
+
+            override fun onAdShowedFullScreenContent() {
+                // Called when ad is shown.
+                Log.d(TAG, "Ad showed fullscreen content.")
+            }
+        }
+
     }
 
     private fun alertDialogCalculate() {
