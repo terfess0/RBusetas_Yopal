@@ -94,6 +94,23 @@ class AdapterHolderCalculates(
 
         private fun handleTransferRoute(item: CalculateRoute.RouteCalculate) {
             traceWalkRoutesTransfer(item)
+
+            mapInstance.addMarker(
+                instFunctions.getOptionsMarker(
+                    item.ubiStartGeneral,
+                    R.drawable.ic_point_a_start,
+                    "Punto A (Partida)"
+                )
+            )
+
+            mapInstance.addMarker(
+                instFunctions.getOptionsMarker(
+                    item.ubiEndGeneral,
+                    R.drawable.ic_point_b_end,
+                    "Punto B (Destino)"
+                )
+            )
+
             traceRoute(
                 item.points,
                 item.cutPoint1Ruta.idPunto,

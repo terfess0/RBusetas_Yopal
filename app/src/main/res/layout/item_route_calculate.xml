@@ -236,6 +236,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:autoSizeTextType="uniform"
                 android:background="@drawable/bord_suave"
                 android:backgroundTint="@color/enfasis_azul"
                 android:text="@string/ver_recorrido"

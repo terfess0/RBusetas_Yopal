@@ -378,7 +378,6 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 supportActionBar?.subtitle = "Elíge un inicio y un destino"
 
                 // Show/Hide elements
-                binding.infoColor.visibility = View.GONE
                 binding.textAlgoritmVersion.visibility = View.VISIBLE
 
                 var ubiInicio = LatLng(0.0, 0.0)

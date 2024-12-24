@@ -219,94 +219,102 @@ class PlanearRutaDestino(private val mapa: Context) {
 
                         if (routeResultComp2.isNotEmpty()) {
 
-                            val pts = dbhelper.coordinateDao()
-                                .getCoordRoutePath(
-                                    routeResultComp2[0].idRuta,
-                                    RoomTypePath.DEPARTURE.toString()
+                            val ptsRoutee = mutableListOf<LatLng>()
+                            val listTransfers = mutableListOf<CalculateRoute.RouteCalculate>()
+
+                            for (i in 0..routeResultComp2.size - 1) {
+                                ptsRoutee.clear()
+
+                                val pts = dbhelper.coordinateDao()
+                                    .getCoordRoutePath(
+                                        routeResultComp2[i].idRuta,
+                                        RoomTypePath.DEPARTURE.toString()
+                                    )
+
+                                val ptsPrepare = UtilidadesMenores()
+                                    .extractCoordToLatLng(
+                                        pts,
+                                        RoomTypePath.DEPARTURE.toString(),
+                                        routeResultComp2[i].idRuta
+                                    )
+
+                                val pts2 = dbhelper.coordinateDao()
+                                    .getCoordRoutePath(
+                                        routeResultComp2[i].idRuta,
+                                        RoomTypePath.RETURN.toString()
+                                    )
+
+                                val ptsPrepare2 = UtilidadesMenores()
+                                    .extractCoordToLatLng(
+                                        pts2,
+                                        RoomTypePath.RETURN.toString(),
+                                        routeResultComp2[i].idRuta
+                                    )
+
+                                val ptsLast = dbhelper.coordinateDao()
+                                    .getCoordRoutePath(
+                                        routeResultComp2[i].idRutaAnterior,
+                                        RoomTypePath.DEPARTURE.toString()
+                                    )
+
+                                val ptsPrepareLast = UtilidadesMenores()
+                                    .extractCoordToLatLng(
+                                        ptsLast,
+                                        RoomTypePath.DEPARTURE.toString(),
+                                        routeResultComp2[i].idRutaAnterior
+                                    )
+
+                                val ptsLast2 = dbhelper.coordinateDao()
+                                    .getCoordRoutePath(
+                                        routeResultComp2[i].idRutaAnterior,
+                                        RoomTypePath.RETURN.toString()
+                                    )
+
+                                val ptsPrepareLast2 = UtilidadesMenores()
+                                    .extractCoordToLatLng(
+                                        ptsLast2,
+                                        RoomTypePath.RETURN.toString(),
+                                        routeResultComp2[i].idRutaAnterior
+                                    )
+
+
+                                val sense2 = mapFunctionsIns.getSense(
+                                    routeResultComp2[i].puntoConectRuta,
+                                    routeResultComp2[i].puntoRutaConectAnterior
                                 )
 
-                            val ptsPrepare = UtilidadesMenores()
-                                .extractCoordToLatLng(
-                                    pts,
-                                    RoomTypePath.DEPARTURE.toString(),
-                                    routeResultComp2[0].idRuta
+                                val ptsFirstRoute = mutableListOf<LatLng>()
+                                val ptsSecondBackRoute = mutableListOf<LatLng>()
+
+                                if (sense2 == RoomTypePath.DEPARTURE) {
+                                    ptsFirstRoute.addAll(ptsPrepare)
+                                } else {
+                                    ptsFirstRoute.addAll(ptsPrepare + ptsPrepare2)
+                                }
+
+                                ptsSecondBackRoute.addAll(ptsPrepareLast + ptsPrepareLast2)
+
+
+                                // Trace first route
+                                val routeTransfer = getCutsPointTransfers(
+                                    mapFunctionsIns,
+                                    ubicacionUsuario,
+                                    ubicacionDestino,
+                                    routeResultComp2[i].idRuta,
+                                    routeResultComp2[i].idRutaAnterior,
+                                    routeResultComp2[i].puntoConectRuta,
+                                    routeResultComp2[i].puntoRutaConectAnterior,
+                                    ptsFirstRoute,
+                                    ptsSecondBackRoute
                                 )
 
-                            val pts2 = dbhelper.coordinateDao()
-                                .getCoordRoutePath(
-                                    routeResultComp2[0].idRuta,
-                                    RoomTypePath.RETURN.toString()
-                                )
-
-                            val ptsPrepare2 = UtilidadesMenores()
-                                .extractCoordToLatLng(
-                                    pts2,
-                                    RoomTypePath.RETURN.toString(),
-                                    routeResultComp2[0].idRuta
-                                )
-
-                            val ptsLast = dbhelper.coordinateDao()
-                                .getCoordRoutePath(
-                                    routeResultComp2[0].idRutaAnterior,
-                                    RoomTypePath.DEPARTURE.toString()
-                                )
-
-                            val ptsPrepareLast = UtilidadesMenores()
-                                .extractCoordToLatLng(
-                                    ptsLast,
-                                    RoomTypePath.DEPARTURE.toString(),
-                                    routeResultComp2[0].idRutaAnterior
-                                )
-
-                            val ptsLast2 = dbhelper.coordinateDao()
-                                .getCoordRoutePath(
-                                    routeResultComp2[0].idRutaAnterior,
-                                    RoomTypePath.RETURN.toString()
-                                )
-
-                            val ptsPrepareLast2 = UtilidadesMenores()
-                                .extractCoordToLatLng(
-                                    ptsLast2,
-                                    RoomTypePath.RETURN.toString(),
-                                    routeResultComp2[0].idRutaAnterior
-                                )
-
-
-                            val sense2 = mapFunctionsIns.getSense(
-                                routeResultComp2[0].puntoConectRuta,
-                                routeResultComp2[0].puntoRutaConectAnterior
-                            )
-
-                            val ptsFirstRoute = mutableListOf<LatLng>()
-                            val ptsSecondBackRoute = mutableListOf<LatLng>()
-
-                            if (sense2 == RoomTypePath.DEPARTURE) {
-                                ptsFirstRoute.addAll(ptsPrepare)
-                            } else {
-                                ptsFirstRoute.addAll(ptsPrepare + ptsPrepare2)
+                                listTransfers.add(routeTransfer)
                             }
 
-                            ptsSecondBackRoute.addAll(ptsPrepareLast + ptsPrepareLast2)
-
-
-                            // Trace first route
-                            val routeTransfer = getCutsPointTransfers(
-                                mapFunctionsIns,
-                                ubicacionUsuario,
-                                ubicacionDestino,
-                                routeResultComp2[0].idRuta,
-                                routeResultComp2[0].idRutaAnterior,
-                                routeResultComp2[0].puntoConectRuta,
-                                routeResultComp2[0].puntoRutaConectAnterior,
-                                ptsFirstRoute,
-                                ptsSecondBackRoute
-                            )
-
-                            listResultTransfers.add(routeTransfer)
+                            println("Resultado transbordos: $routeResultComp2")
+                            callback.onResult(true, listTransfers)
+                            println("\n\nTotal transfers: ${listTransfers.size}")
                         }
-
-                        println("Resultado transbordos: $routeResultComp2")
-                        callback.onResult(true, listResultTransfers)
                     } else {
                         println("No se encontraron opciones de ruta intermedia")
                         callback.onResult(false, mutableListOf())
