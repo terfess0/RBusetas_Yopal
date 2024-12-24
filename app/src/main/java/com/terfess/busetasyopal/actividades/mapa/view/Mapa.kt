@@ -383,6 +383,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
                 var ubiInicio = LatLng(0.0, 0.0)
                 var ubiDestino = LatLng(0.0, 0.0)
+
                 //mostrar botones para guardar ubicacion inicio - destino
                 binding.posInicio.visibility = View.VISIBLE
                 binding.posDestino.visibility = View.VISIBLE
@@ -394,8 +395,12 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
                 binding.posInicio.setOnClickListener {
                     UtilidadesMenores().crearToast(this, "Arrastra la pantalla")
+
                     binding.posInicio.isClickable =
-                        false //despues de seleccionado se desactiva el boton
+                        false // Despues de seleccionado se desactiva el boton
+
+                    binding.posDestino.isClickable =
+                        false // Despues de seleccionado se desactiva el otro boton
 
                     //marcador en el centro de la pantalla - apuntador para definir ubicacion---------------------
                     val centerMarker = functionsInstance.getOptionsMarker(
@@ -470,6 +475,9 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                                 R.drawable.ic_check,
                                 0
                             )
+                        }else{
+                            binding.posDestino.isClickable =
+                                true // Si no estan seleccionadas las dos ubis activese el otro boton
                         }
                     }
 
@@ -529,6 +537,9 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                                 R.drawable.ic_check,
                                 0
                             )
+                        } else {
+                            binding.posDestino.isClickable =
+                                true // Si no estan seleccionadas las dos ubis activese el otro boton
                         }
                     }
                 }
@@ -537,8 +548,12 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 //boton guardar ubicacion de destino
                 binding.posDestino.setOnClickListener {
                     UtilidadesMenores().crearToast(this, "Arrastra la pantalla")
+
                     binding.posDestino.isClickable =
-                        false //despues de oprimido no se puede presionar de nuevo
+                        false // Despues de oprimido no se puede presionar de nuevo
+
+                    binding.posInicio.isClickable =
+                        false // Despues de oprimido no se puede presionar el otro boton
 
                     //agregar marcador al centro de la pantalla - apuntador para seleccionar ubicacion--------
                     val centerMarker = MarkerOptions()
@@ -607,6 +622,9 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                                 R.drawable.ic_check,
                                 0
                             )
+                        } else {
+                            binding.posInicio.isClickable =
+                                true // Si no estan seleccionadas las dos ubis activese el otro boton
                         }
                     }
                 }
@@ -724,7 +742,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             }
         })
 
-        mInterstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
+        mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
             override fun onAdClicked() {
                 // Called when a click is recorded for an ad.
                 Log.d(TAG, "Ad was clicked.")
