@@ -155,6 +155,8 @@
     <string name="configuracion">Configuration</string>
     <string name="preferencias">Preferences</string>
     <string name="select_language">Map Type</string>
+    <string name="title_calculada">Calculated Route #%1$s</string>
+    <string name="toma_buseta">"Take bus route number #%1$s at %2$s meters and marked with: "</string>
 </resources>
 
 

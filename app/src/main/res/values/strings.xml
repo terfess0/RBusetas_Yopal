@@ -155,6 +155,8 @@
     <string name="configuracion">Configuración</string>
     <string name="preferencias">Preferencias</string>
     <string name="select_language">Tipo de Mapa</string>
+    <string name="title_calculada">Ruta Calculada #%1$s</string>
+    <string name="toma_buseta">"Toma la buseta #%1$s a %2$s metros marcada con: "</string>
 
 </resources>
 

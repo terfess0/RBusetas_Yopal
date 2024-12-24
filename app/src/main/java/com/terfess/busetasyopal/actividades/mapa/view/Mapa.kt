@@ -709,7 +709,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
     private fun intersticialAdRequest() {
         val adRequest = AdRequest.Builder().build()
         //TODO: cambiar antes de subir actualizacion
-        val keyAd = getString(R.string.fake_ad_key_for_screens)
+        val keyAd = getString(R.string.fake_key_intersticial)
 
         InterstitialAd.load(this, keyAd, adRequest, object : InterstitialAdLoadCallback() {
             override fun onAdFailedToLoad(adError: LoadAdError) {
@@ -785,7 +785,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             it.requestLayout()
 
             // Establecer altura máxima como 40% de la pantalla
-            val height = UtilidadesMenores().getScreenPercentDp(this, 0.40)
+            val height = UtilidadesMenores().getScreenPercentDp(this, 0.35)
             BottomSheetBehavior.from(it).maxHeight = height
         }
     }
@@ -817,6 +817,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
             if (it.resultInfo) {
                 // Actualizar la lista en el adapter y mostrar el BottomSheet
+
                 (recycler?.adapter as AdapterHolderCalculates).notyList(it.dataResult)
                 btnSheetDia.show()
 

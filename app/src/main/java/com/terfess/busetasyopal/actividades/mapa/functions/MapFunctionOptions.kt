@@ -196,14 +196,12 @@ class MapFunctionOptions {
 
         //mueve la camara al marcador de estacion cercana
         mapa.animateCamera(
-            CameraUpdateFactory.newLatLngZoom(
-                puntosRoute[pointCutStart],
-                16.5f
+            CameraUpdateFactory.newLatLng(
+                puntosRoute[pointCutStart]
             ), 2000, null
         )
 
         //se calcula y traza una nueva polylinea
-
 
         if (pointCutStart > pointCutEnd) {
             val s = puntosRoute.subList(pointCutStart, puntosRoute.size).toMutableList()

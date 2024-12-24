@@ -84,64 +84,68 @@ class PlanearRutaDestino(private val mapa: Context) {
             if (routeResult.isNotEmpty()) {
                 val ptsRoutee = mutableListOf<LatLng>()
 
-                if (sense1 == RoomTypePath.DEPARTURE) {
-                    val pts = dbhelper.coordinateDao()
-                        .getCoordRoutePath(
-                            routeResult[0].idRuta,
-                            sense1.toString()
-                        )
+                val listResult = mutableListOf<CalculateRoute.RouteCalculate>()
 
-                    val ptsPrepare = UtilidadesMenores()
-                        .extractCoordToLatLng(
-                            pts,
-                            sense1.toString(),
-                            routeResult[0].idRuta
-                        )
+                for (i in 0..routeResult.size - 1) {
+                    ptsRoutee.clear()
 
-                    ptsRoutee.addAll(ptsPrepare)
-                } else {
-                    val pts = dbhelper.coordinateDao()
-                        .getCoordRoutePath(
-                            routeResult[0].idRuta,
-                            RoomTypePath.DEPARTURE.toString()
-                        )
+                    if (sense1 == RoomTypePath.DEPARTURE) {
+                        val pts = dbhelper.coordinateDao()
+                            .getCoordRoutePath(
+                                routeResult[i].idRuta,
+                                sense1.toString()
+                            )
 
-                    val ptsPrepare = UtilidadesMenores()
-                        .extractCoordToLatLng(
-                            pts,
-                            RoomTypePath.DEPARTURE.toString(),
-                            routeResult[0].idRuta
-                        )
+                        val ptsPrepare = UtilidadesMenores()
+                            .extractCoordToLatLng(
+                                pts,
+                                sense1.toString(),
+                                routeResult[i].idRuta
+                            )
 
-                    val pts2 = dbhelper.coordinateDao()
-                        .getCoordRoutePath(
-                            routeResult[0].idRuta,
-                            RoomTypePath.RETURN.toString()
-                        )
+                        ptsRoutee.addAll(ptsPrepare)
+                    } else {
+                        val pts = dbhelper.coordinateDao()
+                            .getCoordRoutePath(
+                                routeResult[i].idRuta,
+                                RoomTypePath.DEPARTURE.toString()
+                            )
 
-                    val ptsPrepare2 = UtilidadesMenores()
-                        .extractCoordToLatLng(
-                            pts2,
-                            RoomTypePath.RETURN.toString(),
-                            routeResult[0].idRuta
-                        )
+                        val ptsPrepare = UtilidadesMenores()
+                            .extractCoordToLatLng(
+                                pts,
+                                RoomTypePath.DEPARTURE.toString(),
+                                routeResult[i].idRuta
+                            )
 
-                    ptsRoutee.addAll(ptsPrepare + ptsPrepare2)
-                }
+                        val pts2 = dbhelper.coordinateDao()
+                            .getCoordRoutePath(
+                                routeResult[i].idRuta,
+                                RoomTypePath.RETURN.toString()
+                            )
 
-                withContext(Dispatchers.Main) {
+                        val ptsPrepare2 = UtilidadesMenores()
+                            .extractCoordToLatLng(
+                                pts2,
+                                RoomTypePath.RETURN.toString(),
+                                routeResult[i].idRuta
+                            )
+
+                        ptsRoutee.addAll(ptsPrepare + ptsPrepare2)
+                    }
+
                     val result = traceCalculate(
                         mapFunctionsIns,
                         ubicacionUsuario,
                         ubicacionDestino,
-                        routeResult[0].idRuta,
+                        routeResult[i].idRuta,
                         ptsRoutee
                     )
 
-                    val listResult = listOf(result)
-
-                    callback.onResult(true, listResult)
+                    listResult.add(result)
                 }
+
+                callback.onResult(true, listResult)
             }
 
             println("Ruta inmediata encontrada entre inicio y destino: $routeResult")

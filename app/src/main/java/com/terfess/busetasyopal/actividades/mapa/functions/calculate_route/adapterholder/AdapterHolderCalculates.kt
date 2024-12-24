@@ -32,7 +32,7 @@ class AdapterHolderCalculates(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
-        holder.bind(item)
+        holder.bind(item, position)
     }
 
     override fun getItemCount(): Int {
@@ -45,68 +45,107 @@ class AdapterHolderCalculates(
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val binding: ItemRouteCalculateBinding =
-            ItemRouteCalculateBinding.bind(itemView)
+        private val binding: ItemRouteCalculateBinding = ItemRouteCalculateBinding.bind(itemView)
 
-        fun bind(item: CalculateRoute.RouteCalculate) {
-            if (item.isTransfer) {
-                traceWalkRoutesTransfer(item)
-
-                traceRoute(
-                    item.points,
-                    item.cutPoint1Ruta.idPunto,
-                    item.cutPoint2Ruta.idPunto,
-                    R.color.diecisieteSalida
-                )
-
-                traceRoute(
-                    item.pointsAnteriorRoute!!,
-                    item.cutPoint1RutaAnterior!!.idPunto,
-                    item.cutPoint2RutaAnterior!!.idPunto,
-                    R.color.RutaCalculada
-                )
-
-                binding.title.text = "Ruta Calculada #0"
-
-                binding.descriptStep1.text =
-                    "Toma la buseta #${item.idRutaAnterior} a ${item.cutPoint1RutaAnterior.distancia} metros marcada con: "
-
-                binding.descriptStep2.text =
-                    "Haz el recorrido en la buseta para bajarte en el punto marcado con: "
-
-                binding.lastStep.text =
-                    "Camina hasta tomar el transbordo a la ruta #${item.idruta}"
-
-                binding.imageLastStep1.setImageResource(R.drawable.ic_calculates_btn)
-
-                binding.secondPartForTransfers.visibility = View.VISIBLE
-
-                binding.descriptStep4.text = "Toma la buseta #${item.idruta} marcada con: "
-
-                binding.descriptStep5.text =
-                    "Haz el recorrido en la buseta para bajarte en el punto marcado con: "
-
-                binding.lastStep2.text =
-                    "Camina ${item.cutPoint2Ruta.distancia} metros hasta el punto destino marcado con: "
-            } else {
-                traceWalkRoutes(item)
-
-                traceRoute(item.points, item.cutPoint1Ruta.idPunto, item.cutPoint2Ruta.idPunto, R.color.RutaCalculada)
-
-                binding.title.text = "Ruta Calculada #0"
-
-                binding.descriptStep1.text =
-                    "Toma la buseta #${item.idruta} a ${item.cutPoint1Ruta.distancia} metros marcada con: "
-
-                binding.descriptStep2.text =
-                    "Haz el recorrido en la buseta para bajarte en el punto marcado con: "
-
-                binding.lastStep.text =
-                    "Camina ${item.cutPoint2Ruta.distancia} metros hasta el punto destino marcado: "
-
+        fun bind(item: CalculateRoute.RouteCalculate, posItem: Int) {
+            // Limpieza de mapa común para ambos casos
+            binding.btnDetails.setOnClickListener {
+                mapInstance.clear()
+                if (item.isTransfer) {
+                    handleTransferRoute(item)
+                } else {
+                    handleSingleRoute(item)
+                }
             }
 
+            println("INFO ITEM: ${item.idruta} ----- $item")
+            // Configuración común
+            binding.title.text = contextMap.getString(R.string.title_calculada, posItem.toString())
+
+            if (item.isTransfer) {
+                setupTransferRouteTexts(item)
+            } else {
+                setupSingleRouteTexts(item)
+            }
         }
+
+        private fun handleTransferRoute(item: CalculateRoute.RouteCalculate) {
+            traceWalkRoutesTransfer(item)
+            traceRoute(
+                item.points,
+                item.cutPoint1Ruta.idPunto,
+                item.cutPoint2Ruta.idPunto,
+                R.color.diecisieteSalida
+            )
+            traceRoute(
+                item.pointsAnteriorRoute!!,
+                item.cutPoint1RutaAnterior!!.idPunto,
+                item.cutPoint2RutaAnterior!!.idPunto,
+                R.color.RutaCalculada
+            )
+        }
+
+        private fun handleSingleRoute(item: CalculateRoute.RouteCalculate) {
+            traceWalkRoutes(item)
+
+            mapInstance.addMarker(
+                instFunctions.getOptionsMarker(
+                    item.ubiStartGeneral,
+                    R.drawable.ic_point_a_start,
+                    "Punto A (Partida)"
+                )
+            )
+
+            mapInstance.addMarker(
+                instFunctions.getOptionsMarker(
+                    item.ubiEndGeneral,
+                    R.drawable.ic_point_b_end,
+                    "Punto B (Destino)"
+                )
+            )
+
+            traceRoute(
+                item.points,
+                item.cutPoint1Ruta.idPunto,
+                item.cutPoint2Ruta.idPunto,
+                R.color.RutaCalculada
+            )
+        }
+
+        private fun setupTransferRouteTexts(item: CalculateRoute.RouteCalculate) {
+            binding.descriptStep1.text =
+                contextMap.getString(
+                    R.string.toma_buseta,
+                    item.idRutaAnterior.toString(),
+                    item.cutPoint1RutaAnterior?.distancia.toString()
+                )
+
+            binding.descriptStep2.text =
+                "Haz el recorrido en la buseta para bajarte en el punto marcado con: "
+            binding.lastStep.text =
+                "Camina hasta tomar el transbordo a la ruta #${item.idruta}"
+
+            binding.imageLastStep1.setImageResource(R.drawable.ic_calculates_btn)
+            binding.secondPartForTransfers.visibility = View.VISIBLE
+
+            binding.descriptStep4.text = "Toma la buseta #${item.idruta} marcada con: "
+            binding.descriptStep5.text =
+                "Haz el recorrido en la buseta para bajarte en el punto marcado con: "
+            binding.lastStep2.text =
+                "Camina ${item.cutPoint2Ruta.distancia} metros hasta el punto destino marcado con: "
+        }
+
+        private fun setupSingleRouteTexts(item: CalculateRoute.RouteCalculate) {
+            binding.secondPartForTransfers.visibility = View.GONE
+
+            binding.descriptStep1.text =
+                "Toma la buseta #${item.idruta} a ${item.cutPoint1Ruta.distancia} metros marcada con: "
+            binding.descriptStep2.text =
+                "Haz el recorrido en la buseta para bajarte en el punto marcado con: "
+            binding.lastStep.text =
+                "Camina ${item.cutPoint2Ruta.distancia} metros hasta el punto destino marcado: "
+        }
+
 
         private fun traceWalkRoutes(
             item: CalculateRoute.RouteCalculate
@@ -179,5 +218,7 @@ class AdapterHolderCalculates(
             )
         }
     }
-
 }
+
+
+
