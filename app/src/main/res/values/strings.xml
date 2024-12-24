@@ -157,6 +157,16 @@
     <string name="select_language">Tipo de Mapa</string>
     <string name="title_calculada">Ruta Calculada #%1$s</string>
     <string name="toma_buseta">"Toma la buseta #%1$s a %2$s metros marcada con: "</string>
+    <string name="version_algoritmo_calcular_text">Algoritmo Version 2.1.0</string>
+    <string name="step2_text_calculate">"Haz el recorrido en la buseta para bajarte en el punto marcado con: "</string>
+    <string name="laststep1_text_calculate">Camina hasta tomar el transbordo a la ruta #%1$s</string>
+    <string name="fourstep_text_calculate">"Toma la buseta #%1$s marcada con: "</string>
+    <string name="fivestep_text_calculate">"Haz el recorrido en la buseta para bajarte en el punto marcado con: "</string>
+    <string name="laststep2_text_calculate">"Camina %1$s metros hasta el punto destino marcado con: "</string>
+    <string name="step1_single_text_calculate">"Toma la buseta #%1$s a %2$s metros marcada con: "</string>
+    <string name="step2_single_text_calculate">"Haz el recorrido en la buseta para bajarte en el punto marcado con: "</string>
+    <string name="laststep1_single_text_calculate">"Camina %1$s metros hasta el punto destino marcado: "</string>
+    <string name="ver_recorrido">Ver Recorrido</string>
 
 </resources>
 

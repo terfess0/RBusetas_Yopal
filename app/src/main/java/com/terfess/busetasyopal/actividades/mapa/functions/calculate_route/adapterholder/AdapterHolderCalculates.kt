@@ -10,10 +10,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.actividades.mapa.functions.MapFunctionOptions
 import com.terfess.busetasyopal.actividades.mapa.functions.calculate_route.CalculateRoute
+import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.ItemRouteCalculateBinding
 
 class AdapterHolderCalculates(
-    var list: List<CalculateRoute.RouteCalculate>,
+    var list: MutableList<CalculateRoute.RouteCalculate>,
     context: Context,
     map: GoogleMap,
     instanceFunctions: MapFunctionOptions
@@ -40,8 +41,9 @@ class AdapterHolderCalculates(
     }
 
 
-    fun notyList(newlist: List<CalculateRoute.RouteCalculate>) {
+    fun notyList(newlist: MutableList<CalculateRoute.RouteCalculate>) {
         this.list = newlist
+        notifyDataSetChanged()
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -51,14 +53,35 @@ class AdapterHolderCalculates(
             // Limpieza de mapa común para ambos casos
             binding.btnDetails.setOnClickListener {
                 mapInstance.clear()
+
+                // Manejar cada ruta calculada previniendo errores con try-catch
                 if (item.isTransfer) {
-                    handleTransferRoute(item)
+                    try {
+                        handleTransferRoute(item)
+                    } catch (e: Exception) {
+                        list.remove(item)
+                        notyList(list)
+
+                        UtilidadesMenores().crearAlertaSencilla(
+                            contextMap,
+                            "Se elimino la ruta calculada de la lista debido a un error inesperado. [${e.message.toString()}]"
+                        )
+                    }
                 } else {
-                    handleSingleRoute(item)
+                    try {
+                        handleSingleRoute(item)
+                    } catch (e: Exception) {
+                        list.remove(item)
+                        notyList(list)
+
+                        UtilidadesMenores().crearAlertaSencilla(
+                            contextMap,
+                            "Se elimino la ruta calculada de la lista debido a un error inesperado. [${e.message.toString()}]"
+                        )
+                    }
                 }
             }
 
-            println("INFO ITEM: ${item.idruta} ----- $item")
             // Configuración común
             binding.title.text = contextMap.getString(R.string.title_calculada, posItem.toString())
 
@@ -121,29 +144,42 @@ class AdapterHolderCalculates(
                 )
 
             binding.descriptStep2.text =
-                "Haz el recorrido en la buseta para bajarte en el punto marcado con: "
+                contextMap.getString(R.string.step2_text_calculate)
             binding.lastStep.text =
-                "Camina hasta tomar el transbordo a la ruta #${item.idruta}"
+                contextMap.getString(R.string.laststep1_text_calculate, item.idruta.toString())
 
             binding.imageLastStep1.setImageResource(R.drawable.ic_calculates_btn)
             binding.secondPartForTransfers.visibility = View.VISIBLE
 
-            binding.descriptStep4.text = "Toma la buseta #${item.idruta} marcada con: "
+            binding.descriptStep4.text =
+                contextMap.getString(R.string.fourstep_text_calculate, item.idruta.toString())
             binding.descriptStep5.text =
-                "Haz el recorrido en la buseta para bajarte en el punto marcado con: "
+                contextMap.getString(R.string.fivestep_text_calculate)
             binding.lastStep2.text =
-                "Camina ${item.cutPoint2Ruta.distancia} metros hasta el punto destino marcado con: "
+                contextMap.getString(
+                    R.string.laststep2_text_calculate,
+                    item.cutPoint2Ruta.distancia.toString()
+                )
         }
 
         private fun setupSingleRouteTexts(item: CalculateRoute.RouteCalculate) {
             binding.secondPartForTransfers.visibility = View.GONE
 
             binding.descriptStep1.text =
-                "Toma la buseta #${item.idruta} a ${item.cutPoint1Ruta.distancia} metros marcada con: "
+                contextMap.getString(
+                    R.string.step1_single_text_calculate,
+                    item.idruta.toString(),
+                    item.cutPoint1Ruta.distancia.toString()
+                )
+
             binding.descriptStep2.text =
-                "Haz el recorrido en la buseta para bajarte en el punto marcado con: "
+                contextMap.getString(R.string.step2_single_text_calculate)
+
             binding.lastStep.text =
-                "Camina ${item.cutPoint2Ruta.distancia} metros hasta el punto destino marcado: "
+                contextMap.getString(
+                    R.string.laststep1_single_text_calculate,
+                    item.cutPoint2Ruta.distancia.toString()
+                )
         }
 
 
@@ -151,6 +187,7 @@ class AdapterHolderCalculates(
             item: CalculateRoute.RouteCalculate
         ) {
             val ptsRoute = item.points
+
             instFunctions.traceWalkRoute(
                 item.ubiStartGeneral,
                 ptsRoute[item.cutPoint1Ruta.idPunto],

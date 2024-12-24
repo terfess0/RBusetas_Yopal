@@ -28,7 +28,7 @@ class ViewModelMapa : ViewModel(),
 
     override fun onResult(
         result: Boolean,
-        routes: List<RouteCalculate1>
+        routes: MutableList<RouteCalculate1>
     ) {
         resultCalculate.postValue(
             com.terfess.busetasyopal.actividades.mapa.functions.calculate_route.CalculateRoute.ResultCalculate(

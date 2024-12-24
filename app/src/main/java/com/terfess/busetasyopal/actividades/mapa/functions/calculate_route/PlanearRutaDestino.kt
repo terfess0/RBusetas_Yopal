@@ -72,7 +72,7 @@ class PlanearRutaDestino(private val mapa: Context) {
             // CHECK OBTAIN ROUTES
             if (listPossibles1.isEmpty() || listPossibles2.isEmpty()) {
                 println("No hay rutas o en el inicio o en el destino")
-                callback.onResult(false, emptyList())
+                callback.onResult(false, mutableListOf())
                 return@withContext
             }
 
@@ -309,7 +309,7 @@ class PlanearRutaDestino(private val mapa: Context) {
                         callback.onResult(true, listResultTransfers)
                     } else {
                         println("No se encontraron opciones de ruta intermedia")
-                        callback.onResult(false, emptyList())
+                        callback.onResult(false, mutableListOf())
                     }
                 }
             }

@@ -47,6 +47,6 @@ class CalculateRoute {
 
     data class ResultCalculate(
         val resultInfo: Boolean,
-        val dataResult: List<RouteCalculate>
+        val dataResult: MutableList<RouteCalculate>
     )
 }

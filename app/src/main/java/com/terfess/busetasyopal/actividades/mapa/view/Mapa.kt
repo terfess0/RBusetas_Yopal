@@ -379,7 +379,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
                 // Show/Hide elements
                 binding.infoColor.visibility = View.GONE
-
+                binding.textAlgoritmVersion.visibility = View.VISIBLE
 
                 var ubiInicio = LatLng(0.0, 0.0)
                 var ubiDestino = LatLng(0.0, 0.0)

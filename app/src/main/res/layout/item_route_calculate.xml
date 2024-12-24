@@ -42,8 +42,7 @@
             <LinearLayout
                 android:id="@+id/contain1"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
@@ -74,8 +73,7 @@
             <LinearLayout
                 android:id="@+id/contain2"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
@@ -106,8 +104,7 @@
             <LinearLayout
                 android:id="@+id/contain3"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
@@ -139,8 +136,7 @@
             <LinearLayout
                 android:id="@+id/secondPartForTransfers"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="gone">
                 <!-- SECOND RUTE WHEN TRANSFER -->
@@ -238,12 +234,11 @@
             <Button
                 android:id="@+id/btnDetails"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_weight="1"
                 android:background="@drawable/bord_suave"
                 android:backgroundTint="@color/enfasis_azul"
-                android:text="Ver Recorrido"
+                android:text="@string/ver_recorrido"
                 android:textColor="@color/white" />
 
         </LinearLayout>
