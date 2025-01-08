@@ -195,11 +195,11 @@ class MapFunctionOptions {
         var recorte = mutableListOf<LatLng>()
 
         //mueve la camara al marcador de estacion cercana
-        mapa.animateCamera(
-            CameraUpdateFactory.newLatLng(
-                puntosRoute[pointCutStart]
-            ), 2000, null
-        )
+//        mapa.animateCamera(
+//            CameraUpdateFactory.newLatLng(
+//                puntosRoute[pointCutStart]
+//            ), 2000, null
+//        )
 
         //se calcula y traza una nueva polylinea
 

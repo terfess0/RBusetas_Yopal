@@ -3,7 +3,7 @@
     <string name="app_name">Busetas Yopal</string>
 
     <string name="textview">TextView</string>
-    <string name="linkBaseDatos">https://rutas-busetas-yopal-default-rtdb.firebaseio.com/</string>
+    <string name="linkBaseDatos" translatable="false">https://rutas-busetas-yopal-default-rtdb.firebaseio.com/</string>
 
     <string name="mensaje_contacto">Enviar mensaje por correo al desarrollador</string>
     <string name="mensaje_contacto_wts">Enviar mensaje a whatsapp al desarrollador</string>
@@ -30,9 +30,9 @@
     <string name="actualizar_precio_pasaje">Actualizar precio pasaje</string>
 
 
-    <string name="ruta_reportes_db_nube">features/0/reportesNew</string>
-    <string name="ruta_firebase_price_nube">/features/0/precio</string>
-    <string name="ruta_firebase_rutas_nube">features/0/rutas</string>
+    <string name="ruta_reportes_db_nube" translatable="false">features/0/reportesNew</string>
+    <string name="ruta_firebase_price_nube" translatable="false">/features/0/precio</string>
+    <string name="ruta_firebase_rutas_nube" translatable="false">features/0/rutas</string>
 
     <string name="no_hay_reportes_en_este_momento">No hay reportes en este momento.</string>
     <string name="confirm">Confirmar</string>
@@ -167,6 +167,14 @@
     <string name="step2_single_text_calculate">"Haz el recorrido en la buseta para bajarte en el punto marcado con: "</string>
     <string name="laststep1_single_text_calculate">"Camina %1$s metros hasta el punto destino marcado: "</string>
     <string name="ver_recorrido">Ver Recorrido</string>
+    <string name="compras_opt">Compras</string>
+    <string name="productos">Productos</string>
+    <string name="tus_compras">Tus compras</string>
+    <string name="name_shared_ads_restriction" translatable="false">with_ads_restriction_on</string>
+    <string name="partida">"Partida   "</string>
+    <string name="destino">"Destino   "</string>
+    <string name="en_este_momento_no_hay_compras">En este momento no hay compras.</string>
+    <string name="title_shop_gretting_text">¡Tus compras nos ayudan a mejorar! 🛍️ Con cada compra, podemos actualizar info, mejorar rutas y mantener todo funcionando al 100%. ¡Gracias por apoyarnos!</string>
 
 </resources>
 

@@ -16,6 +16,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getString
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.BaseTransientBottomBar
@@ -45,7 +47,7 @@ import java.util.Locale
 
 
 interface AlertaCallback { //devolucion de llamada para el CrearAlerta
-    fun onOpcionSeleccionada(opcion: Int, tipo_de_solicitud: String)
+    fun onOpcionSeleccionada(opcion: Int, tipoDeSolicitud: String)
 }
 
 class UtilidadesMenores {
@@ -70,29 +72,29 @@ class UtilidadesMenores {
 
     fun crearAlerta(
         contexto: Context,
-        tipo_solicitud: String,
+        tipoSolicitud: String,
         mensaje: String,
         op1: String,
         op2: String,
-        Callback: AlertaCallback
+        callback: AlertaCallback
     ) {
         val builder = AlertDialog.Builder(contexto, R.style.AlertDialogTheme)
         builder.setTitle("Alerta!")
         builder.setMessage(mensaje)
             .setPositiveButton(op1) { _, _ ->
-                if (tipo_solicitud == "ubicacion") {
-                    Callback.onOpcionSeleccionada(2, "permiso_ubicacion") //opcion lado derecho
+                if (tipoSolicitud == "ubicacion") {
+                    callback.onOpcionSeleccionada(2, "permiso_ubicacion") //opcion lado derecho
                 }
-                if (tipo_solicitud == "notificacion") {
-                    Callback.onOpcionSeleccionada(1, "permiso_notificacion") //opcion lado derecho
+                if (tipoSolicitud == "notificacion") {
+                    callback.onOpcionSeleccionada(1, "permiso_notificacion") //opcion lado derecho
                 }
             }
         builder.setNegativeButton(op2) { _, _ ->
-            if (tipo_solicitud == "ubicacion") {
-                Callback.onOpcionSeleccionada(1, "permiso_ubicacion") //opcion lado izquierdo
+            if (tipoSolicitud == "ubicacion") {
+                callback.onOpcionSeleccionada(1, "permiso_ubicacion") //opcion lado izquierdo
             }
-            if (tipo_solicitud == "notificacion") {
-                Callback.onOpcionSeleccionada(2, "permiso_notificacion") //opcion lado derecho
+            if (tipoSolicitud == "notificacion") {
+                callback.onOpcionSeleccionada(2, "permiso_notificacion") //opcion lado derecho
             }
         }
         val dialog = builder.create()
@@ -132,7 +134,7 @@ class UtilidadesMenores {
     }
 
 
-    var toast: Toast? = null // variable toast "global" intencion no acumulacion de toast
+    private var toast: Toast? = null // variable toast "global" intencion no acumulacion de toast
 
     fun crearToast(contexto: Context?, mensaje: String) {
         contexto?.applicationContext?.let {//si contexto y contexo aplicacion no son nulos entonces let ejecutara el bloque de codigo en {}
@@ -211,8 +213,8 @@ class UtilidadesMenores {
         return nightModeState
     }
 
-    fun reportar(context: Context, instanciaMapa: Mapa? = null, opcion_actual: String) {
-        var ubiUser = Mapa.ubiUser //ubicacion del usuario
+    fun reportar(context: Context, instanciaMapa: Mapa? = null, opcionActual: String) {
+        val ubiUser = Mapa.ubiUser //ubicacion del usuario
         val builder = AlertDialog.Builder(context, R.style.AlertDialogTheme)
 
         //set titulo, descripcion y icono
@@ -251,7 +253,7 @@ class UtilidadesMenores {
 
         // Establecer el LinearLayout como la vista del cuadro de diálogo
         builder.setView(layout)
-        builder.setPositiveButton("Enviar") { dialog, which ->
+        builder.setPositiveButton("Enviar") { _, _ ->
 
             if (comprobarConexion(context)) {
 
@@ -297,10 +299,10 @@ class UtilidadesMenores {
                                 contador++
                             }
 
-                            if (ubiUser.latitude == 0.0 && ubiUser.longitude == 0.0) {
-                                ubicacion = "No proporcionada"
+                            ubicacion = if (ubiUser.latitude == 0.0 && ubiUser.longitude == 0.0) {
+                                "No proporcionada"
                             } else {
-                                ubicacion = ubiUser.toString()
+                                ubiUser.toString()
                             }
                         }
                         //si no selecciona enviar ubicacion
@@ -309,7 +311,7 @@ class UtilidadesMenores {
                         }
 
                         // Obtener el token de registro
-                        var tokenIdApp = ""
+                        var tokenIdApp: String
                         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
                             if (task.isSuccessful) {
                                 tokenIdApp = task.result
@@ -320,7 +322,7 @@ class UtilidadesMenores {
                                     "timeReport" to horaFormateada,
                                     "situationReport" to texto,
                                     "location" to ubicacion,
-                                    "currentTask" to opcion_actual,
+                                    "currentTask" to opcionActual,
                                     "origin" to tokenIdApp
                                 )
 
@@ -361,10 +363,16 @@ class UtilidadesMenores {
         builder.show()
     }
 
-    fun readSharedPref(context: Context, key: String): Int {
+    fun readSharedIntPref(context: Context, key: String): Int {
         val sharedPreferences =
             context.getSharedPreferences("PreferenciasGuardadas", Context.MODE_PRIVATE)
         return sharedPreferences.getInt(key, 0)
+    }
+
+    fun readSharedBooleanPref(context: Context, key: String): Boolean {
+        val sharedPreferences =
+            context.getSharedPreferences("PreferenciasGuardadas", Context.MODE_PRIVATE)
+        return sharedPreferences.getBoolean(key, false)
     }
 
     fun handleFirebaseError(exception: Exception): FirebaseEnums {
@@ -520,4 +528,53 @@ class UtilidadesMenores {
 
         return savedTypeCode
     }
+
+    fun saveAdsShowState(context: Context, value: Boolean) {
+        val nameShared = context.getString(R.string.nombre_shared_preferences)
+        val nameSharedValue = context.getString(R.string.name_shared_ads_restriction)
+        val sharedPreferences = context.getSharedPreferences(nameShared, Context.MODE_PRIVATE)
+
+        // Save value
+        sharedPreferences.edit()
+            .putBoolean(nameSharedValue, value)
+            .apply()
+    }
+
+    fun loadAds(contexto:Context, adViewElement:AdView) {
+        val str = contexto.getString(R.string.name_shared_ads_restriction)
+        val state = UtilidadesMenores().readSharedBooleanPref(contexto, str)
+
+        if (state){
+            adViewElement.visibility = View.GONE
+        }else{
+            CoroutineScope(Dispatchers.IO).launch {
+                // Ad request
+                val adRequest = AdRequest.Builder().build()
+
+                withContext(Dispatchers.Main) {
+                    adViewElement.loadAd(adRequest)
+                }
+            }
+        }
+    }
+
+    fun convertTimeNumToDate(timeNum: Long): String {
+        val date = Date(timeNum)
+
+        // Define format date: "d 'de' MMMM 'de' yyyy"
+        val dateFormat = SimpleDateFormat("d 'de' MMMM 'de' yyyy", Locale("es", "ES"))
+
+        return dateFormat.format(date)
+    }
+
+
+    fun handlePurchaseState(purchaseState: Int): String {
+        return when (purchaseState) {
+            0 -> "Estado no especificado"
+            1 -> "Comprado"
+            2 -> "Pendiente"
+            else -> "Estado desconocido"
+        }
+    }
+
 }

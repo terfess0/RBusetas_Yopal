@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.database.FirebaseDatabase
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.room.DatosDeFirebase
@@ -16,6 +17,7 @@ import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.room.allDatosRutas
 import com.terfess.busetasyopal.room.AppDatabase
 import com.terfess.busetasyopal.room.model.Version
+import com.terfess.busetasyopal.services.BillingService
 import com.terfess.busetasyopal.services.NotificationChannelHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,7 +35,7 @@ class Splash : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val splashScreen = installSplashScreen()
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         setContentView(R.layout.pant_splash)
 
@@ -42,6 +44,9 @@ class Splash : AppCompatActivity() {
         val roomDB by lazy { AppDatabase.getDatabase(this) }
 
         val intentToRutasSeccion = Intent(this, PantallaPrincipal::class.java)
+
+        // Initialize ads sdk
+        MobileAds.initialize(this) {}
 
         //crear canales notificaciones
         NotificationChannelHelper(this).crearCanalesNotificaciones()

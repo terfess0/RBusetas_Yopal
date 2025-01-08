@@ -8,241 +8,265 @@
     android:background="?attr/colorBackgroundFloating"
     android:padding="10dp">
 
-    <androidx.constraintlayout.motion.widget.MotionLayout
-        android:id="@+id/motionLayout"
+    <TextView
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#345F5E5E"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        app:layoutDescription="@xml/item_route_calculate_scene"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:gravity="center_horizontal"
+        android:textColor="?attr/titleTextColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:textColor="?attr/titleTextColor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:id="@+id/containVisibilityObjects"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title">
 
         <LinearLayout
-            android:id="@+id/containVisibilityObjects"
+            android:id="@+id/contain1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/labelStep1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/paso_1"
+                android:textColor="?attr/titleTextColor"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/descriptStep1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:textColor="?attr/titleTextColor"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:contentDescription="@string/icono_toma_la_ruta"
+                android:src="@drawable/ic_estacion_inicio_ruta" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/contain2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/labelStep2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/paso_2"
+                android:textColor="?attr/titleTextColor"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/descriptStep2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:textColor="?attr/titleTextColor"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:contentDescription="@string/icono_baja_de_la_ruta"
+                android:src="@drawable/ic_estacion_fin_ruta" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/contain3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/labelStep3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/paso_3"
+                android:textColor="?attr/titleTextColor"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/lastStep"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:textColor="?attr/titleTextColor"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:id="@+id/imageLastStep1"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:contentDescription="@string/punto_destino"
+                android:src="@drawable/ic_point_b_end" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/secondPartForTransfers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+            android:visibility="gone">
+            <!-- SECOND RUTE WHEN TRANSFER -->
 
             <LinearLayout
-                android:id="@+id/contain1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/labelStep1"
+                    android:id="@+id/labelStep4"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/paso_1"
+                    android:text="@string/paso_4"
                     android:textColor="?attr/titleTextColor"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/descriptStep1"
+                    android:id="@+id/descriptStep4"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:textColor="?attr/titleTextColor" />
+                    android:textColor="?attr/titleTextColor"
+                    android:textSize="12sp" />
 
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="30dp"
-                    android:layout_gravity="center"
                     android:layout_weight="1"
                     android:contentDescription="@string/icono_toma_la_ruta"
                     android:src="@drawable/ic_estacion_inicio_ruta" />
             </LinearLayout>
 
+
             <LinearLayout
-                android:id="@+id/contain2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/labelStep2"
+                    android:id="@+id/labelStep5"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/paso_2"
+                    android:text="@string/paso_5"
                     android:textColor="?attr/titleTextColor"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/descriptStep2"
+                    android:id="@+id/descriptStep5"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:textColor="?attr/titleTextColor" />
+                    android:textColor="?attr/titleTextColor"
+                    android:textSize="12sp" />
 
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="30dp"
-                    android:layout_gravity="center"
                     android:layout_weight="1"
                     android:contentDescription="@string/icono_baja_de_la_ruta"
                     android:src="@drawable/ic_estacion_fin_ruta" />
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/contain3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/labelStep3"
+                    android:id="@+id/labelStep6"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/paso_3"
+                    android:text="@string/paso_6"
                     android:textColor="?attr/titleTextColor"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/lastStep"
+                    android:id="@+id/lastStep2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:textColor="?attr/titleTextColor" />
+                    android:textColor="?attr/titleTextColor"
+                    android:textSize="12sp" />
 
                 <ImageView
-                    android:id="@+id/imageLastStep1"
+                    android:id="@+id/imageLastStep2"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
-                    android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:contentDescription="@string/punto_destino"
-                    android:src="@drawable/ic_point_b_end" />
+                    android:contentDescription="@string/camina_al_destino"
+                    android:src="@drawable/ic_destino" />
             </LinearLayout>
+        </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/secondPartForTransfers"
-                android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnDeleteCalculate"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
-                <!-- SECOND RUTE WHEN TRANSFER -->
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/labelStep4"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/paso_4"
-                        android:textColor="?attr/titleTextColor"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/descriptStep4"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:textColor="?attr/titleTextColor" />
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="30dp"
-                        android:layout_weight="1"
-                        android:contentDescription="@string/icono_toma_la_ruta"
-                        android:src="@drawable/ic_estacion_inicio_ruta" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/labelStep5"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/paso_5"
-                        android:textColor="?attr/titleTextColor"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/descriptStep5"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:textColor="?attr/titleTextColor" />
-
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="30dp"
-                        android:layout_weight="1"
-                        android:contentDescription="@string/icono_baja_de_la_ruta"
-                        android:src="@drawable/ic_estacion_fin_ruta" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/labelStep6"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/paso_6"
-                        android:textColor="?attr/titleTextColor"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/lastStep2"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="3"
-                        android:textColor="?attr/titleTextColor" />
-
-                    <ImageView
-                        android:id="@+id/imageLastStep2"
-                        android:layout_width="0dp"
-                        android:layout_height="30dp"
-                        android:layout_weight="1"
-                        android:contentDescription="@string/camina_al_destino"
-                        android:src="@drawable/ic_destino" />
-                </LinearLayout>
-            </LinearLayout>
+                android:layout_gravity="end"
+                android:background="@drawable/bord_suave"
+                android:backgroundTint="@color/gris"
+                android:drawableEnd="@drawable/ic_delete_outline"
+                android:text="@string/eliminar"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
 
             <Button
                 android:id="@+id/btnDetails"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:autoSizeTextType="uniform"
+                android:layout_gravity="end"
+                android:layout_marginStart="5dp"
                 android:background="@drawable/bord_suave"
-                android:backgroundTint="@color/enfasis_azul"
+                android:backgroundTint="@color/gris"
+                android:drawableEnd="@drawable/ic_route"
                 android:text="@string/ver_recorrido"
+                android:textAllCaps="false"
                 android:textColor="@color/white" />
-
         </LinearLayout>
 
-    </androidx.constraintlayout.motion.widget.MotionLayout>
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,8 +14,8 @@ android {
         applicationId = "com.terfess.busetasyopal"
         minSdk = 24
         targetSdk = 34
-        versionCode = 26
-        versionName = "1.1.8"
+        versionCode = 31
+        versionName = "1.2.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -38,9 +38,6 @@ android {
     }
     viewBinding {
         enable = true
-    }
-    buildFeatures {
-        viewBinding = true
     }
 }
 
@@ -77,7 +74,6 @@ dependencies {
     // firebase cloud messagin
     implementation("com.google.firebase:firebase-messaging:24.0.1")
 
-
     //coroutinas
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
@@ -97,6 +93,14 @@ dependencies {
     val room_version = "2.6.1"
     implementation("androidx.room:room-ktx:$room_version")
     ksp("androidx.room:room-compiler:$room_version")
+
+    //Facturacion Google Play
+    implementation("com.android.billingclient:billing-ktx:7.1.1")
+
+    //glide fotos
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+
 }
 
 

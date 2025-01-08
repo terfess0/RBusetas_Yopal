@@ -23,9 +23,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.MobileAds
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.DataSnapshot
@@ -38,6 +36,7 @@ import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.AdapterPrincipal
 import com.terfess.busetasyopal.actividades.mapa.view.Mapa
 import com.terfess.busetasyopal.actividades.reports.view.ReportsUser
+import com.terfess.busetasyopal.actividades.shoping.ShopScreen
 import com.terfess.busetasyopal.clases_utiles.AlertaCallback
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.PantPrincipalBinding
@@ -48,7 +47,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.Calendar
 
 
@@ -58,7 +56,7 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
     private lateinit var binding: PantPrincipalBinding
     var filtrando = false
     private lateinit var db: DatabaseReference
-    private var precio: String = " $ 2,000 "
+    private var precio: String = " $ 2,200 "
     private lateinit var adapter: AdapterPrincipal
     private var adapterFiltro = FiltroAdapterHolder("")
     private lateinit var colorTema: String
@@ -68,6 +66,7 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
     private var listaFilter = emptyList<DatosPrimariosRuta>()
     private var firebaseInstance = FirebaseDatabase.getInstance()
 
+    private var instanciaUtilidadesMenores = UtilidadesMenores()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,7 +86,7 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
         adapter =
             AdapterPrincipal(
                 listaRutas,
-                UtilidadesMenores().colorTituloTema(this@PantallaPrincipal)
+                instanciaUtilidadesMenores.colorTituloTema(this@PantallaPrincipal)
             )
         cajaInfo.layoutManager = LinearLayoutManager(this)
         cajaInfo.adapter = adapter
@@ -98,7 +97,10 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
 
         CoroutineScope(Dispatchers.Default).launch {
             listaRutas = dbRoom.routeDao().getAllIdsRoute()
-            adapter.updateLista(listaRutas, UtilidadesMenores().colorTituloTema(this@PantallaPrincipal))
+            adapter.updateLista(
+                listaRutas,
+                instanciaUtilidadesMenores.colorTituloTema(this@PantallaPrincipal)
+            )
 
             listaFilter = dbRoom.routeDao().getAllSitesExtended()
         }
@@ -119,7 +121,7 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
         val actionToggle =
             ActionBarDrawerToggle(this, drawer, toolbar, R.string.open, R.string.close)
 
-        val themeColor = UtilidadesMenores().getColorHambugerIcon()
+        val themeColor = instanciaUtilidadesMenores.getColorHambugerIcon()
         actionToggle.drawerArrowDrawable.color = ContextCompat.getColor(this, themeColor)
 
         drawer.addDrawerListener(actionToggle)
@@ -130,11 +132,11 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
         //..
 
         //ads
-        MobileAds.initialize(this) {}//inicializar sdk de anuncios google
-        loadAds()
+        mAdView = binding.adView
+        instanciaUtilidadesMenores.loadAds(this, mAdView)
 
         //save mode night/light
-        UtilidadesMenores().applySavedNightMode(this)
+        instanciaUtilidadesMenores.applySavedNightMode(this)
 
         //pedir permiso notificacion si es mayor a android 13
         if (VERSION.SDK_INT >= 33) {
@@ -227,7 +229,7 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
             }
         }
 
-        colorTema = UtilidadesMenores().colorTituloTema(this)
+        colorTema = instanciaUtilidadesMenores.colorTituloTema(this)
 
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -257,6 +259,11 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
         })
 
         handleIntent(intent)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        instanciaUtilidadesMenores.loadAds(this, mAdView)
     }
 
     private fun getGratingHead(): String {
@@ -296,7 +303,7 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
         }
 
         intent.getStringExtra("respuesta")?.let { response ->
-            UtilidadesMenores().crearAlertaSencilla(this, response)
+            instanciaUtilidadesMenores.crearAlertaSencilla(this, response)
             // Limpiar el intent
             intent.removeExtra("respuesta")
         }
@@ -347,7 +354,7 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
             // El usuario concedió el permiso
         } else {
             // El usuario denegó el permiso noti
-            UtilidadesMenores().crearAlertaSencilla(
+            instanciaUtilidadesMenores.crearAlertaSencilla(
                 this,
                 "El permiso de notificaciones ha sido denegado"
             )
@@ -363,7 +370,7 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
                 // FCM SDK (and your app) can post notifications.
             } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
                 // Aquí podrías mostrar un diálogo o mensaje explicativo al usuario
-                UtilidadesMenores().crearAlerta(
+                instanciaUtilidadesMenores.crearAlerta(
                     this,
                     "notificacion",
                     "Permiso de notificación ha sido denegado." +
@@ -432,10 +439,10 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
         }
     }
 
-    override fun onOpcionSeleccionada(opcion: Int, tiypeSoli: String) {
+    override fun onOpcionSeleccionada(opcion: Int, tipoDeSolicitud: String) {
         //devolucion de llamada de la opcion seleccionada en UtilidadesMenores.CrearAlerta()
         //si acepta en la alerta de iniciara el pedido de permiso noti
-        if (tiypeSoli == "permiso_notificacion" && opcion == 1) {
+        if (tipoDeSolicitud == "permiso_notificacion" && opcion == 1) {
             if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
@@ -443,17 +450,6 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
     }
 
     //---------------------------------------------------------
-    private fun loadAds() {
-        CoroutineScope(Dispatchers.IO).launch {
-            // Ad request
-            val adRequest = AdRequest.Builder().build()
-
-            withContext(Dispatchers.Main) {
-                mAdView = findViewById(R.id.adView)
-                mAdView.loadAd(adRequest)
-            }
-        }
-    }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         val filtro = binding.filtro
@@ -473,7 +469,7 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
                 if (filtrando) {
                     currentTask = "Filtrando - buscando sitios"
                 }
-                UtilidadesMenores().reportar(this, null, currentTask)
+                instanciaUtilidadesMenores.reportar(this, null, currentTask)
             }
 
             R.id.misReportes -> {
@@ -511,6 +507,12 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
 
                 startActivity(intent)
             }
+
+            R.id.shopping -> {
+                val intent = Intent(this, ShopScreen::class.java)
+
+                startActivity(intent)
+            }
         }
         drawer.closeDrawer(GravityCompat.START)
         return true
@@ -529,11 +531,11 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
 
         delay(rotation.duration)
 
-        UtilidadesMenores().toggleNightMode(
+        instanciaUtilidadesMenores.toggleNightMode(
             this
         )
-
     }
+
 }
 
 

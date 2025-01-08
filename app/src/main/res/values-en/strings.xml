@@ -3,7 +3,6 @@
     <string name="app_name">Busetas Yopal</string>
 
     <string name="textview">TextView</string>
-    <string name="linkBaseDatos">https://rutas-busetas-yopal-default-rtdb.firebaseio.com/</string>
 
     <string name="mensaje_contacto">Send an email to the developer</string>
     <string name="mensaje_contacto_wts">Send a WhatsApp message to the developer</string>
@@ -18,7 +17,6 @@
     <string name="alert_text_literal">Information</string>
     <string name="empty_eport_error">Empty report, not sent</string>
     <string name="description_alert_report">Here you can send us opinions, findings of incomplete and/or incorrect information, as well as general reports that may be forwarded to the Transit Office.</string>
-    <string name="nombre_shared_preferences" translatable="false">PreferenciasGuardadas</string>
     <string name="ver_ruta">view route</string>
     <string name="ocultar">hide</string>
     <string name="ruta_y_numero">Route %1$s</string>
@@ -29,10 +27,6 @@
     <string name="cancel">Cancel</string>
     <string name="actualizar_precio_pasaje">Update ticket price</string>
 
-
-    <string name="ruta_reportes_db_nube">features/0/reportesNew</string>
-    <string name="ruta_firebase_price_nube">/features/0/precio</string>
-    <string name="ruta_firebase_rutas_nube">features/0/rutas</string>
 
     <string name="no_hay_reportes_en_este_momento">No reports at this time.</string>
     <string name="confirm">Confirm</string>
@@ -158,14 +152,22 @@
     <string name="title_calculada">Calculated Route #%1$s</string>
     <string name="toma_buseta">"Take bus route number #%1$s at %2$s meters and marked with: "</string>
     <string name="version_algoritmo_calcular_text">Algorithm Version 2.1.0</string>
-    <string name="step2_text_calculate">"Haz el recorrido en la buseta para bajarte en el punto marcado con: "</string>
-    <string name="laststep1_text_calculate">Camina hasta tomar el transbordo a la ruta #%1$s</string>
-    <string name="fourstep_text_calculate">"Toma la buseta #%1$s marcada con: "</string>
-    <string name="fivestep_text_calculate">"Haz el recorrido en la buseta para bajarte en el punto marcado con: "</string>
-    <string name="laststep2_text_calculate">"Camina %1$s metros hasta el punto destino marcado con: "</string>
-    <string name="step1_single_text_calculate">"Toma la buseta #%1$s a %2$s metros marcada con: "</string>
-    <string name="step2_single_text_calculate">"Haz el recorrido en la buseta para bajarte en el punto marcado con: "</string>
-    <string name="ver_recorrido">Ver Recorrido</string>
+    <string name="step2_text_calculate">"Take the bus to get off at the point marked: "</string>
+    <string name="laststep1_text_calculate">Walk until you take the transfer to the route: #%1$s</string>
+    <string name="fourstep_text_calculate">"Take the bus #%1$s marked with: "</string>
+    <string name="fivestep_text_calculate">"Take the bus to get off at the point marked with: "</string>
+    <string name="laststep2_text_calculate">"Walk %1$s meters to the destination point marked with: "</string>
+    <string name="step1_single_text_calculate">"Take the bus #%1$s to %2$s meters marked with: "</string>
+    <string name="step2_single_text_calculate">"Take the bus to get off at the point marked with: "</string>
+    <string name="laststep1_single_text_calculate">Walk %1$s meters to the marked destination point:</string>
+    <string name="ver_recorrido">See Tour</string>
+    <string name="compras_opt">Shopping</string>
+    <string name="productos">Products</string>
+    <string name="tus_compras">Your purchases</string>
+    <string name="partida">"Departure   "</string>
+    <string name="destino">"Destination   "</string>
+    <string name="en_este_momento_no_hay_compras">There are no purchases at this time.</string>
+    <string name="title_shop_gretting_text">Your purchases help us improve! 🛍️ With every purchase, we can update info, improve routes, and keep everything running smoothly. Thanks for your support! 💙</string>
 </resources>
 
 

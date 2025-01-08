@@ -65,6 +65,11 @@
 
             <menu>
                 <item
+                    android:id="@+id/shopping"
+                    android:icon="@drawable/ic_money_opt"
+                    android:title="@string/compras_opt" />
+
+                <item
                     android:id="@+id/acercade"
                     android:icon="@drawable/ic_acerca_de"
                     android:title="@string/acerca_de_la_app" />

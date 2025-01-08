@@ -4,6 +4,8 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
@@ -50,9 +52,14 @@ class AdapterHolderCalculates(
         private val binding: ItemRouteCalculateBinding = ItemRouteCalculateBinding.bind(itemView)
 
         fun bind(item: CalculateRoute.RouteCalculate, posItem: Int) {
+            binding.title.setOnClickListener {
+                turnVisibilityContent(binding.containVisibilityObjects)
+            }
+
             // Limpieza de mapa común para ambos casos
             binding.btnDetails.setOnClickListener {
                 mapInstance.clear()
+
 
                 // Manejar cada ruta calculada previniendo errores con try-catch
                 if (item.isTransfer) {
@@ -64,7 +71,7 @@ class AdapterHolderCalculates(
 
                         UtilidadesMenores().crearAlertaSencilla(
                             contextMap,
-                            "Se elimino la ruta calculada de la lista debido a un error inesperado. [${e.message.toString()}]"
+                            "Se elimino la ruta calculada de la lista debido a un error inesperado."
                         )
                     }
                 } else {
@@ -76,19 +83,33 @@ class AdapterHolderCalculates(
 
                         UtilidadesMenores().crearAlertaSencilla(
                             contextMap,
-                            "Se elimino la ruta calculada de la lista debido a un error inesperado. [${e.message.toString()}]"
+                            "Se elimino la ruta calculada de la lista debido a un error. [${e.message.toString()}]"
                         )
                     }
                 }
             }
 
             // Configuración común
-            binding.title.text = contextMap.getString(R.string.title_calculada, posItem.toString())
+            binding.title.text = contextMap.getString(R.string.title_calculada, item.idruta.toString())
+
+            binding.btnDeleteCalculate.setOnClickListener {
+                turnVisibilityContent(binding.containVisibilityObjects)
+                list.remove(item)
+                notyList(list)
+            }
 
             if (item.isTransfer) {
                 setupTransferRouteTexts(item)
             } else {
                 setupSingleRouteTexts(item)
+            }
+        }
+
+        private fun turnVisibilityContent(content: LinearLayout) {
+            if (content.visibility == View.VISIBLE) {
+                content.visibility = View.GONE
+            } else {
+                content.visibility = View.VISIBLE
             }
         }
 

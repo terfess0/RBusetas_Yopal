@@ -6,10 +6,12 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
+        android:enableOnBackInvokedCallback="true"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -17,9 +19,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.general">
         <activity
-            android:name=".actividades.Configurations"
+            android:name=".actividades.shoping.ShopScreen"
             android:exported="false"
             android:theme="@style/Theme.general"/>
+        <activity
+            android:name=".actividades.Configurations"
+            android:exported="false"
+            android:theme="@style/Theme.general" />
         <activity
             android:name=".actividades.reports.view.ReportsUser"
             android:exported="false"
@@ -60,14 +66,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".actividades.AcercaDe"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.general" />
         <activity
-            android:name=".actividades.Mapa"
+            android:name=".actividades.mapa.view.Mapa"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.general" />
@@ -82,16 +87,13 @@
             android:value="@string/key_mapa" />
         <meta-data
             android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" /> <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
-        <!-- id de admob = ca-app-pub-8000181315504515~7188607722 -->
+            android:resource="@array/preloaded_fonts" />
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713" /> <!-- admob -->
+            android:value="@string/fake_ad_key_for_manifest" /> <!-- admob -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_noti" />
-
-        <!-- servicio firebase cloud messsagin -->
+            android:resource="@drawable/ic_noti" /> <!-- servicio firebase cloud messsagin -->
         <service
             android:name=".services.FirebaseMessagingService"
             android:exported="false">

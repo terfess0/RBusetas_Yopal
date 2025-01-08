@@ -31,7 +31,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.ads.AdError
@@ -106,10 +105,12 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
     private var hayConexion = true
 
     private var mInterstitialAd: InterstitialAd? = null
-    private final val TAG = "MainActivity"
+    private val tag = "MainActivity"
+
+    private val instUtilidadesMenores = UtilidadesMenores()
 
     companion object { //accesibles desde cualquier lugar de este archivo/clase y proyectos
-        const val codigoLocalizacion = 0
+        const val LOCATE_CODE = 0
         var ubiUser = LatLng(0.0, 0.0)
 
     }
@@ -142,7 +143,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             Html.FROM_HTML_MODE_LEGACY
         )
         //estado de conexion
-        if (!UtilidadesMenores().comprobarConexion(this)) {
+        if (!instUtilidadesMenores.comprobarConexion(this)) {
             msjNoConection()
             !hayConexion
         }
@@ -168,7 +169,8 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         fragmentMap = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         fragmentMap.getMapAsync(this)
 
-        cargarAnuncios()
+        mAdView = binding.adViewMap
+        instUtilidadesMenores.loadAds(this, mAdView)
 
         //ubicacion del gps
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
@@ -188,7 +190,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         }
 
         // Type map
-        val saveTypeMap = UtilidadesMenores().getSavedTypeMap(this)
+        val saveTypeMap = instUtilidadesMenores.getSavedTypeMap(this)
         gmap.mapType = saveTypeMap
         //..
 
@@ -278,7 +280,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
         val mapTypeSpinner = binding.opcionesTipoMapa
 
-        val selectedIndex = UtilidadesMenores().getIndexTypeMap(this)
+        val selectedIndex = instUtilidadesMenores.getIndexTypeMap(this)
 
         if (selectedIndex >= 0) {
             mapTypeSpinner.setSelection(selectedIndex)
@@ -393,7 +395,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 alertDialogCalculate()
 
                 binding.posInicio.setOnClickListener {
-                    UtilidadesMenores().crearToast(this, "Arrastra la pantalla")
+                    instUtilidadesMenores.crearToast(this, "Arrastra la pantalla")
 
                     binding.posInicio.isClickable =
                         false // Despues de seleccionado se desactiva el boton
@@ -441,7 +443,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                             R.drawable.ic_gps_find,
                             0
                         ) // cambiar el icono al final del boton cuando se guarda la ubicacion
-                        binding.posInicio.text = "Partida   "
+                        binding.posInicio.text = getString(R.string.partida)
 
                         marcador.remove() //borrar el marcador inicial (solo queda el de la ubicacion guardada)
 
@@ -474,7 +476,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                                 R.drawable.ic_check,
                                 0
                             )
-                        }else{
+                        } else {
                             binding.posDestino.isClickable =
                                 true // Si no estan seleccionadas las dos ubis activese el otro boton
                         }
@@ -483,7 +485,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                     //guardar la ubicacion y representarla con un marcador
                     binding.setUbiGps.setOnClickListener {
                         binding.setUbiGps.visibility = View.GONE
-                        UtilidadesMenores().crearToast(this, "Localizando...")
+                        instUtilidadesMenores.crearToast(this, "Localizando...")
 
                         requestLocationPermission()
                         getPosGps()
@@ -503,7 +505,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                                 R.drawable.ic_gps_find,
                                 0
                             ) // cambiar el icono al final del boton cuando se guarda la ubicacion
-                            binding.posInicio.text = "Partida   "
+                            binding.posInicio.text = getString(R.string.partida)
 
                             marcador.remove() //borrar el marcador inicial (solo queda el de la ubicacion guardada)
                         }
@@ -546,7 +548,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 //--------------------------------------------------------------------
                 //boton guardar ubicacion de destino
                 binding.posDestino.setOnClickListener {
-                    UtilidadesMenores().crearToast(this, "Arrastra la pantalla")
+                    instUtilidadesMenores.crearToast(this, "Arrastra la pantalla")
 
                     binding.posDestino.isClickable =
                         false // Despues de oprimido no se puede presionar de nuevo
@@ -585,7 +587,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                             R.drawable.ic_gps_find,
                             0
                         )//cambiar el icono al final del boton al guardar ubicacion
-                        binding.posDestino.text = "Destino   "
+                        binding.posDestino.text = getString(R.string.destino)
 
                         marcador.remove() //quitar marcador central en pantalla, del mapa
 
@@ -653,7 +655,10 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 // Crear y configurar el BottomSheetDialog
                 val btnSheetDialog = BottomSheetDialog(this, R.style.Theme_BottomSheetTheme)
                 val btnSheetLayout =
-                    layoutInflater.inflate(R.layout.btn_sheet_list_traces_routes, null, false)
+                    layoutInflater.inflate(
+                        R.layout.btn_sheet_list_traces_routes,
+                        null
+                    )
                 btnSheetDialog.setContentView(btnSheetLayout)
 
                 // Obtener la vista del BottomSheet
@@ -662,7 +667,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
                 BottomSheetBehavior.from(bottomSheet!!)
 
-                val height = UtilidadesMenores().getScreenPercentDp(this, 0.30)
+                val height = instUtilidadesMenores.getScreenPercentDp(this, 0.30)
 
                 bottomSheet.layoutParams.height = height
                 bottomSheet.requestLayout()
@@ -728,54 +733,64 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         //TODO: cambiar antes de subir actualizacion
         val keyAd = getString(R.string.fake_key_intersticial)
 
-        InterstitialAd.load(this, keyAd, adRequest, object : InterstitialAdLoadCallback() {
-            override fun onAdFailedToLoad(adError: LoadAdError) {
-                Log.d(TAG, adError.toString())
-                mInterstitialAd = null
+        val str = getString(R.string.name_shared_ads_restriction)
+        val state = instUtilidadesMenores.readSharedBooleanPref(this, str)
+
+
+        if (!state) {
+
+            InterstitialAd.load(this, keyAd, adRequest, object : InterstitialAdLoadCallback() {
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    Log.d(tag, adError.toString())
+                    mInterstitialAd = null
+                }
+
+                override fun onAdLoaded(interstitialAd: InterstitialAd) {
+                    Log.d(tag, "Ad was loaded.")
+                    mInterstitialAd = interstitialAd
+                    mInterstitialAd?.show(this@Mapa)
+                }
+            })
+
+            mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+                override fun onAdClicked() {
+                    // Called when a click is recorded for an ad.
+                    Log.d(tag, "Ad was clicked.")
+                }
+
+                override fun onAdDismissedFullScreenContent() {
+                    // Called when ad is dismissed.
+                    Log.d(tag, "Ad dismissed fullscreen content.")
+                    mInterstitialAd = null
+                }
+
+                override fun onAdFailedToShowFullScreenContent(p0: AdError) {
+                    // Called when ad fails to show.
+                    Log.e(tag, "Ad failed to show fullscreen content.")
+                    mInterstitialAd = null
+                }
+
+                override fun onAdImpression() {
+                    // Called when an impression is recorded for an ad.
+                    Log.d(tag, "Ad recorded an impression.")
+                }
+
+                override fun onAdShowedFullScreenContent() {
+                    // Called when ad is shown.
+                    Log.d(tag, "Ad showed fullscreen content.")
+                }
             }
 
-            override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                Log.d(TAG, "Ad was loaded.")
-                mInterstitialAd = interstitialAd
-                mInterstitialAd?.show(this@Mapa)
-            }
-        })
 
-        mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
-            override fun onAdClicked() {
-                // Called when a click is recorded for an ad.
-                Log.d(TAG, "Ad was clicked.")
-            }
-
-            override fun onAdDismissedFullScreenContent() {
-                // Called when ad is dismissed.
-                Log.d(TAG, "Ad dismissed fullscreen content.")
-                mInterstitialAd = null
-            }
-
-            override fun onAdFailedToShowFullScreenContent(p0: AdError) {
-                // Called when ad fails to show.
-                Log.e(TAG, "Ad failed to show fullscreen content.")
-                mInterstitialAd = null
-            }
-
-            override fun onAdImpression() {
-                // Called when an impression is recorded for an ad.
-                Log.d(TAG, "Ad recorded an impression.")
-            }
-
-            override fun onAdShowedFullScreenContent() {
-                // Called when ad is shown.
-                Log.d(TAG, "Ad showed fullscreen content.")
-            }
         }
-
     }
 
     private fun alertDialogCalculate() {
         // Crear el BottomSheetDialog
-        val btnSheetDia = BottomSheetDialog(this, R.style.Theme_BottomSheetTheme)
-        val btnSheetLayout = layoutInflater.inflate(R.layout.btn_sheet_calculate_route, null)
+        val btnSheetDia = BottomSheetDialog(this@Mapa, R.style.Theme_BottomSheetTheme)
+        val btnSheetLayout =
+            layoutInflater.inflate(R.layout.btn_sheet_calculate_route, null)
+
         btnSheetDia.setContentView(btnSheetLayout)
 
         // Configurar el BottomSheet
@@ -802,7 +817,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             it.requestLayout()
 
             // Establecer altura máxima como 40% de la pantalla
-            val height = UtilidadesMenores().getScreenPercentDp(this, 0.35)
+            val height = instUtilidadesMenores.getScreenPercentDp(this, 0.35)
             BottomSheetBehavior.from(it).maxHeight = height
         }
     }
@@ -825,7 +840,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         btnSheetDia: BottomSheetDialog, recycler: RecyclerView?,
         layoutSheet: View
     ) {
-        viewModel.resultCalculate.observe(this, Observer {
+        viewModel.resultCalculate.observe(this) {
             // Ocultar el progreso cuando hay resultados
             binding.progressCalculando.visibility = View.GONE
 
@@ -851,7 +866,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             // Mostrar/ocultar los botones correspondientes
             binding.containBtnCalculates.visibility = View.VISIBLE
             binding.containBtnsPos.visibility = View.GONE
-        })
+        }
     }
 
 
@@ -867,7 +882,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
     private fun activarGps() {
         val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         if (!permisoUbiCondecido()) {
-            UtilidadesMenores().crearToast(
+            instUtilidadesMenores.crearToast(
                 this,
                 "Permiso de ubicación no permitido--Activalo en ajustes."
             )
@@ -876,7 +891,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             binding.progLocalizando.visibility = View.GONE
         }
         if (!::gmap.isInitialized) return
-        if (!UtilidadesMenores().comprobarConexion(this)) {
+        if (!instUtilidadesMenores.comprobarConexion(this)) {
             activarGpsTelefono()
             getPosGps()
         } else {
@@ -941,7 +956,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         )
     }
 
-    fun getPosGps() {
+    private fun getPosGps() {
         //este if verifica que no tiene permiso ni de FINE ni de COURSE LoCATION
         if (ActivityCompat.checkSelfPermission(
                 this,
@@ -953,7 +968,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         ) {
             ActivityCompat.requestPermissions(
                 this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                codigoLocalizacion
+                LOCATE_CODE
             )
         }
         fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
@@ -1010,7 +1025,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             // If it are not granted then do request
             requestLocationPermissionLauncher.launch(permission)
         }
-        ActivityCompat.requestPermissions(this, arrayOf(permission), codigoLocalizacion)
+        ActivityCompat.requestPermissions(this, arrayOf(permission), LOCATE_CODE)
     }
 
 
@@ -1030,7 +1045,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 contador = 0
                 //mostrar alerta sobre persmiso denegado y dar opcion de activarlo desde ajustes -- se usa devolucion de llamada a onOpcionSeleccionada()
 
-                UtilidadesMenores().crearAlerta(
+                instUtilidadesMenores.crearAlerta(
                     this,
                     "ubicacion",
                     "Permiso de localización ha sido denegado.\n\nPermite que Busetas Yopal tenga permiso de ubicación desde ajustes para aprovechar la aplicación al maximo!.",
@@ -1106,7 +1121,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         val defecto = LatLng(0.0, 0.0)
 
         if (ubiUser != defecto) {
-            val pts = UtilidadesMenores().extractCoordToLatLng(
+            val pts = instUtilidadesMenores.extractCoordToLatLng(
                 ptsSentido,
                 sentido.toString(),
                 idruta
@@ -1161,38 +1176,18 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
     }
 
     override fun onLocationChanged(p0: Location) {
-
-        val ubiGps = LatLng(p0.latitude, p0.longitude)
-        functionsInstance.animateCameraMap(
-            12f,
-            gmap,
-            ubiGps
-        )
-        println("Ubicacion esta cambiando - $ubiGps")
         getPosGps()
     }
 
     override fun onOpcionSeleccionada(
         opcion: Int,
-        tipeSoli: String
+        tipoDeSolicitud: String
     ) { //devolucion de llamada de la opcion seleccionada en UtilidadesMenores.CrearAlerta()
-        if (tipeSoli == "permiso_ubicacion" && opcion == 1) {
+        if (tipoDeSolicitud == "permiso_ubicacion" && opcion == 1) {
             val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
             val uri = Uri.fromParts("package", packageName, null)
             intent.data = uri
             startActivity(intent)
-        }
-    }
-
-    private fun cargarAnuncios() {
-        CoroutineScope(Dispatchers.IO).launch {
-            // Ad request
-            val adRequest = AdRequest.Builder().build()
-
-            withContext(Dispatchers.Main) {
-                mAdView = findViewById(R.id.adViewMap)
-                mAdView.loadAd(adRequest)
-            }
         }
     }
 
@@ -1209,7 +1204,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         //opcion reportar
         when (item.itemId) {
             R.id.reportar -> {
-                UtilidadesMenores().reportar(this, this, opcionActual)
+                instUtilidadesMenores.reportar(this, this, opcionActual)
             }
 
             android.R.id.home -> {
@@ -1228,7 +1223,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             setDisplayHomeAsUpEnabled(true)
         }
 
-        val themeColor = UtilidadesMenores().getColorHambugerIcon()
+        val themeColor = instUtilidadesMenores.getColorHambugerIcon()
         binding.toolbarMap.navigationIcon?.setTint(ContextCompat.getColor(this, themeColor))
 
     }
