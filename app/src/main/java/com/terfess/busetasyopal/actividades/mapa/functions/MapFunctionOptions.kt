@@ -107,6 +107,26 @@ class MapFunctionOptions {
         return mejorPuntoResult
     }
 
+    fun rutaMasCercaTransfer(
+        ubicacion: LatLng,
+        ptsSentido: List<LatLng>
+    ): CalculateRoute.PuntoMasCerca {
+        val mapFunctionsInstance = MapFunctionOptions()
+
+        //preparar ubicacion de estaciones cercanas para comparar distancia
+        val ubiEstacion1 = mapFunctionsInstance.createObjLocation(
+            ubicacion,
+            "UBI SELECTED"
+        )
+
+        val mejorPuntoResult: CalculateRoute.PuntoMasCerca = Distancia().bestFirstDistance(
+            ptsSentido,
+            ubiEstacion1
+        )
+
+        return mejorPuntoResult
+    }
+
     suspend fun rutaMasCercaCalculate(
         ubicacion: LatLng,
         ptsSentido: List<LatLng>
@@ -276,6 +296,58 @@ class MapFunctionOptions {
 
 
         return CalculateRoute.WalkRoute(marker, polyCaminata)
+    }
+
+    fun traceWalkTransferRoute(
+        ubiInicial: LatLng,
+        ubiFinal: LatLng,
+        mapa: GoogleMap,
+        context: Context,
+    ): CalculateRoute.WalkRouteTransfer {
+        var marker: Marker? = null
+        var marker2: Marker? = null
+
+        val ptsCaminata = ArrayList<LatLng>(2)
+
+        ptsCaminata.add(ubiInicial)
+        ptsCaminata.add(ubiFinal)
+
+        val icono1 = R.drawable.ic_estacion
+        val titleMarker1 = "Baje y camine al transbordo"
+
+        val icono2 = R.drawable.ic_estacion
+        val titleMarker2 = "Tome el transbordo"
+
+        val markerOptions1 = MapFunctionOptions().getOptionsMarker(
+            ubiFinal,
+            icono1,
+            titleMarker1
+        )
+
+        val markerOptions2 = MapFunctionOptions().getOptionsMarker(
+            ubiInicial,
+            icono2,
+            titleMarker2
+        )
+
+        marker = mapa.addMarker(markerOptions1)
+        marker2 = mapa.addMarker(markerOptions2)
+
+
+        val polylineOptionsCaminar = PolylineOptions()
+        polylineOptionsCaminar.color(
+            ContextCompat.getColor(
+                context,
+                R.color.distancia_caminar
+            )
+        )
+
+        polylineOptionsCaminar.pattern(listOf(Dash(20f), Gap(10f)))
+        polylineOptionsCaminar.addAll(ptsCaminata)
+        polyCaminata = mapa.addPolyline(polylineOptionsCaminar)
+
+
+        return CalculateRoute.WalkRouteTransfer(marker, marker2, polyCaminata)
     }
 
     fun traceWalkRouteSmart(

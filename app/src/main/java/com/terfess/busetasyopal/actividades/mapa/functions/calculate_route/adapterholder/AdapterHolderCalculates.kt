@@ -73,6 +73,7 @@ class AdapterHolderCalculates(
                             contextMap,
                             "Se elimino la ruta calculada de la lista debido a un error inesperado."
                         )
+                        println("Error: ${e.message.toString()}")
                     }
                 } else {
                     try {
@@ -258,13 +259,11 @@ class AdapterHolderCalculates(
                 addMarker = true
             )
 
-            instFunctions.traceWalkRoute(
+            instFunctions.traceWalkTransferRoute(
                 item.pointConectThisRoute!!,
                 item.pointConectRutaAnterior!!,
                 mapInstance,
-                contextMap,
-                isStart = true,
-                addMarker = false
+                contextMap
             )
 
             instFunctions.traceWalkRoute(

@@ -307,6 +307,7 @@ class PlanearRutaDestino(private val mapa: Context) {
                                     ptsFirstRoute,
                                     ptsSecondBackRoute
                                 )
+                                println("------ INFO:\n ${routeResultComp2[i]}")
 
                                 listTransfers.add(routeTransfer)
                             }
@@ -379,7 +380,7 @@ class PlanearRutaDestino(private val mapa: Context) {
         val result: CalculateRoute.RouteCalculate
 
         withContext(Dispatchers.Default) {
-            val cutProcess = mapFunctionsIns.rutaMasCerca(
+            val cutProcess = mapFunctionsIns.rutaMasCercaTransfer(
                 pointConectThisRoute,
                 ptsPrepare
             )
@@ -392,7 +393,7 @@ class PlanearRutaDestino(private val mapa: Context) {
                 ubicacionUsuario,
                 ptsSecondBackRoute
             )
-            val cutProcess4 = mapFunctionsIns.rutaMasCerca(
+            val cutProcess4 = mapFunctionsIns.rutaMasCercaTransfer(
                 pointConectAnteriorRoute,
                 ptsSecondBackRoute
             )
@@ -428,38 +429,41 @@ class PlanearRutaDestino(private val mapa: Context) {
         var idConectRutaAnterior = LatLng(0.0, 0.0)
         var cont = 0
 
-        withContext(Dispatchers.Default) {
+        if (!isPossible){
+            withContext(Dispatchers.Default) {
 
-            for (station in 0..routeCoords.size - 1) {
-                cont++
+                for (station in 0..routeCoords.size - 1) {
+                    cont++
 
-                val point1 = Location("UBI LIST").apply {
-                    latitude = routeCoords[station].latitude
-                    longitude = routeCoords[station].longitude
-                }
-
-                for (station2 in 0..route2Coords.size - 1) {
-                    val point2 = Location("UBI LIST").apply {
-                        latitude = route2Coords[station2].latitude
-                        longitude = route2Coords[station2].longitude
+                    val point1 = Location("UBI LIST").apply {
+                        latitude = routeCoords[station].latitude
+                        longitude = routeCoords[station].longitude
                     }
 
-                    // Calcular la distancia entre la ubicación y el punto de la estación
-                    val distancia = point1.distanceTo(point2).toInt()
+                    for (station2 in 0..route2Coords.size - 1) {
+                        val point2 = Location("UBI LIST").apply {
+                            latitude = route2Coords[station2].latitude
+                            longitude = route2Coords[station2].longitude
+                        }
 
-                    // Si la distancia es menor a 200 metros, se considera posible la ruta
-                    if (distancia < 100) {
-                        isPossible = true
-                        idConectRuta = LatLng(
-                            route2Coords[station2].latitude,
-                            route2Coords[station2].longitude
-                        )
-                        idConectRutaAnterior =
-                            LatLng(routeCoords[station].latitude, routeCoords[station].longitude)
+                        // Calcular la distancia entre la ubicación y el punto de la estación
+                        val distancia = point1.distanceTo(point2).toInt()
+
+                        // Si la distancia es menor a 200 metros, se considera posible la ruta
+                        if (distancia < 100) {
+                            isPossible = true
+                            idConectRuta = LatLng(
+                                route2Coords[station2].latitude,
+                                route2Coords[station2].longitude
+                            )
+                            idConectRutaAnterior =
+                                LatLng(routeCoords[station].latitude, routeCoords[station].longitude)
+                        }
                     }
                 }
             }
         }
+
         // Devuelve el resultado después de que el cálculo se haya completado
         return CalculateRoute.PossibleRouteTransfer(
             isPossible,

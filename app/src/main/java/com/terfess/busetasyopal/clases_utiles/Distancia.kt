@@ -89,7 +89,7 @@ class Distancia {
         var mejorDistancia = 10000
         var puntoStation = 0
 
-        for (f in 0.. puntos.size -1) {
+        for (f in 0..puntos.size - 1) {
 
             val estacion = functionsInstance.createObjLocation(
                 puntos[f],
@@ -103,6 +103,38 @@ class Distancia {
             if (distancia < mejorDistancia) {
                 puntoStation = f
                 mejorDistancia = distancia
+            }
+        }
+
+        return CalculateRoute.PuntoMasCerca(puntoStation, mejorDistancia)
+    }
+
+    fun bestFirstDistance(
+        puntos: List<LatLng>,
+        ubiInicio: Location
+    ): CalculateRoute.PuntoMasCerca {
+        //devuelve el punto mas cercano entre una ubicacion y una lista de ubicaciones
+
+        val functionsInstance = MapFunctionOptions()
+        var mejorDistancia = 100
+        var puntoStation = -1
+
+
+        for (f in 0..puntos.size - 1) {
+
+            val estacion = functionsInstance.createObjLocation(
+                puntos[f],
+                "UBI FROM LIST"
+            )
+
+            val distancia =
+                (ubiInicio.distanceTo(estacion)).toInt() //aqui se saca la distancia en metros
+
+            //comprobar distancia obtenida con la distancia guardada en la iteracion
+            if (distancia < mejorDistancia) {
+                puntoStation = f
+                mejorDistancia = distancia
+                break
             }
         }
 

@@ -29,6 +29,12 @@ class CalculateRoute {
         val lineWalk: Polyline
     )
 
+    data class WalkRouteTransfer(
+        val marker: Marker?,
+        val marker2: Marker?,
+        val lineWalk: Polyline
+    )
+
     data class RouteCalculate(
         val idruta: Int,
         val points: List<LatLng>,
@@ -49,4 +55,5 @@ class CalculateRoute {
         val resultInfo: Boolean,
         val dataResult: MutableList<RouteCalculate>
     )
+
 }
