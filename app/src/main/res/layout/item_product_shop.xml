@@ -61,7 +61,7 @@
         android:layout_height="wrap_content"
         android:text="TextView"
         android:textAlignment="viewEnd"
-        android:textColor="@color/enfasis_azul"
+        android:textColor="#007FC5"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -25,6 +25,7 @@ import com.terfess.busetasyopal.room.AppDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import kotlin.math.atan2
 import kotlin.math.cos
@@ -268,6 +269,59 @@ class MapFunctionOptions {
                 R.color.distancia_caminar
             )
         )
+
+        polylineOptionsCaminar.pattern(listOf(Dash(20f), Gap(10f)))
+        polylineOptionsCaminar.addAll(ptsCaminata)
+        polyCaminata = mapa.addPolyline(polylineOptionsCaminar)
+
+
+        return CalculateRoute.WalkRoute(marker, polyCaminata)
+    }
+
+    fun traceWalkRouteSmart(
+        ubiInicial: LatLng,
+        ubiFinal: LatLng,
+        mapa: GoogleMap,
+        context: Context,
+        isStart: Boolean,
+        addMarker: Boolean
+    ): CalculateRoute.WalkRoute {
+        var marker: Marker? = null
+
+        val ptsCaminata = ArrayList<LatLng>(2)
+
+        ptsCaminata.add(ubiInicial)
+        ptsCaminata.add(ubiFinal)
+
+        val iconoIf: Int
+        val titleMarkerIf: String
+
+        if (isStart) {
+            iconoIf = R.drawable.ic_estacion_inicio_ruta
+            titleMarkerIf = "Tome la buseta"
+        } else {
+            iconoIf = R.drawable.ic_estacion_fin_ruta
+            titleMarkerIf = "Baje de la buseta"
+        }
+
+        val markerOptions = MapFunctionOptions().getOptionsMarker(
+            ubiFinal,
+            iconoIf,
+            titleMarkerIf
+        )
+
+        if (addMarker) {
+            marker = mapa.addMarker(markerOptions)
+        }
+
+        val polylineOptionsCaminar = PolylineOptions()
+        polylineOptionsCaminar.color(
+            ContextCompat.getColor(
+                context,
+                R.color.distancia_caminar
+            )
+        )
+
 
         polylineOptionsCaminar.pattern(listOf(Dash(20f), Gap(10f)))
         polylineOptionsCaminar.addAll(ptsCaminata)

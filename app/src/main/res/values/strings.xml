@@ -167,7 +167,7 @@
     <string name="step2_single_text_calculate">"Haz el recorrido en la buseta para bajarte en el punto marcado con: "</string>
     <string name="laststep1_single_text_calculate">"Camina %1$s metros hasta el punto destino marcado: "</string>
     <string name="ver_recorrido">Ver Recorrido</string>
-    <string name="compras_opt">Compras</string>
+    <string name="compras_opt">Quitar Anuncios</string>
     <string name="productos">Productos</string>
     <string name="tus_compras">Tus compras</string>
     <string name="name_shared_ads_restriction" translatable="false">with_ads_restriction_on</string>
@@ -175,6 +175,7 @@
     <string name="destino">"Destino   "</string>
     <string name="en_este_momento_no_hay_compras">En este momento no hay compras.</string>
     <string name="title_shop_gretting_text">¡Tus compras nos ayudan a mejorar! 🛍️ Con cada compra, podemos actualizar info, mejorar rutas y mantener todo funcionando al 100%. ¡Gracias por apoyarnos!</string>
+    <string name="retirar_anuncios">Retirar Anuncios</string>
 
 </resources>
 

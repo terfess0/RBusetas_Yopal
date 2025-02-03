@@ -170,13 +170,12 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         fragmentMap.getMapAsync(this)
 
         mAdView = binding.adViewMap
-        instUtilidadesMenores.loadAds(this, mAdView)
+        instUtilidadesMenores.loadAds(this, mAdView, null)
 
         //ubicacion del gps
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
-    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onMapReady(mapa: GoogleMap) {
         gmap = mapa
@@ -369,8 +368,6 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
             }
 
             MapRouteOption.CALCULATE_ROUTE_USER -> {
-
-                intersticialAdRequest()
 
                 //identificar estado mapa - tarea
                 tareaActual = UserTask.USER_IS_IN_OPTION_CALCULATE_ROUTE_MAP.messageValue
@@ -849,6 +846,8 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
             if (it.resultInfo) {
                 // Actualizar la lista en el adapter y mostrar el BottomSheet
+
+                intersticialAdRequest()
 
                 (recycler?.adapter as AdapterHolderCalculates).notyList(it.dataResult)
                 btnSheetDia.show()

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/enfasis_azul"
+    android:background="@drawable/yopal_background"
     tools:context=".actividades.Splash">
 
 
@@ -13,6 +13,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:layout_marginBottom="64dp"
+        android:foregroundGravity="center_horizontal"
         android:text="@string/app_name"
         android:textColor="@color/white"
         android:textSize="30sp"
@@ -25,22 +27,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/gris"
+        android:foregroundGravity="center_horizontal"
         app:cardCornerRadius="35dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.483">
+        app:layout_constraintVertical_bias="0.237">
 
         <ImageView
             android:id="@+id/img"
-            android:layout_width="180dp"
-            android:layout_height="180dp"
+            android:layout_width="160dp"
+            android:layout_height="160dp"
             android:background="#00FFFFFF"
             android:backgroundTint="#00FFFFFF"
+            android:contentDescription="@string/app_name"
             android:keepScreenOn="true"
             android:src="@drawable/ic_app" />
+
     </androidx.cardview.widget.CardView>
 
     <ProgressBar

@@ -12,6 +12,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -61,7 +62,10 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
     private var adapterFiltro = FiltroAdapterHolder("")
     private lateinit var colorTema: String
     private var currentTask = "Viendo Menu Principal"
+
     private lateinit var mAdView: AdView //anuncios
+    private lateinit var btnOptShop : ImageButton
+
     private var listaRutas = emptyList<Int>()
     private var listaFilter = emptyList<DatosPrimariosRuta>()
     private var firebaseInstance = FirebaseDatabase.getInstance()
@@ -133,7 +137,8 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
 
         //ads
         mAdView = binding.adView
-        instanciaUtilidadesMenores.loadAds(this, mAdView)
+        btnOptShop = binding.noAdsOption
+        instanciaUtilidadesMenores.loadAds(this, mAdView, btnOptShop)
 
         //save mode night/light
         instanciaUtilidadesMenores.applySavedNightMode(this)
@@ -229,6 +234,11 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
             }
         }
 
+        btnOptShop.setOnClickListener {
+            val intent = Intent(this, ShopScreen::class.java)
+            startActivity(intent)
+        }
+
         colorTema = instanciaUtilidadesMenores.colorTituloTema(this)
 
 
@@ -263,7 +273,7 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
 
     override fun onResume() {
         super.onResume()
-        instanciaUtilidadesMenores.loadAds(this, mAdView)
+        instanciaUtilidadesMenores.loadAds(this, mAdView, btnOptShop)
     }
 
     private fun getGratingHead(): String {

@@ -14,8 +14,8 @@ android {
         applicationId = "com.terfess.busetasyopal"
         minSdk = 24
         targetSdk = 35
-        versionCode = 32
-        versionName = "2.3.0"
+        versionCode = 33
+        versionName = "2.3.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -100,6 +100,10 @@ dependencies {
     //glide fotos
     implementation("com.github.bumptech.glide:glide:4.16.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+
+    // For json request to api routes
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
 }
 

@@ -29,7 +29,7 @@ class AcercaDe : AppCompatActivity() {
         setContentView(R.layout.acerca_de)
 
         adView = findViewById(R.id.adViewAcerca)
-        instUtilidades.loadAds(this, adView)
+        instUtilidades.loadAds(this, adView, null)
 
         //save mode night/light
         instUtilidades.applySavedNightMode(this)
@@ -75,8 +75,8 @@ class AcercaDe : AppCompatActivity() {
 
         whatsappConeccion.setOnClickListener { //contectar a desarrollador por whatsapp
             enviarMensajeWhatsApp(
-                "+573219822620",
-                "Buenas, quiero hacer una felicitación/peticion/queja."
+                "+573225857486",
+                "Buenas, quiero hacer una felicitación/peticion/queja o informar sobre información que deben actualizar."
             )
         }
         mailConection.setOnClickListener {//contctar a desarrollador por mail
@@ -160,6 +160,6 @@ class AcercaDe : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        instUtilidades.loadAds(this, adView)
+        instUtilidades.loadAds(this, adView, null)
     }
 }

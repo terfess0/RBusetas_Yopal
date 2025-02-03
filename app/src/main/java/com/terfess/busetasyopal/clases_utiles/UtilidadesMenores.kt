@@ -10,6 +10,7 @@ import android.util.TypedValue
 import android.view.View
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -540,13 +541,13 @@ class UtilidadesMenores {
             .apply()
     }
 
-    fun loadAds(contexto:Context, adViewElement:AdView) {
+    fun loadAds(contexto: Context, adViewElement: AdView, interestView: ImageView?) {
         val str = contexto.getString(R.string.name_shared_ads_restriction)
         val state = UtilidadesMenores().readSharedBooleanPref(contexto, str)
 
-        if (state){
+        if (state) {
             adViewElement.visibility = View.GONE
-        }else{
+        } else {
             CoroutineScope(Dispatchers.IO).launch {
                 // Ad request
                 val adRequest = AdRequest.Builder().build()
@@ -554,6 +555,15 @@ class UtilidadesMenores {
                 withContext(Dispatchers.Main) {
                     adViewElement.loadAd(adRequest)
                 }
+            }
+        }
+
+        //Interest element show if not have ads restriction and vice
+        if (interestView != null) {
+            if (state) {
+                interestView.visibility = View.GONE
+            } else {
+                interestView.visibility = View.VISIBLE
             }
         }
     }

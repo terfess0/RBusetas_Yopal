@@ -161,13 +161,14 @@
     <string name="step2_single_text_calculate">"Take the bus to get off at the point marked with: "</string>
     <string name="laststep1_single_text_calculate">Walk %1$s meters to the marked destination point:</string>
     <string name="ver_recorrido">See Tour</string>
-    <string name="compras_opt">Shopping</string>
+    <string name="compras_opt">No Ads</string>
     <string name="productos">Products</string>
     <string name="tus_compras">Your purchases</string>
     <string name="partida">"Departure   "</string>
     <string name="destino">"Destination   "</string>
     <string name="en_este_momento_no_hay_compras">There are no purchases at this time.</string>
     <string name="title_shop_gretting_text">Your purchases help us improve! 🛍️ With every purchase, we can update info, improve routes, and keep everything running smoothly. Thanks for your support! 💙</string>
+    <string name="retirar_anuncios">Remove Ads</string>
 </resources>
 
 
