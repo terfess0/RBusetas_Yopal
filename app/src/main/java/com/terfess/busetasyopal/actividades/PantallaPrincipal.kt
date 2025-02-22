@@ -8,6 +8,8 @@ import android.net.Uri
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -206,6 +208,7 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
                 msj3.visibility =
                     if (mensaje3 != "" && mensaje3 != null) View.VISIBLE else View.GONE
 
+                doAnimInformativeTextsAction()
                 ref.removeEventListener(this)
             }
 
@@ -544,6 +547,19 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
         instanciaUtilidadesMenores.toggleNightMode(
             this
         )
+    }
+
+    private fun doAnimInformativeTextsAction() {
+        val scrollView = binding.scrollTextsInfo
+        val scrollAmount = 100 // Px to displace
+
+        scrollView.post {
+            scrollView.smoothScrollBy(0, scrollAmount) //Anim down
+
+            scrollView.postDelayed({
+                scrollView.smoothScrollBy(0, -scrollAmount)
+            }, 1000) // Await 1 second for back
+        }
     }
 
 }
