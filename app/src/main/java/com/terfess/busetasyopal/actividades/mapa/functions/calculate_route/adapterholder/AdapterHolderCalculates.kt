@@ -184,6 +184,8 @@ class AdapterHolderCalculates(
 
             binding.descriptStep2.text =
                 contextMap.getString(R.string.step2_text_calculate)
+            binding.imageStep2.setImageResource(R.drawable.ic_estacion)
+
             binding.lastStep.text =
                 contextMap.getString(R.string.laststep1_text_calculate, item.idruta.toString())
 
@@ -192,6 +194,8 @@ class AdapterHolderCalculates(
 
             binding.descriptStep4.text =
                 contextMap.getString(R.string.fourstep_text_calculate, item.idruta.toString())
+            binding.imageStep4.setImageResource(R.drawable.ic_estacion)
+
             binding.descriptStep5.text =
                 contextMap.getString(R.string.fivestep_text_calculate)
             binding.lastStep2.text =

@@ -151,7 +151,7 @@
     <string name="select_language">Map Type</string>
     <string name="title_calculada">Calculated Route #%1$s</string>
     <string name="toma_buseta">"Take bus route number #%1$s at %2$s meters and marked with: "</string>
-    <string name="version_algoritmo_calcular_text">Algorithm Version 2.1.0</string>
+    <string name="version_algoritmo_calcular_text">Algorithm Version 2.1.1</string>
     <string name="step2_text_calculate">"Take the bus to get off at the point marked: "</string>
     <string name="laststep1_text_calculate">Walk until you take the transfer to the route: #%1$s</string>
     <string name="fourstep_text_calculate">"Take the bus #%1$s marked with: "</string>

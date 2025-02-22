@@ -89,6 +89,7 @@
                 android:textSize="12sp" />
 
             <ImageView
+                android:id="@+id/imageStep2"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_gravity="center"
@@ -163,6 +164,7 @@
                     android:textSize="12sp" />
 
                 <ImageView
+                    android:id="@+id/imageStep4"
                     android:layout_width="0dp"
                     android:layout_height="30dp"
                     android:layout_weight="1"
