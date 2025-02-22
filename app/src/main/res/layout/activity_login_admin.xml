@@ -13,10 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <TextView
@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:alpha="0.9"
-        android:background="#1114BA"
+        android:background="@drawable/bord_cabecera"
         app:layout_constraintBottom_toTopOf="@id/guideline4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,17 +55,17 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:orientation="vertical"
-            android:paddingVertical="60dp">
+            android:paddingTop="30dp"
+            android:paddingBottom="60dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/administrador"
-                android:textColor="#53A251"
-                android:textSize="25sp"
+                android:textColor="?attr/titleTextColor"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -90,7 +90,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColorHint="?attr/colorPrimaryDark"
-                app:endIconMode="password_toggle">
+                app:endIconMode="password_toggle"
+                app:endIconTint="?attr/titleTextColor">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editPass"
@@ -106,9 +107,11 @@
 
             <Button
                 android:id="@+id/sign_in"
+                style="@style/ThemeOverlay.Material3.Button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:textAllCaps="false"
                 android:layout_weight="1"
                 android:background="@drawable/round_btn_login"
                 android:text="@string/sign_in"
@@ -116,16 +119,4 @@
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:contentDescription="TODO"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/ic_panel_admin" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
