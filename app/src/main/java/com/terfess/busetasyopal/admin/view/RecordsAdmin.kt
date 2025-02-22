@@ -11,10 +11,14 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.terfess.busetasyopal.R
+import com.terfess.busetasyopal.admin.model.DatoRecord
 import com.terfess.busetasyopal.admin.recycler.records.AdapterRecordsAdmin
 import com.terfess.busetasyopal.admin.viewmodel.ViewModelRecords
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.ActivityRecordsAdminBinding
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class RecordsAdmin : AppCompatActivity() {
     private lateinit var binding : ActivityRecordsAdminBinding
@@ -46,7 +50,7 @@ class RecordsAdmin : AppCompatActivity() {
         //..
 
         viewModel.listRecord.observe(this, Observer { data ->
-            adapter.pushData(data)
+            adapter.pushData(orderByDate(data))
 
             if (data.isNullOrEmpty()) {
                 binding.recordsEmpty.visibility = View.VISIBLE
@@ -69,5 +73,13 @@ class RecordsAdmin : AppCompatActivity() {
             }
         }
         return true
+    }
+
+    fun orderByDate(lista: List<DatoRecord>): List<DatoRecord> {
+        val formato = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+
+        return lista.sortedByDescending { elemento ->
+            formato.parse(elemento.fecha) ?: Date(0) // Si hay error, usa fecha mínima
+        }
     }
 }

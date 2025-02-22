@@ -100,7 +100,6 @@ class AdminProvider : ViewModel() {
 
     fun getRecords(callback: GetRecords) {
         dataBaseFirebase.getReference("features/0/administradores/registros")
-            .orderByChild("fecha")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val data = mutableListOf<DatoRecord>()
