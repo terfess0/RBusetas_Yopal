@@ -387,6 +387,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 binding.posDestino.visibility = View.VISIBLE
 
                 //ocultar boton gps y leyenda
+                binding.irgps.visibility = View.GONE
                 binding.infoColor.visibility = View.GONE
 
                 alertDialogCalculate()
@@ -600,7 +601,6 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                                 )
                             }
 
-                            binding.infoColor.visibility = View.VISIBLE
 
                             //si la distancia hasta el punto salida es menor a 300 m mostrar indicaciones calculadas
 
@@ -840,6 +840,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         viewModel.resultCalculate.observe(this) {
             // Ocultar el progreso cuando hay resultados
             binding.progressCalculando.visibility = View.GONE
+
 
             val containmessage =
                 layoutSheet.findViewById<LinearLayout>(R.id.messageNotCalculates)
