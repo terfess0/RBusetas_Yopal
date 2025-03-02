@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".actividades.mapa.view.Mapa">
 
     <!--<fragment
@@ -554,9 +555,9 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="130dp"
         android:gravity="start"
-        android:visibility="gone"
         android:text="@string/version_algoritmo_calcular_text"
         android:textSize="8sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

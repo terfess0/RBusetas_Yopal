@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
+    android:fitsSystemWindows="true"
     tools:context=".actividades.shoping.ShopScreen">
 
     <androidx.appcompat.widget.Toolbar
@@ -23,12 +24,12 @@
         android:id="@+id/titleShop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:textColor="@color/gris"
-        android:textAlignment="center"
         android:text="@string/title_shop_gretting_text"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textAlignment="center"
+        android:textColor="@color/gris"
+        android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbarShop" />
 
     <ScrollView
@@ -89,12 +90,12 @@
                 android:id="@+id/textNoPurchases"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:layout_margin="10dp"
                 android:layout_gravity="center"
+                android:layout_margin="10dp"
                 android:text="@string/en_este_momento_no_hay_compras"
                 android:textColor="@color/enfasis_complement"
                 android:textSize="16sp"
+                android:textStyle="bold"
                 android:visibility="gone" />
         </LinearLayout>
     </ScrollView>

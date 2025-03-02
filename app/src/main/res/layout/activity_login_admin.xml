@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
+    android:fitsSystemWindows="true"
     tools:context=".admin.view.LoginAdmin">
 
     <androidx.appcompat.widget.Toolbar
@@ -111,10 +112,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:textAllCaps="false"
                 android:layout_weight="1"
                 android:background="@drawable/round_btn_login"
                 android:text="@string/sign_in"
+                android:textAllCaps="false"
                 android:textColor="@color/white" />
 
         </LinearLayout>

@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
+    android:fitsSystemWindows="true"
     tools:context=".admin.view.ReportsAdmin">
 
     <androidx.appcompat.widget.Toolbar
@@ -13,10 +14,10 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
 
@@ -49,10 +50,10 @@
         android:text="@string/no_hay_reportes_en_este_momento"
         android:textAlignment="center"
         android:textAllCaps="false"
-        android:visibility="gone"
         android:textColor="@color/enfasis_azul"
         android:textSize="20sp"
         android:textStyle="bold|italic"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
