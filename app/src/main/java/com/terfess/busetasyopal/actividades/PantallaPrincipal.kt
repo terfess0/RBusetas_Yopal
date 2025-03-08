@@ -8,8 +8,6 @@ import android.net.Uri
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -46,6 +44,7 @@ import com.terfess.busetasyopal.databinding.PantPrincipalBinding
 import com.terfess.busetasyopal.enums.MapRouteOption
 import com.terfess.busetasyopal.modelos_dato.DatosPrimariosRuta
 import com.terfess.busetasyopal.room.AppDatabase
+import com.terfess.busetasyopal.services.AddEspecialCenter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -141,6 +140,18 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
         mAdView = binding.adView
         btnOptShop = binding.noAdsOption
         instanciaUtilidadesMenores.loadAds(this, mAdView, btnOptShop)
+
+        // Intersicial ad
+        //TODO: cambiar antes de subir actualizacion
+        val keyadd = getString(R.string.fake_key_intersticial)
+        AddEspecialCenter().intersticialAdRequest(
+            this,
+            instanciaUtilidadesMenores,
+            "principalScreen",
+            this,
+            keyadd
+        )
+        //..
 
         //save mode night/light
         instanciaUtilidadesMenores.applySavedNightMode(this)
@@ -561,6 +572,7 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
             }, 1000) // Await 1 second for back
         }
     }
+
 
 }
 

@@ -75,6 +75,7 @@ import com.terfess.busetasyopal.modelos_dato.DatoOpMapa
 import com.terfess.busetasyopal.room.AppDatabase
 import com.terfess.busetasyopal.room.model.Coordinate
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.terfess.busetasyopal.services.AddEspecialCenter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -725,63 +726,6 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
         }
     }
 
-    private fun intersticialAdRequest() {
-        val adRequest = AdRequest.Builder().build()
-        //TODO: cambiar antes de subir actualizacion
-        val keyAd = getString(R.string.fake_key_intersticial)
-
-        val str = getString(R.string.name_shared_ads_restriction)
-        val state = instUtilidadesMenores.readSharedBooleanPref(this, str)
-
-
-        if (!state) {
-
-            InterstitialAd.load(this, keyAd, adRequest, object : InterstitialAdLoadCallback() {
-                override fun onAdFailedToLoad(adError: LoadAdError) {
-                    Log.d(tag, adError.toString())
-                    mInterstitialAd = null
-                }
-
-                override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                    Log.d(tag, "Ad was loaded.")
-                    mInterstitialAd = interstitialAd
-                    mInterstitialAd?.show(this@Mapa)
-                }
-            })
-
-            mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
-                override fun onAdClicked() {
-                    // Called when a click is recorded for an ad.
-                    Log.d(tag, "Ad was clicked.")
-                }
-
-                override fun onAdDismissedFullScreenContent() {
-                    // Called when ad is dismissed.
-                    Log.d(tag, "Ad dismissed fullscreen content.")
-                    mInterstitialAd = null
-                }
-
-                override fun onAdFailedToShowFullScreenContent(p0: AdError) {
-                    // Called when ad fails to show.
-                    Log.e(tag, "Ad failed to show fullscreen content.")
-                    mInterstitialAd = null
-                }
-
-                override fun onAdImpression() {
-                    // Called when an impression is recorded for an ad.
-                    Log.d(tag, "Ad recorded an impression.")
-                }
-
-                override fun onAdShowedFullScreenContent() {
-                    // Called when ad is shown.
-                    Log.d(tag, "Ad showed fullscreen content.")
-                }
-            }
-
-
-        }
-    }
-
     private fun alertDialogCalculate() {
         // Crear el BottomSheetDialog
         val btnSheetDia = BottomSheetDialog(this@Mapa, R.style.Theme_BottomSheetTheme)
@@ -847,8 +791,15 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
 
             if (it.resultInfo) {
                 // Actualizar la lista en el adapter y mostrar el BottomSheet
-
-                intersticialAdRequest()
+                //TODO: cambiar antes de subir actualizacion map
+                val keyadd = getString(R.string.fake_key_intersticial)
+                AddEspecialCenter().intersticialAdRequest(
+                    this,
+                    instUtilidadesMenores,
+                    tag,
+                    this,
+                    keyadd
+                )
 
                 (recycler?.adapter as AdapterHolderCalculates).notyList(it.dataResult)
                 btnSheetDia.show()

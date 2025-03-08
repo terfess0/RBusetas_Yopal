@@ -107,5 +107,4 @@
             android:resource="@xml/gma_ad_services_config"
             tools:replace="android:resource" />
     </application>
-
 </manifest>

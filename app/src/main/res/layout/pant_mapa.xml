@@ -7,7 +7,7 @@
     android:fitsSystemWindows="true"
     tools:context=".actividades.mapa.view.Mapa">
 
-    <!--<fragment
+    <fragment
         android:id="@+id/autocomplete"
         android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbarMap"
         app:layout_constraintVertical_bias="0.0"
-        /> DESACTIVADO POR SER DE LA API PLACES, HAY QUE ACTIVAR FACTURACION EN CLOUD -->
+        />
 
     <!-- <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@
             android:layout_margin="3dp"
             android:hint="Buscar dirección"
             android:maxLines="1" />
-    </androidx.cardview.widget.CardView> DESACTIVADO, ES DE LA API DE OPENSTREETMAP AUTOCOMPLETE Y NO SIRVE POR FALTA DE MAPEOS Y INFO DE YOPAL-->
+    </androidx.cardview.widget.CardView> -->
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarMap"
