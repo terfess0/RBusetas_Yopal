@@ -22,7 +22,7 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <LinearLayout
-        android:id="@+id/languaje_config_btn"
+        android:id="@+id/type_map_config_contain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -34,11 +34,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:autoSizeTextType="uniform"
             android:text="@string/select_language"
             android:textAlignment="viewStart"
             android:textColor="?attr/titleTextColor"
-            android:textSize="16sp"
             android:textStyle="bold" />
 
         <Spinner
@@ -52,10 +50,45 @@
             android:theme="@style/CustomSpinnerText" />
     </LinearLayout>
 
-
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="#CCCCCC" />
 
+    <LinearLayout
+        android:id="@+id/store_data_config_contain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="@string/fix_store_data_txt"
+            android:textAlignment="viewStart"
+            android:textColor="?attr/titleTextColor"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/descript_fix_option_data"
+            android:textAlignment="viewStart"
+            android:textColor="@color/gris" />
+
+        <ProgressBar
+            android:id="@+id/progressFixStoreData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:visibility="gone" />
+
+    </LinearLayout>
 </LinearLayout>

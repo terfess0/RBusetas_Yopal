@@ -176,6 +176,8 @@
     <string name="en_este_momento_no_hay_compras">En este momento no hay compras.</string>
     <string name="title_shop_gretting_text">¡Tus compras nos ayudan a mejorar! 🛍️ Con cada compra, podemos actualizar info, mejorar rutas y mantener todo funcionando al 100%. ¡Gracias por apoyarnos!</string>
     <string name="retirar_anuncios">Retirar Anuncios</string>
+    <string name="fix_store_data_txt">Reparar datos de recorridos</string>
+    <string name="descript_fix_option_data">Use esta opción si los recorridos de las rutas presentan líneas rectas excesivamente largas, lo que podría indicar que no forman parte del trayecto habitual.</string>
 
 </resources>
 

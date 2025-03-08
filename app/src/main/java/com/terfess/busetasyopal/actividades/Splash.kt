@@ -48,7 +48,7 @@ class Splash : AppCompatActivity() {
         // Initialize ads sdk
         MobileAds.initialize(this) {}
 
-        //crear canales notificaciones
+        // Crear canales notificaciones
         NotificationChannelHelper(this).crearCanalesNotificaciones()
 
         // Procesar intent recibido
@@ -71,7 +71,7 @@ class Splash : AppCompatActivity() {
             //obtener la version externa y comparar
             if (!downloading) {
                 checkDataVersion(roomDB, intentToRutasSeccion)
-                println("mandoa a descarga 3")
+                println("Verificando versiones")
             }
 
             //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -181,10 +181,10 @@ class Splash : AppCompatActivity() {
     private fun descargarDatos(intentToRutasSeccion: Intent) {
         val contexto = this
 
-        println("Descargando información")
+        println("Descargando informacion")
         DatosDeFirebase().descargarInformacion(contexto, firebaseInstance, object : allDatosRutas {
             override fun todosDatosRecibidos() {
-                UtilidadesMenores().crearToast(this@Splash, "Información De Rutas Descargada")
+                UtilidadesMenores().crearToast(this@Splash, "Informacion De Rutas Descargada")
 
                 FirebaseDatabase.getInstance().goOffline()
 
@@ -198,7 +198,7 @@ class Splash : AppCompatActivity() {
 
     override fun onDestroy() {
         tiempo.removeCallbacksAndMessages(null)
-        Log.i("Actividades", "Splash se destruyó")
+        Log.i("Actividades", "Splash se destruyo")
         super.onDestroy()
     }
 }

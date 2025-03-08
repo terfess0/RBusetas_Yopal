@@ -169,6 +169,8 @@
     <string name="en_este_momento_no_hay_compras">There are no purchases at this time.</string>
     <string name="title_shop_gretting_text">Your purchases help us improve! 🛍️ With every purchase, we can update info, improve routes, and keep everything running smoothly. Thanks for your support! 💙</string>
     <string name="retirar_anuncios">Remove Ads</string>
+    <string name="fix_store_data_txt">Repairing trip data</string>
+    <string name="descript_fix_option_data">Use this option if route paths have excessively long straight lines, which could indicate that they are not part of the usual route.</string>
 </resources>
 
 

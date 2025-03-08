@@ -14,11 +14,17 @@ import com.google.android.gms.maps.GoogleMap
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.ActivityConfigurationsBinding
+import com.terfess.busetasyopal.room.AppDatabase
+import com.terfess.busetasyopal.room.model.Version
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class Configurations : AppCompatActivity() {
 
     private lateinit var binding: ActivityConfigurationsBinding
     private lateinit var sharedPreferences: SharedPreferences
+    private var instUtilidades = UtilidadesMenores()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +36,7 @@ class Configurations : AppCompatActivity() {
         val nameShared = getString(R.string.nombre_shared_preferences)
         sharedPreferences = getSharedPreferences(nameShared, Context.MODE_PRIVATE)
 
-        val selectedIndex = UtilidadesMenores().getIndexTypeMap(this)
+        val selectedIndex = instUtilidades.getIndexTypeMap(this)
 
         if (selectedIndex >= 0) {
             mapTypeSpinner.setSelection(selectedIndex)
@@ -47,9 +53,23 @@ class Configurations : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
 
-        val themeColor = UtilidadesMenores().getColorHambugerIcon()
+        val themeColor = instUtilidades.getColorHambugerIcon()
         toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, themeColor))
         //..
+
+        // Change local version data and reload app for download
+        binding.storeDataConfigContain.setOnClickListener {
+            binding.progressFixStoreData.visibility = View.VISIBLE
+
+            val roomDB by lazy { AppDatabase.getDatabase(this) }
+            CoroutineScope(Dispatchers.IO).launch {
+                val versionToFix = 0
+                roomDB.versionDao()
+                    .insertVersion(Version(num_version = versionToFix))
+                instUtilidades.reiniciarApp(this@Configurations, Splash::class.java)
+            }
+
+        }
     }
 
     private fun listenLanguajeChange(maptype: Spinner) {
