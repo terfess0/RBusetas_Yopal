@@ -25,6 +25,7 @@ import androidx.core.view.GravityCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.ads.AdView
+import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.DataSnapshot
@@ -65,7 +66,7 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
     private var currentTask = "Viendo Menu Principal"
 
     private lateinit var mAdView: AdView //anuncios
-    private lateinit var btnOptShop : ImageButton
+    private lateinit var btnOptShop: ImageButton
 
     private var listaRutas = emptyList<Int>()
     private var listaFilter = emptyList<DatosPrimariosRuta>()
@@ -95,7 +96,7 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
             )
         cajaInfo.layoutManager = LinearLayoutManager(this)
         cajaInfo.adapter = adapter
-
+        //adapter.showHorFrec(false)
 
         //Local Database Instance
         val dbRoom = AppDatabase.getDatabase(this)
@@ -253,8 +254,38 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
             startActivity(intent)
         }
 
-        colorTema = instanciaUtilidadesMenores.colorTituloTema(this)
+        // Filters
+        // ------ Setters states
+        val nameStateValueSites = getString(R.string.nombre_shared_show_sites_value)
+        val nameStateValueHF = getString(R.string.nombre_shared_show_horfrecs_value)
 
+        verifyIniShowStates(nameStateValueSites, nameStateValueHF)
+
+        // Prepare for edit
+        val btnShowSites = binding.showSites
+        btnShowSites.addOnCheckedStateChangedListener { _, state ->
+            adapter.showSites(state == MaterialCheckBox.STATE_CHECKED)
+            //Save to shared preference the value
+            instanciaUtilidadesMenores.saveToSharedPreferences(
+                this,
+                nameStateValueSites,
+                state == MaterialCheckBox.STATE_CHECKED
+            )
+        }
+
+        val btnShowHorFrecs = binding.showHorFrecs
+        btnShowHorFrecs.addOnCheckedStateChangedListener { _, state ->
+            adapter.showHorFrec(state == MaterialCheckBox.STATE_CHECKED)
+            //Save to shared preference the value
+            instanciaUtilidadesMenores.saveToSharedPreferences(
+                this,
+                nameStateValueHF,
+                state == MaterialCheckBox.STATE_CHECKED
+            )
+        }
+        //..
+
+        colorTema = instanciaUtilidadesMenores.colorTituloTema(this)
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -283,6 +314,24 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
         })
 
         handleIntent(intent)
+    }
+
+    private fun verifyIniShowStates(nameStrSites: String, nameStrHorFrec: String) {
+        val isCheckedSites: Boolean =
+            instanciaUtilidadesMenores.readSharedBooleanShowStatesPrincPref(
+                this,
+                nameStrSites
+            )
+        binding.showSites.isChecked = isCheckedSites
+
+        val isCheckedHorFrec: Boolean =
+            instanciaUtilidadesMenores.readSharedBooleanShowStatesPrincPref(this, nameStrHorFrec)
+        binding.showHorFrecs.isChecked = isCheckedHorFrec
+
+        adapter.let {
+            adapter.showSites(isCheckedSites)
+            adapter.showHorFrec(isCheckedHorFrec)
+        }
     }
 
     override fun onResume() {

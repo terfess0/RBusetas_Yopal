@@ -19,6 +19,8 @@
     <string name="empty_eport_error">Reporte vacío, no se envió</string>
     <string name="description_alert_report">Por aquí puedes enviarnos opiniones, hallazgos de información incompleta y/o errónea, así como reportes generales que podrán ser redirigidos a la Secretaría de Tránsito.</string>
     <string name="nombre_shared_preferences" translatable="false">PreferenciasGuardadas</string>
+    <string name="nombre_shared_show_sites_value" translatable="false">StateShowSitesRoutesPrincipal</string>
+    <string name="nombre_shared_show_horfrecs_value" translatable="false">StateShowHorFrecRoutesPrincipal</string>
     <string name="ver_ruta">ver ruta</string>
     <string name="ocultar">ocultar</string>
     <string name="ruta_y_numero">Ruta %1$s</string>

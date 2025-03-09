@@ -7,6 +7,7 @@ import android.content.Intent
 import android.text.Html
 import android.text.Html.FROM_HTML_MODE_LEGACY
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.terfess.busetasyopal.actividades.mapa.view.Mapa
 import com.terfess.busetasyopal.clases_utiles.RangoHorarios
@@ -193,16 +194,17 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
         //demas acciones recyclerview
         if (colorDia == "#2196F3") {
             binding.contenedorHor.visibility = View.GONE
-            binding.guideline2.setGuidelinePercent(1.0f) //se establece porcentage de 100% para que se adapte bien al contenido
+            binding.barrieHor.visibility = View.GONE
+//            binding.guideline2.setGuidelinePercent(1.0f) //se establece porcentage de 100% para que se adapte bien al contenido
 
         } else {
             binding.contenedorHor.visibility = View.VISIBLE
-            binding.guideline2.setGuidelinePercent(0.56f) //se establece porcentage por defecto 56% para que siga adaptandose
+            binding.barrieHor.visibility = View.VISIBLE
+//            binding.guideline2.setGuidelinePercent(0.56f) //se establece porcentage por defecto 56% para que siga adaptandose
 
         }
 
         binding.numRuta.text = ruta
-
 
         // On user selected a item route
         binding.contenedor.setOnClickListener {
@@ -216,6 +218,14 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
                 caja.startActivity(intent)
             }
         }
+    }
+
+    fun showContainHorFrec(value:Boolean){
+        binding.contenedorHor.visibility = if (value) View.VISIBLE else View.GONE
+    }
+
+    fun showContainSites(value:Boolean){
+        binding.sitios.visibility = if (value) View.VISIBLE else View.GONE
     }
 
     private fun directionalText(

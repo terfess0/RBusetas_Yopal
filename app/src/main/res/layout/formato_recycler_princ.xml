@@ -11,94 +11,6 @@
     android:foreground="?android:attr/selectableItemBackground">
 
     <TextView
-        android:id="@+id/numRuta"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-
-        android:gravity="center"
-        android:textColor="?attr/titleTextColor"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintEnd_toStartOf="@+id/sitios"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/sitios"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="#00FFFFFF"
-
-        android:text="@string/textview"
-        android:textColor="?attr/titleTextColor"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/numRuta"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <LinearLayout
-        android:id="@+id/contenedorHor"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/message_direction_route"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guideline2">
-
-        <TextView
-            android:id="@+id/horarioLV"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:layout_weight="1"
-
-            android:gravity="center"
-            android:textColor="#333333"
-            android:textSize="11sp" />
-
-        <TextView
-            android:id="@+id/horarioS"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:layout_weight="1"
-
-            android:gravity="center"
-            android:textColor="#333333"
-            android:textSize="11sp" />
-
-        <TextView
-            android:id="@+id/horarioDF"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:layout_weight="1"
-
-            android:gravity="center"
-            android:textColor="#333333"
-            android:textSize="11sp" />
-    </LinearLayout>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.42168674" />
-
-    <TextView
         android:id="@+id/tocaParaVer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -106,15 +18,107 @@
         android:layout_marginEnd="-3dp"
         android:background="@drawable/bord_suave"
         android:backgroundTint="@color/enfasis_azul"
-        android:text="@string/toca_para_ver"
         android:paddingHorizontal="5dp"
+        android:text="@string/toca_para_ver"
         android:textAlignment="textStart"
         android:textColor="#D8FFFFFF"
-        android:textSize="11sp"
         android:textStyle="bold"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/containNumAndSites"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/numRuta"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="4dp"
+            android:gravity="center"
+            android:textColor="?attr/titleTextColor"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/sitios"
+            android:layout_weight="5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="#00FFFFFF"
+            android:text="@string/textview"
+            android:textColor="?attr/titleTextColor" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/barrieHor"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#CCCCCC"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/containNumAndSites" />
+
+    <LinearLayout
+        android:id="@+id/contenedorHor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/barrieHor">
+
+        <TextView
+            android:id="@+id/horarioLV"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#333333"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/horarioS"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#333333"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/horarioDF"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#333333"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/barrierEnd"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#CCCCCC"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/contenedorHor" />
 
     <TextView
         android:id="@+id/message_direction_route"
@@ -123,18 +127,17 @@
         android:ellipsize="marquee"
         android:focusable="true"
         android:focusableInTouchMode="true"
-
         android:marqueeRepeatLimit="marquee_forever"
         android:scrollHorizontally="true"
         android:singleLine="true"
         android:textAlignment="center"
         android:textAllCaps="true"
         android:textColor="?attr/titleTextColor"
-        android:textSize="11sp"
         android:textStyle="bold"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/barrierEnd" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

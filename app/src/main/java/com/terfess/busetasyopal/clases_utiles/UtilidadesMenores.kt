@@ -364,6 +364,24 @@ class UtilidadesMenores {
         builder.show()
     }
 
+    // SHARED PREFERENCES
+    fun saveToSharedPreferences(context: Context, key: String, value: Any) {
+        val strShareds = context.getString(R.string.nombre_shared_preferences)
+        val sharedPref = context.getSharedPreferences(strShareds, Context.MODE_PRIVATE)
+        val editor = sharedPref.edit()
+
+        when (value) {
+            is String -> editor.putString(key, value)
+            is Int -> editor.putInt(key, value)
+            is Boolean -> editor.putBoolean(key, value)
+            is Float -> editor.putFloat(key, value)
+            is Long -> editor.putLong(key, value)
+            else -> throw IllegalArgumentException("Tipo no soportado para SharedPreferences")
+        }
+
+        editor.apply()
+    }
+
     fun readSharedIntPref(context: Context, key: String): Int {
         val sharedPreferences =
             context.getSharedPreferences("PreferenciasGuardadas", Context.MODE_PRIVATE)
@@ -375,6 +393,14 @@ class UtilidadesMenores {
             context.getSharedPreferences("PreferenciasGuardadas", Context.MODE_PRIVATE)
         return sharedPreferences.getBoolean(key, false)
     }
+
+    fun readSharedBooleanShowStatesPrincPref(context: Context, key: String): Boolean {
+        val sharedPreferences =
+            context.getSharedPreferences("PreferenciasGuardadas", Context.MODE_PRIVATE)
+        return sharedPreferences.getBoolean(key, true)
+    }
+
+    //..
 
     fun handleFirebaseError(exception: Exception): FirebaseEnums {
         return when (exception) {
