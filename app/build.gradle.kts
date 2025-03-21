@@ -14,8 +14,8 @@ android {
         applicationId = "com.terfess.busetasyopal"
         minSdk = 24
         targetSdk = 35
-        versionCode = 36
-        versionName = "2.3.4"
+        versionCode = 37
+        versionName = "3.3.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -105,6 +105,9 @@ dependencies {
     // For json request to api routes
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    // workmanager
+    implementation("androidx.work:work-runtime-ktx:2.10.0")
 
 }
 

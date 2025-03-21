@@ -17,7 +17,6 @@ import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.room.allDatosRutas
 import com.terfess.busetasyopal.room.AppDatabase
 import com.terfess.busetasyopal.room.model.Version
-import com.terfess.busetasyopal.services.BillingService
 import com.terfess.busetasyopal.services.NotificationChannelHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

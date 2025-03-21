@@ -102,6 +102,7 @@
             </intent-filter>
         </service>
 
+
         <property
             android:name="android.adservices.AD_SERVICES_CONFIG"
             android:resource="@xml/gma_ad_services_config"

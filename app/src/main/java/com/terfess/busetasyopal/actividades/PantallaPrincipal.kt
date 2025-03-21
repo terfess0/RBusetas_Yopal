@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Build.VERSION
 import android.os.Build.VERSION_CODES
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -24,6 +25,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.google.android.gms.ads.AdView
 import com.google.android.material.checkbox.MaterialCheckBox
 import com.google.android.material.navigation.NavigationView
@@ -46,11 +53,13 @@ import com.terfess.busetasyopal.enums.MapRouteOption
 import com.terfess.busetasyopal.modelos_dato.DatosPrimariosRuta
 import com.terfess.busetasyopal.room.AppDatabase
 import com.terfess.busetasyopal.services.AddEspecialCenter
+import com.terfess.busetasyopal.workers.ListenerNotifications
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.Calendar
+import java.util.concurrent.TimeUnit
 
 
 class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
@@ -121,6 +130,7 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
             title = "Busetas Yopal"
         }
 
+        iniciarWorkManager(this)
 
         val drawer = binding.draweLayoutPrinc
 
@@ -315,6 +325,31 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
 
         handleIntent(intent)
     }
+
+    fun iniciarWorkManager(context: Context) {
+        val workManager = WorkManager.getInstance(context)
+
+        // 🔹 Ejecutar una vez inmediatamente
+        val oneTimeWork = OneTimeWorkRequestBuilder<ListenerNotifications>()
+            .setConstraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build())
+            .build()
+
+        workManager.enqueue(oneTimeWork)
+
+        // 🔹 Programar ejecución cada 15 minutos
+        val periodicWork = PeriodicWorkRequestBuilder<ListenerNotifications>(15, TimeUnit.MINUTES)
+            .setConstraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build())
+            .build()
+
+        workManager.enqueueUniquePeriodicWork(
+            "firebase_listener_worker",
+            ExistingPeriodicWorkPolicy.KEEP,
+            periodicWork
+        )
+
+        Log.d("WorkManager", "✅ Worker programado: inmediato y luego cada 15 minutos")
+    }
+
 
     private fun verifyIniShowStates(nameStrSites: String, nameStrHorFrec: String) {
         val isCheckedSites: Boolean =
