@@ -11,8 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.terfess.busetasyopal.R
-import com.terfess.busetasyopal.admin.model.DatoRecord
-import com.terfess.busetasyopal.admin.model.DatoReport
+import com.terfess.busetasyopal.modelos_dato.reports_system.DatoReport
 import com.terfess.busetasyopal.admin.recycler.reports.AdapterReportsAdmin
 import com.terfess.busetasyopal.admin.viewmodel.ReportViewModel
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
@@ -23,14 +22,16 @@ import java.util.Locale
 
 class ReportsAdmin : AppCompatActivity() {
     private lateinit var binding: ActivityReportsAdminBinding
-    private var adapter = AdapterReportsAdmin(emptyList())
     private val viewModelInst: ReportViewModel by viewModels()
+    private val utilidadesMenInst = UtilidadesMenores()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityReportsAdminBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
+
+        val adapter = AdapterReportsAdmin(emptyList(), viewModelInst)
         val recicler = binding.reportsAdminRecycler
         recicler.layoutManager = LinearLayoutManager(this)
         recicler.adapter = adapter
@@ -61,15 +62,39 @@ class ReportsAdmin : AppCompatActivity() {
         })
 
         viewModelInst.resultDeleteReport.observe(this, Observer {
-
             if (it == true) {
-                UtilidadesMenores().crearSnackbar(
-                    "Reporte Eliminado",
-                    binding.root
+                utilidadesMenInst.crearSnackbar(
+                    "Reporte Eliminado", binding.root
                 )
             } else {
-                UtilidadesMenores().crearSnackbar(
-                    "Algo salió mal, no se eliminó el reporte.",
+                utilidadesMenInst.crearSnackbar(
+                    "Algo salió mal, no se eliminó el reporte.", binding.root
+                )
+            }
+        })
+
+        viewModelInst.resultReplyReport.observe(this, Observer { result ->
+            println("1")
+            var txtResult = ""
+            if (result) {
+                txtResult = "Respuesta Enviada Correctamente"
+
+                utilidadesMenInst.crearSnackbar(txtResult, binding.root)
+                println("2")
+            } else {
+                val erorrtxt = viewModelInst.errorReplyReport
+                txtResult = "Algo salió mal, no se respondio el reporte. $erorrtxt"
+
+                utilidadesMenInst.crearSnackbar(txtResult, binding.root)
+                println("3")
+            }
+        })
+
+        viewModelInst.alertOnScreen.observe(this, Observer { text ->
+            //Mostrar algun mensaje enviado por el view model
+            if (!text.isNullOrBlank()){
+                utilidadesMenInst.crearSnackbar(
+                    text,
                     binding.root
                 )
             }

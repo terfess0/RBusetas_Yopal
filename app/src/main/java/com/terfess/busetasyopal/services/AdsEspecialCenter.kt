@@ -12,7 +12,7 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 
-class AddEspecialCenter {
+class AdsEspecialCenter {
 
     var mInterstitialAd: InterstitialAd? = null
     fun intersticialAdRequest(

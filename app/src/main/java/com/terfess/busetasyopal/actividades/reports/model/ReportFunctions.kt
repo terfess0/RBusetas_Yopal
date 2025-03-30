@@ -5,8 +5,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.messaging.FirebaseMessaging
-import com.terfess.busetasyopal.admin.callback.OnGetReports
-import com.terfess.busetasyopal.admin.model.DatoReport
+import com.terfess.busetasyopal.modelos_dato.reports_system.DatoReport
 import com.terfess.busetasyopal.callbacks.user_reports.OnGetMyReports
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.enums.FirebaseEnums

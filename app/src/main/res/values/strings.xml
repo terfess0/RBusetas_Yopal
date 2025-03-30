@@ -32,7 +32,7 @@
     <string name="actualizar_precio_pasaje">Actualizar precio pasaje</string>
 
 
-    <string name="ruta_reportes_db_nube" translatable="false">features/0/reportesNew</string>
+    <string name="ruta_reportes_db_nube" translatable="false">features/0/users/%1$s/reports</string>
     <string name="ruta_firebase_price_nube" translatable="false">/features/0/precio</string>
     <string name="ruta_firebase_rutas_nube" translatable="false">features/0/rutas</string>
 
@@ -180,6 +180,9 @@
     <string name="retirar_anuncios">Retirar Anuncios</string>
     <string name="fix_store_data_txt">Reparar datos de recorridos</string>
     <string name="descript_fix_option_data">Use esta opción si los recorridos de las rutas presentan líneas rectas excesivamente largas, lo que podría indicar que no forman parte del trayecto habitual.</string>
+    <string name="responder_reporte">Responder reporte</string>
+    <string name="input_txt_response_adm">Ingrese el texto de respuesta</string>
+    <string name="responder">Responder</string>
 
 </resources>
 

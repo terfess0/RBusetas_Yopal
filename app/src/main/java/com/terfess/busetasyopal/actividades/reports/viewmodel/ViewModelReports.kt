@@ -3,7 +3,7 @@ package com.terfess.busetasyopal.actividades.reports.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.terfess.busetasyopal.actividades.reports.model.ReportFunctions
-import com.terfess.busetasyopal.admin.model.DatoReport
+import com.terfess.busetasyopal.modelos_dato.reports_system.DatoReport
 import com.terfess.busetasyopal.callbacks.user_reports.OnGetMyReports
 import com.terfess.busetasyopal.enums.FirebaseEnums
 

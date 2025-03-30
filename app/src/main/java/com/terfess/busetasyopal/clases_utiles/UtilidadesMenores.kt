@@ -28,14 +28,18 @@ import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseException
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.actividades.mapa.view.Mapa
 import com.terfess.busetasyopal.enums.FirebaseEnums
 import com.terfess.busetasyopal.room.model.Coordinate
+import com.terfess.busetasyopal.services.workers.OnGetCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -212,156 +216,6 @@ class UtilidadesMenores {
             nightModeState = true
         }
         return nightModeState
-    }
-
-    fun reportar(context: Context, instanciaMapa: Mapa? = null, opcionActual: String) {
-        val ubiUser = Mapa.ubiUser //ubicacion del usuario
-        val builder = AlertDialog.Builder(context, R.style.AlertDialogTheme)
-
-        //set titulo, descripcion y icono
-        builder.setTitle("Reportar novedad")
-        builder.setMessage(
-            context.getString(R.string.description_alert_report)
-        )
-        builder.setIcon(R.drawable.ic_app)
-
-        // Crear un LinearLayout vertical para contener el EditText y el CheckBox
-        val layout = LinearLayout(context)
-        layout.orientation = LinearLayout.VERTICAL
-
-        // Agregar un EditText para que el usuario ingrese texto
-        val input = EditText(context)
-        input.hint = "Escribe aquí"
-        input.maxLines = 5
-        input.maxEms = 5
-        input.setHintTextColor(Color.GRAY)
-
-        // Agregar un CheckBox para permitir al usuario elegir si desea enviar la ubicación
-        val checkBox = CheckBox(context)
-        checkBox.setTextColor(Color.GRAY)
-        checkBox.text = context.getString(R.string.option_add_ubi_to_report)
-
-        if (isNightMode()) {
-            input.setTextColor(Color.WHITE)
-            checkBox.setTextColor(Color.WHITE)
-        }
-
-        layout.addView(input)
-
-        if (instanciaMapa != null) { // Verificar si se proporcionó una instancia del mapa
-            layout.addView(checkBox)
-        }
-
-        // Establecer el LinearLayout como la vista del cuadro de diálogo
-        builder.setView(layout)
-        builder.setPositiveButton("Enviar") { _, _ ->
-
-            if (comprobarConexion(context)) {
-
-                // Obtener el texto ingresado por el usuario
-                val texto = input.text.toString()
-                if (texto.isEmpty() || texto.isBlank()) {
-                    crearAlertaSencilla(context, context.getString(R.string.empty_eport_error))
-                } else {
-                    CoroutineScope(Dispatchers.IO).launch {
-
-                        val firebase: FirebaseDatabase = FirebaseDatabase.getInstance()
-                        val ref: DatabaseReference =
-                            firebase.getReference(context.getString(R.string.ruta_reportes_db_nube))
-                        val nuevoReporteKey = ref.push().key ?: return@launch
-
-                        val currentDate: Date = Calendar.getInstance().time
-                        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                        val fechaFormateada: String = dateFormat.format(currentDate)
-
-                        val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
-                        val horaFormateada: String = timeFormat.format(currentDate)
-
-                        var ubicacion = "Ninguna"
-
-                        //if selecciona enviar ubicacion y la ubicacion ya fue obtenida
-                        if (checkBox.isChecked && ubiUser.latitude != 0.0 && ubiUser.longitude != 0.0) {
-                            ubicacion =
-                                ubiUser.latitude.toString() + ", " + ubiUser.longitude.toString()
-                        }
-                        //si selecciona enviar ubicacion pero falta obtener ubicacion
-                        if (checkBox.isChecked && (ubiUser.latitude == 0.0 && ubiUser.longitude == 0.0)) {
-
-                            withContext(Dispatchers.Main) {
-                                instanciaMapa?.requestLocationPermission()
-                            }
-
-                            var contador = 0
-                            val tiempoMaximo = 10 // segundos
-                            val intervaloEspera = 1000L // 1 segundo
-
-                            while (contador < tiempoMaximo && (ubiUser.latitude == 0.0 && ubiUser.longitude == 0.0)) {
-                                delay(intervaloEspera)
-                                contador++
-                            }
-
-                            ubicacion = if (ubiUser.latitude == 0.0 && ubiUser.longitude == 0.0) {
-                                "No proporcionada"
-                            } else {
-                                ubiUser.toString()
-                            }
-                        }
-                        //si no selecciona enviar ubicacion
-                        if (!checkBox.isChecked) {
-                            ubicacion = "No proporcionada"
-                        }
-
-                        // Obtener el token de registro
-                        var tokenIdApp: String
-                        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                tokenIdApp = task.result
-
-                                // Crear un nuevo nodo con el ID único, fecha, texto y ubicación del reporte
-                                val nuevoReporte = mapOf<String, Any>(
-                                    "dateReport" to fechaFormateada,
-                                    "timeReport" to horaFormateada,
-                                    "situationReport" to texto,
-                                    "location" to ubicacion,
-                                    "currentTask" to opcionActual,
-                                    "origin" to tokenIdApp
-                                )
-
-                                // Subir el nuevo reporte a la base de datos de Firebase
-                                ref.child(nuevoReporteKey).setValue(nuevoReporte)
-                                    .addOnCompleteListener { subida ->
-                                        if (subida.isSuccessful) {
-                                            // La subida fue exitosa
-                                            crearAlertaSencilla(
-                                                context,
-                                                "Reporte enviado exitosamente"
-                                            )
-                                        } else {
-                                            // La subida falló
-                                            crearAlertaSencilla(
-                                                context,
-                                                "Error al enviar el reporte. Inténtalo de nuevo más tarde"
-                                            )
-                                        }
-                                    }
-                            } else {
-                                // La subida falló
-                                crearAlertaSencilla(
-                                    context,
-                                    "Error al enviar el reporte. Inténtalo de nuevo más tarde"
-                                )
-                            }
-                        }
-
-
-                    }
-                }
-            } else {
-                crearAlertaSencilla(context, "No hay conexión, inténtalo de nuevo más tarde")
-            }
-        }
-
-        builder.show()
     }
 
     // SHARED PREFERENCES
@@ -613,4 +467,160 @@ class UtilidadesMenores {
         }
     }
 
+    fun reportar(context: Context, instanciaMapa: Mapa? = null, opcionActual: String) {
+        val ubiUser = Mapa.ubiUser //ubicacion del usuario
+        val builder = AlertDialog.Builder(context, R.style.AlertDialogTheme)
+
+        //set titulo, descripcion y icono
+        builder.setTitle("Reportar novedad")
+        builder.setMessage(
+            context.getString(R.string.description_alert_report)
+        )
+        builder.setIcon(R.drawable.ic_app)
+
+        // Crear un LinearLayout vertical para contener el EditText y el CheckBox
+        val layout = LinearLayout(context)
+        layout.orientation = LinearLayout.VERTICAL
+
+        // Agregar un EditText para que el usuario ingrese texto
+        val input = EditText(context)
+        input.hint = "Escribe aquí"
+        input.maxLines = 5
+        input.maxEms = 5
+        input.setHintTextColor(Color.GRAY)
+
+        // Agregar un CheckBox para permitir al usuario elegir si desea enviar la ubicación
+        val checkBox = CheckBox(context)
+        checkBox.setTextColor(Color.GRAY)
+        checkBox.text = context.getString(R.string.option_add_ubi_to_report)
+
+        if (isNightMode()) {
+            input.setTextColor(Color.WHITE)
+            checkBox.setTextColor(Color.WHITE)
+        }
+
+        layout.addView(input)
+
+        if (instanciaMapa != null) { // Verificar si se proporcionó una instancia del mapa
+            layout.addView(checkBox)
+        }
+
+        // Establecer el LinearLayout como la vista del cuadro de diálogo
+        builder.setView(layout)
+        builder.setPositiveButton("Enviar") { _, _ ->
+
+            if (comprobarConexion(context)) {
+
+                // Obtener el texto ingresado por el usuario
+                val texto = input.text.toString()
+
+                if (texto.isEmpty() || texto.isBlank()) {
+                    crearAlertaSencilla(context, context.getString(R.string.empty_eport_error))
+
+                } else {
+                    CoroutineScope(Dispatchers.IO).launch {
+
+                        val firebase: FirebaseDatabase = FirebaseDatabase.getInstance()
+
+                        val currentDate: Date = Calendar.getInstance().time
+                        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                        val fechaFormateada: String = dateFormat.format(currentDate)
+
+                        val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+                        val horaFormateada: String = timeFormat.format(currentDate)
+
+                        var ubicacion = "Ninguna"
+
+                        //if selecciona enviar ubicacion y la ubicacion ya fue obtenida
+                        if (checkBox.isChecked && ubiUser.latitude != 0.0 && ubiUser.longitude != 0.0) {
+                            ubicacion =
+                                ubiUser.latitude.toString() + ", " + ubiUser.longitude.toString()
+                        }
+                        //si selecciona enviar ubicacion pero falta obtener ubicacion
+                        if (checkBox.isChecked && (ubiUser.latitude == 0.0 && ubiUser.longitude == 0.0)) {
+
+                            withContext(Dispatchers.Main) {
+                                instanciaMapa?.requestLocationPermission()
+                            }
+
+                            var contador = 0
+                            val tiempoMaximo = 10 // segundos
+                            val intervaloEspera = 1000L // 1 segundo
+
+                            while (contador < tiempoMaximo && (ubiUser.latitude == 0.0 && ubiUser.longitude == 0.0)) {
+                                delay(intervaloEspera)
+                                contador++
+                            }
+
+                            ubicacion = if (ubiUser.latitude == 0.0 && ubiUser.longitude == 0.0) {
+                                "No proporcionada"
+                            } else {
+                                ubiUser.toString()
+                            }
+                        }
+                        //si no selecciona enviar ubicacion
+                        if (!checkBox.isChecked) {
+                            ubicacion = "No proporcionada"
+                        }
+
+                        // Obtener el token de registro
+                        var tokenIdApp: String
+                        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                tokenIdApp = task.result
+
+
+                                val ref: DatabaseReference =
+                                    firebase.getReference(
+                                        context.getString(
+                                            R.string.ruta_reportes_db_nube,
+                                            tokenIdApp
+                                        )
+                                    )
+
+                                // Crear un nuevo nodo con el ID único, fecha, texto y ubicación del reporte
+                                val nuevoReporte = mapOf<String, Any>(
+                                    "dateReport" to fechaFormateada,
+                                    "timeReport" to horaFormateada,
+                                    "situationReport" to texto,
+                                    "location" to ubicacion,
+                                    "statusCheckedView" to false, // Indicate if the user had view the noti on ReportsUser screen
+                                    "currentTask" to opcionActual
+                                )
+
+                                // Subir el nuevo reporte a la base de datos de Firebase
+                                val e = ref.push()
+                                e.setValue(nuevoReporte).addOnCompleteListener { subida ->
+                                    if (subida.isSuccessful) {
+                                        // La subida fue exitosa
+                                        crearAlertaSencilla(
+                                            context,
+                                            "Reporte enviado exitosamente"
+                                        )
+                                    } else {
+                                        // La subida falló
+                                        crearAlertaSencilla(
+                                            context,
+                                            "Error al enviar el reporte. Inténtalo de nuevo más tarde"
+                                        )
+                                        println("Error al enviar el reporte: ${subida.exception}")
+                                    }
+                                }
+                            } else {
+                                // La subida falló
+                                crearAlertaSencilla(
+                                    context,
+                                    "Error al enviar el reporte. Inténtalo de nuevo más tarde"
+                                )
+                            }
+                        }
+                    }
+                }
+            } else {
+                crearAlertaSencilla(context, "No hay conexión, inténtalo de nuevo más tarde")
+            }
+        }
+
+        builder.show()
+    }
 }

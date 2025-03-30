@@ -3,12 +3,10 @@ package com.terfess.busetasyopal.actividades.reports.model
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.terfess.busetasyopal.R
-import com.terfess.busetasyopal.admin.model.DatoReport
-import com.terfess.busetasyopal.admin.viewmodel.ReportViewModel
-import com.terfess.busetasyopal.databinding.FormatRecyclerReportsBinding
+import com.terfess.busetasyopal.modelos_dato.reports_system.DatoReport
+import com.terfess.busetasyopal.databinding.FormatRecyclerReportsUserBinding
 
 class AdapterHolderReportsUser(private var reports: List<DatoReport>) :
     RecyclerView.Adapter<AdapterHolderReportsUser.HolderReportsUser>() {
@@ -17,7 +15,7 @@ class AdapterHolderReportsUser(private var reports: List<DatoReport>) :
 
         return HolderReportsUser(
             layoutInflater.inflate(
-                R.layout.format_recycler_reports,
+                R.layout.format_recycler_reports_adm,
                 parent,
                 false
             )
@@ -38,15 +36,15 @@ class AdapterHolderReportsUser(private var reports: List<DatoReport>) :
     }
 
     inner class HolderReportsUser(view: View) : RecyclerView.ViewHolder(view) {
-        private var binding = FormatRecyclerReportsBinding.bind(view)
+        private var binding = FormatRecyclerReportsUserBinding.bind(view)
 
         fun showReports(currentReport: DatoReport) {
             //set show report
-            val tvDate = binding.tvFechaReport
-            val tvText = binding.tvTextReport
-            val tvTime = binding.tvTimeReport
-            val tvTask = binding.tvTaskReport
-            val tvLocation = binding.tvLocationReport
+            val tvDate = binding.tvFechaReportUser
+            val tvText = binding.tvTextReportUser
+            val tvTime = binding.tvTimeReportUser
+            val tvTask = binding.tvTaskReportUser
+            val tvLocation = binding.tvLocationReportUser
 
             tvDate.text = currentReport.dateReport
             tvText.text = currentReport.situationReport
@@ -54,7 +52,7 @@ class AdapterHolderReportsUser(private var reports: List<DatoReport>) :
             tvTime.text = currentReport.timeReport
 
             // Hide btn delete report (only available in admin)
-            binding.btnDeleteReport.visibility = View.GONE
+            binding.btnDeleteReportUser.visibility = View.GONE
 
             tvLocation.visibility = View.GONE
         }

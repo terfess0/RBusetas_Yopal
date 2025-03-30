@@ -2,16 +2,19 @@ package com.terfess.busetasyopal.admin.model
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.terfess.busetasyopal.admin.callback.AddRoute
 import com.terfess.busetasyopal.admin.callback.GetRecords
 import com.terfess.busetasyopal.admin.callback.OnDeleteReport
 import com.terfess.busetasyopal.admin.callback.OnGetAllData
 import com.terfess.busetasyopal.admin.callback.OnGetReports
+import com.terfess.busetasyopal.admin.callback.OnReplyReport
 import com.terfess.busetasyopal.admin.callback.UpdatePrice
 import com.terfess.busetasyopal.admin.callback.updateInfo.UpVersionInfo
 import com.terfess.busetasyopal.admin.callback.updateRoute.ChangeStatusEnabled
@@ -20,6 +23,8 @@ import com.terfess.busetasyopal.admin.callback.updateRoute.UpdateSchedule
 import com.terfess.busetasyopal.admin.callback.updateRoute.UpdateSites
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.enums.FirebaseEnums
+import com.terfess.busetasyopal.modelos_dato.reports_system.DatoReport
+import com.terfess.busetasyopal.modelos_dato.reports_system.ResponseReportDato
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,6 +36,7 @@ import java.util.Locale
 class AdminProvider : ViewModel() {
     private var dataBaseFirebase = FirebaseDatabase.getInstance()
     private var firebaseAuth = FirebaseAuth.getInstance()
+    private val emailAdmin = firebaseAuth.currentUser?.email
 
     //GETTERS-------------------------
     fun getInfo(callback: OnGetAllData) {
@@ -184,7 +190,6 @@ class AdminProvider : ViewModel() {
     private fun saveActionRegist(action: String) {
         // Obtener la referencia a la base de datos
         val database = dataBaseFirebase.getReference("features/0/administradores")
-        val emailAdmin = firebaseAuth.currentUser?.email
 
         // Referencia al nodo donde se almacenarán los registros
         val registrosRef = database.child("registros")
@@ -250,170 +255,225 @@ class AdminProvider : ViewModel() {
         }
     }
 
-
-    //END SETTERS------------
-
-    //DELETES------------------
-    fun deleteReport(callback: OnDeleteReport, idFieldReport: String) {
-        // referencia al documento en Firebase
-        val databaseReference = dataBaseFirebase.getReference("features/0/reportesNew")
-
-        val updates = hashMapOf<String, Any?>(
-            idFieldReport to null
-        )
-
-        // actualizar el documento eliminando el campo
-        databaseReference.updateChildren(updates)
-            .addOnSuccessListener {
-                // Operación exitosa
-                callback.OnSuccesTask()
-                Log.d("Firebase", "Reporte eliminado exitosamente.")
-
-                val txtAction = "Borró un reporte :: AdminProvider"
-                saveActionRegist(txtAction)
+    fun replyReport(callback: OnReplyReport, idReport: String, responseTxt: String) {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful || task.result.isNullOrEmpty()) {
+                println("Error obteniendo el token de usuario: ${task.exception}")
+                return@addOnCompleteListener
             }
-            .addOnFailureListener { e ->
-                // Error al eliminar el campo
-                val errorType = UtilidadesMenores().handleFirebaseError(e)
-                callback.OnErrorDelete(errorType)
+            // El token de usuario se ha obtenido correctamente
+            val idUser = task.result!!
 
-                Log.e("Firebase", "Error al eliminar el campo.", e)
-            }
-    }
+            // referencia al documento en Firebase
+            val pointRef = dataBaseFirebase.getReference("features/0/users/$idUser")
+            val pointResponse = pointRef.child("reportResponses")
 
-    //END DELETES------------------
+            // Obtener una nueva clave para cada registro
+            val idResponse = pointResponse.push()
 
-    //UPDATES-----------------
+            // Obtener la fecha y hora actual
+            val currentDate: Date = Calendar.getInstance().time
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val fechaFormateada: String = dateFormat.format(currentDate)
 
-    fun updateSitesRoute(callback: UpdateSites, idRuta: Int, sitiosNew: String) {
-        // referencia al documento en Firebase
-        val databaseReference = dataBaseFirebase.getReference("features/0/rutas/$idRuta")
+            val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+            val horaFormateada: String = timeFormat.format(currentDate)
 
-        val updates = hashMapOf<String, Any?>(
-            "sitios" to sitiosNew
-        )
+            // Crear un mapa para almacenar los datos en Firebase
+            val responseUnit = ResponseReportDato(
+                idResponse = idResponse.key ?: "No se pudo obtener la clave",
+                idReport = idReport,
+                dateResponse = fechaFormateada,
+                timeResponse = horaFormateada,
+                textResponse = responseTxt,
+                authorResponse = emailAdmin ?: "Administrador"
+            )
 
-        // actualizar el documento eliminando el campo
-        databaseReference.updateChildren(updates)
-            .addOnSuccessListener {
-                // Operación exitosa
-                callback.OnSucces()
-                Log.d("Firebase", "Campo sitios actualizado exitosamente.")
-
-                val txtAction = "Actualizó los sitios de la ruta #$idRuta :: AdminProvider"
-                saveActionRegist(txtAction)
-            }
-            .addOnFailureListener { e ->
-                // Error al eliminar el campo
-                val errorType = UtilidadesMenores().handleFirebaseError(e)
-                callback.OnErrorSites(errorType)
-
-                Log.e("Firebase", "Error al actualizar sitios ruta $idRuta.", e)
-            }
-    }
-
-    fun updateFrequencyRuta(
-        callback: UpdateFrequency,
-        idRuta: Int,
-        frecNew: String,
-        fieldName: String
-    ) {
-        // referencia al documento en Firebase
-        val databaseReference = dataBaseFirebase.getReference("features/0/rutas/$idRuta")
-
-        val updates = hashMapOf<String, Any?>(
-            fieldName to frecNew
-        )
-
-        // actualizar el documento eliminando el campo
-        databaseReference.updateChildren(updates)
-            .addOnSuccessListener {
-                // Operación exitosa
-                callback.onSuccess()
-                Log.d("Firebase", "Campo $fieldName actualizado exitosamente.")
-
-                val txtAction =
-                    "Actualizó $fieldName de la ruta #$idRuta [$frecNew] :: AdminProvider"
-                saveActionRegist(txtAction)
-            }
-            .addOnFailureListener { e ->
-                // Error al eliminar el campo
-                val errorType = UtilidadesMenores().handleFirebaseError(e)
-                callback.onErrorFrec(errorType)
-                Log.e("Firebase", "Error al actualizar $fieldName ruta $idRuta.", e)
-            }
-    }
-
-    fun updateSchedule(
-        callback: UpdateSchedule,
-        idRuta: Int,
-        horInicioNew: String,
-        horFinNew: String,
-        field: String
-    ) {
-        // referencia al documento en Firebase
-        val databaseReference =
-            dataBaseFirebase.getReference("features/0/rutas/$idRuta/$field")
-
-        val updates = hashMapOf<String, Any?>(
-            "0" to horInicioNew,
-            "1" to horFinNew
-        )
-
-        // actualizar el documento eliminando el campo
-        databaseReference.updateChildren(updates)
-            .addOnSuccessListener {
-                // Operación exitosa
-                callback.onSuccessSH()
-                Log.d("Firebase", "Campo $field actualizado exitosamente.")
-
-                val txtAction =
-                    "Actualizó $field de la ruta #$idRuta por [$horInicioNew - $horFinNew] :: AdminProvider"
-                saveActionRegist(txtAction)
-            }
-            .addOnFailureListener { e ->
-                // Error al eliminar el campo
-                val errorType = UtilidadesMenores().handleFirebaseError(e)
-                callback.onErrorSH(errorType)
-
-                Log.e("Firebase", "Error al actualizar $field ruta $idRuta.", e)
-            }
-    }
-
-    fun updateVersionData(callback: UpVersionInfo) {
-        val pointRef = dataBaseFirebase.getReference("features/0/version")
-
-        // get the actual num version
-        pointRef.get().addOnSuccessListener { dataSnapshot ->
-
-            val currentVersion = dataSnapshot.getValue(Int::class.java) ?: 1
-            val newVersion = currentVersion + 1
-
-            pointRef.setValue(newVersion)
+            // Guardar los datos en Firebase
+            idResponse.setValue(responseUnit)
                 .addOnSuccessListener {
-                    // Succes on update
-                    callback.onSuccessUp()
-                    val txtAction =
-                        "Actualizó la versión de los datos de Version Old = [$currentVersion] a New Version = [$newVersion] :: AdminProvider"
-                    saveActionRegist(txtAction)
+                    // Éxito al responder reporte
+                    callback.OnSuccessReply()
 
+                    // Marcar accion para que se envie notificación
+                    pointRef.child("notisCheck").setValue(false)
+
+                    // Guardar el registro
+                    saveActionRegist("Respondió un reporte id=[$idReport] :: AdminProvider")
                 }
                 .addOnFailureListener { error ->
-                    // error
+                    // Manejo de error al guardar los datos
                     val errorType = UtilidadesMenores().handleFirebaseError(error)
-                    callback.onErrorUp(errorType)
+                    callback.OnErrorReply(errorType)
 
-                    Log.e("FirebaseError", "Error al guardar los datos", error)
+                    Log.e("FirebaseError", "Error al responder reporte", error)
                 }
-
-        }.addOnFailureListener { error ->
-            // Manejo de error en la consulta
-            val errorType = UtilidadesMenores().handleFirebaseError(error)
-            callback.onErrorUp(errorType)
-
-            Log.e("FirebaseError", "Error al verificar la existencia de la ruta", error)
         }
     }
-    //END UPDATES
+
+//END SETTERS------------
+
+//DELETES------------------
+fun deleteReport(callback: OnDeleteReport, idFieldReport: String) {
+    // referencia al documento en Firebase
+    val databaseReference = dataBaseFirebase.getReference("features/0/reportesNew")
+
+    val updates = hashMapOf<String, Any?>(
+        idFieldReport to null
+    )
+
+    // actualizar el documento eliminando el campo
+    databaseReference.updateChildren(updates)
+        .addOnSuccessListener {
+            // Operación exitosa
+            callback.OnSuccesTask()
+            Log.d("Firebase", "Reporte eliminado exitosamente.")
+
+            val txtAction = "Borró un reporte :: AdminProvider"
+            saveActionRegist(txtAction)
+        }
+        .addOnFailureListener { e ->
+            // Error al eliminar el campo
+            val errorType = UtilidadesMenores().handleFirebaseError(e)
+            callback.OnErrorDelete(errorType)
+
+            Log.e("Firebase", "Error al eliminar el campo.", e)
+        }
+}
+
+//END DELETES------------------
+
+//UPDATES-----------------
+
+fun updateSitesRoute(callback: UpdateSites, idRuta: Int, sitiosNew: String) {
+    // referencia al documento en Firebase
+    val databaseReference = dataBaseFirebase.getReference("features/0/rutas/$idRuta")
+
+    val updates = hashMapOf<String, Any?>(
+        "sitios" to sitiosNew
+    )
+
+    // actualizar el documento eliminando el campo
+    databaseReference.updateChildren(updates)
+        .addOnSuccessListener {
+            // Operación exitosa
+            callback.OnSucces()
+            Log.d("Firebase", "Campo sitios actualizado exitosamente.")
+
+            val txtAction = "Actualizó los sitios de la ruta #$idRuta :: AdminProvider"
+            saveActionRegist(txtAction)
+        }
+        .addOnFailureListener { e ->
+            // Error al eliminar el campo
+            val errorType = UtilidadesMenores().handleFirebaseError(e)
+            callback.OnErrorSites(errorType)
+
+            Log.e("Firebase", "Error al actualizar sitios ruta $idRuta.", e)
+        }
+}
+
+fun updateFrequencyRuta(
+    callback: UpdateFrequency,
+    idRuta: Int,
+    frecNew: String,
+    fieldName: String
+) {
+    // referencia al documento en Firebase
+    val databaseReference = dataBaseFirebase.getReference("features/0/rutas/$idRuta")
+
+    val updates = hashMapOf<String, Any?>(
+        fieldName to frecNew
+    )
+
+    // actualizar el documento eliminando el campo
+    databaseReference.updateChildren(updates)
+        .addOnSuccessListener {
+            // Operación exitosa
+            callback.onSuccess()
+            Log.d("Firebase", "Campo $fieldName actualizado exitosamente.")
+
+            val txtAction =
+                "Actualizó $fieldName de la ruta #$idRuta [$frecNew] :: AdminProvider"
+            saveActionRegist(txtAction)
+        }
+        .addOnFailureListener { e ->
+            // Error al eliminar el campo
+            val errorType = UtilidadesMenores().handleFirebaseError(e)
+            callback.onErrorFrec(errorType)
+            Log.e("Firebase", "Error al actualizar $fieldName ruta $idRuta.", e)
+        }
+}
+
+fun updateSchedule(
+    callback: UpdateSchedule,
+    idRuta: Int,
+    horInicioNew: String,
+    horFinNew: String,
+    field: String
+) {
+    // referencia al documento en Firebase
+    val databaseReference =
+        dataBaseFirebase.getReference("features/0/rutas/$idRuta/$field")
+
+    val updates = hashMapOf<String, Any?>(
+        "0" to horInicioNew,
+        "1" to horFinNew
+    )
+
+    // actualizar el documento eliminando el campo
+    databaseReference.updateChildren(updates)
+        .addOnSuccessListener {
+            // Operación exitosa
+            callback.onSuccessSH()
+            Log.d("Firebase", "Campo $field actualizado exitosamente.")
+
+            val txtAction =
+                "Actualizó $field de la ruta #$idRuta por [$horInicioNew - $horFinNew] :: AdminProvider"
+            saveActionRegist(txtAction)
+        }
+        .addOnFailureListener { e ->
+            // Error al eliminar el campo
+            val errorType = UtilidadesMenores().handleFirebaseError(e)
+            callback.onErrorSH(errorType)
+
+            Log.e("Firebase", "Error al actualizar $field ruta $idRuta.", e)
+        }
+}
+
+fun updateVersionData(callback: UpVersionInfo) {
+    val pointRef = dataBaseFirebase.getReference("features/0/version")
+
+    // get the actual num version
+    pointRef.get().addOnSuccessListener { dataSnapshot ->
+
+        val currentVersion = dataSnapshot.getValue(Int::class.java) ?: 1
+        val newVersion = currentVersion + 1
+
+        pointRef.setValue(newVersion)
+            .addOnSuccessListener {
+                // Succes on update
+                callback.onSuccessUp()
+                val txtAction =
+                    "Actualizó la versión de los datos de Version Old = [$currentVersion] a New Version = [$newVersion] :: AdminProvider"
+                saveActionRegist(txtAction)
+
+            }
+            .addOnFailureListener { error ->
+                // error
+                val errorType = UtilidadesMenores().handleFirebaseError(error)
+                callback.onErrorUp(errorType)
+
+                Log.e("FirebaseError", "Error al guardar los datos", error)
+            }
+
+    }.addOnFailureListener { error ->
+        // Manejo de error en la consulta
+        val errorType = UtilidadesMenores().handleFirebaseError(error)
+        callback.onErrorUp(errorType)
+
+        Log.e("FirebaseError", "Error al verificar la existencia de la ruta", error)
+    }
+}
+//END UPDATES
 
 }

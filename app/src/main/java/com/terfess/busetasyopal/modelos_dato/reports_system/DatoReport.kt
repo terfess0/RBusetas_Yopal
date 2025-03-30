@@ -1,4 +1,4 @@
-package com.terfess.busetasyopal.admin.model
+package com.terfess.busetasyopal.modelos_dato.reports_system
 
 
 data class DatoReport(

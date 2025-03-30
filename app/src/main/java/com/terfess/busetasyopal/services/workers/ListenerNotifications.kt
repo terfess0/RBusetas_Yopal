@@ -1,4 +1,4 @@
-package com.terfess.busetasyopal.workers
+package com.terfess.busetasyopal.services.workers
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -9,31 +9,28 @@ import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.work.*
-import com.google.firebase.database.*
 import com.terfess.busetasyopal.R
-import com.terfess.busetasyopal.actividades.PantallaPrincipal
 import com.terfess.busetasyopal.actividades.Splash
+import com.terfess.busetasyopal.actividades.reports.view.ReportsUser
+import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 
+interface OnGetCallback{
+    fun onCallback(notis:List<Triple<String,String,String>>)
+}
 class ListenerNotifications(context: Context, workerParams: WorkerParameters) : Worker(context, workerParams) {
 
-    private val database: DatabaseReference = FirebaseDatabase.getInstance().getReference("features/0/noti")
 
     override fun doWork(): Result {
-        Log.d("WorkManager", "⏳ Iniciando escucha de Firebase en segundo plano")
-
-        database.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()) {
-                    val nuevoValor = snapshot.value.toString()
-                    Log.d("WorkManager", "🔥 Cambio detectado en Firebase: $nuevoValor")
-                    enviarNotificacion("Datos actualizados", "Nuevo valor: $nuevoValor")
+        UserResponsesNotificationsFun().checkNotificationsByFirebaseTokenUser(
+            object : OnGetCallback {
+                override fun onCallback(notis: List<Triple<String, String, String>>) {
+                    notis.forEach {
+                        enviarNotificacion(it.second, it.third)
+                    }
                 }
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                Log.e("WorkManager", "❌ Error en Firebase: ${error.message}", error.toException())
             }
-        })
+        )
 
         return Result.success()
     }
@@ -45,15 +42,15 @@ class ListenerNotifications(context: Context, workerParams: WorkerParameters) : 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId,
-                "Notificaciones Firebase",
+                "Notificaciones Respuestas",
                 NotificationManager.IMPORTANCE_HIGH
             ).apply {
-                description = "Notificaciones de cambios en Firebase"
+                description = "Notificaciones sobre respuestas a sus reportes."
             }
             manager.createNotificationChannel(channel)
         }
 
-        val intent = Intent(applicationContext, Splash::class.java)
+        val intent = Intent(applicationContext, ReportsUser::class.java)
         val pendingIntent = PendingIntent.getActivity(
             applicationContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )

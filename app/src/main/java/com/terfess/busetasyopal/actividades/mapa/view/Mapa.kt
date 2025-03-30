@@ -5,7 +5,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
-import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
@@ -17,7 +16,6 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.text.Html
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -33,11 +31,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.ads.AdError
-import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.FullScreenContentCallback
-import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -74,8 +68,7 @@ import com.terfess.busetasyopal.enums.getRouteOnTask
 import com.terfess.busetasyopal.modelos_dato.DatoOpMapa
 import com.terfess.busetasyopal.room.AppDatabase
 import com.terfess.busetasyopal.room.model.Coordinate
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
-import com.terfess.busetasyopal.services.AddEspecialCenter
+import com.terfess.busetasyopal.services.AdsEspecialCenter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -793,7 +786,7 @@ class Mapa : AppCompatActivity(), LocationListener, OnMapReadyCallback, AlertaCa
                 // Actualizar la lista en el adapter y mostrar el BottomSheet
                 //TODO: cambiar antes de subir actualizacion map
                 val keyadd = getString(R.string.fake_key_intersticial)
-                AddEspecialCenter().intersticialAdRequest(
+                AdsEspecialCenter().intersticialAdRequest(
                     this,
                     instUtilidadesMenores,
                     tag,
