@@ -53,7 +53,7 @@ import com.terfess.busetasyopal.enums.MapRouteOption
 import com.terfess.busetasyopal.modelos_dato.DatosPrimariosRuta
 import com.terfess.busetasyopal.room.AppDatabase
 import com.terfess.busetasyopal.services.AddEspecialCenter
-import com.terfess.busetasyopal.workers.ListenerNotifications
+import com.terfess.busetasyopal.services.workers.ListenerNotifications
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -152,17 +152,6 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
         btnOptShop = binding.noAdsOption
         instanciaUtilidadesMenores.loadAds(this, mAdView, btnOptShop)
 
-        // Intersicial ad
-        //TODO: cambiar antes de subir actualizacion
-        val keyadd = getString(R.string.fake_key_intersticial)
-        AddEspecialCenter().intersticialAdRequest(
-            this,
-            instanciaUtilidadesMenores,
-            "principalScreen",
-            this,
-            keyadd
-        )
-        //..
 
         //save mode night/light
         instanciaUtilidadesMenores.applySavedNightMode(this)
@@ -329,14 +318,15 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
     fun iniciarWorkManager(context: Context) {
         val workManager = WorkManager.getInstance(context)
 
-        // 🔹 Ejecutar una vez inmediatamente
+        //Ejecutar una vez inmediatamente
         val oneTimeWork = OneTimeWorkRequestBuilder<ListenerNotifications>()
             .setConstraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build())
             .build()
 
         workManager.enqueue(oneTimeWork)
 
-        // 🔹 Programar ejecución cada 15 minutos
+
+        // Programar ejecución cada 15 minutos
         val periodicWork = PeriodicWorkRequestBuilder<ListenerNotifications>(15, TimeUnit.MINUTES)
             .setConstraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build())
             .build()
