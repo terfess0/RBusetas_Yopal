@@ -21,24 +21,31 @@ import com.terfess.busetasyopal.services.AuthFirebase
 class AdminPanel : AppCompatActivity() {
     private lateinit var binding: ActivityAdminPanelBinding
     private val viewModel: AdminViewModel by viewModels()
+    private var currentPrice = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityAdminPanelBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        //save mode night/light
+        // Save mode night/light
         UtilidadesMenores().applySavedNightMode(this)
 
         setToolbar()
 
+        // Get current price
+        viewModel.requestGetCurrentPrice()
+
+        priceObservers()
+
+        // Buttons actions
+        binding.btnPriceAdmin.setOnClickListener {
+            dialogPriceInput()
+        }
+
         binding.btnRouteAdmin.setOnClickListener {
             val intent = Intent(this, RoutesAdmin::class.java)
             startActivity(intent)
-        }
-
-        binding.btnPriceAdmin.setOnClickListener {
-            dialogPriceInput()
         }
 
         binding.btnReportsAdmin.setOnClickListener {
@@ -68,20 +75,6 @@ class AdminPanel : AppCompatActivity() {
             }
         }
 
-        viewModel.onEditPrice.observe(this, Observer { result ->
-            if (result == true) {
-                UtilidadesMenores().crearSnackbar(
-                    "Precio Actualizado",
-                    binding.root
-                )
-            } else {
-                UtilidadesMenores().crearSnackbar(
-                    "Error al actualizar el precio",
-                    binding.root
-                )
-            }
-        })
-
         viewModel.onUpVersion.observe(this, Observer { result ->
             if (result == true) {
                 UtilidadesMenores().crearSnackbar(
@@ -96,6 +89,26 @@ class AdminPanel : AppCompatActivity() {
             }
         })
 
+    }
+
+    private fun priceObservers() {
+        viewModel.onEditPrice.observe(this, Observer { result ->
+            if (result == true) {
+                UtilidadesMenores().crearSnackbar(
+                    "Precio Actualizado",
+                    binding.root
+                )
+            } else {
+                UtilidadesMenores().crearSnackbar(
+                    "Error al actualizar el precio",
+                    binding.root
+                )
+            }
+        })
+
+        viewModel.currentPricePassage.observe(this, Observer { price ->
+            currentPrice = price
+        })
     }
 
     private fun setToolbar() {
@@ -116,7 +129,7 @@ class AdminPanel : AppCompatActivity() {
     private fun dialogPriceInput() {
         // create edt
         val input = EditText(this)
-        input.hint = getString(R.string.admin_edt_hint_price)
+        input.hint = getString(R.string.admin_edt_hint_price) + currentPrice
         input.maxLines = 1
         input.setHintTextColor(Color.GRAY)
 

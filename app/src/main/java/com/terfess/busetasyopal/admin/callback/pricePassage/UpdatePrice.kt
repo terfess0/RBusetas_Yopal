@@ -1,4 +1,4 @@
-package com.terfess.busetasyopal.admin.callback
+package com.terfess.busetasyopal.admin.callback.pricePassage
 
 import com.terfess.busetasyopal.enums.FirebaseEnums
 

@@ -27,7 +27,7 @@
     <string name="salida">Salida:</string>
     <string name="llegada">Llegada:</string>
     <string name="text_switch_enable">Activada</string>
-    <string name="admin_edt_hint_price">Ingresa nuevo Precio</string>
+    <string name="admin_edt_hint_price">Ingresa nuevo Precio </string>
     <string name="cancel">Cancelar</string>
     <string name="actualizar_precio_pasaje">Actualizar precio pasaje</string>
 
