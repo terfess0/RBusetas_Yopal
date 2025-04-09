@@ -13,31 +13,41 @@ import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.actividades.Splash
 import com.terfess.busetasyopal.actividades.reports.view.ReportsUser
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-interface OnGetCallback{
-    fun onCallback(notis:List<Triple<String,String,String>>)
+interface OnGetCallback {
+    fun onCallback(notis: List<Triple<String, String, String>>)
 }
-class ListenerNotifications(context: Context, workerParams: WorkerParameters) : Worker(context, workerParams) {
 
+class ListenerNotifications(context: Context, workerParams: WorkerParameters) :
+    CoroutineWorker(context, workerParams) {
 
-    override fun doWork(): Result {
-        UserResponsesNotificationsFun().checkNotificationsByFirebaseTokenUser(
-            object : OnGetCallback {
-                override fun onCallback(notis: List<Triple<String, String, String>>) {
-                    notis.forEach {
-                        enviarNotificacion(it.second, it.third)
+    override suspend fun doWork(): Result {
+        return try {
+            withContext(Dispatchers.IO) {
+                UserResponsesNotificationsFun().checkNotificationsByFirebaseTokenUser(
+                    object : OnGetCallback {
+                        override fun onCallback(notis: List<Triple<String, String, String>>) {
+                            notis.forEach {
+                                enviarNotificacion(it.second, it.third)
+                            }
+                        }
+
                     }
-                }
-
+                )
             }
-        )
 
-        return Result.success()
+            Result.success()
+        } catch (e: Exception) {
+            Result.retry() // O Result.failure() si no quieres reintentar
+        }
     }
 
     private fun enviarNotificacion(titulo: String, mensaje: String) {
         val channelId = "firebase_channel"
-        val manager = applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val manager =
+            applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
@@ -52,7 +62,10 @@ class ListenerNotifications(context: Context, workerParams: WorkerParameters) : 
 
         val intent = Intent(applicationContext, ReportsUser::class.java)
         val pendingIntent = PendingIntent.getActivity(
-            applicationContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            applicationContext,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
         val notification = NotificationCompat.Builder(applicationContext, channelId)

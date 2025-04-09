@@ -3,14 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/colorPrimary">
+    android:background="?attr/colorPrimary"
+    android:foreground="?attr/selectableItemBackground">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
+        android:layout_margin="8dp"
         android:background="@drawable/bordes_cont_admin"
         android:backgroundTint="?attr/colorBackgroundFloating"
+        app:cardCornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,89 +21,160 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:baselineAligned="false"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:padding="10dp">
 
+            <!-- DATOS DEL REPORTE -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/tv_fecha_report_user"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textAlignment="center"
-                    android:textColor="?attr/colorPrimaryDark"
-                    android:textIsSelectable="true"
-                    android:textSize="14sp"
-                    android:textStyle="bold|italic" />
-
-                <TextView
-                    android:id="@+id/tv_time_report_user"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textAlignment="textStart"
-                    android:textColor="?attr/colorPrimaryDark"
-                    android:textIsSelectable="true"
-                    android:textSize="14sp"
-                    android:textStyle="italic" />
-
-                <TextView
-                    android:id="@+id/tv_task_report_user"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textAlignment="textStart"
-                    android:textColor="?attr/colorPrimaryDark"
-                    android:textIsSelectable="true"
-                    android:textSize="16sp"
-                    android:textStyle="italic" />
-
-                <TextView
-                    android:id="@+id/tv_location_report_user"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:textAlignment="textStart"
-                    android:textColor="?attr/colorPrimaryDark"
-                    android:textIsSelectable="true"
-                    android:textSize="16sp"
-                    android:textStyle="italic" />
-
-                <ScrollView
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:maxHeight="200dp">
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:id="@+id/tv_text_report_user"
+                        android:id="@+id/tv_fecha_report_user"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:textColor="?attr/colorPrimaryDark"
+                        android:textIsSelectable="true"
+                        android:textSize="14sp"
+                        android:textStyle="bold|italic" />
+
+                    <TextView
+                        android:id="@+id/tv_time_report_user"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAlignment="textStart"
-                        android:textColor="@color/gris"
+                        android:textColor="?attr/colorPrimaryDark"
                         android:textIsSelectable="true"
-                        android:textSize="18sp" />
-                </ScrollView>
+                        android:textSize="14sp"
+                        android:textStyle="italic" />
+
+                    <TextView
+                        android:id="@+id/tv_task_report_user"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="textStart"
+                        android:textColor="?attr/colorPrimaryDark"
+                        android:textIsSelectable="true"
+                        android:textSize="16sp"
+                        android:textStyle="italic" />
+
+                    <TextView
+                        android:id="@+id/tv_location_report_user"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="textStart"
+                        android:textColor="?attr/colorPrimaryDark"
+                        android:textIsSelectable="true"
+                        android:textSize="16sp"
+                        android:textStyle="italic" />
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxHeight="200dp">
+
+                        <TextView
+                            android:id="@+id/tv_text_report_user"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="textStart"
+                            android:textColor="@color/gris"
+                            android:textIsSelectable="true"
+                            android:textSize="18sp" />
+                    </ScrollView>
+                </LinearLayout>
+
+                <!-- BOTONES -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingStart="8dp">
+
+                    <ImageButton
+                        android:id="@+id/btn_delete_report_user"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparente"
+                        android:contentDescription="@string/borrar_reporte_admin"
+                        android:src="@android:drawable/ic_dialog_info" />
+                </LinearLayout>
             </LinearLayout>
 
+            <!-- BOTÓN MOSTRAR/OCULTAR RESPUESTAS -->
             <LinearLayout
+                android:id="@+id/btn_toggle_respuestas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="6"
-                android:orientation="horizontal">
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingTop="10dp"
+                android:visibility="gone">
 
-                <ImageButton
-                    android:id="@+id/btn_delete_report_user"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@string/borrar_reporte_admin"
-                    android:layout_gravity="center_vertical"
-                    android:background="@color/transparente"
-                    android:src="@android:drawable/ic_menu_delete" />
+                <TextView
+                    android:id="@+id/textToggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ver respuestas ▾"
+                    android:textAlignment="center"
+                    android:textColor="?attr/titleTextColor"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/badge_count_card"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="end|top"
+                    android:layout_margin="6dp"
+                    android:background="@drawable/badge_background"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"
+                    android:visibility="gone" />
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/textNoResponses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="No hay respuestas aun"
+                android:textColor="?attr/titleTextColor"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <!-- CONTENEDOR RESPUESTAS -->
+            <LinearLayout
+                android:id="@+id/layout_respuestas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="4dp"
+                android:visibility="gone">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/list_respuestas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="4dp"
+                    android:divider="@android:color/darker_gray"
+                    android:dividerHeight="1dp" />
+
+            </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

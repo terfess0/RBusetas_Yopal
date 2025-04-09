@@ -274,60 +274,56 @@ class AdminProvider : ViewModel() {
         }
     }
 
-    fun replyReport(callback: OnReplyReport, idReport: String, responseTxt: String) {
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-            if (!task.isSuccessful || task.result.isNullOrEmpty()) {
-                println("Error obteniendo el token de usuario: ${task.exception}")
-                return@addOnCompleteListener
+    fun replyReport(callback: OnReplyReport, idReport: String, responseTxt: String, idUserReply: String) {
+
+        val idUser = idUserReply
+
+        // referencia al documento en Firebase
+        val pointRef = dataBaseFirebase.getReference("features/0/reportsModule")
+        val pointResponse = pointRef.child("reportResponses")
+
+        // Obtener una nueva clave para cada registro
+        val idResponse = pointResponse.push()
+
+        // Obtener la fecha y hora actual
+        val currentDate: Date = Calendar.getInstance().time
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val fechaFormateada: String = dateFormat.format(currentDate)
+
+        val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+        val horaFormateada: String = timeFormat.format(currentDate)
+
+        // Crear un mapa para almacenar los datos en Firebase
+        val responseUnit = ResponseReportDato(
+            idResponse = idResponse.key ?: "No se pudo obtener la clave",
+            idReport = idReport,
+            idUser = idUser,
+            dateResponse = fechaFormateada,
+            timeResponse = horaFormateada,
+            textResponse = responseTxt,
+            authorResponse = emailAdmin ?: "Administrador"
+        )
+
+        // Guardar los datos en Firebase
+        idResponse.setValue(responseUnit)
+            .addOnSuccessListener {
+                // Éxito al responder reporte
+                callback.OnSuccessReply()
+
+                // Marcar accion para que se envie notificación
+                pointRef.child("notisCheck").setValue(false)
+
+                // Guardar el registro
+                saveActionRegist("Respondió un reporte id=[$idReport] :: AdminProvider")
             }
-            // El token de usuario se ha obtenido correctamente
-            val idUser = task.result!!
+            .addOnFailureListener { error ->
+                // Manejo de error al guardar los datos
+                val errorType = UtilidadesMenores().handleFirebaseError(error)
+                callback.OnErrorReply(errorType)
 
-            // referencia al documento en Firebase
-            val pointRef = dataBaseFirebase.getReference("features/0/users/$idUser")
-            val pointResponse = pointRef.child("reportResponses")
+                Log.e("FirebaseError", "Error al responder reporte", error)
+            }
 
-            // Obtener una nueva clave para cada registro
-            val idResponse = pointResponse.push()
-
-            // Obtener la fecha y hora actual
-            val currentDate: Date = Calendar.getInstance().time
-            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-            val fechaFormateada: String = dateFormat.format(currentDate)
-
-            val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
-            val horaFormateada: String = timeFormat.format(currentDate)
-
-            // Crear un mapa para almacenar los datos en Firebase
-            val responseUnit = ResponseReportDato(
-                idResponse = idResponse.key ?: "No se pudo obtener la clave",
-                idReport = idReport,
-                dateResponse = fechaFormateada,
-                timeResponse = horaFormateada,
-                textResponse = responseTxt,
-                authorResponse = emailAdmin ?: "Administrador"
-            )
-
-            // Guardar los datos en Firebase
-            idResponse.setValue(responseUnit)
-                .addOnSuccessListener {
-                    // Éxito al responder reporte
-                    callback.OnSuccessReply()
-
-                    // Marcar accion para que se envie notificación
-                    pointRef.child("notisCheck").setValue(false)
-
-                    // Guardar el registro
-                    saveActionRegist("Respondió un reporte id=[$idReport] :: AdminProvider")
-                }
-                .addOnFailureListener { error ->
-                    // Manejo de error al guardar los datos
-                    val errorType = UtilidadesMenores().handleFirebaseError(error)
-                    callback.OnErrorReply(errorType)
-
-                    Log.e("FirebaseError", "Error al responder reporte", error)
-                }
-        }
     }
 
 //END SETTERS------------

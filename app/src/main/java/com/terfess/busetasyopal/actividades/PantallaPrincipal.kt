@@ -29,6 +29,7 @@ import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.OutOfQuotaPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.google.android.gms.ads.AdView
@@ -129,7 +130,7 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
             title = "Busetas Yopal"
         }
 
-        iniciarWorkManager(this)
+        iniciarWorkManagerResponseNotis(this)
 
         val drawer = binding.draweLayoutPrinc
 
@@ -314,7 +315,7 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
         handleIntent(intent)
     }
 
-    fun iniciarWorkManager(context: Context) {
+    private fun iniciarWorkManagerResponseNotis(context: Context) {
         val workManager = WorkManager.getInstance(context)
 
         //Ejecutar una vez inmediatamente

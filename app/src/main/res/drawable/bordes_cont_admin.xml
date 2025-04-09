@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Card Background -->
+
+    <!-- Borde exterior -->
     <item>
         <shape android:shape="rectangle">
             <stroke
                 android:width="2dp"
                 android:color="?attr/titleTextColor" />
-            <corners android:radius="7dp" />
+            <corners android:radius="12dp" />
         </shape>
     </item>
+
 </layer-list>

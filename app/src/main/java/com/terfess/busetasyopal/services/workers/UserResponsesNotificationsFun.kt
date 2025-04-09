@@ -6,6 +6,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.messaging.FirebaseMessaging
+import kotlin.random.Random
 
 class UserResponsesNotificationsFun {
     fun checkNotificationsByFirebaseTokenUser(callback: OnGetCallback) {
@@ -22,7 +23,7 @@ class UserResponsesNotificationsFun {
 
     private fun checkUserNotifications(tokenIdApp: String, callback: OnGetCallback) {
         val userNotificationsRef = FirebaseDatabase.getInstance()
-            .getReference("features/0/users/$tokenIdApp/")
+            .getReference("features/0/users/reportsModule/reportResponses")
 
         userNotificationsRef.child("notisCheck")
             .addListenerForSingleValueEvent(object : ValueEventListener {

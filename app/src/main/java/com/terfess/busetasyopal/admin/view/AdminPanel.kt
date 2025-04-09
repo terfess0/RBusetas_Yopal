@@ -22,6 +22,7 @@ class AdminPanel : AppCompatActivity() {
     private lateinit var binding: ActivityAdminPanelBinding
     private val viewModel: AdminViewModel by viewModels()
     private var currentPrice = ""
+    private val instUtilidadesMen = UtilidadesMenores()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityAdminPanelBinding.inflate(layoutInflater)
@@ -29,7 +30,7 @@ class AdminPanel : AppCompatActivity() {
         setContentView(binding.root)
 
         // Save mode night/light
-        UtilidadesMenores().applySavedNightMode(this)
+        instUtilidadesMen.applySavedNightMode(this)
 
         setToolbar()
 
@@ -65,7 +66,7 @@ class AdminPanel : AppCompatActivity() {
 
         binding.btnUpdateVersionInfo.setOnClickListener {
             val text = "¿Seguro que quieres actualizar la versión de los datos?"
-            UtilidadesMenores().buildDialogConfirmAction(
+            instUtilidadesMen.buildDialogConfirmAction(
                 this,
                 text
             ) { response ->
@@ -77,12 +78,12 @@ class AdminPanel : AppCompatActivity() {
 
         viewModel.onUpVersion.observe(this, Observer { result ->
             if (result == true) {
-                UtilidadesMenores().crearSnackbar(
+                instUtilidadesMen.crearSnackbar(
                     "Versión de los datos Actualizada",
                     binding.root
                 )
             } else {
-                UtilidadesMenores().crearSnackbar(
+                instUtilidadesMen.crearSnackbar(
                     "Error al actualizar la versión.",
                     binding.root
                 )
@@ -94,12 +95,12 @@ class AdminPanel : AppCompatActivity() {
     private fun priceObservers() {
         viewModel.onEditPrice.observe(this, Observer { result ->
             if (result == true) {
-                UtilidadesMenores().crearSnackbar(
+                instUtilidadesMen.crearSnackbar(
                     "Precio Actualizado",
                     binding.root
                 )
             } else {
-                UtilidadesMenores().crearSnackbar(
+                instUtilidadesMen.crearSnackbar(
                     "Error al actualizar el precio",
                     binding.root
                 )
@@ -121,7 +122,7 @@ class AdminPanel : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
 
-        val themeColor = UtilidadesMenores().getColorHambugerIcon()
+        val themeColor = instUtilidadesMen.getColorHambugerIcon()
         toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, themeColor))
         //..
     }
@@ -133,7 +134,7 @@ class AdminPanel : AppCompatActivity() {
         input.maxLines = 1
         input.setHintTextColor(Color.GRAY)
 
-        if (UtilidadesMenores().isNightMode()) {
+        if (instUtilidadesMen.isNightMode()) {
             input.setTextColor(Color.WHITE)
         }
 
@@ -146,7 +147,7 @@ class AdminPanel : AppCompatActivity() {
                 if (userInput.isNotBlank()) {
                     viewModel.updatePrice(userInput)
                 } else {
-                    UtilidadesMenores().crearSnackbar("Campo Vacío", binding.root)
+                    instUtilidadesMen.crearSnackbar("Campo Vacío", binding.root)
                 }
             }
             .setNegativeButton(getString(R.string.cancel), null)

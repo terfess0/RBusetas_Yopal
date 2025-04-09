@@ -51,8 +51,8 @@ class ReportViewModel : ViewModel(),
     }
 
     //Reply reports
-    fun requestSendReply(idReport: String, reply: String) {
-        AdminProvider().replyReport(this, idReport, reply)
+    fun requestSendReply(idReport: String, reply: String, origin: String) {
+        AdminProvider().replyReport(this, idReport, reply, origin)
     }
 
     override fun OnSuccessReply() {

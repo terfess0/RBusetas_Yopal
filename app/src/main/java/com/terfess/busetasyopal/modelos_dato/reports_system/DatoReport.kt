@@ -8,5 +8,6 @@ data class DatoReport(
     val situationReport : String = "",
     val location : String = "",
     val currentTask : String = "",
-    val origin : String = ""
+    val idUser : String = "",
+    val statusCheckedView:Boolean = false
 )

@@ -63,7 +63,8 @@ class HolderReportsAdmin(view: View) : RecyclerView.ViewHolder(view) {
                 } else {
                     viewModelRep.requestSendReply(
                         currentReport.id,
-                        binding.edtResponseAdmin.text.toString()
+                        binding.edtResponseAdmin.text.toString(),
+                        currentReport.idUser
                     )
                     hideKeyboard()
                 }

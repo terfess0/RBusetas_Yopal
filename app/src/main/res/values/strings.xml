@@ -32,7 +32,7 @@
     <string name="actualizar_precio_pasaje">Actualizar precio pasaje</string>
 
 
-    <string name="ruta_reportes_db_nube" translatable="false">features/0/users/%1$s/reports</string>
+    <string name="ruta_reportes_db_nube" translatable="false">features/0/reportsModule</string>
     <string name="ruta_firebase_price_nube" translatable="false">/features/0/precio</string>
     <string name="ruta_firebase_rutas_nube" translatable="false">features/0/rutas</string>
 

@@ -1,288 +1,280 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/fondox"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/draweLayoutPrinc"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorPrimary"
-    android:orientation="vertical">
+    android:fitsSystemWindows="true">
 
-    <EditText
-        android:id="@+id/filtro"
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="?attr/colorPrimary"
+        android:elevation="5dp"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/head"
+        app:itemIconTint="@color/enfasis_azul"
+        app:itemTextColor="?attr/titleTextColor"
+        app:menu="@menu/menu_rutas"
+        app:subheaderColor="@color/gris" />
+
+
+    <LinearLayout
+        android:id="@+id/fondox"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:background="@drawable/bord_filtro"
-        android:backgroundTint="#E3E5EA"
-        android:elevation="3dp"
-        android:ems="10"
-        android:gravity="center_vertical"
-        android:hint="Busca sitios"
-        android:imeOptions="actionDone"
-        android:inputType="text"
-        android:maxLines="1"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:visibility="gone" />
+        android:layout_height="match_parent"
+        android:background="?attr/colorPrimary"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/noResultados"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
-        android:gravity="center"
-        android:minHeight="90dp"
-        android:text="Sin Resultados"
-        android:textColor="#ED6565"
-        android:textStyle="bold"
-        android:visibility="gone"/>
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
+            <ImageButton
+                android:id="@+id/buscar_opt"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="end"
+                android:background="@color/transparente"
+                android:contentDescription="@string/buscar_sitios_o_rutas"
+                android:src="@drawable/ic_buscar" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cabezera"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@drawable/bord_cabecera"
-        android:minHeight="100dp"
-        app:layout_constraintBottom_toBottomOf="@+id/saludo"
-        app:layout_constraintTop_toBottomOf="@+id/saludo">
+            <ImageButton
+                android:id="@+id/toggleTheme"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="end"
+                android:background="@color/transparente"
+                android:contentDescription="@string/cambiar_tema_visual_de_la_app"
+                android:src="@drawable/ic_tema" />
+
+            <ImageButton
+                android:id="@+id/no_ads_option"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="end"
+                android:background="@color/transparente"
+                android:contentDescription="@string/retirar_anuncios"
+                android:scaleType="centerCrop"
+                android:src="@drawable/opt_no_ads" />
+
+        </androidx.appcompat.widget.Toolbar>
+
+        <EditText
+            android:id="@+id/filtro"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:autofillHints=""
+            android:background="@drawable/bord_filtro"
+            android:backgroundTint="#E3E5EA"
+            android:elevation="3dp"
+            android:ems="10"
+            android:gravity="center_vertical"
+            android:hint="@string/busca_sitios"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLines="1"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:visibility="gone" />
 
         <TextView
-            android:id="@+id/saludo"
+            android:id="@+id/noResultados"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="8dp"
-            android:fontFamily="@font/roboto"
-            android:gravity="center|right"
-            android:paddingEnd="10dp"
-            android:text="Buenos dias"
-            android:textAllCaps="false"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.963"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:minHeight="90dp"
+            android:text="@string/sin_resultados"
+            android:textColor="@color/anuncioGrave"
+            android:textStyle="bold"
+            android:visibility="gone" />
 
-        <FrameLayout
-            android:id="@+id/frameLayout"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cabezera"
             android:layout_width="match_parent"
-            android:layout_height="16mm"
-            android:layout_marginTop="1dp"
-            android:backgroundTint="@color/transparente"
-            app:layout_constraintBottom_toTopOf="@+id/textView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/bord_cabecera"
+            android:minHeight="100dp"
+            app:layout_constraintBottom_toBottomOf="@+id/saludo"
             app:layout_constraintTop_toBottomOf="@+id/saludo">
 
-            <ScrollView
+            <TextView
+                android:id="@+id/saludo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="center|end"
+                android:text="@string/buenos_dias"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.963"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
-                <LinearLayout
+            <FrameLayout
+                android:id="@+id/frameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="16mm"
+                android:layout_marginTop="1dp"
+                android:backgroundTint="@color/transparente"
+                app:layout_constraintBottom_toTopOf="@+id/textView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/saludo">
+
+                <ScrollView
+                    android:id="@+id/scrollTextsInfo"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:id="@+id/mensaje1"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginEnd="10dp"
-                        android:padding="5dp"
-                        android:textColor="#F3D74E"
-                        android:textStyle="bold" />
+                        android:background="#27000000"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/mensaje2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="10dp"
-                        android:padding="5dp"
-                        android:textColor="#F3D74E"
-                        android:textStyle="bold"
-                        android:visibility="gone" />
+                        <TextView
+                            android:id="@+id/mensaje1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="10dp"
+                            android:padding="5dp"
+                            android:textColor="@color/informative_texts_header"
+                            android:textStyle="bold" />
 
-                    <TextView
-                        android:id="@+id/mensaje3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="10dp"
-                        android:padding="5dp"
-                        android:textColor="#F3D74E"
-                        android:textStyle="bold"
-                        android:visibility="gone"/>
-                </LinearLayout>
-            </ScrollView>
-        </FrameLayout>
+                        <TextView
+                            android:id="@+id/mensaje2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="10dp"
+                            android:padding="5dp"
+                            android:textColor="@color/informative_texts_header"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginBottom="15dp"
-            android:fontFamily="@font/roboto"
-            android:gravity="center"
-            android:text="Precio Pasaje: "
-            android:textColor="#FFFFFF"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.053"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+                        <TextView
+                            android:id="@+id/mensaje3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="10dp"
+                            android:padding="5dp"
+                            android:textColor="@color/informative_texts_header"
+                            android:textStyle="bold"
+                            android:visibility="gone" />
+                    </LinearLayout>
+                </ScrollView>
+            </FrameLayout>
 
-        <TextView
-            android:id="@+id/precio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:background="@drawable/bord_suave"
-            android:backgroundTint="#FFFFFF"
-            android:fontFamily="@font/roboto"
-            android:gravity="center"
-            android:minWidth="50dp"
-            android:textColor="#4A4343"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/textView"
-            app:layout_constraintTop_toBottomOf="@+id/frameLayout"
-            app:layout_constraintVertical_bias="0.971" />
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginBottom="15dp"
+                android:gravity="center"
+                android:text="@string/precio_pasaje"
+                android:textColor="#FFFFFF"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_bias="0.053"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
-        <!--androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_end="40dp" /c-->
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <RelativeLayout
-        android:id="@+id/botones_rapidos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginBottom="5dp">
-
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/precio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginBottom="15dp"
+                android:background="@drawable/bord_suave"
+                android:backgroundTint="#FFFFFF"
+                android:gravity="start"
+                android:minWidth="50dp"
+                android:paddingHorizontal="6dp"
+                android:textColor="#4A4343"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/textView"
+                app:layout_constraintTop_toBottomOf="@+id/frameLayout"
+                app:layout_constraintVertical_bias="0.971" />
 
-                <Button
-                    android:id="@+id/mapaRutas"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/bord_boton_relevant"
-                    android:backgroundTint="?attr/colorAccent"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:paddingHorizontal="5dp"
-                    android:text="Ver mapa con las rutas"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/calcularRuta"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/bord_boton_relevant"
-                    android:backgroundTint="?attr/colorAccent"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:paddingHorizontal="5dp"
-                    android:text="Calcular Ruta Inicio a Destino"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:visibility="gone" />
-
-                <Button
-                    android:id="@+id/mapaParqueaderos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="5dp"
-                    android:background="@drawable/bord_boton_relevant"
-                    android:backgroundTint="?attr/colorAccent"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:paddingHorizontal="5dp"
-                    android:text="Ver mapa con parqueaderos"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-        </HorizontalScrollView>
-    </RelativeLayout>
+            <!--androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_end="40dp" /c-->
 
 
-    <RelativeLayout
-        android:id="@+id/separador1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="10dp">
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/showHorFrecs"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="4dp"
-                android:text="@string/seccion_rutas"
+                android:layout_weight="1"
+                android:contentDescription="Mostrar horarios y frecuencias en la lista de rutas"
+                android:text="Horarios y Frecuencias"
                 android:textColor="?attr/titleTextColor"
-                android:textSize="8sp"
-                android:textStyle="bold" />
+                android:textSize="11sp"
+                app:buttonTint="@color/enfasis_azul" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:layout_gravity="center"
-                android:background="@color/anuncioGrave"
-                android:backgroundTint="#75689CF6" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/showSites"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="Mostrar sitios en la lista de rutas"
+                android:text="@string/sitios"
+                android:textColor="?attr/titleTextColor"
+                android:textSize="11sp"
+                app:buttonTint="@color/enfasis_azul" />
         </LinearLayout>
 
-    </RelativeLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/cajaInfo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/cajaInfo"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0"
+            android:backgroundTint="#1abc9c"
+            app:adSize="BANNER"
+            app:adUnitId="@string/fake_ad_key_for_screens" />
 
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_weight="0"
-        android:backgroundTint="#1abc9c"
-        app:adSize="BANNER"
-        app:adUnitId="ca-app-pub-3940256099942544/6300978111" />
-    <!-- id de ejemplo admob = ca-app-pub-3940256099942544/6300978111 -->
-    <!-- id de admob principal =  -->
 
-</LinearLayout>
+    </LinearLayout>
+</androidx.drawerlayout.widget.DrawerLayout>
