@@ -1,6 +1,7 @@
 package com.terfess.busetasyopal.admin.model
 
 import android.util.Log
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -10,6 +11,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.terfess.busetasyopal.admin.callback.AddRoute
 import com.terfess.busetasyopal.admin.callback.GetRecords
+import com.terfess.busetasyopal.admin.callback.GhostRouteDelete
 import com.terfess.busetasyopal.admin.callback.OnDeleteReport
 import com.terfess.busetasyopal.admin.callback.OnGetAllData
 import com.terfess.busetasyopal.admin.callback.OnGetReports
@@ -70,7 +72,7 @@ class AdminProvider : ViewModel() {
     }
 
     fun getReports(callback: OnGetReports) {
-        dataBaseFirebase.getReference("features/0/reportesNew")
+        dataBaseFirebase.getReference("features/0/reportsModule/reportsUser")
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val data = mutableListOf<DatoReport>()
@@ -274,7 +276,12 @@ class AdminProvider : ViewModel() {
         }
     }
 
-    fun replyReport(callback: OnReplyReport, idReport: String, responseTxt: String, idUserReply: String) {
+    fun replyReport(
+        callback: OnReplyReport,
+        idReport: String,
+        responseTxt: String,
+        idUserReply: String
+    ) {
 
         val idUser = idUserReply
 
@@ -304,17 +311,22 @@ class AdminProvider : ViewModel() {
             authorResponse = emailAdmin ?: "Administrador"
         )
 
-        // Guardar los datos en Firebase
+        // Send
         idResponse.setValue(responseUnit)
             .addOnSuccessListener {
-                // Éxito al responder reporte
+                // Succes on reply
                 callback.OnSuccessReply()
 
-                // Marcar accion para que se envie notificación
-                pointRef.child("notisCheck").setValue(false)
+                // Mark flag for iser check por notifications
+                FirebaseDatabase.getInstance().getReference("features/0/users/$idUser")
+                    .child("pendingResponseNotifications").setValue(false)
+
+                // Mark the report as responded
+                pointRef.child("reportsUser/$idReport/hasResponse")
+                    .setValue(true)
 
                 // Guardar el registro
-                saveActionRegist("Respondió un reporte id=[$idReport] :: AdminProvider")
+                saveActionRegist("Respondió un reporte | Respuesta : [$responseTxt] :: AdminProvider")
             }
             .addOnFailureListener { error ->
                 // Manejo de error al guardar los datos
@@ -355,6 +367,53 @@ class AdminProvider : ViewModel() {
                 Log.e("Firebase", "Error al eliminar el campo.", e)
             }
     }
+
+    fun checkAndDeleteGhostRoutesByDataClicksData(callback: GhostRouteDelete) {
+        val analyticsRef = dataBaseFirebase.getReference("features/0/analytics/clicksRouteData/")
+
+        analyticsRef.get().addOnSuccessListener { snapshot ->
+            if (snapshot.exists()) {
+                var countResult = 0
+                var processed = 0
+                val total = snapshot.childrenCount.toInt()
+
+                for (child in snapshot.children) {
+                    val idRoute = child.key ?: continue
+
+                    val routeRef =
+                        dataBaseFirebase.getReference("features/0/rutasLegales/$idRoute/")
+                    routeRef.get().addOnSuccessListener { routeSnapshot ->
+                        if (!routeSnapshot.exists()) {
+                            analyticsRef.child(idRoute).removeValue()
+                            countResult++
+                        }
+
+                        processed++
+                        if (processed == total) {
+                            // Todas las rutas fueron procesadas
+                            if (countResult > 0) {
+                                callback.OnDeleteGhosts("Se han eliminado $countResult rutas fantasma")
+                            } else {
+                                callback.OnDeleteGhosts("No se encontraron rutas fantasma")
+                            }
+
+                            saveActionRegist("Eliminó rutas fantasma [Total = $countResult]:: AdminProvider")
+                        }
+                    }.addOnFailureListener {
+                        // En caso de error, aún contamos como procesado
+                        processed++
+                        if (processed == total) {
+                            callback.OnDeleteGhosts("Proceso completado con errores. Se eliminaron $countResult rutas.")
+                            saveActionRegist("Eliminó rutas fantasma [Total = $countResult con errores]:: AdminProvider")
+                        }
+                    }
+                }
+            } else {
+                callback.OnDeleteGhosts("No hay rutas registradas en analytics")
+            }
+        }
+    }
+
 
 //END DELETES------------------
 

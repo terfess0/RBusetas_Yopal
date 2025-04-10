@@ -138,4 +138,27 @@
             android:textAlignment="textStart"
             android:textColor="@color/white" />
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/contain5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contain4">
+
+        <Button
+            android:id="@+id/btnCheckGhostRoutes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="#DA878787"
+            android:drawableEnd="@drawable/ic_checklist"
+            android:paddingVertical="25dp"
+            android:shadowColor="@color/black"
+            android:text="Limpiar datos de rutas fantasma"
+            android:textAlignment="textStart"
+            android:textColor="@color/white" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -64,13 +64,17 @@ class AdminPanel : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.btnCheckGhostRoutes.setOnClickListener {
+            viewModel.checkGhostRoutesData()
+        }
+
         binding.btnUpdateVersionInfo.setOnClickListener {
             val text = "¿Seguro que quieres actualizar la versión de los datos?"
             instUtilidadesMen.buildDialogConfirmAction(
                 this,
                 text
             ) { response ->
-                if (response){
+                if (response) {
                     viewModel.reqUpdateVersionInfo()
                 }
             }
@@ -88,6 +92,13 @@ class AdminPanel : AppCompatActivity() {
                     binding.root
                 )
             }
+        })
+
+        viewModel.strResultDelGhostRoutes.observe(this, Observer { result ->
+            instUtilidadesMen.crearSnackbar(
+                result.toString(),
+                binding.root
+            )
         })
 
     }
