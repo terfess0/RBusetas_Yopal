@@ -8,8 +8,10 @@ import com.terfess.busetasyopal.admin.model.DatoRuta
 import com.terfess.busetasyopal.enums.FirebaseEnums
 
 class AddRouteViewModel:ViewModel(),
-    AddRoute{
+    AddRoute,
+AddRoute.LastRoute{
     val resultAdd = MutableLiveData<Boolean>()
+    val lastiIdRoute = MutableLiveData<Int>()
 
     fun requestAddRoute(data:DatoRuta){
         AdminProvider().setNewRoute(this, data)
@@ -21,5 +23,18 @@ class AddRouteViewModel:ViewModel(),
 
     override fun onAddRouteError(error: FirebaseEnums) {
         resultAdd.postValue(false)
+    }
+
+    // Get Last id Routes
+    fun getLastIdRoute() {
+        AdminProvider().getLastIdRoute(this)
+    }
+
+    override fun onGetSuccess(idLast: String?) {
+        lastiIdRoute.postValue(idLast!!.toString().toInt())
+    }
+
+    override fun onGetLastRouteError(error: FirebaseEnums) {
+        println("error")
     }
 }

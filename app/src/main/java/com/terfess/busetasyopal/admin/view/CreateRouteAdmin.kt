@@ -18,12 +18,14 @@ import com.terfess.busetasyopal.databinding.ActivityCreateRouteAdminBinding
 
 class CreateRouteAdmin : AppCompatActivity() {
     private lateinit var binding: ActivityCreateRouteAdminBinding
-    private val instVM : AddRouteViewModel by viewModels()
+    private val instVM: AddRouteViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         binding = ActivityCreateRouteAdminBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        instVM.getLastIdRoute()
 
         //save mode night/light
         UtilidadesMenores().applySavedNightMode(this)
@@ -46,7 +48,7 @@ class CreateRouteAdmin : AppCompatActivity() {
         //..
 
         instVM.resultAdd.observe(this, Observer { result ->
-            if (result == true){
+            if (result == true) {
                 UtilidadesMenores().crearSnackbar(
                     "Creada Correctamente",
                     binding.root
@@ -54,12 +56,16 @@ class CreateRouteAdmin : AppCompatActivity() {
                 val intent = Intent(this, AdminPanel::class.java)
                 startActivity(intent)
                 finish()
-            }else{
+            } else {
                 UtilidadesMenores().crearSnackbar(
                     "Error al crear Ruta",
                     binding.root
                 )
             }
+        })
+
+        instVM.lastiIdRoute.observe(this, Observer { id ->
+            binding.etNumRuta.setText(id.toString())
         })
     }
 
@@ -80,7 +86,8 @@ class CreateRouteAdmin : AppCompatActivity() {
         for (field in fields) {
             if (field.text.isNullOrBlank()) {
                 field.requestFocus()  // Hacer focus en el campo vacío
-                field.error = getString(R.string.este_campo_no_puede_estar_vacio)  // Mostrar mensaje de error
+                field.error =
+                    getString(R.string.este_campo_no_puede_estar_vacio)  // Mostrar mensaje de error
                 return
             }
         }
@@ -118,21 +125,11 @@ class CreateRouteAdmin : AppCompatActivity() {
 
         builder.setTitle(context.getString(R.string.alert_text_literal))
             .setIcon(R.drawable.ic_panel_admin)
-            .setMessage("¿Seguro que quieres crear una nueva ruta? Revisa que el nuevo id no exista!")
+            .setMessage("¿Seguro que quieres crear una nueva ruta?")
             .setPositiveButton(context.getString(R.string.confirm)) { _, _ ->
-                // create route is first confirm
+                // create route is confirm
+                instVM.requestAddRoute(data)
 
-                builder.setTitle(context.getString(R.string.alert_text_literal))
-                    .setIcon(R.drawable.ic_panel_admin)
-                    .setMessage("¿Totalmente seguro?")
-                    .setPositiveButton(context.getString(R.string.confirm)) { _, _ ->
-                        // create route is confirm
-                        instVM.requestAddRoute(data)
-                    }
-                    .setNegativeButton(context.getString(R.string.cancel)) { dialog, _ ->
-                        // cancel
-                        dialog.dismiss()
-                    }
                 // Crear y mostrar el diálogo
                 val dialog = builder.create()
                 dialog.show()

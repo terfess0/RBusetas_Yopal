@@ -144,6 +144,9 @@
                 <ScrollView
                     android:id="@+id/scrollTextsInfo"
                     android:layout_width="match_parent"
+                    android:scrollbars="vertical"
+                    android:scrollbarAlwaysDrawVerticalTrack="false"
+                    android:outlineAmbientShadowColor="@color/white"
                     android:layout_height="wrap_content">
 
                     <LinearLayout

@@ -137,6 +137,25 @@ class AdminProvider : ViewModel() {
             })
     }
 
+    fun getLastIdRoute(callback: AddRoute.LastRoute) {
+        val pointRef = dataBaseFirebase.getReference("features/0/rutas/")
+
+        // get the actual num version
+        pointRef.get().addOnSuccessListener { dataSnapshot ->
+            val lastObj = dataSnapshot.children.lastOrNull()  //get last object
+            val lastRouteName = lastObj?.key  // get name last object
+
+            callback.onGetSuccess(lastRouteName)
+
+        }.addOnFailureListener { error ->
+            // Manejar errores
+            val errorType = UtilidadesMenores().handleFirebaseError(error)
+            callback.onGetLastRouteError(errorType)
+
+            Log.e("Firebase", "Error al obtener ultimo id routa:", error)
+        }
+    }
+
     fun getPricePassage(callback: GetPricePassage) {
         val refPrice = "/features/0/precio"
         val referencia = dataBaseFirebase.getReference(refPrice)

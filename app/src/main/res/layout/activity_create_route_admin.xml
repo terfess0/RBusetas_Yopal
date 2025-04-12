@@ -47,8 +47,9 @@
                 android:id="@+id/etNumRuta"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/ingresa_el_n_mero_de_ruta"
+                android:enabled="false"
                 android:inputType="number"
+                android:clickable="false"
                 android:textColor="?attr/colorPrimaryDark"
                 android:textColorHint="@color/gris" />
 
@@ -67,6 +68,8 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/ingresa_los_sitios"
                 android:inputType="text"
+                android:lines="5"
+                android:scrollbars="vertical"
                 android:textColor="?attr/colorPrimaryDark"
                 android:textColorHint="@color/gris" />
 
