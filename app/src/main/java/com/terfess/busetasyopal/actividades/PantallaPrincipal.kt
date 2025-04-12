@@ -256,34 +256,8 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
 
         // Filters
         // ------ Setters states
-        val nameStateValueSites = getString(R.string.nombre_shared_show_sites_value)
-        val nameStateValueHF = getString(R.string.nombre_shared_show_horfrecs_value)
+        verifyIniShowStates()
 
-        verifyIniShowStates(nameStateValueSites, nameStateValueHF)
-
-        // Prepare for edit
-        val btnShowSites = binding.showSites
-        btnShowSites.addOnCheckedStateChangedListener { _, state ->
-            adapter.showSites(state == MaterialCheckBox.STATE_CHECKED)
-            //Save to shared preference the value
-            instanciaUtilidadesMenores.saveToSharedPreferences(
-                this,
-                nameStateValueSites,
-                state == MaterialCheckBox.STATE_CHECKED
-            )
-        }
-
-        val btnShowHorFrecs = binding.showHorFrecs
-        btnShowHorFrecs.addOnCheckedStateChangedListener { _, state ->
-            adapter.showHorFrec(state == MaterialCheckBox.STATE_CHECKED)
-            //Save to shared preference the value
-            instanciaUtilidadesMenores.saveToSharedPreferences(
-                this,
-                nameStateValueHF,
-                state == MaterialCheckBox.STATE_CHECKED
-            )
-        }
-        //..
 
         colorTema = instanciaUtilidadesMenores.colorTituloTema(this)
 
@@ -342,17 +316,18 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
     }
 
 
-    private fun verifyIniShowStates(nameStrSites: String, nameStrHorFrec: String) {
+    private fun verifyIniShowStates() {
+        val nameStrSites = getString(R.string.nombre_shared_show_sites_value)
+        val nameStrHorFrec = getString(R.string.nombre_shared_show_horfrecs_value)
+
         val isCheckedSites: Boolean =
             instanciaUtilidadesMenores.readSharedBooleanShowStatesPrincPref(
                 this,
                 nameStrSites
             )
-        binding.showSites.isChecked = isCheckedSites
 
         val isCheckedHorFrec: Boolean =
             instanciaUtilidadesMenores.readSharedBooleanShowStatesPrincPref(this, nameStrHorFrec)
-        binding.showHorFrecs.isChecked = isCheckedHorFrec
 
         adapter.let {
             adapter.showSites(isCheckedSites)
@@ -362,7 +337,11 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
 
     override fun onResume() {
         super.onResume()
+        // Check show ads user state by buys
         instanciaUtilidadesMenores.loadAds(this, mAdView, btnOptShop)
+
+        // Check or update by opctions configuration view data route
+        verifyIniShowStates()
     }
 
     private fun getGratingHead(): String {

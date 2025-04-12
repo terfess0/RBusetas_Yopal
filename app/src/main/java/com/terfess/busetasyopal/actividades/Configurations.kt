@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.material.checkbox.MaterialCheckBox
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.ActivityConfigurationsBinding
@@ -43,6 +44,7 @@ class Configurations : AppCompatActivity() {
         }
 
         listenLanguajeChange(mapTypeSpinner)
+        iniLogicViewChecks()
 
         //actionbar
         val toolbar = findViewById<Toolbar>(R.id.toolbarConfig)
@@ -68,7 +70,71 @@ class Configurations : AppCompatActivity() {
                     .insertVersion(Version(num_version = versionToFix))
                 instUtilidades.reiniciarApp(this@Configurations, Splash::class.java)
             }
+        }
 
+    }
+
+    private fun iniLogicViewChecks() {
+        val nameStateValueSites = getString(R.string.nombre_shared_show_sites_value)
+        val nameStateValueHF = getString(R.string.nombre_shared_show_horfrecs_value)
+
+        verifyIniShowStates(nameStateValueSites, nameStateValueHF)
+
+        // Prepare for edit
+        val btnShowSites = binding.showSites
+        btnShowSites.addOnCheckedStateChangedListener { _, state ->
+            sitesContVisibility(state == MaterialCheckBox.STATE_CHECKED)
+            //Save to shared preference the value
+            instUtilidades.saveToSharedPreferences(
+                this,
+                nameStateValueSites,
+                state == MaterialCheckBox.STATE_CHECKED
+            )
+        }
+
+        val btnShowHorFrecs = binding.showHorFrecs
+        btnShowHorFrecs.addOnCheckedStateChangedListener { _, state ->
+            horContVisibility(state == MaterialCheckBox.STATE_CHECKED)
+            //Save to shared preference the value
+            instUtilidades.saveToSharedPreferences(
+                this,
+                nameStateValueHF,
+                state == MaterialCheckBox.STATE_CHECKED
+            )
+        }
+        //..
+    }
+
+    private fun verifyIniShowStates(nameStrSites: String, nameStrHorFrec: String) {
+        val isCheckedSites: Boolean =
+            instUtilidades.readSharedBooleanShowStatesPrincPref(
+                this,
+                nameStrSites
+            )
+
+        val isCheckedHorFrec: Boolean =
+            instUtilidades.readSharedBooleanShowStatesPrincPref(this, nameStrHorFrec)
+
+        binding.showSites.isChecked = isCheckedSites
+        binding.showHorFrecs.isChecked = isCheckedHorFrec
+
+        sitesContVisibility(isCheckedSites)
+        horContVisibility(isCheckedHorFrec)
+    }
+
+    private fun sitesContVisibility(show: Boolean) {
+        if (show) {
+            binding.sitiosExampleConfigView.visibility = View.VISIBLE
+        } else {
+            binding.sitiosExampleConfigView.visibility = View.GONE
+        }
+    }
+
+    private fun horContVisibility(show: Boolean) {
+        if (show) {
+            binding.contenedorHorExampleConfigView.visibility = View.VISIBLE
+        } else {
+            binding.contenedorHorExampleConfigView.visibility = View.GONE
         }
     }
 

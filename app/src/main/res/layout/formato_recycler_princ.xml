@@ -27,7 +27,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
-        android:id="@+id/containNumAndSites"
+        android:id="@+id/containNumAndSitesExampleConfigView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -68,7 +68,7 @@
         android:background="#CCCCCC"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/containNumAndSites" />
+        app:layout_constraintTop_toBottomOf="@+id/containNumAndSitesExampleConfigView" />
 
     <LinearLayout
         android:id="@+id/contenedorHor"

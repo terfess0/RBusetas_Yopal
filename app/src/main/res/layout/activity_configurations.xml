@@ -90,6 +90,160 @@
             android:indeterminate="true"
             android:visibility="gone" />
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#CCCCCC" />
+
+    <LinearLayout
+        android:id="@+id/view_route_config_contain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="@string/cambiar_informaci_n_que_se_muestra_en_los_items_de_rutas_en_la_pantalla_principal"
+            android:textAlignment="viewStart"
+            android:textColor="?attr/titleTextColor"
+            android:textStyle="bold" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/showHorFrecs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/mostrar_horarios_y_frecuencias_en_la_lista_de_rutas"
+            android:text="@string/horarios_y_frecuencias"
+            android:textColor="?attr/titleTextColor"
+            android:textSize="11sp"
+            app:buttonTint="@color/enfasis_azul" />
+
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/showSites"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/mostrar_sitios_en_la_lista_de_rutas"
+            android:text="@string/sitios"
+            android:textColor="?attr/titleTextColor"
+            android:textSize="11sp"
+            app:buttonTint="@color/enfasis_azul" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/asi_se_vera_la_informacion_de_cada_ruta"
+            android:textAlignment="viewStart"
+            android:textColor="@color/gris" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/bordes_contenedores">
+
+            <LinearLayout
+                android:id="@+id/containNumAndSitesExampleConfigView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/numRutaExampleConfigView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/numero_de_ruta"
+                    android:textColor="?attr/titleTextColor"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/sitiosExampleConfigView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="5"
+                    android:background="#00FFFFFF"
+                    android:text="@string/sitios_representativos_que_recorre_la_ruta"
+                    android:textColor="?attr/titleTextColor" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/barrieHorExampleConfigView"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#CCCCCC"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/containNumAndSitesExampleConfigView" />
+
+            <LinearLayout
+                android:id="@+id/contenedorHorExampleConfigView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/barrieHorExampleConfigView">
+
+                <TextView
+                    android:id="@+id/horarioLVExampleConfigView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/horario_lunes_a_viernes"
+                    android:textColor="@color/gris"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/horarioSExampleConfigView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/horario_s_bado"
+                    android:textColor="@color/gris"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/horarioDFExampleConfigView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/horario_domingo_y_festivos"
+                    android:textColor="@color/gris"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
