@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.terfess.busetasyopal.actividades.mapa.view.Mapa
 import com.terfess.busetasyopal.clases_utiles.RangoHorarios
+import com.terfess.busetasyopal.clases_utiles.UserRegistsAnalyticsFuns
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.FormatoRecyclerPrincBinding
 import com.terfess.busetasyopal.enums.MapRouteOption
@@ -218,7 +219,7 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
                 caja.startActivity(intent)
 
                 try {
-                    UtilidadesMenores().registSelectRouteUser(dato)
+                    UserRegistsAnalyticsFuns().registSelectRouteUser(dato)
                 }catch (e:Exception){
                     println("Error al registrar la ruta seleccionada: ${e.message}")
                 }

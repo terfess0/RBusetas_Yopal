@@ -20,9 +20,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.general">
         <activity
+            android:name=".admin.view.EstadisticasAdmin"
+            android:exported="false" />
+        <activity
             android:name=".actividades.shoping.ShopScreen"
             android:exported="false"
-            android:theme="@style/Theme.general"/>
+            android:theme="@style/Theme.general" />
         <activity
             android:name=".actividades.Configurations"
             android:exported="false"
@@ -103,10 +106,10 @@
             </intent-filter>
         </service>
 
-
         <property
             android:name="android.adservices.AD_SERVICES_CONFIG"
             android:resource="@xml/gma_ad_services_config"
             tools:replace="android:resource" />
     </application>
+
 </manifest>

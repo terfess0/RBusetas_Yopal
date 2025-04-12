@@ -198,6 +198,8 @@
     <string name="numero_de_ruta">Número de Ruta</string>
     <string name="sitios_representativos_que_recorre_la_ruta">Sitios representativos que recorre la ruta</string>
     <string name="asi_se_vera_la_informacion_de_cada_ruta">Así se vera la información de cada ruta:</string>
+    <string name="limpiar_datos_de_rutas_fantasma">Limpiar datos de rutas fantasma</string>
+    <string name="ver_estadisticas">Ver estadísticas</string>
 
 </resources>
 

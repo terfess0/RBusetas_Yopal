@@ -3,13 +3,15 @@ package com.terfess.busetasyopal.services
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import com.terfess.busetasyopal.clases_utiles.UserRegistsAnalyticsFuns
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 
 class MyApplication : Application(), Application.ActivityLifecycleCallbacks {
 
     override fun onCreate() {
         super.onCreate()
-        UtilidadesMenores().registLastConectionUser()
+        UserRegistsAnalyticsFuns().registLastConectionUser()
+        UserRegistsAnalyticsFuns().registerDailyAppStart()
         registerActivityLifecycleCallbacks(this)
     }
 

@@ -68,6 +68,11 @@ class AdminPanel : AppCompatActivity() {
             viewModel.checkGhostRoutesData()
         }
 
+        binding.btnAnalyticsOption.setOnClickListener {
+            val intent = Intent(this, EstadisticasAdmin::class.java)
+            startActivity(intent)
+        }
+
         binding.btnUpdateVersionInfo.setOnClickListener {
             val text = "¿Seguro que quieres actualizar la versión de los datos?"
             instUtilidadesMen.buildDialogConfirmAction(

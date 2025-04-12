@@ -43,6 +43,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -619,13 +620,6 @@ class UtilidadesMenores {
         builder.show()
     }
 
-    private fun obtenerUltimaConexion(): String {
-        val hora = getHoraActual()
-        val fecha = getDate()
-
-        return "Último inicio de conexión a las $hora del $fecha"
-    }
-
     fun getHoraActual(): String {
         val calendario = Calendar.getInstance()
         val formatoHora = SimpleDateFormat("h:mm a", Locale("es", "ES"))
@@ -642,73 +636,15 @@ class UtilidadesMenores {
         return fecha
     }
 
-    // GET ANALYTICS --
-
-    fun registLastConectionUser() {
-        var tokenIdApp: String
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                tokenIdApp = task.result
-
-                val firebase: FirebaseDatabase = FirebaseDatabase.getInstance()
-
-                val ref: DatabaseReference =
-                    firebase.getReference(
-                        "features/0/users/$tokenIdApp/lastConnection"
-                    )
-
-                val str = obtenerUltimaConexion()
-                ref.setValue(str)
-            }
-        }
+    fun getSimpleDate(): String {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val today = dateFormat.format(Date())
+        return today
     }
 
-
-    fun registSelectRouteUser(idRoute:Int) {
-        var tokenIdApp: String
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                tokenIdApp = task.result
-
-                val firebase: FirebaseDatabase = FirebaseDatabase.getInstance()
-
-                val ref: DatabaseReference =
-                    firebase.getReference(
-                        "features/0/"
-                    )
-
-                // Check if the route exists
-                ref.child("rutas/$idRoute").get().addOnSuccessListener {
-
-                    if (!it.exists()) {
-                        // Route does not exist
-                        return@addOnSuccessListener
-                    }
-
-                    val newRef = ref.child("analytics/clicksRouteData/$idRoute/")
-
-                    val z = newRef.child("clicksRegister").push()
-
-                    // Save the click regist
-                    val str = mapOf(
-                        "id" to z.key,
-                        "date" to getDate(),
-                        "time" to getHoraActual(),
-                        "idUser" to tokenIdApp,
-                        "idRouteClicked" to idRoute
-                    )
-
-                    z.setValue(str)
-
-                    // Up the clicks count
-                    newRef.child("clicksCount").get().addOnSuccessListener {
-                        val y = it.getValue(Int::class.java) ?: 0
-                        y.toString().toInt()
-                        newRef.child("clicksCount").setValue(y + 1)
-                    }
-                }
-            }
-        }
+    fun formatNumberWithCommas(number: Int): String {
+        val formatter = NumberFormat.getNumberInstance(Locale.US)
+        return formatter.format(number)
     }
 
     //..

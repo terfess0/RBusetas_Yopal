@@ -23,10 +23,11 @@
     <color name="btn_op_mapa">#B97E9ACA</color>
     <color name="ida_venida_op_mapa">#7C776E6E</color>
 
-    <color name="rojo">#C4D12B2B</color>
+    <color name="rojo">#C4DE0000</color>
     <color name="azul">#C42B2ED1</color>
-    <color name="verde">#C42BD176</color>
+    <color name="verde">#12AD00</color>
     <color name="amarillo">#C4CCD12B</color>
+    <color name="naranja">#C4FF7600</color>
     <color name="transparente">#00000000</color>
     <color name="gris">#878585</color>
 

@@ -61,6 +61,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.8.5")
     implementation("androidx.activity:activity-ktx:1.9.3")
     implementation("com.google.android.libraries.places:places:4.1.0")
+    implementation("androidx.activity:activity:1.10.1")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
@@ -107,6 +108,9 @@ dependencies {
 
     // workmanager
     implementation("androidx.work:work-runtime-ktx:2.10.0")
+
+    //Graficos
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }
 
 

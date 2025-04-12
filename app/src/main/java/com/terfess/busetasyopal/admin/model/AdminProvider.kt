@@ -1,14 +1,12 @@
 package com.terfess.busetasyopal.admin.model
 
 import android.util.Log
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.messaging.FirebaseMessaging
 import com.terfess.busetasyopal.admin.callback.AddRoute
 import com.terfess.busetasyopal.admin.callback.GetRecords
 import com.terfess.busetasyopal.admin.callback.GhostRouteDelete
@@ -17,6 +15,9 @@ import com.terfess.busetasyopal.admin.callback.OnDeleteResponse
 import com.terfess.busetasyopal.admin.callback.OnGetAllData
 import com.terfess.busetasyopal.admin.callback.OnGetReports
 import com.terfess.busetasyopal.admin.callback.OnReplyReport
+import com.terfess.busetasyopal.admin.callback.analytics.OnDailyStarts
+import com.terfess.busetasyopal.admin.callback.analytics.OnGetCountsClicks
+import com.terfess.busetasyopal.admin.callback.analytics.OnTotalReports
 import com.terfess.busetasyopal.admin.callback.pricePassage.UpdatePrice
 import com.terfess.busetasyopal.admin.callback.pricePassage.GetPricePassage
 import com.terfess.busetasyopal.admin.callback.updateInfo.UpVersionInfo
@@ -173,6 +174,147 @@ class AdminProvider : ViewModel() {
             }
         })
     }
+
+    // Estadistics
+
+    fun getTotalReportsCount(callback: OnTotalReports) {
+        val refPrice = "/features/0/reportsModule/reportsUser"
+        val referencia = dataBaseFirebase.getReference(refPrice)
+
+        referencia.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val total = snapshot.childrenCount.toInt()
+                callback.OnSuccessTotalReports(total)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Manejar errores
+            }
+        })
+    }
+
+    fun getClicksRoute(callback: OnGetCountsClicks.OnGetRouteMaxClicks) {
+        val refPrice = "/features/0/analytics/clicksRouteData"
+        val referencia = dataBaseFirebase.getReference(refPrice)
+
+        referencia.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var maxClicks = 0
+                var maxKey: String? = null
+
+                for (child in snapshot.children) {
+                    val clicks = child.child("clicksCount").getValue(Int::class.java) ?: 0
+                    if (clicks > maxClicks) {
+                        maxClicks = clicks
+                        maxKey = child.key
+                    }
+                }
+
+                if (maxKey != null) {
+                    callback.OnSuccessMax(maxKey)
+                } else {
+                    callback.OnSuccessMax("No se pudo obtener")
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Puedes agregar manejo de error si lo necesitas
+            }
+        })
+    }
+
+    fun getRouteMinClicks(callback: OnGetCountsClicks.OnGetRouteMinClicks) {
+        val refPath = "/features/0/analytics/clicksRouteData"
+        val referencia = dataBaseFirebase.getReference(refPath)
+
+        referencia.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var minClicks = Int.MAX_VALUE
+                var minKey: String? = null
+
+                for (child in snapshot.children) {
+                    val clicks = child.child("clicksCount").getValue(Int::class.java)
+                    if (clicks != null && clicks < minClicks) {
+                        minClicks = clicks
+                        minKey = child.key
+                    }
+                }
+
+                if (minKey != null) {
+                    callback.OnSuccessMin(minKey)
+                } else {
+                    callback.OnSuccessMin("No se pudo obtener")
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Manejo de error si lo deseas
+            }
+        })
+    }
+
+    fun getTotalClicksCount(callback: OnGetCountsClicks.OnGetTotalClicks) {
+        val refPath = "/features/0/analytics/clicksRouteData"
+        val referencia = dataBaseFirebase.getReference(refPath)
+
+        referencia.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var totalClicks = 0
+
+                for (child in snapshot.children) {
+                    val clicks = child.child("clicksCount").getValue(Int::class.java) ?: 0
+                    totalClicks += clicks
+                }
+
+                callback.OnSuccessTotal(totalClicks)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Puedes manejar errores aquí si lo deseas
+            }
+        })
+    }
+
+    fun getTodayAppStartCount(callback: OnDailyStarts) {
+        val today = UtilidadesMenores().getSimpleDate()
+
+        val refPath = "/features/0/analytics/dailyAppStarts/$today"
+        val reference = dataBaseFirebase.getReference(refPath)
+
+        reference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val count = snapshot.getValue(Int::class.java) ?: 0
+                callback.OnGetDailyStarts(count.toString())
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("AppStart", "Error al leer contador de hoy", error.toException())
+                callback.OnGetDailyStarts("No se pudo obtener") // Por si falla, devolvemos 0
+            }
+        })
+    }
+
+    fun getTotalAppStarts(callback: OnDailyStarts.OnTotalStarts) {
+        val refPath = "/features/0/analytics/dailyAppStarts"
+        val reference = dataBaseFirebase.getReference(refPath)
+
+        reference.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var total = 0
+                for (daySnapshot in snapshot.children) {
+                    val count = daySnapshot.getValue(Int::class.java) ?: 0
+                    total += count
+                }
+                callback.OnGetTotalStarts(total.toString())
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("AppStart", "Error al leer total de inicios", error.toException())
+                callback.OnGetTotalStarts("No se pudo obtener")
+            }
+        })
+    }
+
 
     //END GETTERS----------------
 
@@ -456,7 +598,7 @@ class AdminProvider : ViewModel() {
         }
     }
 
-    fun deleteResponse(callback: OnDeleteResponse, idResponse: String, txtResponse:String) {
+    fun deleteResponse(callback: OnDeleteResponse, idResponse: String, txtResponse: String) {
         // referencia al documento en Firebase
         val databaseReference =
             dataBaseFirebase.getReference("features/0/reportsModule/reportResponses/$idResponse")
