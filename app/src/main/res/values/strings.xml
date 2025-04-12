@@ -187,6 +187,10 @@
     <string name="respondido">Respondido</string>
     <string name="no_respondido">No respondido</string>
     <string name="borrar_respuesta_a_reporte_admin">Borrar respuesta a reporte admin</string>
+    <string name="fecha">Fecha:</string>
+    <string name="hora">Hora:</string>
+    <string name="ubicacio_n">Ubicación:</string>
+    <string name="tarea">Tarea:</string>
 
 </resources>
 
