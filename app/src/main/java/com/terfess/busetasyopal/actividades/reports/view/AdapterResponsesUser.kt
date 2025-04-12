@@ -23,7 +23,7 @@ class AdapterResponsesUser (
         fun mostrar(repuesta: ResponseReportDato) {
             author.text = repuesta.authorResponse
             responseText.text = repuesta.textResponse
-            fecha.text = "Respondido el ${repuesta.dateResponse} a las ${repuesta.timeResponse}"
+            fecha.text = "Respondió el ${repuesta.dateResponse} a las ${repuesta.timeResponse}"
 
             if (repuesta.statusCheckedSeenNoti){
                 badgeIndicateNew.visibility = View.GONE

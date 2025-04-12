@@ -4,40 +4,41 @@
     android:id="@+id/layout_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bord_btn_sheet_responses"
-    android:padding="16dp">
+    android:background="@drawable/bord_btn_sheet_responses">
 
-    <!-- Pestañita superior -->
-    <View
-        android:id="@+id/drag_handle"
-        android:layout_width="40dp"
-        android:layout_height="4dp"
-        android:background="@color/gris"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!-- Título dinámico -->
-    <TextView
-        android:id="@+id/title_response"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:gravity="center"
-        android:textColor="@color/white"
-        android:textStyle="bold"
+        android:orientation="vertical"
+        android:layout_margin="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/drag_handle" />
+        app:layout_constraintTop_toTopOf="parent">
+        <!-- Pestañita superior -->
+        <View
+            android:id="@+id/drag_handle"
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:layout_margin="10dp"
+            android:background="@color/gris" />
 
-    <!-- Lista de respuestas -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list_respuestas"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginVertical="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_response" />
+        <!-- Título dinámico -->
+        <TextView
+            android:id="@+id/title_response"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
+        <!-- Lista de respuestas -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_respuestas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

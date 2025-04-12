@@ -37,8 +37,7 @@
                     android:textAlignment="center"
                     android:textColor="?attr/colorPrimaryDark"
                     android:textIsSelectable="true"
-                    android:textSize="14sp"
-                    android:textStyle="bold|italic" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_time_report_admin"
@@ -46,9 +45,7 @@
                     android:layout_height="match_parent"
                     android:textAlignment="textStart"
                     android:textColor="?attr/colorPrimaryDark"
-                    android:textIsSelectable="true"
-                    android:textSize="14sp"
-                    android:textStyle="italic" />
+                    android:textIsSelectable="true" />
 
                 <TextView
                     android:id="@+id/tv_task_report_admin"
@@ -56,9 +53,7 @@
                     android:layout_height="match_parent"
                     android:textAlignment="textStart"
                     android:textColor="?attr/colorPrimaryDark"
-                    android:textIsSelectable="true"
-                    android:textSize="16sp"
-                    android:textStyle="italic" />
+                    android:textIsSelectable="true" />
 
                 <TextView
                     android:id="@+id/tv_location_report_admin"
@@ -66,9 +61,7 @@
                     android:layout_height="match_parent"
                     android:textAlignment="textStart"
                     android:textColor="?attr/colorPrimaryDark"
-                    android:textIsSelectable="true"
-                    android:textSize="16sp"
-                    android:textStyle="italic" />
+                    android:textIsSelectable="true" />
 
                 <ScrollView
                     android:layout_width="match_parent"
@@ -81,9 +74,20 @@
                         android:layout_height="wrap_content"
                         android:textAlignment="textStart"
                         android:textColor="@color/gris"
-                        android:textIsSelectable="true"
-                        android:textSize="18sp" />
+                        android:textIsSelectable="true" />
                 </ScrollView>
+
+                <TextView
+                    android:id="@+id/has_been_responded_admin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bord_suave"
+                    android:backgroundTint="@color/enfasis_azul"
+                    android:padding="2dp"
+                    android:layout_margin="2dp"
+                    android:textColor="@color/white"
+                    android:textIsSelectable="true" />
             </LinearLayout>
 
             <LinearLayout
@@ -117,6 +121,19 @@
                     android:foreground="?attr/selectableItemBackgroundBorderless"
                     android:padding="5dp"
                     android:src="@android:drawable/ic_menu_revert" />
+
+                <ImageButton
+                    android:id="@+id/btn_see_responses_rep_admin"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/transparente"
+                    android:contentDescription="@string/ver_respuestas_reporte_admin"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:padding="5dp"
+                    android:src="@android:drawable/ic_menu_view"
+                    android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

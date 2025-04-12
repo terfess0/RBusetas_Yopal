@@ -9,11 +9,9 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.terfess.busetasyopal.R
-import com.terfess.busetasyopal.actividades.reports.model.AdapterHolderReportsUser
 import com.terfess.busetasyopal.actividades.reports.viewmodel.ViewModelReports
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.ActivityReportsUserBinding
-import com.terfess.busetasyopal.services.AuthFirebase
 
 class ReportsUser : AppCompatActivity() {
     private lateinit var binding: ActivityReportsUserBinding

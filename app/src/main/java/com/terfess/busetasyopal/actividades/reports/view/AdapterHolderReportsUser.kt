@@ -1,4 +1,4 @@
-package com.terfess.busetasyopal.actividades.reports.model
+package com.terfess.busetasyopal.actividades.reports.view
 
 import android.os.Handler
 import android.os.Looper
@@ -11,13 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.terfess.busetasyopal.R
-import com.terfess.busetasyopal.actividades.reports.view.AdapterResponsesUser
 import com.terfess.busetasyopal.actividades.reports.viewmodel.ViewModelReports
 import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
 import com.terfess.busetasyopal.databinding.BtnSheetResponsesRepUserBinding
 import com.terfess.busetasyopal.modelos_dato.reports_system.DatoReport
 import com.terfess.busetasyopal.databinding.FormatRecyclerReportsUserBinding
-import kotlin.concurrent.timerTask
 
 class AdapterHolderReportsUser(
     private var reports: List<DatoReport>,
@@ -158,41 +156,5 @@ class AdapterHolderReportsUser(
                 adapter.updateData(allResponses)
             }
         }
-
-//        private fun toggleRespuestas(reportId: String) {
-//            val isHidden = binding.layoutRespuestas.visibility == View.GONE
-//            binding.layoutRespuestas.visibility = if (isHidden) View.VISIBLE else View.GONE
-//            binding.textToggle.text = if (isHidden) "Ocultar respuestas ▴" else "Ver respuestas ▾"
-//
-//            if (isHidden) {
-//                val count = viewModel.countEarringsNotis.value ?: 0
-//                if (count > 0) {
-//                    viewModel.byCycleChangeStatusViewNotis()
-//                }
-//            }
-//        }
-
-//        private fun observeResponses(reportId: String, adapter: AdapterResponsesUser) {
-//            if (isObserving) return
-//            isObserving = true
-//
-//            // Observamos sólo las respuestas necesarias
-//            viewModel.myResponses.observe(lifecycleOwner, responsesObserver)
-//
-//            // Guardamos referencia para limpiar después
-//            observers.add(responsesObserver)
-//        }
-
-//        private val observers = mutableListOf<Observer<*>>()
-//
-//        private fun clearObservers() {
-//            observers.forEach { observer ->
-//                if (observer is Observer<*>) {
-//                    viewModel.myResponses.removeObserver(observer as Observer<in List<ResponseReportDato>>)
-//                }
-//            }
-//            observers.clear()
-//            isObserving = false
-//        }
     }
 }

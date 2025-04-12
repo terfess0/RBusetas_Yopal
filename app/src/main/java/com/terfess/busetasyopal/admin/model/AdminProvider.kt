@@ -13,6 +13,7 @@ import com.terfess.busetasyopal.admin.callback.AddRoute
 import com.terfess.busetasyopal.admin.callback.GetRecords
 import com.terfess.busetasyopal.admin.callback.GhostRouteDelete
 import com.terfess.busetasyopal.admin.callback.OnDeleteReport
+import com.terfess.busetasyopal.admin.callback.OnDeleteResponse
 import com.terfess.busetasyopal.admin.callback.OnGetAllData
 import com.terfess.busetasyopal.admin.callback.OnGetReports
 import com.terfess.busetasyopal.admin.callback.OnReplyReport
@@ -63,7 +64,6 @@ class AdminProvider : ViewModel() {
                             UtilidadesMenores().handleFirebaseError(databaseError.toException())
                         callback.onErrorGet(errorType)
 
-                        println("Algo salió mal: ${databaseError.message}")
                         callback.onErrorGet(FirebaseEnums.ERROR_NOT_EXISTS)
                     }
                 })
@@ -341,7 +341,7 @@ class AdminProvider : ViewModel() {
 //END SETTERS------------
 
     //DELETES------------------
-    fun deleteReport(callback: OnDeleteReport, idFieldReport: String, hasResponse:Boolean) {
+    fun deleteReport(callback: OnDeleteReport, idFieldReport: String, hasResponse: Boolean) {
         // referencia al documento en Firebase
         val databaseReference =
             dataBaseFirebase.getReference("features/0/reportsModule/reportsUser/$idFieldReport")
@@ -350,7 +350,7 @@ class AdminProvider : ViewModel() {
             .addOnSuccessListener {
 
                 // First, delete reponses
-                if (hasResponse){
+                if (hasResponse) {
                     dataBaseFirebase.getReference("features/0/reportsModule/reportResponses")
                         .orderByChild("idReport")
                         .equalTo(idFieldReport)
@@ -366,7 +366,11 @@ class AdminProvider : ViewModel() {
 
                             override fun onCancelled(error: DatabaseError) {
                                 // Manejo de error
-                                Log.e("FirebaseError", "Error al eliminar los reportes", error.toException())
+                                Log.e(
+                                    "FirebaseError",
+                                    "Error al eliminar los reportes",
+                                    error.toException()
+                                )
                             }
                         })
                 }
@@ -433,6 +437,27 @@ class AdminProvider : ViewModel() {
         }
     }
 
+    fun deleteResponse(callback: OnDeleteResponse, idResponse: String, txtResponse:String) {
+        // referencia al documento en Firebase
+        val databaseReference =
+            dataBaseFirebase.getReference("features/0/reportsModule/reportResponses/$idResponse")
+
+        databaseReference.removeValue()
+            .addOnSuccessListener {
+                // Operación exitosa
+                callback.onDeleteResponse(true)
+                Log.d("Firebase", "Respuesta eliminada exitosamente.")
+
+                val txtAction = "Borró una respuesta reporte [$txtResponse] :: AdminProvider"
+                saveActionRegist(txtAction)
+            }
+            .addOnFailureListener { e ->
+                // Error al eliminar la respuesta
+                callback.onDeleteResponse(false)
+
+                Log.e("Firebase", "Error al eliminar el campo.", e)
+            }
+    }
 
 //END DELETES------------------
 

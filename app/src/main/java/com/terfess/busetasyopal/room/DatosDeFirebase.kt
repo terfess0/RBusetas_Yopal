@@ -126,7 +126,6 @@ class DatosDeFirebase {
                             listaCoorPrimParte,
                             listaCoorSegParte
                         )
-                        println("+1 vuelta")
                     }
                     callAll.todosDatosRecibidos()
 

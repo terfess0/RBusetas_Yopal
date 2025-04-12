@@ -65,12 +65,11 @@ class Splash : AppCompatActivity() {
         //---------------DESCARGAR INFORMACION SI ES NECESARIO--------------------------
 
         val hayConexion = UtilidadesMenores().comprobarConexion(this)
-        println("Hay conexion en splash = $hayConexion")
+
         if (hayConexion) {
             //obtener la version externa y comparar
             if (!downloading) {
                 checkDataVersion(roomDB, intentToRutasSeccion)
-                println("Verificando versiones")
             }
 
             //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -159,7 +158,6 @@ class Splash : AppCompatActivity() {
 
                             if (!downloading) {
                                 checkDataVersion(roomDB, intentToRutasSeccion)
-                                println("mandoa a descarga 1")
                             }
                         } else {
                             UtilidadesMenores().crearToast(

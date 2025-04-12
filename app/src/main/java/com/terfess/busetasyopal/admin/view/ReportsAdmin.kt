@@ -31,7 +31,7 @@ class ReportsAdmin : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        val adapter = AdapterReportsAdmin(emptyList(), viewModelInst)
+        val adapter = AdapterReportsAdmin(emptyList(), viewModelInst, this)
         val recicler = binding.reportsAdminRecycler
         recicler.layoutManager = LinearLayoutManager(this)
         recicler.adapter = adapter
@@ -73,26 +73,36 @@ class ReportsAdmin : AppCompatActivity() {
             }
         })
 
+        viewModelInst.resultDeleteResponse.observe(this, Observer {
+            if (it == true) {
+                utilidadesMenInst.crearSnackbar(
+                    "Respuesta Eliminada", binding.root
+                )
+            } else {
+                utilidadesMenInst.crearSnackbar(
+                    "Algo salió mal, no se eliminó la respuesta.", binding.root
+                )
+            }
+        })
+
         viewModelInst.resultReplyReport.observe(this, Observer { result ->
-            println("1")
+
             var txtResult = ""
             if (result) {
                 txtResult = "Respuesta Enviada Correctamente"
 
                 utilidadesMenInst.crearSnackbar(txtResult, binding.root)
-                println("2")
             } else {
                 val erorrtxt = viewModelInst.errorReplyReport
                 txtResult = "Algo salió mal, no se respondio el reporte. $erorrtxt"
 
                 utilidadesMenInst.crearSnackbar(txtResult, binding.root)
-                println("3")
             }
         })
 
         viewModelInst.alertOnScreen.observe(this, Observer { text ->
             //Mostrar algun mensaje enviado por el view model
-            if (!text.isNullOrBlank()){
+            if (!text.isNullOrBlank()) {
                 utilidadesMenInst.crearSnackbar(
                     text,
                     binding.root

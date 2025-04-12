@@ -183,6 +183,10 @@
     <string name="responder_reporte">Responder reporte</string>
     <string name="input_txt_response_adm">Ingrese el texto de respuesta</string>
     <string name="responder">Responder</string>
+    <string name="ver_respuestas_reporte_admin">Ver respuestas reporte admin</string>
+    <string name="respondido">Respondido</string>
+    <string name="no_respondido">No respondido</string>
+    <string name="borrar_respuesta_a_reporte_admin">Borrar respuesta a reporte admin</string>
 
 </resources>
 

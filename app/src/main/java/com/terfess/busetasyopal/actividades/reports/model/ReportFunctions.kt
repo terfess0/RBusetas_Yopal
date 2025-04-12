@@ -83,7 +83,7 @@ class ReportFunctions {
                             }
 
                             val sortedData = data.sortedByDescending { it.dateResponse }
-                            callback.onMyResponsesSuccess(sortedData)
+                            callback.onMyResponsesSuccess(sortedData.reversed())
                         }
 
                         override fun onCancelled(databaseError: DatabaseError) {
