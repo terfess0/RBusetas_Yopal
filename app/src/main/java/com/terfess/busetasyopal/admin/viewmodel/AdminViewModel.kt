@@ -2,6 +2,7 @@ package com.terfess.busetasyopal.admin.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.terfess.busetasyopal.admin.callback.GhostRouteDelete
 import com.terfess.busetasyopal.admin.callback.pricePassage.GetPricePassage
 import com.terfess.busetasyopal.admin.callback.pricePassage.UpdatePrice
 import com.terfess.busetasyopal.admin.callback.updateInfo.UpVersionInfo
@@ -11,10 +12,12 @@ import com.terfess.busetasyopal.enums.FirebaseEnums
 class AdminViewModel : ViewModel(),
     UpdatePrice,
     GetPricePassage,
-    UpVersionInfo{
+    UpVersionInfo,
+    GhostRouteDelete {
     var onEditPrice = MutableLiveData<Boolean>()
     var onUpVersion = MutableLiveData<Boolean>()
     var currentPricePassage = MutableLiveData<String>()
+    var strResultDelGhostRoutes = MutableLiveData<String>()
 
     // price
     fun updatePrice(newPrice: String) {
@@ -51,5 +54,16 @@ class AdminViewModel : ViewModel(),
         onUpVersion.postValue(true)
         println("Error at update version info :: -> $error")
     }
+    //..
 
+    // ..
+    fun checkGhostRoutesData(){
+        AdminProvider().checkAndDeleteGhostRoutesByDataClicksData(this)
+    }
+
+    override fun OnDeleteGhosts(result: String) {
+        strResultDelGhostRoutes.postValue(result)
+    }
+
+    //..
 }

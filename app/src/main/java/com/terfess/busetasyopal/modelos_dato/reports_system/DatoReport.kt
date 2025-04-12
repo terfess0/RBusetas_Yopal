@@ -9,5 +9,6 @@ data class DatoReport(
     val location : String = "",
     val currentTask : String = "",
     val idUser : String = "",
-    val statusCheckedView:Boolean = false
+    val statusCheckedView:Boolean = false,
+    val hasResponse : Boolean = false
 )

@@ -23,58 +23,71 @@ class UserResponsesNotificationsFun {
 
     private fun checkUserNotifications(tokenIdApp: String, callback: OnGetCallback) {
         val userNotificationsRef = FirebaseDatabase.getInstance()
-            .getReference("features/0/users/reportsModule/reportResponses")
+            .getReference("features/0/users/$tokenIdApp")
 
-        userNotificationsRef.child("notisCheck")
+        userNotificationsRef.child("pendingResponseNotifications")
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.getValue(Boolean::class.java) == true) {
-                        println("No hay nuevos registros. notisCheck ya está en true.")
+                        println("No hay nuevos registros. pendingResponseNotifications ya está en true.")
                         return
                     }
 
-                    checkResponseNotifications(userNotificationsRef, callback)
+                    checkResponseNotifications(tokenIdApp, callback)
                     updateNotisCheck(userNotificationsRef)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    println("Error al leer notisCheck: ${error.toException()}")
+                    println("Error al leer pendingResponseNotifications: ${error.toException()}")
                 }
             })
     }
 
     private fun checkResponseNotifications(
-        userNotificationsRef: DatabaseReference,
+        tokenIdApp: String,
         callback: OnGetCallback
     ) {
-        val responseRef = userNotificationsRef.child("reportResponses")
+        val responseRef = FirebaseDatabase.getInstance()
+            .getReference("features/0/reportsModule/reportResponses")
 
-        responseRef.orderByChild("statusCheckedReceivedNoti").equalTo(false)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val elementos = snapshot.children.mapNotNull { child ->
+        val firstQuery = responseRef
+            .orderByChild("idUser")
+            .equalTo(tokenIdApp)
+
+        firstQuery.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                val elementos = snapshot.children.mapNotNull { child ->
+                    val statusChecked =
+                        child.child("statusCheckedReceivedNoti").getValue(Boolean::class.java)
+                            ?: true
+                    if (!statusChecked) {
                         val titulo = "Respuesta Reporte"
                         val mensaje = child.child("textResponse").getValue(String::class.java)
                         val key = child.key
 
                         if (mensaje != null && key != null) Triple(key, titulo, mensaje)
                         else null
+                    } else {
+                        null
                     }
-
-                    if (elementos.isEmpty()) {
-                        println("No hay elementos con statusCheckedView = false")
-                        return
-                    }
-
-                    println("Elementos a actualizar: $elementos")
-                    callback.onCallback(elementos)
-                    updateResponseStatus(elementos, responseRef)
                 }
 
-                override fun onCancelled(error: DatabaseError) {
-                    println("Error al leer reports: ${error.toException()}")
+                if (elementos.isEmpty()) {
+                    println("No hay elementos con statusCheckedReceivedNoti = false")
+                    return
                 }
-            })
+
+                println("Elementos a actualizar: $elementos")
+                callback.onCallback(elementos)
+                updateResponseStatus(elementos, responseRef)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                println("Error al leer reports: ${error.toException()}")
+            }
+        })
+
     }
 
     private fun updateResponseStatus(
@@ -94,12 +107,12 @@ class UserResponsesNotificationsFun {
     }
 
     private fun updateNotisCheck(userNotificationsRef: DatabaseReference) {
-        userNotificationsRef.child("notisCheck").setValue(true)
+        userNotificationsRef.child("pendingResponseNotifications").setValue(true)
             .addOnSuccessListener {
-                println("Se ha actualizado notisCheck a true")
+                println("Se ha actualizado pendingResponseNotifications a true")
             }
             .addOnFailureListener {
-                println("Error al actualizar notisCheck: $it")
+                println("Error al actualizar pendingResponseNotifications: $it")
             }
     }
 }

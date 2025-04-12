@@ -44,7 +44,7 @@ class HolderReportsAdmin(view: View) : RecyclerView.ViewHolder(view) {
                 .setMessage("¿Quieres eliminar este reporte '${currentReport.situationReport}'?")
                 .setPositiveButton(context.getString(R.string.confirm)) { _, _ ->
                     // Delete report at confirm
-                    viewModelRep.requestDeleteReport(currentReport.id)
+                    viewModelRep.requestDeleteReport(currentReport.id, currentReport.hasResponse)
                 }
                 .setNegativeButton(context.getString(R.string.cancel)) { dialog, _ ->
                     // cancel

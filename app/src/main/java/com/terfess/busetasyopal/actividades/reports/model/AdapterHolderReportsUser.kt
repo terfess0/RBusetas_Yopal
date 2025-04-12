@@ -1,18 +1,23 @@
 package com.terfess.busetasyopal.actividades.reports.model
 
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.terfess.busetasyopal.R
 import com.terfess.busetasyopal.actividades.reports.view.AdapterResponsesUser
 import com.terfess.busetasyopal.actividades.reports.viewmodel.ViewModelReports
+import com.terfess.busetasyopal.clases_utiles.UtilidadesMenores
+import com.terfess.busetasyopal.databinding.BtnSheetResponsesRepUserBinding
 import com.terfess.busetasyopal.modelos_dato.reports_system.DatoReport
 import com.terfess.busetasyopal.databinding.FormatRecyclerReportsUserBinding
-import com.terfess.busetasyopal.modelos_dato.reports_system.ResponseReportDato
+import kotlin.concurrent.timerTask
 
 class AdapterHolderReportsUser(
     private var reports: List<DatoReport>,
@@ -37,7 +42,7 @@ class AdapterHolderReportsUser(
     }
 
     override fun onBindViewHolder(holder: HolderReportsUser, position: Int) {
-        holder.showReports(reports[position])
+        holder.showReports(reports[position], position)
     }
 
     fun notyChange(data: List<DatoReport>) {
@@ -49,87 +54,145 @@ class AdapterHolderReportsUser(
         private val binding = FormatRecyclerReportsUserBinding.bind(view)
         private var isObserving = false
 
-        fun showReports(currentReport: DatoReport) {
+        fun showReports(currentReport: DatoReport, position: Int) {
             // Cancelar observaciones previas por seguridad
-            clearObservers()
+//            clearObservers()
 
             // Seteamos datos básicos
             binding.tvFechaReportUser.text = currentReport.dateReport
             binding.tvTextReportUser.text = currentReport.situationReport
-            binding.tvTaskReportUser.text = currentReport.currentTask
+
             binding.tvTimeReportUser.text = currentReport.timeReport
+            binding.txtNumReport.text = "Reporte #${position + 1}"
             binding.tvLocationReportUser.visibility = View.GONE
 
-            // Configuramos adapter vacío inicialmente
+            if (currentReport.hasResponse) binding.btnSeeResponsesRep.visibility =
+                View.VISIBLE else binding.btnSeeResponsesRep.visibility = View.GONE
+
+            binding.btnSeeResponsesRep.setOnClickListener {
+                alertDialogResponse(currentReport.id, position)
+            }
+        }
+
+        private fun alertDialogResponse(id: String, position: Int) {
+            // Inflar el layout del BottomSheet con LayoutInflater
+            val inflater = LayoutInflater.from(binding.root.context)
+            val btnSheetLayout = BtnSheetResponsesRepUserBinding.inflate(inflater)
+
+            // Crear el BottomSheetDialog
+            val btnSheetDia =
+                BottomSheetDialog(binding.root.context, R.style.Theme_BottomSheetTheme)
+
+            // Establecer el contenido del BottomSheet
+            btnSheetDia.setContentView(btnSheetLayout.root)
+
+            // Configurar el BottomSheet
+            setupBottomSheet(btnSheetDia)
+
+            // Cargar datos
+            viewModel.getResponsesByReportId(id)
+
+            // Crear y asignar adapter
             val adapter = AdapterResponsesUser(emptyList())
-            binding.listRespuestas.layoutManager = LinearLayoutManager(binding.root.context)
-            binding.listRespuestas.adapter = adapter
+            setupRecyclerView(adapter, btnSheetLayout)
 
-            // Configurar botón toggle
-            binding.btnToggleRespuestas.setOnClickListener {
-                toggleRespuestas(currentReport.id)
-            }
+            // Observar respuestas del ViewModel
+            observeResponses(adapter, btnSheetLayout, position)
 
-            // Botón para eliminar (o consultar) reporte
-            binding.btnDeleteReportUser.setOnClickListener {
-                viewModel.getResponsesByReportId(currentReport.id)
-            }
-
-            // Observamos respuestas específicas del reporte
-            observeResponses(currentReport.id, adapter)
+            // Mostrar el BottomSheet
+            btnSheetDia.show()
         }
 
-        private fun toggleRespuestas(reportId: String) {
-            val isHidden = binding.layoutRespuestas.visibility == View.GONE
-            binding.layoutRespuestas.visibility = if (isHidden) View.VISIBLE else View.GONE
-            binding.textToggle.text = if (isHidden) "Ocultar respuestas ▴" else "Ver respuestas ▾"
+        // Configura el BottomSheet y establece su altura
+        private fun setupBottomSheet(btnSheetDia: BottomSheetDialog) {
+            val bottomSheet =
+                btnSheetDia.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            bottomSheet?.let {
+                it.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                it.requestLayout()
 
-            if (isHidden) {
-                val count = viewModel.countEarringsNotis.value ?: 0
-                if (count > 0) {
-                    viewModel.byCycleChangeStatusViewNotis()
-                }
+                // Establecer altura máxima como 40% de la pantalla
+                val height = UtilidadesMenores().getScreenPercentDp(binding.root.context, 0.45)
+                BottomSheetBehavior.from(it).maxHeight = height
             }
         }
 
-        private fun observeResponses(reportId: String, adapter: AdapterResponsesUser) {
-            if (isObserving) return
-            isObserving = true
+        // RecyclerView del BottomSheet Calculate route
+        private fun setupRecyclerView(
+            adapter: AdapterResponsesUser,
+            btnSheetLayout: BtnSheetResponsesRepUserBinding
+        ): RecyclerView? {
+            val recycler = btnSheetLayout.listRespuestas
 
-            val responsesObserver = Observer<List<ResponseReportDato>> { allResponses ->
-                val filtered = allResponses.filter { it.idReport == reportId }
+            // Configuramos adapter vacío inicialmente
+            recycler.layoutManager = LinearLayoutManager(binding.root.context)
+            recycler.adapter = adapter
 
-                if (filtered.isEmpty()) {
-                    binding.btnToggleRespuestas.visibility = View.GONE
-                    binding.textNoResponses.visibility = View.VISIBLE
+            return recycler
+        }
+
+        // Observa los resultados del cálculo de rutas
+        private fun observeResponses(
+            adapter: AdapterResponsesUser,
+            btnSheetLayout: BtnSheetResponsesRepUserBinding,
+            position: Int
+        ) {
+            viewModel.myResponses.observe(lifecycleOwner) { allResponses ->
+                // Ocultar el progreso cuando hay resultados
+                if (allResponses.isEmpty()) {
+                    btnSheetLayout.titleResponse.text = "No hay respuestas para este reporte."
                 } else {
-                    binding.textNoResponses.visibility = View.GONE
-                    binding.btnToggleRespuestas.visibility = View.VISIBLE
+                    btnSheetLayout.titleResponse.text =
+                        "Viendo ${allResponses.size} respuestas de Reporte #${position + 1}"
 
-                    val unseenCount = filtered.count { !it.statusCheckedSeenNoti }
+                    // Update view state
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        viewModel.byCycleChangeStatusViewNotis()
+                    }, 3000)
+
+
+                    val unseenCount = allResponses.count { !it.statusCheckedSeenNoti }
                     viewModel.countEarringsNotis.postValue(unseenCount)
                 }
 
-                adapter.updateData(filtered)
+                adapter.updateData(allResponses)
             }
-
-            // Observamos sólo las respuestas necesarias
-            viewModel.myResponses.observe(lifecycleOwner, responsesObserver)
-
-            // Guardamos referencia para limpiar después
-            observers.add(responsesObserver)
         }
 
-        private val observers = mutableListOf<Observer<*>>()
+//        private fun toggleRespuestas(reportId: String) {
+//            val isHidden = binding.layoutRespuestas.visibility == View.GONE
+//            binding.layoutRespuestas.visibility = if (isHidden) View.VISIBLE else View.GONE
+//            binding.textToggle.text = if (isHidden) "Ocultar respuestas ▴" else "Ver respuestas ▾"
+//
+//            if (isHidden) {
+//                val count = viewModel.countEarringsNotis.value ?: 0
+//                if (count > 0) {
+//                    viewModel.byCycleChangeStatusViewNotis()
+//                }
+//            }
+//        }
 
-        private fun clearObservers() {
-            observers.forEach { observer ->
-                if (observer is Observer<*>) {
-                    viewModel.myResponses.removeObserver(observer as Observer<in List<ResponseReportDato>>)
-                }
-            }
-            observers.clear()
-            isObserving = false
-        }
+//        private fun observeResponses(reportId: String, adapter: AdapterResponsesUser) {
+//            if (isObserving) return
+//            isObserving = true
+//
+//            // Observamos sólo las respuestas necesarias
+//            viewModel.myResponses.observe(lifecycleOwner, responsesObserver)
+//
+//            // Guardamos referencia para limpiar después
+//            observers.add(responsesObserver)
+//        }
+
+//        private val observers = mutableListOf<Observer<*>>()
+//
+//        private fun clearObservers() {
+//            observers.forEach { observer ->
+//                if (observer is Observer<*>) {
+//                    viewModel.myResponses.removeObserver(observer as Observer<in List<ResponseReportDato>>)
+//                }
+//            }
+//            observers.clear()
+//            isObserving = false
+//        }
     }
 }

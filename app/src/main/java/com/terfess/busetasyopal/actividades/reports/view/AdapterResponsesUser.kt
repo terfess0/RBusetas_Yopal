@@ -15,16 +15,21 @@ class AdapterResponsesUser (
 ) : RecyclerView.Adapter<AdapterResponsesUser.HolderResponse>() {
     class HolderResponse(view:View): RecyclerView.ViewHolder(view) {
         private val binding = FormatResponseItemBinding.bind(view)
+        private val author = binding.tvAuthorResponseUser
+        private val responseText = binding.txtResponseUser
+        private val fecha = binding.tvDateReponseUser
+        private val badgeIndicateNew = binding.badgeIsNewnoti
 
         fun mostrar(repuesta: ResponseReportDato) {
-            val author = binding.tvAuthorResponseUser
-            val responseText = binding.txtResponseUser
-            val fecha = binding.tvDateReponseUser
-
             author.text = repuesta.authorResponse
             responseText.text = repuesta.textResponse
             fecha.text = "Respondido el ${repuesta.dateResponse} a las ${repuesta.timeResponse}"
 
+            if (repuesta.statusCheckedSeenNoti){
+                badgeIndicateNew.visibility = View.GONE
+            }else{
+                badgeIndicateNew.visibility = View.VISIBLE
+            }
         }
 
     }

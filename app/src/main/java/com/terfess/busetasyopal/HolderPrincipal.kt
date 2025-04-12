@@ -216,6 +216,12 @@ class HolderPrincipal(vista: View) : RecyclerView.ViewHolder(vista) {
                 intent.putExtra("num_route", dato)
 
                 caja.startActivity(intent)
+
+                try {
+                    UtilidadesMenores().registSelectRouteUser(dato)
+                }catch (e:Exception){
+                    println("Error al registrar la ruta seleccionada: ${e.message}")
+                }
             }
         }
     }

@@ -57,16 +57,6 @@
                         android:textStyle="italic" />
 
                     <TextView
-                        android:id="@+id/tv_task_report_user"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textAlignment="textStart"
-                        android:textColor="?attr/colorPrimaryDark"
-                        android:textIsSelectable="true"
-                        android:textSize="16sp"
-                        android:textStyle="italic" />
-
-                    <TextView
                         android:id="@+id/tv_location_report_user"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -101,80 +91,57 @@
                     android:paddingStart="8dp">
 
                     <ImageButton
-                        android:id="@+id/btn_delete_report_user"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/btn_see_responses_rep"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:background="@color/transparente"
                         android:contentDescription="@string/borrar_reporte_admin"
-                        android:src="@android:drawable/ic_dialog_info" />
+                        android:src="@android:drawable/ic_menu_view" />
                 </LinearLayout>
             </LinearLayout>
 
             <!-- BOTÓN MOSTRAR/OCULTAR RESPUESTAS -->
-            <LinearLayout
-                android:id="@+id/btn_toggle_respuestas"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:paddingTop="10dp"
-                android:visibility="gone">
+<!--            <LinearLayout-->
+<!--                android:id="@+id/btn_toggle_respuestas"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:clickable="true"-->
+<!--                android:focusable="true"-->
+<!--                android:gravity="center"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:paddingTop="10dp"-->
+<!--                android:visibility="gone">-->
 
-                <TextView
-                    android:id="@+id/textToggle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ver respuestas ▾"
-                    android:textAlignment="center"
-                    android:textColor="?attr/titleTextColor"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+<!--                <TextView-->
+<!--                    android:id="@+id/textToggle"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Ver respuestas ▾"-->
+<!--                    android:textAlignment="center"-->
+<!--                    android:textColor="?attr/titleTextColor"-->
+<!--                    android:textSize="14sp"-->
+<!--                    android:textStyle="bold" />-->
 
-                <TextView
-                    android:id="@+id/badge_count_card"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="end|top"
-                    android:layout_margin="6dp"
-                    android:background="@drawable/badge_background"
-                    android:gravity="center"
-                    android:textColor="@android:color/white"
-                    android:textSize="12sp"
-                    android:visibility="gone" />
-            </LinearLayout>
+<!--                <TextView-->
+<!--                    android:id="@+id/badge_count_card"-->
+<!--                    android:layout_width="20dp"-->
+<!--                    android:layout_height="20dp"-->
+<!--                    android:layout_gravity="end|top"-->
+<!--                    android:layout_margin="6dp"-->
+<!--                    android:background="@drawable/badge_background"-->
+<!--                    android:gravity="center"-->
+<!--                    android:textColor="@android:color/white"-->
+<!--                    android:textSize="12sp"-->
+<!--                    android:visibility="gone" />-->
+<!--            </LinearLayout>-->
 
             <TextView
-                android:id="@+id/textNoResponses"
+                android:id="@+id/txtNumReport"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="No hay respuestas aun"
-                android:textColor="?attr/titleTextColor"
-                android:textSize="14sp"
-                android:textStyle="bold"
-                android:visibility="gone" />
-
-            <!-- CONTENEDOR RESPUESTAS -->
-            <LinearLayout
-                android:id="@+id/layout_respuestas"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="4dp"
-                android:visibility="gone">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/list_respuestas"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="4dp"
-                    android:divider="@android:color/darker_gray"
-                    android:dividerHeight="1dp" />
-
-            </LinearLayout>
+                android:layout_gravity="end|bottom"
+                android:textColor="?attr/titleTextColor" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

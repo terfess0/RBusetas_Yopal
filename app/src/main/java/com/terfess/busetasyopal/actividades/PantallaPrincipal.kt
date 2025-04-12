@@ -53,6 +53,7 @@ import com.terfess.busetasyopal.databinding.PantPrincipalBinding
 import com.terfess.busetasyopal.enums.MapRouteOption
 import com.terfess.busetasyopal.modelos_dato.DatosPrimariosRuta
 import com.terfess.busetasyopal.room.AppDatabase
+import com.terfess.busetasyopal.services.AuthFirebase
 import com.terfess.busetasyopal.services.workers.ListenerNotifications
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -572,6 +573,7 @@ class PantallaPrincipal : AppCompatActivity(), AlertaCallback,
 
             R.id.misReportes -> {
                 val intent = Intent(this, ReportsUser::class.java)
+                AuthFirebase().loginAnonymously()
                 startActivity(intent)
             }
 

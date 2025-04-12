@@ -43,7 +43,6 @@ class ReportsUser : AppCompatActivity() {
         toolbar.navigationIcon?.setTint(ContextCompat.getColor(this, themeColor))
         //..
 
-        loginAnonymous()
         vmReports.getReports()
 
         val adapterRep = AdapterHolderReportsUser(emptyList(), vmReports, this)
@@ -75,9 +74,5 @@ class ReportsUser : AppCompatActivity() {
             }
         }
         return true
-    }
-
-    private fun loginAnonymous() {
-        AuthFirebase().loginAnonymously()
     }
 }

@@ -341,17 +341,36 @@ class AdminProvider : ViewModel() {
 //END SETTERS------------
 
     //DELETES------------------
-    fun deleteReport(callback: OnDeleteReport, idFieldReport: String) {
+    fun deleteReport(callback: OnDeleteReport, idFieldReport: String, hasResponse:Boolean) {
         // referencia al documento en Firebase
-        val databaseReference = dataBaseFirebase.getReference("features/0/reportesNew")
+        val databaseReference =
+            dataBaseFirebase.getReference("features/0/reportsModule/reportsUser/$idFieldReport")
 
-        val updates = hashMapOf<String, Any?>(
-            idFieldReport to null
-        )
-
-        // actualizar el documento eliminando el campo
-        databaseReference.updateChildren(updates)
+        databaseReference.removeValue()
             .addOnSuccessListener {
+
+                // First, delete reponses
+                if (hasResponse){
+                    dataBaseFirebase.getReference("features/0/reportsModule/reportResponses")
+                        .orderByChild("idReport")
+                        .equalTo(idFieldReport)
+                        .addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                var count = 0
+                                for (childSnapshot in snapshot.children) {
+                                    childSnapshot.ref.removeValue()
+                                    count++
+                                }
+                                saveActionRegist("Eliminó un reporte y sus $count respuestas :: AdminProvider")
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+                                // Manejo de error
+                                Log.e("FirebaseError", "Error al eliminar los reportes", error.toException())
+                            }
+                        })
+                }
+
                 // Operación exitosa
                 callback.OnSuccesTask()
                 Log.d("Firebase", "Reporte eliminado exitosamente.")

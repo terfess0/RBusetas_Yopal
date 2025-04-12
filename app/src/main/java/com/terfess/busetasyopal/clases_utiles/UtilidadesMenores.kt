@@ -469,7 +469,7 @@ class UtilidadesMenores {
         val ubiUser = Mapa.ubiUser //ubicacion del usuario
         val builder = AlertDialog.Builder(context, R.style.AlertDialogTheme)
 
-        //set titulo, descripcion y icono
+        // Set titulo, descripcion y icono
         builder.setTitle("Reportar novedad")
         builder.setMessage(
             context.getString(R.string.description_alert_report)
@@ -567,56 +567,42 @@ class UtilidadesMenores {
                                     ubicacion = "No proporcionada"
                                 }
 
-                                // Obtener el token de registro
-                                var tokenIdApp: String
-                                FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-                                    if (task.isSuccessful) {
-                                        tokenIdApp = task.result
-
-
-                                        val ref: DatabaseReference =
-                                            firebase.getReference(
-                                                context.getString(
-                                                    R.string.ruta_reportes_db_nube
-                                                )
-                                            )
-                                        val e = ref.child("reportsUser").push()
-
-                                        // Crear un nuevo nodo con el ID único, fecha, texto y ubicación del reporte
-                                        val nuevoReporte = mapOf(
-                                            "id" to e.key,
-                                            "dateReport" to fechaFormateada,
-                                            "timeReport" to horaFormateada,
-                                            "situationReport" to texto,
-                                            "location" to ubicacion,
-                                            "currentTask" to opcionActual,
-                                            "idUser" to userId,
-                                            "statusCheckedView" to false, // Indicate if the user had view the noti on ReportsUser screen
+                                val ref: DatabaseReference =
+                                    firebase.getReference(
+                                        context.getString(
+                                            R.string.ruta_reportes_db_nube
                                         )
+                                    )
+                                val e = ref.child("reportsUser").push()
 
-                                        // Subir el nuevo reporte a la base de datos de Firebase
-                                        e.setValue(nuevoReporte).addOnCompleteListener { subida ->
-                                            if (subida.isSuccessful) {
-                                                // La subida fue exitosa
-                                                crearAlertaSencilla(
-                                                    context,
-                                                    "Reporte enviado exitosamente"
-                                                )
-                                            } else {
-                                                // La subida falló
-                                                crearAlertaSencilla(
-                                                    context,
-                                                    "Error al enviar el reporte. Inténtalo de nuevo más tarde"
-                                                )
-                                                println("Error al enviar el reporte: ${subida.exception}")
-                                            }
-                                        }
+                                // Crear un nuevo nodo con el ID único, fecha, texto y ubicación del reporte
+                                val nuevoReporte = mapOf(
+                                    "id" to e.key,
+                                    "dateReport" to fechaFormateada,
+                                    "timeReport" to horaFormateada,
+                                    "situationReport" to texto,
+                                    "location" to ubicacion,
+                                    "currentTask" to opcionActual,
+                                    "idUser" to userId,
+                                    "statusCheckedView" to false, // Indicate if the user had view the noti on ReportsUser screen
+                                    "hasResponse" to false // Indicate if a admin has responded to the report
+                                )
+
+                                // Subir el nuevo reporte a la base de datos de Firebase
+                                e.setValue(nuevoReporte).addOnCompleteListener { subida ->
+                                    if (subida.isSuccessful) {
+                                        // La subida fue exitosa
+                                        crearAlertaSencilla(
+                                            context,
+                                            "Reporte enviado exitosamente"
+                                        )
                                     } else {
                                         // La subida falló
                                         crearAlertaSencilla(
                                             context,
                                             "Error al enviar el reporte. Inténtalo de nuevo más tarde"
                                         )
+                                        println("Error al enviar el reporte: ${subida.exception}")
                                     }
                                 }
                             }
@@ -632,6 +618,31 @@ class UtilidadesMenores {
         }
         builder.show()
     }
+
+    private fun obtenerUltimaConexion(): String {
+        val hora = getHoraActual()
+        val fecha = getDate()
+
+        return "Último inicio de conexión a las $hora del $fecha"
+    }
+
+    fun getHoraActual(): String {
+        val calendario = Calendar.getInstance()
+        val formatoHora = SimpleDateFormat("h:mm a", Locale("es", "ES"))
+
+        val hora = formatoHora.format(calendario.time).lowercase()
+        return hora
+    }
+
+    fun getDate(): String {
+        val calendario = Calendar.getInstance()
+        val formatoFecha = SimpleDateFormat("EEEE d 'de' MMMM", Locale("es", "ES"))
+
+        val fecha = formatoFecha.format(calendario.time)
+        return fecha
+    }
+
+    // GET ANALYTICS --
 
     fun registLastConectionUser() {
         var tokenIdApp: String
@@ -652,14 +663,53 @@ class UtilidadesMenores {
         }
     }
 
-    private fun obtenerUltimaConexion(): String {
-        val calendario = Calendar.getInstance()
-        val formatoHora = SimpleDateFormat("h:mm a", Locale("es", "ES"))
-        val formatoFecha = SimpleDateFormat("EEEE d 'de' MMMM", Locale("es", "ES"))
 
-        val hora = formatoHora.format(calendario.time).lowercase()
-        val fecha = formatoFecha.format(calendario.time)
+    fun registSelectRouteUser(idRoute:Int) {
+        var tokenIdApp: String
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                tokenIdApp = task.result
 
-        return "Último inicio de conexión a las $hora del $fecha"
+                val firebase: FirebaseDatabase = FirebaseDatabase.getInstance()
+
+                val ref: DatabaseReference =
+                    firebase.getReference(
+                        "features/0/"
+                    )
+
+                // Check if the route exists
+                ref.child("rutas/$idRoute").get().addOnSuccessListener {
+
+                    if (!it.exists()) {
+                        // Route does not exist
+                        return@addOnSuccessListener
+                    }
+
+                    val newRef = ref.child("analytics/clicksRouteData/$idRoute/")
+
+                    val z = newRef.child("clicksRegister").push()
+
+                    // Save the click regist
+                    val str = mapOf(
+                        "id" to z.key,
+                        "date" to getDate(),
+                        "time" to getHoraActual(),
+                        "idUser" to tokenIdApp,
+                        "idRouteClicked" to idRoute
+                    )
+
+                    z.setValue(str)
+
+                    // Up the clicks count
+                    newRef.child("clicksCount").get().addOnSuccessListener {
+                        val y = it.getValue(Int::class.java) ?: 0
+                        y.toString().toInt()
+                        newRef.child("clicksCount").setValue(y + 1)
+                    }
+                }
+            }
+        }
     }
+
+    //..
 }

@@ -17,7 +17,7 @@ class ReportViewModel : ViewModel(),
     var errorReports = MutableLiveData<FirebaseEnums>()
     var resultDeleteReport = MutableLiveData<Boolean>()
     var resultReplyReport = MutableLiveData<Boolean>()
-    var errorReplyReport :String = ""
+    var errorReplyReport: String = ""
     var alertOnScreen = MutableLiveData<String>()
 
     // start get reports
@@ -38,8 +38,8 @@ class ReportViewModel : ViewModel(),
 
     //start delete Report
 
-    fun requestDeleteReport(idReport: String) {
-        AdminProvider().deleteReport(this, idReport)
+    fun requestDeleteReport(idReport: String, hasResponse: Boolean) {
+        AdminProvider().deleteReport(this, idReport, hasResponse)
     }
 
     override fun OnSuccesTask() {

@@ -24,8 +24,8 @@ class ReportFunctions {
             if (task.isSuccessful) {
                 userUid = task.result
 
-                firebase.getReference("features/0/reportsModule/reportsUsers")
-                    .orderByChild("origin")
+                firebase.getReference("features/0/reportsModule/reportsUser")
+                    .orderByChild("idUser")
                     .equalTo(userUid)
                     .addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -65,7 +65,7 @@ class ReportFunctions {
             if (task.isSuccessful) {
                 userUid = task.result
 
-                firebase.getReference("features/0/users/$userUid/reportResponses")
+                firebase.getReference("features/0/reportsModule/reportResponses")
                     .orderByChild("idReport")
                     .equalTo(idReport)
                     .addValueEventListener(object : ValueEventListener {
@@ -102,27 +102,28 @@ class ReportFunctions {
 
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                task.result
+                val userId = task.result.toString() // Asegúrate de que esto sea el valor esperado
 
                 val reportResponsesRef =
-                    firebase.getReference("features/0/users/${task.result}/reportResponses")
-
+                    firebase.getReference("features/0/reportsModule/reportResponses/")
 
                 val query = reportResponsesRef
-                    .orderByChild("statusCheckedSeenNoti")
-                    .equalTo(false)
-
+                    .orderByChild("idUser")
+                    .equalTo(userId)
 
                 query.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
-                        // Mapa para actualización masiva (mejor rendimiento)
                         val updates = HashMap<String, Any>()
 
                         for (responseSnapshot in snapshot.children) {
-                            updates["${responseSnapshot.key}/statusCheckedSeenNoti"] = true
+                            val statusChecked = responseSnapshot.child("statusCheckedSeenNoti")
+                                .getValue(Boolean::class.java) ?: false
+
+                            if (!statusChecked) {
+                                updates["${responseSnapshot.key}/statusCheckedSeenNoti"] = true
+                            }
                         }
 
-                        // 3. Actualización atómica (una sola operación de red)
                         if (updates.isNotEmpty()) {
                             reportResponsesRef.updateChildren(updates)
                                 .addOnSuccessListener {
