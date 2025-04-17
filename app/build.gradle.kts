@@ -14,8 +14,8 @@ android {
         applicationId = "com.terfess.busetasyopal"
         minSdk = 24
         targetSdk = 35
-        versionCode = 37
-        versionName = "3.3.4"
+        versionCode = 38
+        versionName = "4.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -108,9 +108,6 @@ dependencies {
 
     // workmanager
     implementation("androidx.work:work-runtime-ktx:2.10.0")
-
-    //Graficos
-    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }
 
 

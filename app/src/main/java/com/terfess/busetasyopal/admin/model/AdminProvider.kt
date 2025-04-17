@@ -92,7 +92,6 @@ class AdminProvider : ViewModel() {
 
                     val sortedData = data.sortedByDescending { it.dateReport }
                     callback.onSucces(sortedData)
-
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {

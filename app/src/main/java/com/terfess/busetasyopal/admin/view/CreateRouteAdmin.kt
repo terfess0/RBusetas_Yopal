@@ -65,7 +65,8 @@ class CreateRouteAdmin : AppCompatActivity() {
         })
 
         instVM.lastiIdRoute.observe(this, Observer { id ->
-            binding.etNumRuta.setText(id.toString())
+            val x = id + 1
+            binding.etNumRuta.setText(x.toString())
         })
     }
 

@@ -7,11 +7,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.MutableData
 import com.google.firebase.database.Transaction
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.messaging.FirebaseMessaging
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class UserRegistsAnalyticsFuns {
     private val instUtilidadesMenores = UtilidadesMenores()

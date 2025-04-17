@@ -171,6 +171,26 @@
     <string name="retirar_anuncios">Remove Ads</string>
     <string name="fix_store_data_txt">Repairing trip data</string>
     <string name="descript_fix_option_data">Use this option if route paths have excessively long straight lines, which could indicate that they are not part of the usual route.</string>
+    <string name="responder_reporte">Reply Report</string>
+    <string name="input_txt_response_adm">Enter response text</string>
+    <string name="responder">Reply</string>
+    <string name="ver_respuestas_reporte_admin">View admin report responses</string>
+    <string name="respondido">Answered</string>
+    <string name="no_respondido">Not answered</string>
+    <string name="borrar_respuesta_a_reporte_admin">Delete response to admin report</string>
+    <string name="fecha">Date:</string>
+    <string name="hora">Time:</string>
+    <string name="ubicacio_n">Location:</string>
+    <string name="tarea">Task:</string>
+    <string name="cambiar_informaci_n_que_se_muestra_en_los_items_de_rutas_en_la_pantalla_principal">Change information displayed on route items on the main screen</string>
+    <string name="mostrar_horarios_y_frecuencias_en_la_lista_de_rutas">Show schedules and frequencies in the route list</string>
+    <string name="mostrar_sitios_en_la_lista_de_rutas">Show sites in the route list</string>
+    <string name="horarios_y_frecuencias">Schedules and frequencies</string>
+    <string name="numero_de_ruta">Route number</string>
+    <string name="sitios_representativos_que_recorre_la_ruta">Representative sites along the route</string>
+    <string name="asi_se_vera_la_informacion_de_cada_ruta">This is how the information for each route will look:</string>
+    <string name="limpiar_datos_de_rutas_fantasma">Clean up ghost route data</string>
+    <string name="ver_estadisticas">Show estatistics</string>
 </resources>
 
 

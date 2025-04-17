@@ -3,6 +3,10 @@
         <item name="elevation">1dp</item>
         <item name="colorPrimary">#14171A</item>
         <item name="colorPrimaryDark">#CCCCCC</item>
+
+        <item name="android:statusBarColor">@color/black</item>
+        <item name="android:navigationBarColor">@color/black</item>
+
         <item name="titleTextColor">#CCCCCC</item>
         <item name="colorBackgroundFloating">#1E2A38</item>
         <item name="colorAccent">?attr/colorPrimaryDark</item>

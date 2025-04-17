@@ -12,7 +12,7 @@ class UserResponsesNotificationsFun {
     fun checkNotificationsByFirebaseTokenUser(callback: OnGetCallback) {
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (!task.isSuccessful || task.result.isNullOrEmpty()) {
-                println("Error obteniendo el token de usuario: ${task.exception}")
+
                 return@addOnCompleteListener
             }
 
@@ -29,7 +29,7 @@ class UserResponsesNotificationsFun {
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.getValue(Boolean::class.java) == true) {
-                        println("No hay nuevos registros. pendingResponseNotifications ya está en true.")
+
                         return
                     }
 
@@ -38,7 +38,7 @@ class UserResponsesNotificationsFun {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    println("Error al leer pendingResponseNotifications: ${error.toException()}")
+
                 }
             })
     }

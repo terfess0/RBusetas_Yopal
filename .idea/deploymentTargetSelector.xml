@@ -7,10 +7,10 @@
       </SelectionState>
       <SelectionState runConfigName="Buestas Yopal">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2025-03-09T00:16:48.083994300Z">
+        <DropdownSelection timestamp="2025-04-17T14:48:47.440645100Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\santi\.android\avd\Nexus_S_API_34.avd" />
+              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\santi\.android\avd\Pixel_3a_API_34_extension_level_7_x86_64.avd" />
             </handle>
           </Target>
         </DropdownSelection>
