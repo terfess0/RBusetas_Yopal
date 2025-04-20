@@ -34,7 +34,7 @@ Esta aplicación tiene como objetivo proporcionar información detallada sobre l
 
 ## 📄 Licencia
 
-Este proyecto está licenciado bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para más detalles.
+Este proyecto está licenciado bajo la Licencia GPL-3.0 - ver el archivo [LICENSE](./LICENSE) para más detalles.
 
 ## 📧 Contacto
 
